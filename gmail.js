@@ -65,5 +65,10 @@ var Gmail =  function() {
   }
 
 
+  api.check.is_right_side_chat = function() {
+    return $('.ApVoH')[0].getAttribute('aria-labelledby') == ':wf';
+  }
+
+
   return api;
 }
