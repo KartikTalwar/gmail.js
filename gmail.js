@@ -60,5 +60,10 @@ var Gmail =  function() {
 	}
 
 
+	api.check.is_tabbed_inbox = function() {
+		return $(".aKh").length == 1;
+	}
+
+
 	return api;
 }
