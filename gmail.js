@@ -47,5 +47,18 @@ var Gmail =  function() {
 	}
 
 
+	api.check.is_horizontal_split = function() {
+		var dom = api.dom.inbox_content();
+		var box = dom.find("[gh=tl]").find('.nn');
+
+		return box.length == 0; 
+	}
+
+
+	api.check.is_vertical_split = function() {
+		return api.check.is_horizontal_split() == false;
+	}
+
+
 	return api;
 }
