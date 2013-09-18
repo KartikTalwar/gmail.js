@@ -76,5 +76,15 @@ var Gmail =  function() {
   }
 
 
+  api.get.storage_info = function() {
+    var div = $('.md.mj').find('div')[0];
+    var used = $(div).find('span')[0].innerText;
+    var total = $(div).find('span')[1].innerText;
+    var percent = parseFloat(used.replace(/[^0-9\.]/g, '')) * 100 / parseFloat(total.replace(/[^0-9\.]/g, ''));
+
+    return {used : used, total : total, percent : Math.floor(percent)};
+  }
+
+
   return api;
 }
