@@ -70,5 +70,11 @@ var Gmail =  function() {
   }
 
 
+  api.check.is_google_apps_user =function() {
+    var email = api.get.user_email();
+    return email.indexOf('gmail.com', email.length - 'gmail.com'.length) == -1;
+  }
+
+
   return api;
 }
