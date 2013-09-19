@@ -105,5 +105,10 @@ var Gmail =  function() {
   }
 
 
+  api.dom.email_body = function() {
+    return $('.nH.hx');
+  }
+
+
   return api;
 }
