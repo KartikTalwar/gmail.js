@@ -93,5 +93,17 @@ var Gmail =  function() {
   }
 
 
+  api.dom.email_subject = function () {
+    return $('h1.ha');
+  }
+
+
+  api.get.email_subject = function() {
+    var subject_dom = api.dom.email_subject();
+
+    return subject_dom.find('.hP').innerText;
+  }
+
+
   return api;
 }
