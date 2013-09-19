@@ -10,16 +10,23 @@ var Gmail =  function() {
 
 
   api.get.user_email = function() {
-    var user_email = null;
+    var user_email = '';
 
-    if ($("#gbgs4dn").length == 0) {
+    if($("#gbgs4dn").length == 0) {
       user_email = $("#gbi4t").text();
+    } else if(user_email.indexOf('@') == -1) {
+      user_email = $($('.gbps2')[0]).text();
     } else {
       user_email = $("#gbgs4dn").text();
     }
 
     if(user_email.indexOf('@') == -1) {
-      user_email = $($('.gbps2')[0]).text();
+      if($('.gbps2').length > 0) {
+        user_email = $('.gbps2')[0].innerHTML;
+        if(user_email == "") {
+          user_email = $('.gbps2')[1].innerHTML;
+        }
+      }
     }
 
     return user_email.replace(/['"]/g, '').trim();
@@ -82,7 +89,7 @@ var Gmail =  function() {
     var total = $(div).find('span')[1].innerText;
     var percent = parseFloat(used.replace(/[^0-9\.]/g, '')) * 100 / parseFloat(total.replace(/[^0-9\.]/g, ''));
 
-    return {used : used, total : total, percent : Math.floor(percent)};
+    return {used : used, total : total, percent : Math.floor(percent)}
   }
 
 
