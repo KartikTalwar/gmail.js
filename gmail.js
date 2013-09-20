@@ -110,5 +110,10 @@ var Gmail =  function() {
   }
 
 
+  api.get.email_hash = function() {
+    return window.location.hash.split("/").pop().replace(/#/, '').split('?')[0];
+  }
+
+
   return api;
 }
