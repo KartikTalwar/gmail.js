@@ -112,7 +112,6 @@ var gmail = Gmail();
     ```js
     gmail.dom.email_subject()
     ```
-    ```
 
 - **email_body**
 
