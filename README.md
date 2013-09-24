@@ -1,14 +1,25 @@
-Gmail.js
-========
+# Gmail.js - Unofficial JavaScript API for Gmail
 
-Client side API for Gmail
+
+
+## Setup
+
+Inject jQuery to Gmail (open console and paste this) and initialize `gmail.js`
+
+
+```js
+var jq = document.createElement('script');
+jq.src = "https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js";
+document.getElementsByTagName('body')[0].appendChild(jq);
+
+// {inject gmail.js}
+
+var gmail = Gmail();
+```
 
 
 ## Methods
 
-```js
-var gmail = Gmail();
-```
 
 ### GET
 
