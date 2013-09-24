@@ -169,6 +169,10 @@ var Gmail =  function() {
     return $('#xobni_frame').length > 0;
   }
 
+  api.dom.get_left_sidebar_links = function() {
+    return $("div[role=navigation] [title]");
+  }
+
 
   return api;
 }
