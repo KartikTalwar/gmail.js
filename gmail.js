@@ -161,5 +161,10 @@ var Gmail =  function() {
   }
 
 
+  api.check.is_boomerang_installed = function() {
+    return $("[id^='b4g_'],[id*=' b4g_'],[class*=' b4g_'],[class*='b4g_']").length > 0;
+  }
+
+
   return api;
 }
