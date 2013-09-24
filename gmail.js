@@ -146,5 +146,9 @@ var Gmail =  function() {
   }
 
 
+  api.check.is_rapportive_installed = function() {
+    return $('#rapportive-sidebar').length == 1;
+  }
+
   return api;
 }
