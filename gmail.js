@@ -30,9 +30,13 @@ var Gmail =  function() {
 
   api.check.is_preview_pane = function() {
     var dom = api.dom.inbox_content();
-    var box = dom.find("[gh=tl]")[0];
+    var box = dom.find("[gh=tl]");
 
-    return box.getAttribute('class').indexOf('aia') != -1;
+    if(box.length > 0) {
+      return box[0].getAttribute('class').indexOf('aia') != -1;
+    }
+
+    return false;
   }
 
 
