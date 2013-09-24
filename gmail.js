@@ -141,5 +141,10 @@ var Gmail =  function() {
   }
 
 
+  api.check.is_priority_inbox = function() {
+    return $('.qh').length > 0;
+  }
+
+
   return api;
 }
