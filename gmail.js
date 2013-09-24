@@ -171,6 +171,11 @@ var Gmail =  function() {
   }
 
 
+  api.check.is_signal_installed = function() {
+    return $("[id^='Signal'],[id*=' Signal'],[class*=' signal'],[class*='signal']").length > 0;
+  }
+
+
   api.dom.get_left_sidebar_links = function() {
     return $("div[role=navigation] [title]");
   }

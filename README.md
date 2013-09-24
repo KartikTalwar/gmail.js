@@ -57,6 +57,7 @@ var gmail = Gmail();
 - gmail.check **.is_anydo_installed()**
 - gmail.check **.is_boomerang_installed()**
 - gmail.check **.is_xobini_installed()**
+- gmail.check **.is_signal_installed()**
 
 
 
