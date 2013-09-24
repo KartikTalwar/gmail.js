@@ -213,5 +213,18 @@ var Gmail =  function() {
   }
 
 
+  api.get.unread_spam_emails = function() {
+    var dom = $("div[role=navigation]").find("[title*='Spam']");
+
+    if(dom.length > 0) {
+      if(dom[0].innerText.indexOf('(') != -1) {
+        return parseInt(dom[0].innerText.replace(/[^0-9]/g, ''));
+      }
+    }
+
+    return -1;
+  }
+
+
   return api;
 }
