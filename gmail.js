@@ -226,5 +226,13 @@ var Gmail =  function() {
   }
 
 
+  api.get.unread_emails = function() {
+    return { inbox  : api.get.unread_inbox_emails(),
+             drafts : api.get.unread_draft_emails(),
+             spam   : api.get.unread_spam_emails()
+            }
+  }
+
+
   return api;
 }
