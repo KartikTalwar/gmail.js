@@ -96,7 +96,7 @@ var Gmail =  function() {
   }
 
 
-  api.check.inside_email = function() {
+  api.check.is_inside_email = function() {
     return api.dom.email_contents().length > 0;
   }
 
@@ -127,7 +127,7 @@ var Gmail =  function() {
   api.get.email_id = function() {
     var hash = null;
 
-    if(api.check.inside_email()) {
+    if(api.check.is_inside_email()) {
       if(api.check.is_preview_pane()) {
         var text = api.get.email_ids();
         hash = text[0].substring(1, text[0].length);

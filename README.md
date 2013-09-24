@@ -32,7 +32,7 @@ var gmail = Gmail();
 - gmail.check **.is_tabbed_inbox()**
 - gmail.check **.is_right_side_chat()**
 - gmail.check **.is_google_apps_user()**
-- gmail.check **.inside_email()**
+- gmail.check **.is_inside_email()**
 - gmail.check **.is_priority_inbox()**
 - gmail.check **.is_rapportive_installed()**
 - gmail.check **.is_streak_installed()**
