@@ -165,12 +165,25 @@ var Gmail =  function() {
     return $("[id^='b4g_'],[id*=' b4g_'],[class*=' b4g_'],[class*='b4g_']").length > 0;
   }
 
+
   api.check.is_xobini_installed = function() {
     return $('#xobni_frame').length > 0;
   }
 
+
   api.dom.get_left_sidebar_links = function() {
     return $("div[role=navigation] [title]");
+  }
+
+
+  api.dom.search_bar = function() {
+    return $("[gh=sb]");
+  }
+
+
+  api.get.search_query = function() {
+    var dom = api.dom.search_bar();
+    return dom.find('input')[0].value;
   }
 
 
