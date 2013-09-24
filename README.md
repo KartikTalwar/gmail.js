@@ -19,6 +19,10 @@ var gmail = Gmail();
 - gmail.get **.email_ids()**
 - gmail.get **.email_id()**
 - gmail.get **.search_query()**
+- gmail.get **.unread_emails()**
+- gmail.get **.unread_inbox_emails()**
+- gmail.get **.unread_draft_emails()**
+- gmail.get **.unread_spam_emails()**
 
 
 
