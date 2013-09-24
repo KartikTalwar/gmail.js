@@ -43,6 +43,12 @@ var gmail = Gmail();
     gmail.get.email_id()
     ```
 
+- **search_query**
+
+    ```js
+    gmail.get.search_query()
+    ```
+
 
 
 ### CHECK
@@ -96,6 +102,43 @@ var gmail = Gmail();
     gmail.check.inside_email()
     ```
 
+- **is_priority_inbox**
+
+    ```js
+    gmail.check.is_priority_inbox()
+    ```
+
+- **is_rapportive_installed**
+
+    ```js
+    gmail.check.is_rapportive_installed()
+    ```
+
+- **is_streak_installed**
+
+    ```js
+    gmail.check.is_streak_installed()
+    ```
+
+- **is_anydo_installed**
+
+    ```js
+    gmail.check.is_anydo_installed()
+    ```
+
+- **is_boomerang_installed**
+
+    ```js
+    gmail.check.is_boomerang_installed()
+    ```
+
+- **is_xobini_installed**
+
+    ```js
+    gmail.check.is_xobini_installed()
+    ```
+
+
 
 
 ### DOM
@@ -125,8 +168,14 @@ var gmail = Gmail();
     gmail.dom.email_contents()
     ```
 
-- ****
+- **get_left_sidebar_links**
 
     ```js
-    gmail..()
+    gmail.dom.get_left_sidebar_links()
+    ```
+
+- **search_bar**
+
+    ```js
+    gmail.dom.search_bar()
     ```
