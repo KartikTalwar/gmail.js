@@ -150,5 +150,11 @@ var Gmail =  function() {
     return $('#rapportive-sidebar').length == 1;
   }
 
+
+  api.check.is_streak_installed = function() {
+    return $("[id^='bentoBox'],[id*=' bentoBox'],[class*=' bentoBox'],[class*='bentoBox']").length > 0;
+  }
+
+
   return api;
 }
