@@ -1,5 +1,4 @@
-# Gmail.js - Unofficial JavaScript API for Gmail
-
+# Gmail.js - JavaScript API for Gmail
 
 
 ## Setup
