@@ -33,6 +33,10 @@ var gmail = Gmail();
 - gmail.get **.unread_inbox_emails()**
 - gmail.get **.unread_draft_emails()**
 - gmail.get **.unread_spam_emails()**
+- gmail.get **.unread_forum_emails()**
+- gmail.get **.unread_notification_emails()**
+- gmail.get **.unread_promotion_emails()**
+- gmail.get **.unread_social_emails()**
 
 
 
