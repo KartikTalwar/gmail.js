@@ -156,5 +156,10 @@ var Gmail =  function() {
   }
 
 
+  api.check.is_anydo_installed = function() {
+    return $("[id^='anydo'],[id*=' anydo'],[class*=' anydo'],[class*='anydo']").length > 0;
+  }
+
+
   return api;
 }
