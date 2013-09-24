@@ -226,11 +226,66 @@ var Gmail =  function() {
   }
 
 
+  api.get.unread_forum_emails = function() {
+    var dom = $("div[role=navigation]").find("[title*='Forums']");
+
+    if(dom.length > 0) {
+      if(dom[0].innerText.indexOf('(') != -1) {
+        return parseInt(dom[0].innerText.replace(/[^0-9]/g, ''));
+      }
+    }
+
+    return -1;
+  }
+
+
+  api.get.unread_notification_emails = function() {
+    var dom = $("div[role=navigation]").find("[title*='Notifications']");
+
+    if(dom.length > 0) {
+      if(dom[0].innerText.indexOf('(') != -1) {
+        return parseInt(dom[0].innerText.replace(/[^0-9]/g, ''));
+      }
+    }
+
+    return -1;
+  }
+
+
+  api.get.unread_promotion_emails = function() {
+    var dom = $("div[role=navigation]").find("[title*='Promotions']");
+
+    if(dom.length > 0) {
+      if(dom[0].innerText.indexOf('(') != -1) {
+        return parseInt(dom[0].innerText.replace(/[^0-9]/g, ''));
+      }
+    }
+
+    return -1;
+  }
+
+
+  api.get.unread_social_emails = function() {
+    var dom = $("div[role=navigation]").find("[title*='Social Updates']");
+
+    if(dom.length > 0) {
+      if(dom[0].innerText.indexOf('(') != -1) {
+        return parseInt(dom[0].innerText.replace(/[^0-9]/g, ''));
+      }
+    }
+
+    return -1;
+  }
+
+
   api.get.unread_emails = function() {
-    return { inbox  : api.get.unread_inbox_emails(),
-             drafts : api.get.unread_draft_emails(),
-             spam   : api.get.unread_spam_emails()
-            }
+    return { inbox         : api.get.unread_inbox_emails(),
+             drafts        : api.get.unread_draft_emails(),
+             spam          : api.get.unread_spam_emails(),
+             forum         : api.get.unread_forum_emails(),
+             notifications : api.get.unread_notification_emails(),
+             promotions    : api.get.unread_promotion_emails(),
+             social        : api.get.unread_social_emails() }
   }
 
 
