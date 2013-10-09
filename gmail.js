@@ -283,6 +283,15 @@ var Gmail =  function() {
   }
 
 
+  api.get.beta = function() {
+    var features = {
+                    "new_nav_bar" : $('#gbz').length == 0
+                   }
+
+    return features;
+  }
+
+
   api.get.unread_emails = function() {
     return { inbox         : api.get.unread_inbox_emails(),
              drafts        : api.get.unread_draft_emails(),
