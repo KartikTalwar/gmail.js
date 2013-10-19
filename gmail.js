@@ -334,7 +334,7 @@ var Gmail =  function() {
   }
 
 
-  api.tools.xhrWatcher = function () {
+  api.tools.xhr_watcher = function () {
     var self = this;
 
     if (!api.tracker.xhr_initialized) {
@@ -401,7 +401,7 @@ var Gmail =  function() {
   }
 
 
-  api.observe.events = function() {
+  api.observe.http_requests = function() {
     return api.tracker.events;
   }
 
