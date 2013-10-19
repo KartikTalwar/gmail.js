@@ -319,7 +319,18 @@ var Gmail =  function() {
 
   api.tools.parse_requests = function(params) {
     var parsed = api.tools.parse_url(params.url);
-    console.log(parsed, params);
+    params.url_original = params.url;
+    params.url = parsed;
+
+    if(typeof api.tracker.events != 'object') {
+      api.tracker.events = [];
+    }
+
+    api.tracker.events.unshift(params);
+
+    if(api.tracker.events.length > 50) {
+      api.tracker.events.pop();
+    }
   }
 
 
@@ -387,6 +398,11 @@ var Gmail =  function() {
       }
 
     }
+  }
+
+
+  api.observe.events = function() {
+    return api.tracker.events;
   }
 
 
