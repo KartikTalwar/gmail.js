@@ -318,9 +318,8 @@ var Gmail =  function() {
 
 
   api.tools.parse_requests = function(params) {
-    var parsed = api.tools.parse_url(params.url);
-    params.url_original = params.url;
-    params.url = parsed;
+    params.url_raw = params.url;
+    params.url = api.tools.parse_url(params.url);
 
     if(typeof api.tracker.events != 'object') {
       api.tracker.events = [];
