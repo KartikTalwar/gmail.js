@@ -4,7 +4,8 @@ var Gmail =  function() {
               get : {},
               observe : {},
               check : {},
-              detect : {},
+              tools : {},
+              tracker : {},
               dom : {}
             };
 
@@ -300,6 +301,92 @@ var Gmail =  function() {
              notifications : api.get.unread_notification_emails(),
              promotions    : api.get.unread_promotion_emails(),
              social        : api.get.unread_social_emails() }
+  }
+
+
+  api.tools.parse_url = function(url) {
+    var regex = /[?&]([^=#]+)=([^&#]*)/g;
+    var params = {};
+    var match;
+
+    while (match = regex.exec(url)) {
+      params[match[1]] = match[2];
+    }
+
+    return params;
+  }
+
+
+  api.tools.parse_requests = function(params) {
+    var parsed = api.tools.parse_url(params.url);
+    console.log(parsed, params);
+  }
+
+
+  api.tools.xhrWatcher = function () {
+    var self = this;
+
+    if (!api.tracker.xhr_initialized) {
+      api.tracker.xhr_initialized = true;
+      var win = top.document.getElementById("js_frame").contentDocument.defaultView;
+
+      win.XMLHttpRequest.prototype._Gmail_open = win.XMLHttpRequest.prototype.open;
+      win.XMLHttpRequest.prototype.open = function (method, url, async, user, password) {
+        var out = this._Gmail_open.apply(this, arguments);
+        this.xhrParams = {
+          method: method.toString(),
+          url: url.toString()
+        };
+        return out;
+      };
+
+      win.XMLHttpRequest.prototype._Gmail_send = win.XMLHttpRequest.prototype.send;
+      win.XMLHttpRequest.prototype.send = function (body) {
+        var out = this._Gmail_send.apply(this, arguments);
+        if (this.xhrParams) {
+          this.xhrParams.body = body;
+          api.tools.parse_requests(this.xhrParams);
+        }
+
+        return out;
+      }
+
+      if(!top._Gmail_iframeFn) {
+        top._Gmail_iframeFn = top.GG_iframeFn;
+        this.iframeData = {};
+        this.iframeCachedData = [];
+        this.iframeCachedData.push({
+          responseDataId: 1,
+          url: top.location.href,
+          responseData: top.VIEW_DATA
+        });
+
+        top.GG_iframeFn = function (win, data) {
+          var d = top._Gmail_iframeFn.apply(this, arguments);
+          try {
+            var url = win && win.location ? win.location.href : null;
+            if(url && data && (url.indexOf("act=") != -1)) {
+
+              if(!self.iframeData[url]) {
+
+                var body = "";
+                var parent = win.frameElement.parentNode;
+                if (parent && $(parent).find('form').length > 0)
+                  body = $(parent).find('form').first().serialize();
+
+                self.iframeData[url] = true;
+              }
+            }
+          } catch(e) {
+            try {
+              console.log("DEBUG error in GG_iframeFn: " + e);
+            } catch (e) {}
+          }
+          return d;
+        }
+      }
+
+    }
   }
 
 
