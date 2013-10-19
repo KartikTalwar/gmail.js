@@ -321,14 +321,23 @@ var Gmail =  function() {
     params.url_raw = params.url;
     params.url = api.tools.parse_url(params.url);
 
-    if(typeof api.tracker.events != 'object') {
-      api.tracker.events = [];
+    if(typeof api.tracker.events != 'object' && typeof api.tracker.actions != 'object') {
+      api.tracker.events  = [];
+      api.tracker.actions = [];
     }
 
     api.tracker.events.unshift(params);
 
+    if(params.method == 'POST' && typeof params.url.act == 'string') {
+      api.tracker.actions.unshift(params);
+    }
+
     if(api.tracker.events.length > 50) {
       api.tracker.events.pop();
+    }
+
+    if(api.tracker.actions.length > 10) {
+      api.tracker.actions.pop();
     }
   }
 
@@ -402,6 +411,11 @@ var Gmail =  function() {
 
   api.observe.http_requests = function() {
     return api.tracker.events;
+  }
+
+
+  api.observe.actions = function() {
+    return api.tracker.actions;
   }
 
 

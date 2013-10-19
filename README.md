@@ -64,6 +64,7 @@ var gmail = Gmail();
 ### OBSERVE
 
 - gmail.observe **.http_requests()**
+- gmail.observe **.actions()**
 
 
 ### DOM
