@@ -317,6 +317,38 @@ var Gmail =  function() {
   }
 
 
+  api.tools.parse_actions = function(params) {
+    if(params.method == 'POST' && typeof params.url.act == 'string') {
+      console.log(params.url.act, params.body);
+    }
+
+    var map = {
+                "ur"   : "unread",
+                "rd"   : "read",
+                "tr"   : "delete",
+                "sp"   : "spam",
+                "us"   : "not_spam",
+                "arl"  : "label",
+                "rc_"  : "archive",
+                "ib"   : "move_to_inbox",
+                "dl"   : "delete_forever",
+                "st"   : "star",
+                "xst"  : "unstar",
+                "mai"  : "mark_as_important",
+                "mani" : "mark_as_not_important",
+                "cffm" : "filter_messages_like_these",
+                "ig"   : "mute",
+                "ug"   : "unmute",
+                "tae"  : "add_to_tasks",
+                "mt"   : "move_to",
+                "sd"   : "save_draft",
+                "dd"   : "discard_draft",
+                "sm"   : "send_message",
+                "el"   : "expand_sidebar_list"
+              }
+  }
+
+
   api.tools.parse_requests = function(params) {
     params.url_raw = params.url;
     params.url = api.tools.parse_url(params.url);
@@ -327,6 +359,7 @@ var Gmail =  function() {
     }
 
     api.tracker.events.unshift(params);
+    api.tools.parse_actions(params);
 
     if(params.method == 'POST' && typeof params.url.act == 'string') {
       api.tracker.actions.unshift(params);
