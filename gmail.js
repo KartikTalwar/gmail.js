@@ -503,7 +503,9 @@ var Gmail =  function() {
     }
 
     if(response != null) {
-      api.tracker.watchdog[action](response);
+      if(action in api.tracker.watchdog) {
+        api.tracker.watchdog[action](response);
+      }
     }
 
     var map = {
@@ -644,7 +646,6 @@ var Gmail =  function() {
     }
 
     if(!api.tracker.xhr_initialized) {
-      console.log('watcher not xhr_initialized')
       api.tools.xhr_watcher();
     }
 
