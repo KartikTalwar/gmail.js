@@ -65,6 +65,7 @@ var gmail = Gmail();
 
 - gmail.observe **.http_requests()**
 - gmail.observe **.actions()**
+- gmail.observe **.on(action, callback)**
 
 
 ### DOM
@@ -82,9 +83,11 @@ var gmail = Gmail();
 
 - gmail.tools **.xhr_watcher()**
 - gmail.tools **.parse_url()**
+- gmail.tools **.deparam()**
 
 
 ### TRACKER
 
 - gmail.tracker **.events**
 - gmail.tracker **.xhr_initialized**
+- gmail.tracker **.watchdog**
