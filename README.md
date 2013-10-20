@@ -66,6 +66,30 @@ var gmail = Gmail();
 - gmail.observe **.http_requests()**
 - gmail.observe **.actions()**
 - gmail.observe **.on(action, callback)**
+  - `unread`
+  - `read`
+  - `delete`
+  - `mark_as_spam`
+  - `mark_as_not_spam`
+  - `label`
+  - `archive`
+  - `move_to_inbox`
+  - `delete_forever`
+  - `star`
+  - `unstar`
+  - `mark_as_important`
+  - `mark_as_not_important`
+  - `filter_messages_like_these`
+  - `mute`
+  - `unmute`
+  - `add_to_tasks`
+  - `move_label`
+  - `save_draft`
+  - `discard_draft`
+  - `send_message`
+  - `expand_categories`
+  - `delete_label`
+  - `show_newly_arrived_message`
 
 
 ### DOM
