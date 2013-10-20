@@ -384,6 +384,144 @@ var Gmail =  function() {
       console.log(params.url.act, params.body);
     }
 
+    var sent_params = api.tools.deparam(params.body)
+    var email_ids = (typeof sent_params.t == 'string') ? [sent_params.t] : sent_params.t;
+
+    switch(decodeURIComponent(params.url.act)) {
+      case "ur" :
+        var response = {"id" : email_ids, "url" : params.url, "body" : params.body}
+        console.log('You just marked something as unread');
+        console.log(response);
+        break;
+
+      case "rd":
+        var response = {"id" : email_ids, "url" : params.url, "body" : params.body}
+        console.log('You just marked something as read');
+        console.log(response);
+        break;
+
+      case "tr":
+        var response = {"id" : email_ids, "url" : params.url, "body" : params.body}
+        console.log('You just deleted something');
+        console.log(response);
+        break;
+
+      case "sp":
+        var response = {"id" : email_ids, "url" : params.url, "body" : params.body}
+        console.log('You just marked something as spam');
+        console.log(response);
+        break;
+
+      case "us":
+        var response = {"id" : email_ids, "url" : params.url, "body" : params.body}
+        console.log('You just marked something as not spam');
+        console.log(response);
+        break;
+
+      case "arl":
+        var response = {"id" : email_ids, "url" : params.url, "body" : params.body, "label" : params.url.acn}
+        console.log('You just marked created a label');
+        console.log(response);
+        break;
+
+      case "ib":
+        var response = {"id" : email_ids, "url" : params.url, "body" : params.body}
+        console.log('You just moved something to inbox');
+        console.log(response);
+        break;
+
+      case "dl":
+        var response = {"id" : email_ids, "url" : params.url, "body" : params.body}
+        console.log('You just permanently deleted something');
+        console.log(response);
+        break;
+
+      case "st":
+        var response = {"id" : email_ids, "url" : params.url, "body" : params.body}
+        console.log('You just permanently starred something');
+        console.log(response);
+        break;
+
+      case "xst":
+        var response = {"id" : email_ids, "url" : params.url, "body" : params.body}
+        console.log('You just permanently unstarred something');
+        console.log(response);
+        break;
+
+      case "mai":
+        var response = {"id" : email_ids, "url" : params.url, "body" : params.body}
+        console.log('You just marked something as important');
+        console.log(response);
+        break;
+
+      case "mani":
+        var response = {"id" : email_ids, "url" : params.url, "body" : params.body}
+        console.log('You just marked something as not important');
+        console.log(response);
+        break;
+
+      case "ig":
+        var response = {"id" : email_ids, "url" : params.url, "body" : params.body}
+        console.log('You just muted a conversation');
+        console.log(response);
+        break;
+
+      case "ug":
+        var response = {"id" : email_ids, "url" : params.url, "body" : params.body}
+        console.log('You just unmuted a conversation');
+        console.log(response);
+        break;
+
+      case "sd":
+        var response = {"url" : params.url, "body" : params.body, "data" : sent_params}
+        console.log('You just saved a draft');
+        console.log(response);
+        break;
+
+      case "dd":
+        var response = {"id" : email_ids, "url" : params.url, "body" : params.body}
+        console.log('You just deleted a draft');
+        console.log(response);
+        break;
+
+      case "mt":
+        var response = {"id" : email_ids, "url" : params.url, "body" : params.body}
+        console.log('You just moved conversation to label');
+        console.log(response);
+        break;
+
+      case "tae":
+        var response = {"url" : params.url, "body" : params.body, "data" : sent_params}
+        console.log('You just added a task');
+        console.log(response);
+        break;
+
+      case "cffm":
+        var response = {"id" : email_ids, "url" : params.url, "body" : params.body}
+        console.log('You just chose to filter a message');
+        console.log(response);
+        break;
+
+      case "rc_^i":
+        var response = {"id" : email_ids, "url" : params.url, "body" : params.body}
+        console.log('You just archived something');
+        console.log(response);
+        break;
+
+      case "sm":
+        var response = {"url" : params.url, "body" : params.body, "data" : sent_params}
+        console.log('You just sent a message');
+        console.log(response);
+        break;
+
+      case "el":
+        var response = {"url" : params.url, "body" : params.body, "expanded" : sent_params.ex == '1'}
+        console.log('You just expanded a category');
+        console.log(response);
+        break;
+
+    }
+
     var map = {
                 "ur"   : "unread",
                 "rd"   : "read",
