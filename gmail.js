@@ -503,7 +503,7 @@ var Gmail =  function() {
     }
 
     if(response != null) {
-      console.log(response);
+      api.tracker.watchdog[action](response);
     }
 
     var map = {
@@ -513,7 +513,7 @@ var Gmail =  function() {
                 "sp"   : "spam",
                 "us"   : "not_spam",
                 "arl"  : "label",
-                "rc_"  : "archive",
+                "rc_^i"  : "archive",
                 "ib"   : "move_to_inbox",
                 "dl"   : "delete_forever",
                 "st"   : "star",
@@ -528,7 +528,9 @@ var Gmail =  function() {
                 "sd"   : "save_draft",
                 "dd"   : "discard_draft",
                 "sm"   : "send_message",
-                "el"   : "expand_sidebar_list"
+                "el"   : "expand_categories",
+                "dc_"  : "delete_label",
+                "mo"   : "show_newly_arrived_message"
               }
   }
 
@@ -633,6 +635,20 @@ var Gmail =  function() {
 
   api.observe.actions = function() {
     return api.tracker.actions;
+  }
+
+
+  api.observe.on = function(action, callback) {
+    if(typeof api.tracker.watchdog != "object") {
+      api.tracker.watchdog = {};
+    }
+
+    if(!api.tracker.xhr_initialized) {
+      console.log('watcher not xhr_initialized')
+      api.tools.xhr_watcher();
+    }
+
+    api.tracker.watchdog[action] = callback;
   }
 
 
