@@ -381,7 +381,12 @@ var Gmail =  function() {
 
   api.tools.parse_actions = function(params) {
     if(params.method == 'POST' && typeof params.url.act == 'string') {
-      console.log(params.url.act, params.body);
+      console.log(params.url, params.body);
+    }
+
+
+    if(typeof params.url.ik == 'string') {
+      api.tracker.ik = params.url.ik;
     }
 
     var action      = decodeURIComponent(params.url.act);
@@ -650,6 +655,58 @@ var Gmail =  function() {
     }
 
     api.tracker.watchdog[action] = callback;
+  }
+
+
+  api.tools.make_request = function (link, method) {
+
+    var method  = (typeof method == undefined || typeof method == null) ? 'GET' : method;
+    var request = $.ajax({ type: method, url: link, async:false });
+
+    return request.responseText;
+  }
+
+
+  api.get.inbox_messages = function() {
+    var inbox_url = 'https://mail.google.com/mail/u/0/?ik=' + api.tracker.ik +'&start=0&num=120&q=';
+    var get_data  = api.tools.make_request(inbox_url, 'POST');
+
+    var view_data = get_data.substring(get_data.search("var GM_TIMING_START_CHUNK2"), get_data.search("var GM_TIMING_END_CHUNK2"));
+        view_data = view_data.replace("var GM_TIMING_START_CHUNK2 = new Date().getTime();", "");
+        view_data = view_data.replace('var VIEW_DATA=', 'api.tracker.view_data = ');
+
+    eval(view_data);
+  }
+
+
+  api.tools.parse_view_data = function(view_data) {
+    var parsed = [];
+    var data = [];
+
+    for(var j=0; j < view_data.length; j++) {
+      if(view_data[j][0] == 'tb') {
+        for(var k=0; k < view_data[j][2].length; k++) {
+          data.push(view_data[j][2][k]);
+        }
+      }
+    }
+
+    for(var i=0; i < data.length; i++) {
+      var x = data[i];
+      var temp = {};
+
+      parsed.push({
+        id: x[0],
+        title : x[9],
+        excerpt : x[10],
+        time : x[15],
+        sender : x[28],
+        attachment : x[13],
+        labels: x[5]
+      });
+    }
+
+    return parsed;
   }
 
 
