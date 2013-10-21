@@ -570,9 +570,9 @@ var Gmail =  function() {
       api.tracker.xhr_initialized = true;
       var win = top.document.getElementById("js_frame").contentDocument.defaultView;
 
-      win.XMLHttpRequest.prototype._Gmail_open = win.XMLHttpRequest.prototype.open;
+      win.XMLHttpRequest.prototype._gjs_open = win.XMLHttpRequest.prototype.open;
       win.XMLHttpRequest.prototype.open = function (method, url, async, user, password) {
-        var out = this._Gmail_open.apply(this, arguments);
+        var out = this._gjs_open.apply(this, arguments);
         this.xhrParams = {
           method: method.toString(),
           url: url.toString()
@@ -580,9 +580,9 @@ var Gmail =  function() {
         return out;
       };
 
-      win.XMLHttpRequest.prototype._Gmail_send = win.XMLHttpRequest.prototype.send;
+      win.XMLHttpRequest.prototype._gjs_send = win.XMLHttpRequest.prototype.send;
       win.XMLHttpRequest.prototype.send = function (body) {
-        var out = this._Gmail_send.apply(this, arguments);
+        var out = this._gjs_send.apply(this, arguments);
         if (this.xhrParams) {
           this.xhrParams.body = body;
           api.tools.parse_requests(this.xhrParams);
@@ -591,8 +591,8 @@ var Gmail =  function() {
         return out;
       }
 
-      if(!top._Gmail_iframeFn) {
-        top._Gmail_iframeFn = top.GG_iframeFn;
+      if(!top._gjs_iframefn) {
+        top._gjs_iframefn = top.gjs_iframefn;
         this.iframeData = {};
         this.iframeCachedData = [];
         this.iframeCachedData.push({
@@ -601,8 +601,8 @@ var Gmail =  function() {
           responseData: top.VIEW_DATA
         });
 
-        top.GG_iframeFn = function (win, data) {
-          var d = top._Gmail_iframeFn.apply(this, arguments);
+        top.gjs_iframefn = function (win, data) {
+          var d = top._gjs_iframefn.apply(this, arguments);
           try {
             var url = win && win.location ? win.location.href : null;
             if(url && data && (url.indexOf("act=") != -1)) {
@@ -619,7 +619,7 @@ var Gmail =  function() {
             }
           } catch(e) {
             try {
-              console.log("DEBUG error in GG_iframeFn: " + e);
+              console.log("DEBUG error in gjs_iframefn: " + e);
             } catch (e) {}
           }
           return d;
