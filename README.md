@@ -23,6 +23,7 @@ var gmail = Gmail();
 ### GET
 
 
+- gmail.get **.inbox_messages()**
 - gmail.get **.user_email()**
 - gmail.get **.storage_info()**
 - gmail.get **.email_subject()**
@@ -108,6 +109,8 @@ var gmail = Gmail();
 - gmail.tools **.xhr_watcher()**
 - gmail.tools **.parse_url()**
 - gmail.tools **.deparam()**
+- gmail.tools **.parse_view_data()**
+- gmail.tools **.make_request()**
 
 
 ### TRACKER
@@ -115,3 +118,5 @@ var gmail = Gmail();
 - gmail.tracker **.events**
 - gmail.tracker **.xhr_initialized**
 - gmail.tracker **.watchdog**
+- gmail.tracker **.view_data**
+- gmail.tracker **.ik**
