@@ -809,7 +809,7 @@ var Gmail =  function() {
 
   api.get.email_data = function() {
     if(api.check.is_inside_email()) {
-      var url = 'https://mail.google.com/mail/u/0/?ui=2&ik=' + api.tracker.ik + '&rid=' + api.tracker.rid + '&view=cv&th=' + api.get.email_id() + '&msgs=&mb=0&rt=1&search=inbox';
+      var url = window.location.origin + window.location.pathname + '?ui=2&ik=' + api.tracker.ik + '&rid=' + api.tracker.rid + '&view=cv&th=' + api.get.email_id() + '&msgs=&mb=0&rt=1&search=inbox';
       var get_data = api.tools.make_request(url);
           get_data = get_data.substring(get_data.indexOf('['), get_data.length);
           get_data = 'var cdata = ' + get_data;
