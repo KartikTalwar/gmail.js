@@ -416,7 +416,7 @@ var Gmail =  function() {
                       'unread'                     : 'ur',
                       'unstar'                     : 'xst',
                       'new_email'                  : 'new_mail',
-                      'one_minute_refresh'         : 'one_minute_refresh'
+                      'poll'                       : 'poll'
                      }
 
     if(typeof params.url.ik == 'string') {
@@ -424,7 +424,9 @@ var Gmail =  function() {
     }
 
     if(typeof params.url.rid == 'string') {
-      api.tracker.rid = params.url.rid;
+      if(params.url.rid.indexOf("mail") != -1) {
+        api.tracker.rid = params.url.rid;
+      }
     }
 
     var action      = action_map[decodeURIComponent(params.url.act)];
@@ -552,11 +554,12 @@ var Gmail =  function() {
       }
     }
 
-    // one minute refresh
-    if(typeof params.url.SID == 'string' && typeof params.url.zx == 'string' && params.body.indexOf('eq0_') != -1) {
+    // poll
+    if(typeof params.url.SID == 'string' && typeof params.url.zx == 'string' && params.body.indexOf('req0_') != -1) {
+      api.tracker.SID = params.url.SID;
       var response = {"url" : params.url, "body" : params.body, "data" : sent_params}
-      if('one_minute_refresh' in api.tracker.watchdog) {
-        api.tracker.watchdog['one_minute_refresh'](response);
+      if('poll' in api.tracker.watchdog) {
+        api.tracker.watchdog['poll'](response);
       }
     }
 
