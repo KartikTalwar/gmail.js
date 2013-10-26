@@ -423,6 +423,10 @@ var Gmail =  function() {
       api.tracker.ik = params.url.ik;
     }
 
+    if(typeof params.url.rid == 'string') {
+      api.tracker.rid = params.url.rid;
+    }
+
     var action      = action_map[decodeURIComponent(params.url.act)];
     var sent_params = api.tools.deparam(params.body)
     var email_ids   = (typeof sent_params.t == 'string') ? [sent_params.t] : sent_params.t;
