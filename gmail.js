@@ -547,7 +547,6 @@ var Gmail =  function() {
         break;
     }
 
-    // new email arrrived
     if(typeof params.url._reqid == 'string' && typeof params.url.th == 'string') {
       var response = {"id" : params.url.th, "url" : params.url, "body" : params.body}
       if('new_email' in api.tracker.watchdog) {
@@ -555,7 +554,6 @@ var Gmail =  function() {
       }
     }
 
-    // poll
     if(typeof params.url.SID == 'string' && typeof params.url.zx == 'string' && params.body.indexOf('req0_') != -1) {
       api.tracker.SID = params.url.SID;
       var response = {"url" : params.url, "body" : params.body, "data" : sent_params}
@@ -564,7 +562,6 @@ var Gmail =  function() {
       }
     }
 
-    // refresh
     if(typeof params.url.ik == 'string' && typeof params.url.search == 'string' && params.body.length == 0 && typeof params.url._reqid == 'string') {
       var response = {"url" : params.url, "body" : params.body, "data" : sent_params}
       if('refresh' in api.tracker.watchdog) {
