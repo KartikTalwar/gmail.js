@@ -721,25 +721,42 @@ var Gmail =  function() {
 
 
   api.get.visible_emails = function() {
-    var page = 'inbox';
-    var r = make_request('https://mail.google.com/mail/u/0/?ui=2&ik=' + api.tracker.ik+'&rid=' + api.tracker.rid + '&view=tl&start=0&num=120&rt=1&search=inbox'+page);
-    r = r.substring(r.indexOf('['), r.length);
-    var final = []; var m= r.split('\n');
-    for(var i=0; i<m.length;i++)
-    {
-    if(!$.isNumeric(m[i])) { final.push(m[i]); } else {final.push(',');}
+    var page = api.get.current_page();
+    var url = window.location.origin + window.location.pathname + '?ui=2&ik=' + api.tracker.ik+'&rid=' + api.tracker.rid + '&view=tl&start=0&num=120&rt=1';
+
+    if(page.indexOf('label/') == '0') {
+      url += '&cat=' + page.split('/')[1] +'&search=cat';
+    } else if(page.indexOf('category/') == '0') {
+      if(page.indexOf('forums') != -1) {
+        cat_label = 'group';
+      } else if(page.indexOf('updates') != -1) {
+        cat_label = 'notification';
+      } else if(page.indexOf('promotion') != -1) {
+        cat_label = 'promo';
+      } else if(page.indexOf('social') != -1) {
+        cat_label = 'social';
+      }
+      url += '&cat=^smartlabel_' + cat_label +'&search=category';
+    } else {
+      url += '&search=' + page;
     }
-    final = '['+final.join("\n")+']';
-    cdata= eval(final);
-    var newarr = [];
-    for(var j=0; j<cdata.length; j++) 
-    {
-    var _t = parse_view_data(cdata[j]);
-    if(_t.length > 0) {
-    $.merge(newarr, _t);
+
+    var get_data = api.tools.make_request(url);
+        get_data = get_data.substring(get_data.indexOf('['), get_data.length);
+        get_data = 'api.tracker.view_data = ' + get_data;
+
+    eval(get_data)
+
+    var emails = [];
+
+    for(i in api.tracker.view_data) {
+      var cdata = api.tools.parse_view_data(api.tracker.view_data[i]);
+      if(cdata.length > 0) {
+        $.merge(emails, cdata);
+      }
     }
-    }
-    return newarr
+
+    return emails;
   }
 
 
