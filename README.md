@@ -91,6 +91,8 @@ var gmail = Gmail();
   - `expand_categories`
   - `delete_label`
   - `show_newly_arrived_message`
+  - `one_minute_refresh`
+  - `new_email`
 
 
 ### DOM
