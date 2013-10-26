@@ -388,7 +388,10 @@ var Gmail =  function() {
     if(params.method == 'POST' && typeof params.url.act == 'string') {
       // console.log(params.url, params.body);
     }
-      console.log(params.url, params.body, params.url_);
+
+    if(params.url.search != undefined) {
+      console.log(params.url, params.body, params.url_raw);
+    }
 
     var action_map = {
                       'add_to_tasks'               : 'tae',
@@ -674,18 +677,6 @@ var Gmail =  function() {
     var request = $.ajax({ type: method, url: link, async:false });
 
     return request.responseText;
-  }
-
-
-  api.get.inbox_messages = function() {
-    var inbox_url = 'https://mail.google.com/mail/u/0/?ik=' + api.tracker.ik +'&start=0&num=120&q=';
-    var get_data  = api.tools.make_request(inbox_url, 'POST');
-
-    var view_data = get_data.substring(get_data.search("var GM_TIMING_START_CHUNK2"), get_data.search("var GM_TIMING_END_CHUNK2"));
-        view_data = view_data.replace("var GM_TIMING_START_CHUNK2 = new Date().getTime();", "");
-        view_data = view_data.replace('var VIEW_DATA=', 'api.tracker.view_data = ');
-
-    eval(view_data);
   }
 
 

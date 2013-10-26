@@ -23,7 +23,7 @@ var gmail = Gmail();
 ### GET
 
 
-- gmail.get **.inbox_messages()**
+- gmail.get **.visible_emails()**
 - gmail.get **.user_email()**
 - gmail.get **.storage_info()**
 - gmail.get **.email_subject()**
