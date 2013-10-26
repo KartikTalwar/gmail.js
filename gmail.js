@@ -600,9 +600,13 @@ var Gmail =  function() {
   api.tools.xhr_watcher = function () {
     var self = this;
 
-    if (!api.tracker.xhr_initialized) {
-      api.tracker.xhr_initialized = true;
+    if (!api.tracker.xhr_init) {
+
       var win = top.document.getElementById("js_frame").contentDocument.defaultView;
+
+      api.tracker.xhr_init = true;
+      api.tracker.xhr_open = win.XMLHttpRequest.prototype.open;
+      api.tracker.xhr_send = win.XMLHttpRequest.prototype.send;
 
       win.XMLHttpRequest.prototype._gjs_open = win.XMLHttpRequest.prototype.open;
       win.XMLHttpRequest.prototype.open = function (method, url, async, user, password) {
@@ -679,11 +683,19 @@ var Gmail =  function() {
       api.tracker.watchdog = {};
     }
 
-    if(!api.tracker.xhr_initialized) {
+    if(!api.tracker.xhr_init) {
       api.tools.xhr_watcher();
     }
 
     api.tracker.watchdog[action] = callback;
+  }
+
+
+  api.observe.off = function() {
+    var win = top.document.getElementById("js_frame").contentDocument.defaultView;
+    win.XMLHttpRequest.prototype.open = api.tracker.xhr_open;
+    win.XMLHttpRequest.prototype.send = api.tracker.xhr_send;
+    api.tracker.xhr_init = false
   }
 
 
