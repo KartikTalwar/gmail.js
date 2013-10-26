@@ -416,7 +416,8 @@ var Gmail =  function() {
                       'unread'                     : 'ur',
                       'unstar'                     : 'xst',
                       'new_email'                  : 'new_mail',
-                      'poll'                       : 'poll'
+                      'poll'                       : 'poll',
+                      'refresh'                    : 'refresh'
                      }
 
     if(typeof params.url.ik == 'string') {
@@ -560,6 +561,14 @@ var Gmail =  function() {
       var response = {"url" : params.url, "body" : params.body, "data" : sent_params}
       if('poll' in api.tracker.watchdog) {
         api.tracker.watchdog['poll'](response);
+      }
+    }
+
+    // refresh
+    if(typeof params.url.ik == 'string' && typeof params.url.search == 'string' && params.body.length == 0 && typeof params.url._reqid == 'string') {
+      var response = {"url" : params.url, "body" : params.body, "data" : sent_params}
+      if('refresh' in api.tracker.watchdog) {
+        api.tracker.watchdog['refresh'](response);
       }
     }
 
