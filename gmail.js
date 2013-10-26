@@ -743,5 +743,23 @@ var Gmail =  function() {
   }
 
 
+  api.get.current_page = function() {
+    var hash  = window.location.hash.split('#').pop();
+    var pages = ['sent', 'inbox', 'starred', 'drafts', 'imp', 'chats', 'all', 'spam', 'trash'];
+
+    var page = null;
+
+    if($.inArray(hash, pages) > -1) {
+      page = hash;
+    }
+
+    if(hash.indexOf('label/') == 0 || hash.indexOf('category/') == 0) {
+      page = hash;
+    }
+
+    return page;
+  }
+
+
   return api;
 }
