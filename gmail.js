@@ -607,7 +607,6 @@ var Gmail =  function() {
     var self = this;
 
     if (!api.tracker.xhr_init) {
-
       var win = top.document.getElementById("js_frame").contentDocument.defaultView;
 
       api.tracker.xhr_init = true;
@@ -634,42 +633,6 @@ var Gmail =  function() {
 
         return out;
       }
-
-      if(!top._gjs_iframefn) {
-        top._gjs_iframefn = top.gjs_iframefn;
-        this.iframeData = {};
-        this.iframeCachedData = [];
-        this.iframeCachedData.push({
-          responseDataId: 1,
-          url: top.location.href,
-          responseData: top.VIEW_DATA
-        });
-
-        top.gjs_iframefn = function (win, data) {
-          var d = top._gjs_iframefn.apply(this, arguments);
-          try {
-            var url = win && win.location ? win.location.href : null;
-            if(url && data && (url.indexOf("act=") != -1)) {
-
-              if(!self.iframeData[url]) {
-
-                var body = "";
-                var parent = win.frameElement.parentNode;
-                if (parent && $(parent).find('form').length > 0)
-                  body = $(parent).find('form').first().serialize();
-
-                self.iframeData[url] = true;
-              }
-            }
-          } catch(e) {
-            try {
-              console.log("DEBUG error in gjs_iframefn: " + e);
-            } catch (e) {}
-          }
-          return d;
-        }
-      }
-
     }
   }
 
@@ -754,6 +717,29 @@ var Gmail =  function() {
     }
 
     return parsed;
+  }
+
+
+  api.get.visible_emails = function() {
+    var page = 'inbox';
+    var r = make_request('https://mail.google.com/mail/u/0/?ui=2&ik=' + api.tracker.ik+'&rid=' + api.tracker.rid + '&view=tl&start=0&num=120&rt=1&search=inbox'+page);
+    r = r.substring(r.indexOf('['), r.length);
+    var final = []; var m= r.split('\n');
+    for(var i=0; i<m.length;i++)
+    {
+    if(!$.isNumeric(m[i])) { final.push(m[i]); } else {final.push(',');}
+    }
+    final = '['+final.join("\n")+']';
+    cdata= eval(final);
+    var newarr = [];
+    for(var j=0; j<cdata.length; j++) 
+    {
+    var _t = parse_view_data(cdata[j]);
+    if(_t.length > 0) {
+    $.merge(newarr, _t);
+    }
+    }
+    return newarr
   }
 
 
