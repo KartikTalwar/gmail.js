@@ -389,7 +389,7 @@ var Gmail =  function() {
       // console.log(params.url, params.body);
     }
 
-    if(params.url.search != undefined) {
+    if(params.url_raw.indexOf('140de8dc96c29c9a') != 'd') {
       console.log(params.url, params.body, params.url_raw);
     }
 
@@ -769,5 +769,42 @@ var Gmail =  function() {
   }
 
 
+  api.tools.parse_email_data = function(email_data) {
+    var data = {};
+    var threads = {}
+
+    for(i in email_data) {
+      var x = email_data[i];
+      if(x[0] == 'cs') {
+        data.first_email = x[1];
+        data.last_email = x[2];
+        data.total_emails = x[3];
+        data.total_threads = x[8];
+        data.people_involved = x[15];
+        data.subject = x[23];
+      }
+
+      if(x[0] == 'ms') {
+        if(data.threads == undefined) {
+          data.threads = {};
+        }
+
+        data.threads[x[1]] = {};
+        data.threads[x[1]].reply_to_id = x[2];
+        data.threads[x[1]].from = x[5];
+        data.threads[x[1]].from_email = x[6];
+        data.threads[x[1]].timestamp = x[7];
+        data.threads[x[1]].datetime = x[24];
+        data.threads[x[1]].content_plain = x[8];
+        data.threads[x[1]].subject = x[12];
+        data.threads[x[1]].content_html = (x[13] != undefined) ? x[13][6] : x[8];
+      }
+    }
+
+    return data;
+  }
+
+
   return api;
 }
+a.tools.make_request('https://mail.google.com/mail/u/0/?ui=2&ik=13fa7f7088&rid=mail%3Aex.48d0.23.0&view=cv&th=141de25dc0b48e4f&msgs=&_reqid=2104851&pcd=1&mb=0&rt=1&search=starred')
