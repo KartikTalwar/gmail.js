@@ -414,16 +414,10 @@ var Gmail =  function() {
                       'star'                       : 'st',
                       'unmute'                     : 'ug',
                       'unread'                     : 'ur',
-                      'unstar'                     : 'xst'
+                      'unstar'                     : 'xst',
+                      'new_email'                  : 'new_mail',
+                      'one_minute_refresh'         : 'one_minute_refresh'
                      }
-
-    if(typeof params.url._reqid == 'string' && typeof params.url.th == 'string') {
-      console.log('new email arrived');
-    }
-
-    if(typeof params.url.SID == 'string' && typeof params.url.zx == 'string' && params.body.indexOf('eq0_') != -1) {
-      console.log('one minute refresh');
-    }
 
     if(typeof params.url.ik == 'string') {
       api.tracker.ik = params.url.ik;
@@ -544,7 +538,22 @@ var Gmail =  function() {
         var response = {"url" : params.url, "body" : params.body, "expanded" : sent_params.ex == '1'}
         console.log('You just expanded a category');
         break;
+    }
 
+    // new email arrrived
+    if(typeof params.url._reqid == 'string' && typeof params.url.th == 'string') {
+      var response = {"id" : params.url.th, "url" : params.url, "body" : params.body}
+      if('new_email' in api.tracker.watchdog) {
+        api.tracker.watchdog['new_email'](response);
+      }
+    }
+
+    // one minute refresh
+    if(typeof params.url.SID == 'string' && typeof params.url.zx == 'string' && params.body.indexOf('eq0_') != -1) {
+      var response = {"url" : params.url, "body" : params.body, "data" : sent_params}
+      if('one_minute_refresh' in api.tracker.watchdog) {
+        api.tracker.watchdog['one_minute_refresh'](response);
+      }
     }
 
     if(response != null) {
