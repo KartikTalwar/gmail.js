@@ -93,6 +93,7 @@ var gmail = Gmail();
   - `show_newly_arrived_message`
   - `one_minute_refresh`
   - `new_email`
+- gmail.observe **.off()**
 
 
 ### DOM
@@ -118,7 +119,9 @@ var gmail = Gmail();
 ### TRACKER
 
 - gmail.tracker **.events**
-- gmail.tracker **.xhr_initialized**
+- gmail.tracker **.xhr_init**
+- gmail.tracker **.xhr_open**
+- gmail.tracker **.xhr_send**
 - gmail.tracker **.watchdog**
 - gmail.tracker **.view_data**
 - gmail.tracker **.ik**
