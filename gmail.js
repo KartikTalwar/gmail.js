@@ -389,7 +389,7 @@ var Gmail =  function() {
       // console.log(params.url, params.body);
     }
 
-    if(params.url_raw.indexOf('140de8dc96c29c9a') != 'd') {
+    if(params.url.search != undefined) {
       console.log(params.url, params.body, params.url_raw);
     }
 
@@ -715,9 +715,9 @@ var Gmail =  function() {
     var page = api.get.current_page();
     var url = window.location.origin + window.location.pathname + '?ui=2&ik=' + api.tracker.ik+'&rid=' + api.tracker.rid + '&view=tl&start=0&num=120&rt=1';
 
-    if(page.indexOf('label/') == '0') {
+    if(page.indexOf('label/') == 0) {
       url += '&cat=' + page.split('/')[1] +'&search=cat';
-    } else if(page.indexOf('category/') == '0') {
+    } else if(page.indexOf('category/') == 0) {
       if(page.indexOf('forums') != -1) {
         cat_label = 'group';
       } else if(page.indexOf('updates') != -1) {
@@ -728,6 +728,8 @@ var Gmail =  function() {
         cat_label = 'social';
       }
       url += '&cat=^smartlabel_' + cat_label +'&search=category';
+    } else if(page.indexOf('search/') == 0) {
+      url += '&qs=true&q=' + page.split('/')[1] +'&search=query';
     } else {
       url += '&search=' + page;
     }
@@ -761,7 +763,7 @@ var Gmail =  function() {
       page = hash;
     }
 
-    if(hash.indexOf('label/') == 0 || hash.indexOf('category/') == 0) {
+    if(hash.indexOf('label/') == 0 || hash.indexOf('category/') == 0 || hash.indexOf('search/') == 0) {
       page = hash;
     }
 
