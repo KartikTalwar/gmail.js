@@ -40,6 +40,8 @@ var gmail = Gmail();
 - gmail.get **.unread_notification_emails()**
 - gmail.get **.unread_promotion_emails()**
 - gmail.get **.unread_social_emails()**
+- gmail.get **.last_active()**
+- gmail.get **.loggedin_accounts()**
 - gmail.get **.beta()**
 
 
