@@ -1,0 +1,29 @@
+{
+  "name": "Gmail for JavaScript",
+  "version": "1.0",
+  "manifest_version" : 2,
+  "description": "JavasScript DOM interface to Gmail",
+  "permissions": [
+    "tabs",
+    "storage",
+    "http://mail.google.com/*",
+    "https://mail.google.com/"
+  ],
+  "content_scripts": [
+    {
+      "matches": ["https://mail.google.com/*", "http://mail.google.com/*"],
+      "js": ["jquery.1.10.2.min.js", "gmail.js", "init.js"],
+      "run_at": "document_end",
+      "all_frames": true
+    }
+  ],
+  "web_accessible_resources" : [
+    "jquery.1.10.2.min.js",
+    "jquery.min.map",
+    "gmail.js",
+    "init.js"
+  ],
+  "background": {
+    "scripts":["gmail.js", "jquery.min.map", "jquery.1.10.2.min.js", "init.js"]
+  }
+}
