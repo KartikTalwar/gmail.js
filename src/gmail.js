@@ -15,8 +15,37 @@ var Gmail =  function() {
             };
 
 
+  api.tracker.globals   = GLOBALS;
+  api.tracker.view_data = VIEW_DATA;
+  api.tracker.ik        = api.tracker.globals[9];
+
+
+
+  api.get.last_active = function() {
+    var data = api.tracker.globals[17][15];
+    return {
+             time : data[1],
+             ip : data[3],
+             mac_address : data[9],
+             time_relative : data[10]
+           }
+  }
+
+
+  api.get.loggedin_accounts = function() {
+    var data = api.tracker.globals[17][23];
+    var users = [];
+
+    for(i in data[1]) {
+      users.push({name : data[1][i][4], email : data[1][i][0]})
+    }
+
+    return users;
+  }
+
+
   api.get.user_email = function() {
-    return GLOBALS[10];
+    return api.tracker.globals[10];
   };
 
 
@@ -674,7 +703,7 @@ var Gmail =  function() {
   api.tools.make_request = function (link, method) {
 
     var method  = (typeof method == undefined || typeof method == null) ? 'GET' : method;
-    var request = $.ajax({ type: method, url: link, async:false });
+    var request = $.ajax({ type: method, url: encodeURI(link), async:false });
 
     return request.responseText;
   }
