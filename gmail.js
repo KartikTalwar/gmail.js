@@ -687,11 +687,17 @@ var Gmail =  function() {
   }
 
 
-  api.observe.off = function() {
-    var win = top.document.getElementById("js_frame").contentDocument.defaultView;
-    win.XMLHttpRequest.prototype.open = api.tracker.xhr_open;
-    win.XMLHttpRequest.prototype.send = api.tracker.xhr_send;
-    api.tracker.xhr_init = false
+  api.observe.off = function(action) {
+    if(action) {
+      if(action in self.tracker.watchdog) {
+        delete self.tracker.watchdog[action];
+      }
+    } else {
+      var win = top.document.getElementById("js_frame").contentDocument.defaultView;
+      win.XMLHttpRequest.prototype.open = api.tracker.xhr_open;
+      win.XMLHttpRequest.prototype.send = api.tracker.xhr_send;
+      api.tracker.xhr_init = false
+    }
   }
 
 

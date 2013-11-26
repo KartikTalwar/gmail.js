@@ -98,7 +98,7 @@ var gmail = Gmail();
   - `poll`
   - `new_email`
   - `refresh`
-- gmail.observe **.off()**
+- gmail.observe **.off(action)**
 
 
 ### DOM
