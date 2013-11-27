@@ -13,7 +13,7 @@
 ## Setup
 
 
-#### Quick Usage - Chrome Console
+### Quick Usage - Chrome Console
 
 ![](https://f.cloud.github.com/assets/461702/1628984/83ddb250-5728-11e3-9dbc-70a13c2becb0.JPG)
 
@@ -34,7 +34,7 @@ gmail.get.user_email();
 
 ## Methods
 
-### Summary
+### Summary (click for more info)
 
 #### GET
 
