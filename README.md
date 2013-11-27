@@ -442,111 +442,111 @@ and it does the rest. **You can have multiple triggers**
 ```js
 gmail.observe.on("unread", function(id, url, body) {
   console.log("id:", id, "url:", url, 'body', body);
-}
+})
 
 gmail.observe.on("read", function(id, url, body) {
   console.log("id:", id, "url:", url, 'body', body);
-}
+})
 
 gmail.observe.on("delete", function(id, url, body) {
   console.log("id:", id, "url:", url, 'body', body);
-}
+})
 
 gmail.observe.on("mark_as_spam", function(id, url, body) {
   console.log("id:", id, "url:", url, 'body', body);
-}
+})
 
 gmail.observe.on("mark_as_not_spam", function(id, url, body) {
   console.log("id:", id, "url:", url, 'body', body);
-}
+})
 
 gmail.observe.on("label", function(id, url, body, label) {
   console.log("id:", id, "url:", url, 'body', body, "label", label);
-}
+})
 
 gmail.observe.on("archive", function(id, url, body) {
   console.log("id:", id, "url:", url, 'body', body);
-}
+})
 
 gmail.observe.on("move_to_inbox", function(id, url, body) {
   console.log("id:", id, "url:", url, 'body', body);
-}
+})
 
 gmail.observe.on("delete_forever", function(id, url, body) {
   console.log("id:", id, "url:", url, 'body', body);
-}
+})
 
 gmail.observe.on("star", function(id, url, body) {
   console.log("id:", id, "url:", url, 'body', body);
-}
+})
 
 gmail.observe.on("unstar", function(id, url, body) {
   console.log("id:", id, "url:", url, 'body', body);
-}
+})
 
 gmail.observe.on("mark_as_important", function(id, url, body) {
   console.log("id:", id, "url:", url, 'body', body);
-}
+})
 
 gmail.observe.on("mark_as_not_important", function(id, url, body) {
   console.log("id:", id, "url:", url, 'body', body);
-}
+})
 
 gmail.observe.on("filter_messages_like_these", function(id, url, body) {
   console.log("id:", id, "url:", url, 'body', body);
-}
+})
 
 gmail.observe.on("mute", function(id, url, body) {
   console.log("id:", id, "url:", url, 'body', body);
-}
+})
 
 gmail.observe.on("unmute", function(id, url, body) {
   console.log("id:", id, "url:", url, 'body', body);
-}
+})
 
 gmail.observe.on("add_to_tasks", function(url, body, data) {
   console.log("url:", url, 'body', body, 'task_data', data);
-}
+})
 
 gmail.observe.on("move_label", function(id, url, body) {
   console.log("id:", id, "url:", url, 'body', body);
-}
+})
 
 gmail.observe.on("save_draft", function(url, body, data) {
   console.log("url:", url, 'body', body, 'email_data', data);
-}
+})
 
 gmail.observe.on("discard_draft", function(id, url, body) {
   console.log("id:", id, "url:", url, 'body', body);
-}
+})
 
 gmail.observe.on("send_message", function(url, body, data) {
   console.log("url:", url, 'body', body, 'email_data', data);
-}
+})
 
 gmail.observe.on("expand_categories", function(url, body, data) {
   console.log("url:", url, 'body', body, 'expanded_data', data);
-}
+})
 
 gmail.observe.on("delete_label", function(id, url, body) {
   console.log("id:", id, "url:", url, 'body', body);
-}
+})
 
 gmail.observe.on("show_newly_arrived_message", function(id, url, body) {
   console.log("id:", id, "url:", url, 'body', body);
-}
+})
 
 gmail.observe.on("poll", function(url, body, data) {
   console.log("url:", url, 'body', body, 'data', data);
-}
+})
 
 gmail.observe.on("new_email", function(id, url, body) {
   console.log("id:", id, "url:", url, 'body', body);
-}
+})
 
 gmail.observe.on("refresh", function(url, body, data) {
   console.log("url:", url, 'body', body, 'data', data);
-}
+})
 ```
 
 #### gmail.observe.off(action=null)
