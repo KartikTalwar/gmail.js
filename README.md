@@ -296,3 +296,62 @@ Although hand picked, this method returns the checks on beta features and deploy
 {"new_nav_bar":true}
 ```
 
+#### gmail.check.is_thread()
+
+Returns `True` if the conversation is threaded `False` otherwise
+
+#### gmail.check.is_preview_pane()
+
+Returns `True` if gmail is in split pane mode (vertical or horizontal) `False` otherwise
+
+#### gmail.check.is_horizontal_split()
+
+Returns `True` if the pane split mode is horiontal `False` otherwise
+
+#### gmail.check.is_vertical_split()
+
+Returns `True` if the pane mode is vertical `False` otherwise
+
+#### gmail.check.is_tabbed_inbox()
+
+Returns `True` if tabbed inbox view is enabled `False` otherwise
+
+#### gmail.check.is_right_side_chat()
+
+Returns `True` if chat is on the right sidebar `False` otherwise
+
+#### gmail.check.is_google_apps_user()
+
+Returns `True` if the current user is google apps user (email not ending in gmail.com) `False` otherwise
+
+#### gmail.check.is_inside_email()
+
+Returns `True` if you are currently inside an email conversation `False` otherwise
+
+#### gmail.check.is_priority_inbox()
+
+Returns `True` if priority inbox is enabled `False` otherwise
+
+#### gmail.check.is_rapportive_installed()
+
+Returns `True` if [rapportive](http://rapportive.com/) chrome extension is installed `False` otherwise
+
+#### gmail.check.is_streak_installed()
+
+Returns `True` if [streak](http://streak.com) chrome extension is installed `False` otherwise
+
+#### gmail.check.is_anydo_installed()
+
+Returns `True` if [any.do](http://any.do) chrome extension is installed `False` otherwise
+
+#### gmail.check.is_boomerang_installed()
+
+Returns `True` if [boomerang](http://www.boomeranggmail.com/) chrome extension is installed `False` otherwise
+
+#### gmail.check.is_xobini_installed()
+
+Returns `True` if [xobini](https://www.xobni.com) chrome extension is installed `False` otherwise
+
+#### gmail.check.is_signal_installed()
+
+Returns `True` if [Signal](https://trysignal.com) chrome extension is installed `False` otherwise
