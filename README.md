@@ -7,24 +7,28 @@
 - Most of them dont take arguments, they work on what is currently visible on the screen
 - I still need to add implementation for chrome extension, works by injecting js for now
 - Main method is **`gmail.observe.on('lots_of_actions_here', yourFunction())`**
-- Click on a summary method link to view more detailed docss
+- Click on a summary method link to view more detailed docs
 
 
 ## Setup
 
-Inject jQuery to Gmail (open console and paste this) and initialize `gmail.js`
 
-#### Quick Usage Installation
+#### Quick Usage - Chrome Console
+
+![](https://f.cloud.github.com/assets/461702/1628984/83ddb250-5728-11e3-9dbc-70a13c2becb0.JPG)
 
 ```js
+// {inject jquery.js} by copy pasting this in your console
 var jq = document.createElement('script');
 jq.src = "https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js";
 document.getElementsByTagName('body')[0].appendChild(jq);
 
 // {inject gmail.js} by copy pasting gmail.js contents or via url like jquery above
+// var Gmail = {.....} // paste gmail.js code here
 
+// start using!
 var gmail = Gmail();
-console.log(gmail.get.user_email());
+gmail.get.user_email();
 ```
 
 
