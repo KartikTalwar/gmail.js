@@ -39,13 +39,12 @@ gmail.get.user_email();
 #### GET
 
 
-- [gmail.get **.visible_emails()**](#gmailgetvisible_emails)
-- [gmail.get **.email_data()**](#gmailgetemail_data)
 - [gmail.get **.user_email()**](#gmailgetuser_email)
-- [gmail.get **.storage_info()**](#gmailgetstorage_info)
+- [gmail.get **.visible_emails()**](#gmailgetvisible_emails)
 - [gmail.get **.current_page()**](#gmailgetcurrent_page)
-- [gmail.get **.email_subject()**](#gmailgetemail_subject)
 - [gmail.get **.email_id()**](#gmailgetemail_id)
+- [gmail.get **.email_subject()**](#gmailgetemail_subject)
+- [gmail.get **.email_data()**](#gmailgetemail_data)
 - [gmail.get **.search_query()**](#gmailgetsearch_query)
 - [gmail.get **.unread_emails()**](#gmailgetunread_emails)
 - [gmail.get **.unread_inbox_emails()**](#gmailgetunread_emails)
@@ -56,6 +55,7 @@ gmail.get.user_email();
 - [gmail.get **.unread_promotion_emails()**](#gmailgetunread_emails)
 - [gmail.get **.unread_social_emails()**](#gmailgetunread_emails)
 - [gmail.get **.last_active()**](#gmailgetlast_active)
+- [gmail.get **.storage_info()**](#gmailgetstorage_info)
 - [gmail.get **.loggedin_accounts()**](#gmailgetloggedin_accounts)
 - [gmail.get **.beta()**](#gmailgetbeta)
 
@@ -65,13 +65,13 @@ gmail.get.user_email();
 
 
 - [gmail.check **.is_thread()**](#gmailcheckis_thread)
+- [gmail.check **.is_inside_email()**](#gmailcheckis_inside_email)
 - [gmail.check **.is_preview_pane()**](#gmailcheckis_preview_pane)
 - [gmail.check **.is_horizontal_split()**](#gmailcheckis_horizontal_split)
 - [gmail.check **.is_vertical_split()**](#gmailcheckis_vertical_split)
 - [gmail.check **.is_tabbed_inbox()**](#gmailcheckis_tabbed_inbox)
 - [gmail.check **.is_right_side_chat()**](#gmailcheckis_right_side_chat)
 - [gmail.check **.is_google_apps_user()**](#gmailcheckis_google_apps_user)
-- [gmail.check **.is_inside_email()**](#gmailcheckis_inside_email)
 - [gmail.check **.is_priority_inbox()**](#gmailcheckis_priority_inbox)
 - [gmail.check **.is_rapportive_installed()**](#gmailcheckis_rapportive_installed)
 - [gmail.check **.is_streak_installed()**](#gmailcheckis_streak_installed)
