@@ -415,7 +415,7 @@ var Gmail =  function() {
     }
 
     if(params.url.search != undefined) {
-      console.log(params.url, params.body, params.url_raw);
+      // console.log(params.url, params.body, params.url_raw);
     }
 
     var action_map = {
