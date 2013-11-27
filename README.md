@@ -118,6 +118,7 @@ gmail.get.user_email();
 
 #### DOM
 
+These methods return the DOM data itself
 
 - gmail.dom **.inbox_content()**
 - gmail.dom **.email_subject()**
@@ -129,6 +130,8 @@ gmail.get.user_email();
 
 #### TOOLS
 
+These are some helper functions that the rest of the methods use. See source for input params
+
 - gmail.tools **.xhr_watcher()**
 - gmail.tools **.parse_url()**
 - gmail.tools **.deparam()**
@@ -138,6 +141,8 @@ gmail.get.user_email();
 
 
 #### TRACKER
+
+These are some of the variables that are tracked and kept in memory while the rest of the methods are in use.
 
 - gmail.tracker **.events**
 - gmail.tracker **.xhr_init**
