@@ -581,3 +581,8 @@ gmail.observe.off('poll'); // disables poll
 gmail.observe.off();  // disables both
 ```
 
+## Author and Licensing
+
+| [![twitter/therealkartik](https://0.gravatar.com/avatar/1eb9ae38e862518d907a8392c0062e95?s=70)](https://twitter.com/TheRealKartik "Follow @TheRealKartik on Twitter") | Inspired my gmailr.js |
+|---| --- |
+| [Kartik Talwar](http://kartikt.com/) |  See [License.md](LICENSE.md) |
