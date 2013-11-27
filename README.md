@@ -4,7 +4,7 @@
 
 ### TL;DR Information
 
-- Lots of methods to work with gmail by injecting javascript
+- Lots of api methods to work with gmail
 - Most of them dont take arguments, they work on what is currently visible on the screen
 - I still need to add implementation for chrome extension, works by injecting js for now
 - Main method is **`gmail.observe.on('lots_of_actions_here', yourFunction())`**
