@@ -70,35 +70,35 @@ var gmail = Gmail();
 
 - gmail.observe **.http_requests()**
 - gmail.observe **.actions()**
-- gmail.observe **.on(action, callback)**
-  - `unread`
-  - `read`
-  - `delete`
-  - `mark_as_spam`
-  - `mark_as_not_spam`
-  - `label`
-  - `archive`
-  - `move_to_inbox`
-  - `delete_forever`
-  - `star`
-  - `unstar`
-  - `mark_as_important`
-  - `mark_as_not_important`
-  - `filter_messages_like_these`
-  - `mute`
-  - `unmute`
-  - `add_to_tasks`
-  - `move_label`
-  - `save_draft`
-  - `discard_draft`
-  - `send_message`
-  - `expand_categories`
-  - `delete_label`
-  - `show_newly_arrived_message`
-  - `poll`
-  - `new_email`
-  - `refresh`
 - gmail.observe **.off(action)**
+- gmail.observe **.on(action, callback)**
+  - **`poll`** - When gmail automatically polls the server to check for new emails every few seconds
+  - **`new_email`** - When a new email appears in the inbox
+  - **`refresh`** - When you click the refresh button
+  - **`unread`** - When a conversation(s) is marked unread
+  - **`read`** - When a conversation(s) is marked read
+  - **`delete`** - When a conversation(s) is deleted
+  - **`mark_as_spam`** - When a conversation(s) is marked as spam
+  - **`mark_as_not_spam`** - When a conversation(s) is unchecked as spam
+  - **`label`** - When a conversation(s) get applied a label
+  - **`archive`** - When a conversation(s) is archieved
+  - **`move_to_inbox`** - When a conversation(s) is moved to the inbox
+  - **`delete_forever`** - When a conversation(s) is deleted forever
+  - **`star`** - When a conversation(s) is starred
+  - **`unstar`** - When a conversation(s) is unstarred
+  - **`mark_as_important`** - When a conversation(s) is marked as important
+  - **`mark_as_not_important`** - When a conversation(s) is marked as not important
+  - **`filter_messages_like_these`** - When a filter button is triggered for a conversation
+  - **`mute`** - When a conversation(s) is muted
+  - **`unmute`** - When a conversation(s) is unmuted
+  - **`add_to_tasks`** - When an item is added to google tasks
+  - **`move_label`** - When a conversation(s) is moved to a label folder
+  - **`save_draft`** - When a draft is saved
+  - **`discard_draft`** - When a draft is dicarded
+  - **`send_message`** - When a message is sent
+  - **`expand_categories`** - When a category is expanded from the left nav sidebar
+  - **`delete_label`** - When a label is deleted
+  - **`show_newly_arrived_message`** - When inside an email and a new email arrives in the thread
 
 
 #### DOM
@@ -355,3 +355,209 @@ Returns `True` if [xobini](https://www.xobni.com) chrome extension is installed 
 #### gmail.check.is_signal_installed()
 
 Returns `True` if [Signal](https://trysignal.com) chrome extension is installed `False` otherwise
+
+
+#### gmail.observe.http_requests()
+
+After the `gmail.obsere.on()` has been initiated, this method keeps track of the last 50 http events.
+The items contain the sent requested parameterized data
+
+```json
+[{
+  "method": "POST",
+  "url": {
+    "ui": "2",
+    "ik": "13fa7f7088",
+    "rid": "ed0e..",
+    "view": "tl",
+    "start": "0",
+    "num": "30",
+    "lhop": "169846",
+    "ltup": "%5Ei",
+    "slmm": "1427abc6106ac10b",
+    "scid": "q2h353hw6dv9",
+    "avw": "1194",
+    "ntlv": "10",
+    "auto": "1",
+    "ver": "-z-h-bKmWwI.en.",
+    "am": "!6hSPXvkvPMjmReGu2-2BQXCk3IltF-jNSk0J8Cg_jNeaoSbpJgHQYdkXe6T_WPYyyATD3DSiOA",
+    "vas": "1",
+    "ari": "120",
+    "_reqid": "4582876",
+    "pcd": "1",
+    "mb": "0",
+    "rt": "j",
+    "search": "inbox"
+  },
+  "body": "",
+  "url_raw": "?ui=2&ik=13fa7f7088&rid=ed0e..&view=tl&start=0&num=30&lhop=169846&ltup=%5Ei&slmm=1427abc6106ac10b&scid=q2h353hw6dv9&avw=1194&ntlv=10&auto=1&ver=-z-h-bKmWwI.en.&am=!6hSPXvkvPMjmReGu2-2BQXCk3IltF-jNSk0J8Cg_jNeaoSbpJgHQYdkXe6T_WPYyyATD3DSiOA&vas=1&ari=120&_reqid=4582876&pcd=1&mb=0&rt=j&search=inbox"
+}]
+```
+
+#### gmail.observe.actions()
+
+Similar to `gmail.obsere.http_requests()` this keeps track of the last 10 gmail actions (vs all http requests).
+Actions here correspond to things like clicking refres, archiving, deleting, starring etc.
+
+#### gmail.observe **.on(action, callback)**
+
+This is the key feature of gmail.js. This method allows you to add triggers to all of these actions so you can build
+your custom extension/tool with this library.
+
+You simply specify the action nane and your function that the method will return data to when the actions are triggered
+and it does the rest. **You can have multiple triggers**
+
+**Available Actions**
+
+  - **poll** - When gmail automatically polls the server to check for new emails every few seconds
+  - **new_email** - When a new email appears in the inbox
+  - **refresh** - When you click the refresh button
+  - **unread** - When a conversation(s) is marked unread
+  - **read** - When a conversation(s) is marked read
+  - **delete** - When a conversation(s) is deleted
+  - **mark_as_spam** - When a conversation(s) is marked as spam
+  - **mark_as_not_spam** - When a conversation(s) is unchecked as spam
+  - **label** - When a conversation(s) get applied a label
+  - **archive** - When a conversation(s) is archieved
+  - **move_to_inbox** - When a conversation(s) is moved to the inbox
+  - **delete_forever** - When a conversation(s) is deleted forever
+  - **star** - When a conversation(s) is starred
+  - **unstar** - When a conversation(s) is unstarred
+  - **mark_as_important** - When a conversation(s) is marked as important
+  - **mark_as_not_important** - When a conversation(s) is marked as not important
+  - **filter_messages_like_these** - When a filter button is triggered for a conversation
+  - **mute** - When a conversation(s) is muted
+  - **unmute** - When a conversation(s) is unmuted
+  - **add_to_tasks** - When an item is added to google tasks
+  - **move_label** - When a conversation(s) is moved to a label folder
+  - **save_draft** - When a draft is saved
+  - **discard_draft** - When a draft is dicarded
+  - **send_message** - When a message is sent
+  - **expand_categories** - When a category is expanded from the left nav sidebar
+  - **delete_label** - When a label is deleted
+  - **show_newly_arrived_message** - When inside an email and a new email arrives in the thread
+
+
+
+```js
+gmail.observe.on("unread", function(id, url, body) {
+  console.log("id:", id, "url:", url, 'body', body);
+}
+
+gmail.observe.on("read", function(id, url, body) {
+  console.log("id:", id, "url:", url, 'body', body);
+}
+
+gmail.observe.on("delete", function(id, url, body) {
+  console.log("id:", id, "url:", url, 'body', body);
+}
+
+gmail.observe.on("mark_as_spam", function(id, url, body) {
+  console.log("id:", id, "url:", url, 'body', body);
+}
+
+gmail.observe.on("mark_as_not_spam", function(id, url, body) {
+  console.log("id:", id, "url:", url, 'body', body);
+}
+
+gmail.observe.on("label", function(id, url, body, label) {
+  console.log("id:", id, "url:", url, 'body', body, "label", label);
+}
+
+gmail.observe.on("archive", function(id, url, body) {
+  console.log("id:", id, "url:", url, 'body', body);
+}
+
+gmail.observe.on("move_to_inbox", function(id, url, body) {
+  console.log("id:", id, "url:", url, 'body', body);
+}
+
+gmail.observe.on("delete_forever", function(id, url, body) {
+  console.log("id:", id, "url:", url, 'body', body);
+}
+
+gmail.observe.on("star", function(id, url, body) {
+  console.log("id:", id, "url:", url, 'body', body);
+}
+
+gmail.observe.on("unstar", function(id, url, body) {
+  console.log("id:", id, "url:", url, 'body', body);
+}
+
+gmail.observe.on("mark_as_important", function(id, url, body) {
+  console.log("id:", id, "url:", url, 'body', body);
+}
+
+gmail.observe.on("mark_as_not_important", function(id, url, body) {
+  console.log("id:", id, "url:", url, 'body', body);
+}
+
+gmail.observe.on("filter_messages_like_these", function(id, url, body) {
+  console.log("id:", id, "url:", url, 'body', body);
+}
+
+gmail.observe.on("mute", function(id, url, body) {
+  console.log("id:", id, "url:", url, 'body', body);
+}
+
+gmail.observe.on("unmute", function(id, url, body) {
+  console.log("id:", id, "url:", url, 'body', body);
+}
+
+gmail.observe.on("add_to_tasks", function(url, body, data) {
+  console.log("url:", url, 'body', body, 'task_data', data);
+}
+
+gmail.observe.on("move_label", function(id, url, body) {
+  console.log("id:", id, "url:", url, 'body', body);
+}
+
+gmail.observe.on("save_draft", function(url, body, data) {
+  console.log("url:", url, 'body', body, 'email_data', data);
+}
+
+gmail.observe.on("discard_draft", function(id, url, body) {
+  console.log("id:", id, "url:", url, 'body', body);
+}
+
+gmail.observe.on("send_message", function(url, body, data) {
+  console.log("url:", url, 'body', body, 'email_data', data);
+}
+
+gmail.observe.on("expand_categories", function(url, body, data) {
+  console.log("url:", url, 'body', body, 'expanded_data', data);
+}
+
+gmail.observe.on("delete_label", function(id, url, body) {
+  console.log("id:", id, "url:", url, 'body', body);
+}
+
+gmail.observe.on("show_newly_arrived_message", function(id, url, body) {
+  console.log("id:", id, "url:", url, 'body', body);
+}
+
+gmail.observe.on("poll", function(url, body, data) {
+  console.log("url:", url, 'body', body, 'data', data);
+}
+
+gmail.observe.on("new_email", function(id, url, body) {
+  console.log("id:", id, "url:", url, 'body', body);
+}
+
+gmail.observe.on("refresh", function(url, body, data) {
+  console.log("url:", url, 'body', body, 'data', data);
+}
+```
+
+#### gmail.observe.off(action=null)
+
+Turn off an observe action. Providing it no argument will disable all observers.
+
+```js
+gmail.observe.on('poll', function(x,y,z){});
+gmail.observe.on('refresh', function(x,y,z){});
+
+gmail.observe.off('poll'); // disables poll
+gmail.observe.off();  // disables both
+```
+
