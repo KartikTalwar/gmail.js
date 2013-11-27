@@ -153,7 +153,7 @@ Returns a list of emails from the server that are currently visible in the inbox
   "labels": ["^all", "^i", "^smartlabel_social", "^unsub"]}]
 ```
 
-#### gmail.get **.email_data()**
+#### gmail.get.email_data()
 
 Returns an object representation of the opened email contents and metadata
 
@@ -183,7 +183,7 @@ Returns an object representation of the opened email contents and metadata
 }
 ```
 
-#### gmail.get **.user_email()**
+#### gmail.get.user_email()
 
 Returns the current user's email address
 
@@ -191,7 +191,7 @@ Returns the current user's email address
 "california@gmail.com"
 ```
 
-#### gmail.get **.storage_info()**
+#### gmail.get.storage_info()
 
 Returns current user's file storage stats
 
@@ -203,7 +203,7 @@ Returns current user's file storage stats
 }
 ```
 
-#### gmail.get **.current_page()**
+#### gmail.get.current_page()
 
 Returns what page of gmail the user is currently on. These are the possible responses
 
@@ -215,7 +215,7 @@ null // inside email conversation
 "/category/[.+]" // inside category view
 ```
 
-#### gmail.get **.email_subject()**
+#### gmail.get.email_subject()
 
 Returns the opened email's subject from the DOM
 
@@ -224,7 +224,7 @@ Returns the opened email's subject from the DOM
 ```
 
 
-#### gmail.get **.email_id()**
+#### gmail.get.email_id()
 
 Gets current email's ID
 
@@ -232,7 +232,7 @@ Gets current email's ID
 "141de25dc0b48e4f"
 ```
 
-#### gmail.get **.search_query()**
+#### gmail.get.search_query()
 
 Returns the search bar data
 
@@ -240,7 +240,7 @@ Returns the search bar data
 "from:hi@kartikt.com is:unread"
 ```
 
-#### gmail.get **.unread_emails()**
+#### gmail.get.unread_emails()
 
 Returns a count of total unread emails for the current account.
 
@@ -267,7 +267,7 @@ You can also request the data individually
 - **gmail.get.unread_social_emails()**
 
 
-#### gmail.get **.last_active()**
+#### gmail.get.last_active()
 
 Gets user's account activity data
 
@@ -280,7 +280,7 @@ Gets user's account activity data
 }
 ```
 
-#### gmail.get **.loggedin_accounts()**
+#### gmail.get.loggedin_accounts()
 
 Returns a list of signed-in accounts (multiple user accounts setup in gmail)
 
@@ -288,7 +288,7 @@ Returns a list of signed-in accounts (multiple user accounts setup in gmail)
 [{"name":"California","email":"california@gmail.com"}]
 ```
 
-#### gmail.get **.beta()**
+#### gmail.get.beta()
 
 Although hand picked, this method returns the checks on beta features and deployments
 
