@@ -39,54 +39,54 @@ gmail.get.user_email();
 #### GET
 
 
-- gmail.get **.visible_emails()**
-- gmail.get **.email_data()**
-- gmail.get **.user_email()**
-- gmail.get **.storage_info()**
-- gmail.get **.current_page()**
-- gmail.get **.email_subject()**
-- gmail.get **.email_id()**
-- gmail.get **.search_query()**
-- gmail.get **.unread_emails()**
-- gmail.get **.unread_inbox_emails()**
-- gmail.get **.unread_draft_emails()**
-- gmail.get **.unread_spam_emails()**
-- gmail.get **.unread_forum_emails()**
-- gmail.get **.unread_notification_emails()**
-- gmail.get **.unread_promotion_emails()**
-- gmail.get **.unread_social_emails()**
-- gmail.get **.last_active()**
-- gmail.get **.loggedin_accounts()**
-- gmail.get **.beta()**
+- [gmail.get **.visible_emails()**](#gmailgetvisible_emails)
+- [gmail.get **.email_data()**](#gmailgetemail_data)
+- [gmail.get **.user_email()**](#gmailgetuser_email)
+- [gmail.get **.storage_info()**](#gmailgetstorage_info)
+- [gmail.get **.current_page()**](#gmailgetcurrent_page)
+- [gmail.get **.email_subject()**](#gmailgetemail_subject)
+- [gmail.get **.email_id()**](#gmailgetemail_id)
+- [gmail.get **.search_query()**](#gmailgetsearch_query)
+- [gmail.get **.unread_emails()**](#gmailgetunread_emails)
+- [gmail.get **.unread_inbox_emails()**](#gmailgetunread_emails)
+- [gmail.get **.unread_draft_emails()**](#gmailgetunread_emails)
+- [gmail.get **.unread_spam_emails()**](#gmailgetunread_emails)
+- [gmail.get **.unread_forum_emails()**](#gmailgetunread_emails)
+- [gmail.get **.unread_notification_emails()**](#gmailgetunread_emails)
+- [gmail.get **.unread_promotion_emails()**](#gmailgetunread_emails)
+- [gmail.get **.unread_social_emails()**](#gmailgetunread_emails)
+- [gmail.get **.last_active()**](#gmailgetlast_active)
+- [gmail.get **.loggedin_accounts()**](#gmailgetloggedin_accounts)
+- [gmail.get **.beta()**](#gmailgetbeta)
 
 
 
 #### CHECK
 
 
-- gmail.check **.is_thread()**
-- gmail.check **.is_preview_pane()**
-- gmail.check **.is_horizontal_split()**
-- gmail.check **.is_vertical_split()**
-- gmail.check **.is_tabbed_inbox()**
-- gmail.check **.is_right_side_chat()**
-- gmail.check **.is_google_apps_user()**
-- gmail.check **.is_inside_email()**
-- gmail.check **.is_priority_inbox()**
-- gmail.check **.is_rapportive_installed()**
-- gmail.check **.is_streak_installed()**
-- gmail.check **.is_anydo_installed()**
-- gmail.check **.is_boomerang_installed()**
-- gmail.check **.is_xobini_installed()**
-- gmail.check **.is_signal_installed()**
+- [gmail.check **.is_thread()**](#gmailcheckis_thread)
+- [gmail.check **.is_preview_pane()**](#gmailcheckis_preview_pane)
+- [gmail.check **.is_horizontal_split()**](#gmailcheckis_horizontal_split)
+- [gmail.check **.is_vertical_split()**](#gmailcheckis_vertical_split)
+- [gmail.check **.is_tabbed_inbox()**](#gmailcheckis_tabbed_inbox)
+- [gmail.check **.is_right_side_chat()**](#gmailcheckis_right_side_chat)
+- [gmail.check **.is_google_apps_user()**](#gmailcheckis_google_apps_user)
+- [gmail.check **.is_inside_email()**](#gmailcheckis_inside_email)
+- [gmail.check **.is_priority_inbox()**](#gmailcheckis_priority_inbox)
+- [gmail.check **.is_rapportive_installed()**](#gmailcheckis_rapportive_installed)
+- [gmail.check **.is_streak_installed()**](#gmailcheckis_streak_installed)
+- [gmail.check **.is_anydo_installed()**](#gmailcheckis_anydo_installed)
+- [gmail.check **.is_boomerang_installed()**](#gmailcheckis_boomerang_installed)
+- [gmail.check **.is_xobini_installed()**](#gmailcheckis_xobini_installed)
+- [gmail.check **.is_signal_installed()**](#gmailcheckis_signal_installed)
 
 
 #### OBSERVE
 
-- gmail.observe **.http_requests()**
-- gmail.observe **.actions()**
-- gmail.observe **.off(action)**
-- gmail.observe **.on(action, callback)**
+- [gmail.observe **.http_requests()**](#gmailobservehttp_requests)
+- [gmail.observe **.actions()**](#gmailobserveactions)
+- [gmail.observe **.off(action)**](#gmailobserveoffactionnull)
+- [gmail.observe **.on(action, callback)**](#gmailobserve-onaction-callback)
   - **`poll`** - When gmail automatically polls the server to check for new emails every few seconds
   - **`new_email`** - When a new email appears in the inbox
   - **`refresh`** - When you click the refresh button
@@ -414,7 +414,7 @@ The items contain the sent requested parameterized data
 Similar to `gmail.obsere.http_requests()` this keeps track of the last 10 gmail actions (vs all http requests).
 Actions here correspond to things like clicking refres, archiving, deleting, starring etc.
 
-#### gmail.observe **.on(action, callback)**
+#### gmail.observe.on(action, callback)
 
 This is the key feature of gmail.js. This method allows you to add triggers to all of these actions so you can build
 your custom extension/tool with this library.
