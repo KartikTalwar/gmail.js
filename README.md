@@ -1,19 +1,30 @@
 # Gmail.js - JavaScript API for Gmail
 
 
+### TL;DR Information
+
+- Lots of methods to work with gmail by injecting javascript
+- Most of them dont take arguments, they work on what is currently visible on the screen
+- I still need to add implementation for chrome extension, works by injecting js for now
+- Main method is **`gmail.observe.on('lots_of_actions_here', yourFunction())`**
+- Click on a summary method link to view more detailed docss
+
+
 ## Setup
 
 Inject jQuery to Gmail (open console and paste this) and initialize `gmail.js`
 
+#### Quick Usage Installation
 
 ```js
 var jq = document.createElement('script');
 jq.src = "https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js";
 document.getElementsByTagName('body')[0].appendChild(jq);
 
-// {inject gmail.js}
+// {inject gmail.js} by copy pasting gmail.js contents or via url like jquery above
 
 var gmail = Gmail();
+console.log(gmail.get.user_email());
 ```
 
 
