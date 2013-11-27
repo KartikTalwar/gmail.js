@@ -136,6 +136,7 @@ var Gmail =  function() {
   }
 
 
+  // TODO: Check if this is still useful
   api.get.email_ids = function () {
     var items = api.dom.email_contents();
     var ids = [];
@@ -231,7 +232,7 @@ var Gmail =  function() {
       }
     }
 
-    return -1;
+    return 0;
   }
 
 
@@ -244,7 +245,7 @@ var Gmail =  function() {
       }
     }
 
-    return -1;
+    return 0;
   }
 
 
@@ -257,7 +258,7 @@ var Gmail =  function() {
       }
     }
 
-    return -1;
+    return 0;
   }
 
 
@@ -270,7 +271,7 @@ var Gmail =  function() {
       }
     }
 
-    return -1;
+    return 0;
   }
 
 
@@ -283,7 +284,7 @@ var Gmail =  function() {
       }
     }
 
-    return -1;
+    return 0;
   }
 
 
@@ -296,7 +297,7 @@ var Gmail =  function() {
       }
     }
 
-    return -1;
+    return 0;
   }
 
 
@@ -309,7 +310,7 @@ var Gmail =  function() {
       }
     }
 
-    return -1;
+    return 0;
   }
 
 
