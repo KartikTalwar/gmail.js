@@ -465,140 +465,95 @@ var Gmail =  function() {
 
     switch(action) {
       case "ur" :
-        // var response = {"id" : email_ids, "url" : params.url, "body" : params.body}
         var response = [email_ids, params.url, params.body];
-        console.log('You just marked something as unread');
         break;
 
       case "rd":
-        // var response = {"id" : email_ids, "url" : params.url, "body" : params.body}
         var response = [email_ids, params.url, params.body];
-        console.log('You just marked something as read');
         break;
 
       case "tr":
-        // var response = {"id" : email_ids, "url" : params.url, "body" : params.body}
         var response = [email_ids, params.url, params.body];
-        console.log('You just deleted something');
         break;
 
       case "sp":
-        // var response = {"id" : email_ids, "url" : params.url, "body" : params.body}
         var response = [email_ids, params.url, params.body];
-        console.log('You just marked something as spam');
         break;
 
       case "us":
-        // var response = {"id" : email_ids, "url" : params.url, "body" : params.body}
         var response = [email_ids, params.url, params.body];
-        console.log('You just marked something as not spam');
         break;
 
       case "arl":
-        // var response = {"id" : email_ids, "url" : params.url, "body" : params.body, "label" : params.url.acn}
         var response = [email_ids, params.url, params.body, params.url.acn];
-        console.log('You just marked created a label');
         break;
 
       case "ib":
-        // var response = {"id" : email_ids, "url" : params.url, "body" : params.body}
         var response = [email_ids, params.url, params.body];
-        console.log('You just moved something to inbox');
         break;
 
       case "dl":
-        // var response = {"id" : email_ids, "url" : params.url, "body" : params.body}
         var response = [email_ids, params.url, params.body];
-        console.log('You just permanently deleted something');
         break;
 
       case "st":
-        // var response = {"id" : email_ids, "url" : params.url, "body" : params.body}
         var response = [email_ids, params.url, params.body];
-        console.log('You just permanently starred something');
         break;
 
       case "xst":
-        // var response = {"id" : email_ids, "url" : params.url, "body" : params.body}
         var response = [email_ids, params.url, params.body];
-        console.log('You just permanently unstarred something');
         break;
 
       case "mai":
-        // var response = {"id" : email_ids, "url" : params.url, "body" : params.body}
         var response = [email_ids, params.url, params.body];
-        console.log('You just marked something as important');
         break;
 
       case "mani":
-        // var response = {"id" : email_ids, "url" : params.url, "body" : params.body}
         var response = [email_ids, params.url, params.body];
-        console.log('You just marked something as not important');
         break;
 
       case "ig":
-        // var response = {"id" : email_ids, "url" : params.url, "body" : params.body}
         var response = [email_ids, params.url, params.body];
-        console.log('You just muted a conversation');
         break;
 
       case "ug":
-        // var response = {"id" : email_ids, "url" : params.url, "body" : params.body}
         var response = [email_ids, params.url, params.body];
-        console.log('You just unmuted a conversation');
         break;
 
       case "sd":
-        // var response = {"url" : params.url, "body" : params.body, "data" : sent_params}
         var response = [email_ids, params.url, sent_params];
-        console.log('You just saved a draft');
         break;
 
       case "dd":
-        // var response = {"id" : email_ids, "url" : params.url, "body" : params.body}
         var response = [email_ids, params.url, params.body];
-        console.log('You just deleted a draft');
         break;
 
       case "mt":
-        // var response = {"id" : email_ids, "url" : params.url, "body" : params.body}
         var response = [email_ids, params.url, params.body];
-        console.log('You just moved conversation to label');
         break;
 
       case "tae":
-        // var response = {"url" : params.url, "body" : params.body, "data" : sent_params}
         var response = [params.url, params.body, sent_params];
-        console.log('You just added a task');
         break;
 
       case "cffm":
-        // var response = {"id" : email_ids, "url" : params.url, "body" : params.body}
         var response = [email_ids, params.url, params.body];
-        console.log('You just chose to filter a message');
         break;
 
       case "rc_^i":
-        // var response = {"id" : email_ids, "url" : params.url, "body" : params.body}
         var response = [email_ids, params.url, params.body];
-        console.log('You just archived something');
         break;
 
       case "sm":
-        // var response = {"url" : params.url, "body" : params.body, "data" : sent_params}
         var response = [params.url, params.body, sent_params];
-        console.log('You just sent a message');
         break;
 
       case "el":
-        // var response = {"url" : params.url, "body" : params.body, "data" : sent_params.ex == '1'}
         var response = [params.url, params.body, sent_params.ex == '1'];
-        console.log('You just expanded a category');
         break;
     }
 
     if(typeof params.url._reqid == 'string' && typeof params.url.th == 'string') {
-      // var response = {"id" : params.url.th, "url" : params.url, "body" : params.body}
       var response = [params.url.th, params.url, params.body];
       if('new_email' in api.tracker.watchdog) {
         api.tracker.watchdog['new_email'].apply(undefined, response);
@@ -607,7 +562,6 @@ var Gmail =  function() {
 
     if(typeof params.url.SID == 'string' && typeof params.url.zx == 'string' && params.body.indexOf('req0_') != -1) {
       api.tracker.SID = params.url.SID;
-      // var response = {"url" : params.url, "body" : params.body, "data" : sent_params}
       var response = [params.url, params.body, sent_params];
       if('poll' in api.tracker.watchdog) {
         api.tracker.watchdog['poll'].apply(undefined, response);
@@ -615,7 +569,6 @@ var Gmail =  function() {
     }
 
     if(typeof params.url.ik == 'string' && typeof params.url.search == 'string' && params.body.length == 0 && typeof params.url._reqid == 'string') {
-      // var response = {"url" : params.url, "body" : params.body, "data" : sent_params}
       var response = [params.url, params.body, sent_params];
       if('refresh' in api.tracker.watchdog) {
         api.tracker.watchdog['refresh'].apply(undefined, response);
