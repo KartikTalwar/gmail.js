@@ -1,5 +1,6 @@
 # Gmail.js - JavaScript API for Gmail
 
+**Note:** This is not an official Gmail API, and isn't affiliated with Google.
 
 ### TL;DR Information
 
