@@ -570,7 +570,7 @@ var Gmail =  function() {
         break;
 
       case "el":
-        var response = {"url" : params.url, "body" : params.body, "expanded" : sent_params.ex == '1'}
+        var response = {"url" : params.url, "body" : params.body, "data" : sent_params.ex == '1'}
         console.log('You just expanded a category');
         break;
     }
