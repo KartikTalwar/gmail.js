@@ -88,7 +88,7 @@ gmail.get.user_email();
 - [gmail.observe **.http_requests()**](#gmailobservehttp_requests)
 - [gmail.observe **.actions()**](#gmailobserveactions)
 - [gmail.observe **.off(action)**](#gmailobserveoffactionnull)
-- [gmail.observe **.on(action, callback)**](#gmailobserve-onaction-callback)
+- [gmail.observe **.on(action, callback)**](#gmailobserveonaction-callback)
   - **`poll`** - When gmail automatically polls the server to check for new emails every few seconds
   - **`new_email`** - When a new email appears in the inbox
   - **`refresh`** - When you click the refresh button
