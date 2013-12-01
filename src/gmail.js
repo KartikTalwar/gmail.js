@@ -46,10 +46,9 @@ var Gmail =  function() {
 
   api.check.is_thread = function() {
     var check_1 = $('.nH .if').children(":eq(1)").children().children(":eq(1)").children();
-    var check_2 = $('.nH .if').children(":eq(1)").children().children(":eq(1)").children();
-    var check_3 = api.get.email_ids();
+    var check_2 = api.get.email_ids();
 
-    return (check_1.length > 1 || check_2.length > 1) || check_3.length > 1;
+    return check_1.length > 1 || check_2.length > 1;
   };
 
 
