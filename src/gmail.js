@@ -132,13 +132,7 @@ var Gmail =  function() {
 
 
   api.dom.email_contents = function() {
-    return $('.ii.gt');
-  }
-
-
-  // TODO: Check if this is still useful
-  api.get.email_ids = function () {
-    var items = api.dom.email_contents();
+    var items = $('.ii.gt');
     var ids = [];
 
     for(var i=0; i<items.length; i++) {
@@ -146,7 +140,7 @@ var Gmail =  function() {
       var is_editable = items[i].getAttribute('contenteditable');
       if(mail_id != 'undefined' && mail_id != undefined) {
         if(is_editable != 'true') {
-          ids.push(mail_id);
+          ids.push(items[i]);
         }
       }
     }
