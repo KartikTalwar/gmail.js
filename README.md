@@ -91,6 +91,7 @@ gmail.get.user_email();
 - [gmail.observe **.on(action, callback)**](#gmailobserveonaction-callback)
   - **`poll`** - When gmail automatically polls the server to check for new emails every few seconds
   - **`new_email`** - When a new email appears in the inbox
+  - **`open_email`** - When an email is opened from the inbox view
   - **`refresh`** - When you click the refresh button
   - **`unread`** - When a conversation(s) is marked unread
   - **`read`** - When a conversation(s) is marked read
@@ -433,6 +434,7 @@ and it does the rest. **You can have multiple triggers**
 
   - **poll** - When gmail automatically polls the server to check for new emails every few seconds
   - **new_email** - When a new email appears in the inbox
+  - **open_email** - When a new email appears in the inbox
   - **refresh** - When you click the refresh button
   - **unread** - When a conversation(s) is marked unread
   - **read** - When a conversation(s) is marked read
@@ -568,6 +570,10 @@ gmail.observe.on("new_email", function(id, url, body) {
 
 gmail.observe.on("refresh", function(url, body, data) {
   console.log("url:", url, 'body', body, 'data', data);
+})
+
+gmail.observe.on("open_email", function(id, url, body) {
+  console.log("id:", id, "url:", url, 'body', body);
 })
 ```
 
