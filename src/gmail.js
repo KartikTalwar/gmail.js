@@ -148,6 +148,24 @@ var Gmail =  function() {
   }
 
 
+  api.get.email_ids = function() {
+    var items = api.dom.email_contents();
+    var ids = [];
+
+    for(var i=0; i<items.length; i++) {
+      var mail_id = items[i].getAttribute('class').split(' ')[2];
+      var is_editable = items[i].getAttribute('contenteditable');
+      if(mail_id != 'undefined' && mail_id != undefined) {
+        if(is_editable != 'true') {
+          ids.push(mail_id);
+        }
+      }
+    }
+
+    return ids;
+  }
+
+
   api.get.email_id = function() {
     var hash = null;
 
