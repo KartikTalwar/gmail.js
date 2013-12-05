@@ -62,12 +62,14 @@ var Gmail =  function() {
     var dom = api.dom.inbox_content();
     var boxes = dom.find("[gh=tl]");
 
-    var isPreviewPane = false;
+    var previewPaneFound = false;
     boxes.each(function() {
-      if ($(this).hasClass('aia')) isPreviewPane = true;
+      if($(this).hasClass('aia')) {
+        previewPaneFound = true;
+      }
     });
 
-    return isPreviewPane;
+    return previewPaneFound;
   }
 
 
