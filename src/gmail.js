@@ -60,13 +60,14 @@ var Gmail =  function() {
 
   api.check.is_preview_pane = function() {
     var dom = api.dom.inbox_content();
-    var box = dom.find("[gh=tl]");
+    var boxes = dom.find("[gh=tl]");
 
-    if(box.length > 0) {
-      return box[0].getAttribute('class').indexOf('aia') != -1;
-    }
+    var isPreviewPane = false;
+    boxes.each(function() {
+      if ($(this).hasClass('aia')) isPreviewPane = true;
+    });
 
-    return false;
+    return isPreviewPane;
   }
 
 
