@@ -73,6 +73,18 @@ var Gmail =  function() {
   }
 
 
+  api.dom.inboxes = function() {
+    var dom = api.dom.inbox_content();
+    return dom.find("[gh=tl]");
+  }
+
+
+  api.check.is_multiple_inbox = function() {
+    var dom = api.dom.inboxes();
+    return dom.length > 1;
+  }
+
+
   api.check.is_horizontal_split = function() {
     var dom = api.dom.inbox_content();
     var box = dom.find("[gh=tl]").find('.nn');

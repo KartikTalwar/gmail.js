@@ -69,6 +69,7 @@ gmail.get.user_email();
 - [gmail.check **.is_thread()**](#gmailcheckis_thread)
 - [gmail.check **.is_inside_email()**](#gmailcheckis_inside_email)
 - [gmail.check **.is_preview_pane()**](#gmailcheckis_preview_pane)
+- [gmail.check **.is_multiple_inbox()**](#gmailcheckis_multiple_inbox)
 - [gmail.check **.is_horizontal_split()**](#gmailcheckis_horizontal_split)
 - [gmail.check **.is_vertical_split()**](#gmailcheckis_vertical_split)
 - [gmail.check **.is_tabbed_inbox()**](#gmailcheckis_tabbed_inbox)
@@ -123,6 +124,7 @@ gmail.get.user_email();
 
 These methods return the DOM data itself
 
+- gmail.dom **.inboxes()**
 - gmail.dom **.inbox_content()**
 - gmail.dom **.email_subject()**
 - gmail.dom **.email_body()**
@@ -327,6 +329,10 @@ Returns `True` if the conversation is threaded `False` otherwise
 #### gmail.check.is_preview_pane()
 
 Returns `True` if gmail is in split pane mode (vertical or horizontal) `False` otherwise
+
+#### gmail.check.is_multiple_inbox()
+
+Returns `True` if user has multiple inbox lab enabled, `False` otherwise
 
 #### gmail.check.is_horizontal_split()
 
