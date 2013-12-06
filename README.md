@@ -45,6 +45,7 @@ gmail.get.user_email();
 - [gmail.get **.visible_emails()**](#gmailgetvisible_emails)
 - [gmail.get **.current_page()**](#gmailgetcurrent_page)
 - [gmail.get **.email_id()**](#gmailgetemail_id)
+- [gmail.get **.email_ids()**](#gmailgetemail_ids)
 - [gmail.get **.email_subject()**](#gmailgetemail_subject)
 - [gmail.get **.email_data()**](#gmailgetemail_data)
 - [gmail.get **.search_query()**](#gmailgetsearch_query)
@@ -256,6 +257,14 @@ Gets current email's ID
 
 ```js
 "141de25dc0b48e4f"
+```
+
+#### gmail.get.email_ids()
+
+Returns a list of email IDs for each thread in the conversation
+
+```js
+["141de25dc0b48e4f"]
 ```
 
 #### gmail.get.search_query()

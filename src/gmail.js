@@ -165,20 +165,11 @@ var Gmail =  function() {
 
 
   api.get.email_ids = function() {
-    var items = api.dom.email_contents();
-    var ids = [];
-
-    for(var i=0; i<items.length; i++) {
-      var mail_id = items[i].getAttribute('class').split(' ')[2];
-      var is_editable = items[i].getAttribute('contenteditable');
-      if(mail_id != 'undefined' && mail_id != undefined) {
-        if(is_editable != 'true') {
-          ids.push(mail_id);
-        }
-      }
+    if(api.check.is_inside_email()) {
+      var data = api.get.email_data();
+      return Object.keys(data.threads);
     }
-
-    return ids;
+    return [];
   }
 
 
@@ -187,7 +178,19 @@ var Gmail =  function() {
 
     if(api.check.is_inside_email()) {
       if(api.check.is_preview_pane()) {
-        var text = api.get.email_ids();
+        var items = api.dom.email_contents();
+        var text = [];
+
+        for(var i=0; i<items.length; i++) {
+          var mail_id = items[i].getAttribute('class').split(' ')[2];
+          var is_editable = items[i].getAttribute('contenteditable');
+          if(mail_id != 'undefined' && mail_id != undefined) {
+            if(is_editable != 'true') {
+              text.push(mail_id);
+            }
+          }
+        }
+
         hash = text[0].substring(1, text[0].length);
       } else {
         hash = window.location.hash.split("/").pop().replace(/#/, '').split('?')[0];
