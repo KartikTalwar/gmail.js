@@ -199,6 +199,9 @@ Returns an object representation of the opened email contents and metadata
     "141d44da39d6caf8": {
       "reply_to_id": "",
       "from": "California",
+      "to" : ['hi@kartikt.com'],
+      "cc" : [],
+      "bcc" : [],
       "from_email": "california@gmail.com",
       "timestamp": 1382246359000,
       "datetime": "Sun, Nov 20, 2013 at 1:19 AM",
