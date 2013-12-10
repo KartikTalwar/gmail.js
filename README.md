@@ -81,7 +81,7 @@ gmail.get.user_email();
 - [gmail.check **.is_streak_installed()**](#gmailcheckis_streak_installed)
 - [gmail.check **.is_anydo_installed()**](#gmailcheckis_anydo_installed)
 - [gmail.check **.is_boomerang_installed()**](#gmailcheckis_boomerang_installed)
-- [gmail.check **.is_xobini_installed()**](#gmailcheckis_xobini_installed)
+- [gmail.check **.is_xobni_installed()**](#gmailcheckis_xobni_installed)
 - [gmail.check **.is_signal_installed()**](#gmailcheckis_signal_installed)
 
 
@@ -390,9 +390,9 @@ Returns `True` if [any.do](http://any.do) chrome extension is installed `False` 
 
 Returns `True` if [boomerang](http://www.boomeranggmail.com/) chrome extension is installed `False` otherwise
 
-#### gmail.check.is_xobini_installed()
+#### gmail.check.is_xobni_installed()
 
-Returns `True` if [xobini](https://www.xobni.com) chrome extension is installed `False` otherwise
+Returns `True` if [xobni](https://www.xobni.com) chrome extension is installed `False` otherwise
 
 #### gmail.check.is_signal_installed()
 
