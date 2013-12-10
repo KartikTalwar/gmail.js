@@ -227,7 +227,7 @@ var Gmail =  function() {
   }
 
 
-  api.check.is_xobini_installed = function() {
+  api.check.is_xobni_installed = function() {
     return $('#xobni_frame').length > 0;
   }
 
