@@ -449,34 +449,34 @@ var Gmail =  function() {
     }
 
     var action_map = {
-                      'add_to_tasks'               : 'tae',
-                      'archive'                    : 'rc_^i',
-                      'delete'                     : 'tr',
-                      'delete_forever'             : 'dl',
-                      'delete_label'               : 'dc_',
-                      'discard_draft'              : 'dd',
-                      'expand_categories'          : 'el',
-                      'filter_messages_like_these' : 'cffm',
-                      'label'                      : 'arl',
-                      'mark_as_important'          : 'mai',
-                      'mark_as_not_important'      : 'mani',
-                      'mark_as_not_spam'           : 'us',
-                      'mark_as_spam'               : 'sp',
-                      'move_label'                 : 'mt',
-                      'move_to_inbox'              : 'ib',
-                      'mute'                       : 'ig',
-                      'read'                       : 'rd',
-                      'save_draft'                 : 'sd',
-                      'send_message'               : 'sm',
-                      'show_newly_arrived_message' : 'mo',
-                      'star'                       : 'st',
-                      'unmute'                     : 'ug',
-                      'unread'                     : 'ur',
-                      'unstar'                     : 'xst',
-                      'new_email'                  : 'new_mail',
-                      'poll'                       : 'poll',
-                      'refresh'                    : 'refresh',
-                      'open_email'                 : 'open_email'
+                      'tae'         : 'add_to_tasks',
+                      'rc_^i'       : 'archive',
+                      'tr'          : 'delete',
+                      'dl'          : 'delete_forever',
+                      'dc_'         : 'delete_label',
+                      'dd'          : 'discard_draft',
+                      'el'          : 'expand_categories',
+                      'cffm'        : 'filter_messages_like_these',
+                      'arl'         : 'label',
+                      'mai'         : 'mark_as_important',
+                      'mani'        : 'mark_as_not_important',
+                      'us'          : 'mark_as_not_spam',
+                      'sp'          : 'mark_as_spam',
+                      'mt'          : 'move_label',
+                      'ib'          : 'move_to_inbox',
+                      'ig'          : 'mute',
+                      'rd'          : 'read',
+                      'sd'          : 'save_draft',
+                      'sm'          : 'send_message',
+                      'mo'          : 'show_newly_arrived_message',
+                      'st'          : 'star',
+                      'ug'          : 'unmute',
+                      'ur'          : 'unread',
+                      'xst'         : 'unstar',
+                      'new_mail'    : 'new_email',
+                      'poll'        : 'poll',
+                      'refresh'     : 'refresh',
+                      'open_email'  : 'open_email' 
                      }
 
     if(typeof params.url.ik == 'string') {
@@ -489,7 +489,7 @@ var Gmail =  function() {
       }
     }
 
-    var action      = action_map[decodeURIComponent(params.url.act)];
+    var action      = decodeURIComponent(params.url.act);
     var sent_params = api.tools.deparam(params.body)
     var email_ids   = (typeof sent_params.t == 'string') ? [sent_params.t] : sent_params.t;
     var response    = null;
@@ -614,8 +614,8 @@ var Gmail =  function() {
     }
 
     if(response != null) {
-      if(action in api.tracker.watchdog) {
-        api.tracker.watchdog[action].apply(undefined, response);
+      if(action_map[action] in api.tracker.watchdog) {
+        api.tracker.watchdog[action_map[action]].apply(undefined, response);
       }
     }
 
