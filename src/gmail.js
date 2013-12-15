@@ -857,6 +857,9 @@ var Gmail =  function() {
         data.threads[x[1]].content_plain = x[8];
         data.threads[x[1]].subject = x[12];
         data.threads[x[1]].content_html = (x[13] != undefined) ? x[13][6] : x[8];
+        data.threads[x[1]].to = (x[13] != undefined) ? x[13][1] : [];
+        data.threads[x[1]].cc = (x[13] != undefined) ? x[13][2] : [];
+        data.threads[x[1]].bcc = (x[13] != undefined) ? x[13][3] : [];
       }
     }
 
