@@ -47,7 +47,7 @@ gmail.get.user_email();
 - [gmail.get **.email_id()**](#gmailgetemail_id)
 - [gmail.get **.email_ids()**](#gmailgetemail_ids)
 - [gmail.get **.email_subject()**](#gmailgetemail_subject)
-- [gmail.get **.email_data()**](#gmailgetemail_data)
+- [gmail.get **.email_data(email_id=undefined)**](#gmailgetemail_dataemail_idundefined)
 - [gmail.get **.search_query()**](#gmailgetsearch_query)
 - [gmail.get **.unread_emails()**](#gmailgetunread_emails)
  - [gmail.get **.unread_inbox_emails()**](#gmailgetunread_emails)
@@ -144,6 +144,8 @@ These are some helper functions that the rest of the methods use. See source for
 - gmail.tools **.parse_view_data()**
 - gmail.tools **.parse_email_data()**
 - gmail.tools **.make_request()**
+- gmail.tools **.sleep(ms)**
+- gmail.tools **.multitry(ms_delay, tries, func, bool_success_check)**
 
 
 #### TRACKER
@@ -180,9 +182,10 @@ Returns a list of emails from the server that are currently visible in the inbox
   "labels": ["^all", "^i", "^smartlabel_social", "^unsub"]}]
 ```
 
-#### gmail.get.email_data()
+#### gmail.get.email_data(email_id=undefined)
 
-Returns an object representation of the opened email contents and metadata
+Returns an object representation of the opened email contents and metadata. It takes the optional email_id parameter where
+the data for the specified id is returned instead of the email currently visible in the dom
 
 ```json
 {
@@ -199,7 +202,7 @@ Returns an object representation of the opened email contents and metadata
     "141d44da39d6caf8": {
       "reply_to_id": "",
       "from": "California",
-      "to" : ['hi@kartikt.com'],
+      "to" : ["hi@kartikt.com"],
       "cc" : [],
       "bcc" : [],
       "from_email": "california@gmail.com",
@@ -593,6 +596,7 @@ gmail.observe.on("refresh", function(url, body, data) {
 
 gmail.observe.on("open_email", function(id, url, body) {
   console.log("id:", id, "url:", url, 'body', body);
+  console.log(gmail.get.email_data(id));
 })
 ```
 
