@@ -377,6 +377,35 @@ var Gmail =  function() {
   }
 
 
+  api.tools.sleep = function(milliseconds) {
+    var start = new Date().getTime();
+    while(true) {
+      if ((new Date().getTime() - start) > milliseconds){
+        break;
+      }
+    }
+  }
+
+
+  api.tools.multitry = function(delay, tries, func, check, counter, retval) {
+    if(counter != undefined && counter >= tries) {
+      return retval;
+    }
+
+    var counter = (counter == undefined) ? 0 : counter;
+    var value = func();
+
+    console.log({counter: counter, val:value,chk:check(value)})
+
+    if(check(value)) {
+      return value;
+    } else {
+      api.tools.sleep(delay)
+      api.tools.multitry(delay, tries, func, check, counter+1, value)
+    }
+  }
+
+
   api.tools.deparam = function (params, coerce) {
 
     var each = function (arr, fnc) {
@@ -847,9 +876,9 @@ var Gmail =  function() {
         data.threads[x[1]].content_plain = x[8];
         data.threads[x[1]].subject = x[12];
         data.threads[x[1]].content_html = (x[13] != undefined) ? x[13][6] : x[8];
-        data.threads[x[1]].to = x[13][1];
-        data.threads[x[1]].cc = x[13][2];
-        data.threads[x[1]].bcc = x[13][3];
+        data.threads[x[1]].to = (x[13] != undefined) ? x[13][1] : [];
+        data.threads[x[1]].cc = (x[13] != undefined) ? x[13][2] : [];
+        data.threads[x[1]].bcc = (x[13] != undefined) ? x[13][3] : [];
       }
     }
 
@@ -857,9 +886,14 @@ var Gmail =  function() {
   }
 
 
-  api.get.email_data = function() {
-    if(api.check.is_inside_email()) {
-      var url = window.location.origin + window.location.pathname + '?ui=2&ik=' + api.tracker.ik + '&rid=' + api.tracker.rid + '&view=cv&th=' + api.get.email_id() + '&msgs=&mb=0&rt=1&search=inbox';
+  api.get.email_data = function(email_id) {
+
+    if(api.check.is_inside_email() && email_id == undefined) {
+      email_id = api.get.email_id();
+    }
+
+    if(email_id != undefined) {
+      var url = window.location.origin + window.location.pathname + '?ui=2&ik=' + api.tracker.ik + '&rid=' + api.tracker.rid + '&view=cv&th=' + email_id + '&msgs=&mb=0&rt=1&search=inbox';
       var get_data = api.tools.make_request(url);
           get_data = get_data.substring(get_data.indexOf('['), get_data.length);
           get_data = 'var cdata = ' + get_data;
