@@ -867,16 +867,13 @@ var Gmail =  function() {
   }
 
 
-  api.get.email_data = function() {
-    if(api.check.is_inside_email()) {
-      console.log('is_inside_email')
+  api.get.email_data = function(email_id) {
 
-      var get_id   = function() { return api.get.email_id(); };
-      var check_id = function(hash) {if(!(/[0-9]/i.test(hash) && /^[a-z0-9]+$/i.test(hash)) || hash.length < 16) return false; return true}
-      var email_id = api.tools.multitry(100, 10, get_id, check_id)
+    if(api.check.is_inside_email() && email_id == undefined) {
+      email_id = api.get.email_id();
+    }
 
-      console.log(email_id)
-
+    if(email_id != undefined) {
       var url = window.location.origin + window.location.pathname + '?ui=2&ik=' + api.tracker.ik + '&rid=' + api.tracker.rid + '&view=cv&th=' + email_id + '&msgs=&mb=0&rt=1&search=inbox';
       var get_data = api.tools.make_request(url);
           get_data = get_data.substring(get_data.indexOf('['), get_data.length);
@@ -887,9 +884,7 @@ var Gmail =  function() {
       api.tracker.email_data = cdata[0];
 
       return api.tools.parse_email_data(api.tracker.email_data);
-    }else {
-    console.log('not inside email');
-  }
+    }
 
     return {};
   }
