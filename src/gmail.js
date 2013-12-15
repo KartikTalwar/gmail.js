@@ -358,6 +358,35 @@ var Gmail =  function() {
   }
 
 
+  api.tools.sleep = function(milliseconds) {
+    var start = new Date().getTime();
+    while(true) {
+      if ((new Date().getTime() - start) > milliseconds){
+        break;
+      }
+    }
+  }
+
+
+  api.tools.multitry = function(delay, tries, func, check, counter, retval) {
+    if(counter != undefined && counter >= tries) {
+      return retval;
+    }
+
+    var counter = (counter == undefined) ? 0 : counter;
+    var value = func();
+
+    console.log({counter: counter, val:value,chk:check(value)})
+
+    if(check(value)) {
+      return value;
+    } else {
+      api.tools.sleep(delay)
+      api.tools.multitry(delay, tries, func, check, counter+1, value)
+    }
+  }
+
+
   api.tools.deparam = function (params, coerce) {
 
     var each = function (arr, fnc) {
