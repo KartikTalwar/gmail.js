@@ -395,8 +395,6 @@ var Gmail =  function() {
     var counter = (counter == undefined) ? 0 : counter;
     var value = func();
 
-    console.log({counter: counter, val:value,chk:check(value)})
-
     if(check(value)) {
       return value;
     } else {
