@@ -11,6 +11,12 @@
 - Click on a method link to view more detailed docs
 - Create an issue/pull request for feedback, requests and fixes
 
+### Demo
+
+Here is a demo of it being used in a chrome extension
+
+- **[Gmail Hacks](https://chrome.google.com/webstore/detail/gmail-hacks/aacloklpepaibhlikiakfcgjjappeppo)** by [@arpitnext](https://github.com/arpitnext)
+  - **[Source](https://github.com/arpitnext/play_with_gmail.js)**
 
 ## Setup
 
