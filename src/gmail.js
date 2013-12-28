@@ -838,7 +838,9 @@ var Gmail =  function() {
     }
 
     if(hash.indexOf('label/') == 0 || hash.indexOf('category/') == 0 || hash.indexOf('search/') == 0) {
-      page = hash;
+      if(hash.split('/').length < 3) {
+        page = hash;
+      }
     }
 
     return page;
