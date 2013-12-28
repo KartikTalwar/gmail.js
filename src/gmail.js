@@ -733,8 +733,10 @@ var Gmail =  function() {
 
   api.observe.off = function(action) {
     if(action) {
-      if(action in self.tracker.watchdog) {
-        delete self.tracker.watchdog[action];
+      if('watchdog' in api.tracker) {
+        if(action in api.tracker.watchdog) {
+          delete api.tracker.watchdog[action];
+        }
       }
     } else {
       var win = top.document.getElementById("js_frame").contentDocument.defaultView;
