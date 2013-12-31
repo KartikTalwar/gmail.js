@@ -125,7 +125,16 @@ var Gmail =  function() {
 
 
   api.dom.email_subject = function () {
-    return $('h1.ha');
+    var subs = $(".hP");
+
+    if(subs.length > 0) {
+      if(subs.length > 2) {
+        return subs[1];
+      }
+      return subs[0];
+    }
+
+    return null;
   }
 
 
