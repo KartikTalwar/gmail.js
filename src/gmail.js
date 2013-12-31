@@ -142,7 +142,23 @@ var Gmail =  function() {
 
 
   api.check.is_inside_email = function() {
-    return api.dom.email_contents().length > 0;
+    if(api.get.current_page() != null && !api.check.is_preview_pane()) {
+      return false;
+    }
+  
+    var items = $('.ii.gt');
+    var ids = [];
+  
+    for(var i=0; i<items.length; i++) {
+      var mail_id = items[i].getAttribute('class').split(' ')[2];
+      if(mail_id != 'undefined' && mail_id != undefined) {
+        if($(items[i]).is(':visible')) {
+          ids.push(items[i]);
+        }
+      }
+    }
+  
+    return ids.length > 0;
   }
 
 
