@@ -125,15 +125,14 @@ var Gmail =  function() {
 
 
   api.dom.email_subject = function () {
-    var subs = $(".hP");
-
-    if(subs.length > 0) {
-      if(subs.length > 2) {
-        return subs[1];
+    var e = $(".hP");
+  
+    for(var i=0; i<e.length; i++) {
+      if($(e[i]).is(':visible')) {
+        return e[i];
       }
-      return subs[0];
-    }
-
+    };
+  
     return null;
   }
 
