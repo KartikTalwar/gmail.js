@@ -642,7 +642,7 @@ var Gmail =  function() {
       }
     }
 
-    if((params.url.view == 'cv' || params.url.view == 'ad') && typeof params.url.th == 'string' && typeof params.url.search == 'string' && params.url.rid == undefined)) {
+    if((params.url.view == 'cv' || params.url.view == 'ad') && typeof params.url.th == 'string' && typeof params.url.search == 'string' && params.url.rid == undefined) {
       var response = [params.url.th, params.url, params.body];
       if('open_email' in api.tracker.watchdog) {
         api.tracker.watchdog['open_email'].apply(undefined, response);
