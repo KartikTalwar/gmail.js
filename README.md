@@ -2,6 +2,8 @@
 
 **Note:** This is not an official Gmail API, and isn't affiliated with Google.
 
+**Note:** Gmail.js requires jQuery to work
+
 ### TL;DR Summary
 
 - Lots of api methods to work with gmail. Useful for chrome extensions
@@ -18,6 +20,7 @@
 
 ## Setup
 
+- **Gmail.js requires jQuery to work**
 
 ### Quick Usage - Chrome Console
 
