@@ -546,23 +546,23 @@ var Gmail =  function() {
     var response    = null;
 
     switch(action) {
-      case "ur" :
-        var response = [email_ids, params.url, params.body];
-        break;
-
+      case "ur":
       case "rd":
-        var response = [email_ids, params.url, params.body];
-        break;
-
       case "tr":
-        var response = [email_ids, params.url, params.body];
-        break;
-
       case "sp":
-        var response = [email_ids, params.url, params.body];
-        break;
-
       case "us":
+      case "ib":
+      case "dl":
+      case "st":
+      case "xst":
+      case "mai":
+      case "mani":
+      case "ig":
+      case "ug":
+      case "dd":
+      case "mt":
+      case "cffm":
+      case "rc_^i":
         var response = [email_ids, params.url, params.body];
         break;
 
@@ -570,62 +570,11 @@ var Gmail =  function() {
         var response = [email_ids, params.url, params.body, params.url.acn];
         break;
 
-      case "ib":
-        var response = [email_ids, params.url, params.body];
-        break;
-
-      case "dl":
-        var response = [email_ids, params.url, params.body];
-        break;
-
-      case "st":
-        var response = [email_ids, params.url, params.body];
-        break;
-
-      case "xst":
-        var response = [email_ids, params.url, params.body];
-        break;
-
-      case "mai":
-        var response = [email_ids, params.url, params.body];
-        break;
-
-      case "mani":
-        var response = [email_ids, params.url, params.body];
-        break;
-
-      case "ig":
-        var response = [email_ids, params.url, params.body];
-        break;
-
-      case "ug":
-        var response = [email_ids, params.url, params.body];
-        break;
-
       case "sd":
         var response = [email_ids, params.url, sent_params];
         break;
 
-      case "dd":
-        var response = [email_ids, params.url, params.body];
-        break;
-
-      case "mt":
-        var response = [email_ids, params.url, params.body];
-        break;
-
       case "tae":
-        var response = [params.url, params.body, sent_params];
-        break;
-
-      case "cffm":
-        var response = [email_ids, params.url, params.body];
-        break;
-
-      case "rc_^i":
-        var response = [email_ids, params.url, params.body];
-        break;
-
       case "sm":
         var response = [params.url, params.body, sent_params];
         break;
