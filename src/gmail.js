@@ -129,11 +129,11 @@ var Gmail =  function() {
   
     for(var i=0; i<e.length; i++) {
       if($(e[i]).is(':visible')) {
-        return e[i];
+        return $(e[i]);
       }
     };
   
-    return null;
+    return $();
   }
 
 
