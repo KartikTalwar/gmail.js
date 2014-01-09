@@ -848,6 +848,7 @@ var Gmail =  function() {
         data.threads[x[1]].from_email = x[6];
         data.threads[x[1]].timestamp = x[7];
         data.threads[x[1]].datetime = x[24];
+        data.threads[x[1]].attachments = x[21].split(',');
         data.threads[x[1]].content_plain = x[8];
         data.threads[x[1]].subject = x[12];
         data.threads[x[1]].content_html = (x[13] != undefined) ? x[13][6] : x[8];
