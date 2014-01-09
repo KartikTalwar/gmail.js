@@ -140,7 +140,7 @@ var Gmail =  function() {
   api.get.email_subject = function() {
     var subject_dom = api.dom.email_subject();
 
-    return subject_dom.find('.hP')[0].innerText;
+    return subject_dom.text();
   }
 
 
