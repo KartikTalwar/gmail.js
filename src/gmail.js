@@ -491,6 +491,12 @@ var Gmail =  function() {
 
 
   api.tools.parse_actions = function(params) {
+    
+    if(params.url.act == 'fup') {
+      // a way to stop observers when a file is being uploaded see issue #22
+      return;
+    }
+
     if(params.method == 'POST' && typeof params.url.act == 'string') {
       // console.log(params.url, params.body);
     }
