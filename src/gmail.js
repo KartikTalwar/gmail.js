@@ -116,8 +116,8 @@ var Gmail =  function() {
 
   api.get.storage_info = function() {
     var div = $('.md.mj').find('div')[0];
-    var used = $(div).find('span')[0].innerText;
-    var total = $(div).find('span')[1].innerText;
+    var used = $(div).find('span')[0].text;
+    var total = $(div).find('span')[1].text;
     var percent = parseFloat(used.replace(/[^0-9\.]/g, '')) * 100 / parseFloat(total.replace(/[^0-9\.]/g, ''));
 
     return {used : used, total : total, percent : Math.floor(percent)}
@@ -281,8 +281,8 @@ var Gmail =  function() {
     var dom = $("div[role=navigation]").find("[title*='Inbox']");
 
     if(dom.length > 0) {
-      if(dom[0].innerText.indexOf('(') != -1) {
-        return parseInt(dom[0].innerText.replace(/[^0-9]/g, ''));
+      if(dom[0].text.indexOf('(') != -1) {
+        return parseInt(dom[0].text.replace(/[^0-9]/g, ''));
       }
     }
 
@@ -294,8 +294,8 @@ var Gmail =  function() {
     var dom = $("div[role=navigation]").find("[title*='Drafts']");
 
     if(dom.length > 0) {
-      if(dom[0].innerText.indexOf('(') != -1) {
-        return parseInt(dom[0].innerText.replace(/[^0-9]/g, ''));
+      if(dom[0].text.indexOf('(') != -1) {
+        return parseInt(dom[0].text.replace(/[^0-9]/g, ''));
       }
     }
 
@@ -307,8 +307,8 @@ var Gmail =  function() {
     var dom = $("div[role=navigation]").find("[title*='Spam']");
 
     if(dom.length > 0) {
-      if(dom[0].innerText.indexOf('(') != -1) {
-        return parseInt(dom[0].innerText.replace(/[^0-9]/g, ''));
+      if(dom[0].text.indexOf('(') != -1) {
+        return parseInt(dom[0].text.replace(/[^0-9]/g, ''));
       }
     }
 
@@ -320,8 +320,8 @@ var Gmail =  function() {
     var dom = $("div[role=navigation]").find("[title*='Forums']");
 
     if(dom.length > 0) {
-      if(dom[0].innerText.indexOf('(') != -1) {
-        return parseInt(dom[0].innerText.replace(/[^0-9]/g, ''));
+      if(dom[0].text.indexOf('(') != -1) {
+        return parseInt(dom[0].text.replace(/[^0-9]/g, ''));
       }
     }
 
@@ -333,8 +333,8 @@ var Gmail =  function() {
     var dom = $("div[role=navigation]").find("[title*='Notifications']");
 
     if(dom.length > 0) {
-      if(dom[0].innerText.indexOf('(') != -1) {
-        return parseInt(dom[0].innerText.replace(/[^0-9]/g, ''));
+      if(dom[0].text.indexOf('(') != -1) {
+        return parseInt(dom[0].text.replace(/[^0-9]/g, ''));
       }
     }
 
@@ -346,8 +346,8 @@ var Gmail =  function() {
     var dom = $("div[role=navigation]").find("[title*='Promotions']");
 
     if(dom.length > 0) {
-      if(dom[0].innerText.indexOf('(') != -1) {
-        return parseInt(dom[0].innerText.replace(/[^0-9]/g, ''));
+      if(dom[0].text.indexOf('(') != -1) {
+        return parseInt(dom[0].text.replace(/[^0-9]/g, ''));
       }
     }
 
@@ -359,8 +359,8 @@ var Gmail =  function() {
     var dom = $("div[role=navigation]").find("[title*='Social Updates']");
 
     if(dom.length > 0) {
-      if(dom[0].innerText.indexOf('(') != -1) {
-        return parseInt(dom[0].innerText.replace(/[^0-9]/g, ''));
+      if(dom[0].text.indexOf('(') != -1) {
+        return parseInt(dom[0].text.replace(/[^0-9]/g, ''));
       }
     }
 
