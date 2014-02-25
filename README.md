@@ -54,6 +54,7 @@ gmail.get.user_email();
 - [gmail.get **.email_id()**](#gmailgetemail_id)
 - [gmail.get **.email_ids()**](#gmailgetemail_ids)
 - [gmail.get **.email_subject()**](#gmailgetemail_subject)
+- [gmail.get **.compose_ids()**](#gmailgetcompose_ids)
 - [gmail.get **.email_data(email_id=undefined)**](#gmailgetemail_dataemail_idundefined)
 - [gmail.get **.search_query()**](#gmailgetsearch_query)
 - [gmail.get **.unread_emails()**](#gmailgetunread_emails)
@@ -279,6 +280,15 @@ Returns a list of email IDs for each thread in the conversation
 ```js
 ["141de25dc0b48e4f"]
 ```
+
+### gmail.get.compose_ids()
+
+Returns the latest/last email id of emails that have been saved as drafts (currently open)
+
+```js
+["14469c73bba6ff53", "14469c7b8581ccfa"]
+```
+
 
 #### gmail.get.search_query()
 

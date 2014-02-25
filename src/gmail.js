@@ -199,7 +199,7 @@ var Gmail =  function() {
   api.get.compose_ids = function() {
 	  var ret = [];
 	  var dom = $(".AD [name=draft]");
-	  for (var i = 0; i < dom.length; i++) {
+	  for(var i = 0; i < dom.length; i++) {
 		  if(dom[i].value != "undefined"){
 			  ret.push(dom[i].value);
 		  }
