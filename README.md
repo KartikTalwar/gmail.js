@@ -154,6 +154,7 @@ These are some helper functions that the rest of the methods use. See source for
 - gmail.tools **.make_request()**
 - gmail.tools **.sleep(ms)**
 - gmail.tools **.multitry(ms_delay, tries, func, bool_success_check)**
+- gmail.tools **.i18n(label)**
 
 
 #### TRACKER
