@@ -340,7 +340,7 @@ var Gmail =  function() {
 
 
   api.get.unread_notification_emails = function() {
-    var dom = $("div[role=navigation]").find("[title*='" + api.tools.i18n('notifications') + "']");
+    var dom = $("div[role=navigation]").find("[title*='" + api.tools.i18n('updates') + "']");
 
     if(dom.length > 0) {
       if(dom[0].text.indexOf('(') != -1) {
@@ -912,7 +912,7 @@ var Gmail =  function() {
           'drafts': 'Brouillons',
           'spam': 'Spam',
           'forums': 'Forums',
-          'notifications': 'Notifications',
+          'updates': 'Mises à jour',
           'promotions': 'Promotions',
           'social_updates': 'Réseaux sociaux'
         };
@@ -925,7 +925,7 @@ var Gmail =  function() {
           'drafts': 'Drafts',
           'spam': 'Spam',
           'forums': 'Forums',
-          'notifications': 'Notifications',
+          'updates': 'Updates',
           'promotions': 'Promotions',
           'social_updates': 'Social Updates'
         };
