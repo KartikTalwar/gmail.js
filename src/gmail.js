@@ -339,7 +339,7 @@ var Gmail =  function() {
   }
 
 
-  api.get.unread_notification_emails = function() {
+  api.get.unread_update_emails = function() {
     var dom = $("div[role=navigation]").find("[title*='" + api.tools.i18n('updates') + "']");
 
     if(dom.length > 0) {
@@ -392,7 +392,7 @@ var Gmail =  function() {
              drafts        : api.get.unread_draft_emails(),
              spam          : api.get.unread_spam_emails(),
              forum         : api.get.unread_forum_emails(),
-             notifications : api.get.unread_notification_emails(),
+             notifications : api.get.unread_update_emails(),
              promotions    : api.get.unread_promotion_emails(),
              social        : api.get.unread_social_emails() }
   }

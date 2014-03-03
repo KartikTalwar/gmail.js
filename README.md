@@ -62,7 +62,7 @@ gmail.get.user_email();
   - [gmail.get **.unread_draft_emails()**](#gmailgetunread_emails)
   - [gmail.get **.unread_spam_emails()**](#gmailgetunread_emails)
   - [gmail.get **.unread_forum_emails()**](#gmailgetunread_emails)
-  - [gmail.get **.unread_notification_emails()**](#gmailgetunread_emails)
+  - [gmail.get **.unread_update_emails()**](#gmailgetunread_emails)
   - [gmail.get **.unread_promotion_emails()**](#gmailgetunread_emails)
   - [gmail.get **.unread_social_emails()**](#gmailgetunread_emails)
 - [gmail.get **.last_active()**](#gmailgetlast_active)
@@ -321,7 +321,7 @@ You can also request the data individually
 - **gmail.get.unread_draft_emails()**
 - **gmail.get.unread_spam_emails()**
 - **gmail.get.unread_forum_emails()**
-- **gmail.get.unread_notification_emails()**
+- **gmail.get.unread_update_emails()**
 - **gmail.get.unread_promotion_emails()**
 - **gmail.get.unread_social_emails()**
 
