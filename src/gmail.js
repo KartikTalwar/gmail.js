@@ -288,7 +288,7 @@ var Gmail =  function() {
 
 
   api.get.unread_inbox_emails = function() {
-    var dom = $("div[role=navigation]").find("[title*='Inbox']");
+    var dom = $("div[role=navigation]").find("[title*='" + api.tools.i18n('inbox') + "']");
 
     if(dom.length > 0) {
       if(dom[0].text.indexOf('(') != -1) {
@@ -301,7 +301,7 @@ var Gmail =  function() {
 
 
   api.get.unread_draft_emails = function() {
-    var dom = $("div[role=navigation]").find("[title*='Drafts']");
+    var dom = $("div[role=navigation]").find("[title*='" + api.tools.i18n('drafts') + "']");
 
     if(dom.length > 0) {
       if(dom[0].text.indexOf('(') != -1) {
@@ -314,7 +314,7 @@ var Gmail =  function() {
 
 
   api.get.unread_spam_emails = function() {
-    var dom = $("div[role=navigation]").find("[title*='Spam']");
+    var dom = $("div[role=navigation]").find("[title*='" + api.tools.i18n('spam') + "']");
 
     if(dom.length > 0) {
       if(dom[0].text.indexOf('(') != -1) {
@@ -327,7 +327,7 @@ var Gmail =  function() {
 
 
   api.get.unread_forum_emails = function() {
-    var dom = $("div[role=navigation]").find("[title*='Forums']");
+    var dom = $("div[role=navigation]").find("[title*='" + api.tools.i18n('forums') + "']");
 
     if(dom.length > 0) {
       if(dom[0].text.indexOf('(') != -1) {
@@ -339,8 +339,8 @@ var Gmail =  function() {
   }
 
 
-  api.get.unread_notification_emails = function() {
-    var dom = $("div[role=navigation]").find("[title*='Notifications']");
+  api.get.unread_update_emails = function() {
+    var dom = $("div[role=navigation]").find("[title*='" + api.tools.i18n('updates') + "']");
 
     if(dom.length > 0) {
       if(dom[0].text.indexOf('(') != -1) {
@@ -353,7 +353,7 @@ var Gmail =  function() {
 
 
   api.get.unread_promotion_emails = function() {
-    var dom = $("div[role=navigation]").find("[title*='Promotions']");
+    var dom = $("div[role=navigation]").find("[title*='" + api.tools.i18n('promotions') + "']");
 
     if(dom.length > 0) {
       if(dom[0].text.indexOf('(') != -1) {
@@ -366,7 +366,7 @@ var Gmail =  function() {
 
 
   api.get.unread_social_emails = function() {
-    var dom = $("div[role=navigation]").find("[title*='Social Updates']");
+    var dom = $("div[role=navigation]").find("[title*='" + api.tools.i18n('social_updates') + "']");
 
     if(dom.length > 0) {
       if(dom[0].text.indexOf('(') != -1) {
@@ -392,7 +392,7 @@ var Gmail =  function() {
              drafts        : api.get.unread_draft_emails(),
              spam          : api.get.unread_spam_emails(),
              forum         : api.get.unread_forum_emails(),
-             notifications : api.get.unread_notification_emails(),
+             update        : api.get.unread_update_emails(),
              promotions    : api.get.unread_promotion_emails(),
              social        : api.get.unread_social_emails() }
   }
@@ -898,6 +898,41 @@ var Gmail =  function() {
     }
 
     return {};
+  }
+
+
+  api.tools.i18n = function(label) {
+    var locale = api.tracker.globals[17][9][8];
+    var dictionary;
+
+    switch (locale) {
+      case 'fr':
+        dictionary = {
+          'inbox': 'Boîte de réception',
+          'drafts': 'Brouillons',
+          'spam': 'Spam',
+          'forums': 'Forums',
+          'updates': 'Mises à jour',
+          'promotions': 'Promotions',
+          'social_updates': 'Réseaux sociaux'
+        };
+        break;
+
+      case 'en':
+      default:
+        dictionary = {
+          'inbox': 'Inbox',
+          'drafts': 'Drafts',
+          'spam': 'Spam',
+          'forums': 'Forums',
+          'updates': 'Updates',
+          'promotions': 'Promotions',
+          'social_updates': 'Social Updates'
+        };
+        break;
+    }
+
+    return dictionary[label];
   }
 
 

@@ -62,7 +62,7 @@ gmail.get.user_email();
   - [gmail.get **.unread_draft_emails()**](#gmailgetunread_emails)
   - [gmail.get **.unread_spam_emails()**](#gmailgetunread_emails)
   - [gmail.get **.unread_forum_emails()**](#gmailgetunread_emails)
-  - [gmail.get **.unread_notification_emails()**](#gmailgetunread_emails)
+  - [gmail.get **.unread_update_emails()**](#gmailgetunread_emails)
   - [gmail.get **.unread_promotion_emails()**](#gmailgetunread_emails)
   - [gmail.get **.unread_social_emails()**](#gmailgetunread_emails)
 - [gmail.get **.last_active()**](#gmailgetlast_active)
@@ -154,6 +154,7 @@ These are some helper functions that the rest of the methods use. See source for
 - gmail.tools **.make_request()**
 - gmail.tools **.sleep(ms)**
 - gmail.tools **.multitry(ms_delay, tries, func, bool_success_check)**
+- gmail.tools **.i18n(label)**
 
 
 #### TRACKER
@@ -320,7 +321,7 @@ You can also request the data individually
 - **gmail.get.unread_draft_emails()**
 - **gmail.get.unread_spam_emails()**
 - **gmail.get.unread_forum_emails()**
-- **gmail.get.unread_notification_emails()**
+- **gmail.get.unread_update_emails()**
 - **gmail.get.unread_promotion_emails()**
 - **gmail.get.unread_social_emails()**
 
