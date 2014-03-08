@@ -519,6 +519,7 @@ var Gmail =  function() {
                       'tae'         : 'add_to_tasks',
                       'rc_^i'       : 'archive',
                       'tr'          : 'delete',
+                      'dm'          : 'delete_message_in_thread',
                       'dl'          : 'delete_forever',
                       'dc_'         : 'delete_label',
                       'dd'          : 'discard_draft',
@@ -597,6 +598,10 @@ var Gmail =  function() {
 
       case "el":
         var response = [params.url, params.body, sent_params.ex == '1'];
+        break;
+
+      case "dm":
+        var response = [sent_params.m, params.url, params.body];
         break;
     }
 

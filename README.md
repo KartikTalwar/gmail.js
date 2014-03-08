@@ -106,6 +106,7 @@ gmail.get.user_email();
   - **`unread`** - When a conversation(s) is marked unread
   - **`read`** - When a conversation(s) is marked read
   - **`delete`** - When a conversation(s) is deleted
+  - **`delete_message_in_thread`** - When a conversation(s) is deleted inside a thread
   - **`mark_as_spam`** - When a conversation(s) is marked as spam
   - **`mark_as_not_spam`** - When a conversation(s) is unchecked as spam
   - **`label`** - When a conversation(s) get applied a label
@@ -479,6 +480,7 @@ and it does the rest. **You can have multiple triggers**
   - **unread** - When a conversation(s) is marked unread
   - **read** - When a conversation(s) is marked read
   - **delete** - When a conversation(s) is deleted
+  - **delete_message_in_thread** - When a conversation(s) is deleted inside and is part of a thread
   - **mark_as_spam** - When a conversation(s) is marked as spam
   - **mark_as_not_spam** - When a conversation(s) is unchecked as spam
   - **label** - When a conversation(s) get applied a label
@@ -537,6 +539,10 @@ gmail.observe.on("move_to_inbox", function(id, url, body) {
 })
 
 gmail.observe.on("delete_forever", function(id, url, body) {
+  console.log("id:", id, "url:", url, 'body', body);
+})
+
+gmail.observe.on("delete_message_in_thread", function(id, url, body) {
   console.log("id:", id, "url:", url, 'body', body);
 })
 
