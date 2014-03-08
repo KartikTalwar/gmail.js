@@ -602,12 +602,10 @@ var Gmail =  function() {
         break;
 
       case "dm":
-        var response = [sent_params.m, params.url, params.body];
-        break;
-
       case "rtr":
         var response = [sent_params.m, params.url, params.body];
         break;
+
     }
 
     if(typeof params.url._reqid == 'string' && typeof params.url.th == 'string') {
