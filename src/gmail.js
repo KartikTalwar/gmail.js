@@ -544,6 +544,7 @@ var Gmail =  function() {
                       'new_mail'    : 'new_email',
                       'poll'        : 'poll',
                       'refresh'     : 'refresh',
+                      'rtr'         : 'restore_message_in_thread',
                       'open_email'  : 'open_email' 
                      }
 
@@ -601,6 +602,10 @@ var Gmail =  function() {
         break;
 
       case "dm":
+        var response = [sent_params.m, params.url, params.body];
+        break;
+
+      case "rtr":
         var response = [sent_params.m, params.url, params.body];
         break;
     }

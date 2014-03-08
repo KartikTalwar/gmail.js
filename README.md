@@ -126,6 +126,7 @@ gmail.get.user_email();
   - **`discard_draft`** - When a draft is dicarded
   - **`send_message`** - When a message is sent
   - **`expand_categories`** - When a category is expanded from the left nav sidebar
+  - **`restore_message_in_thread`** - When a deleted message is restored inside a thread
   - **`delete_label`** - When a label is deleted
   - **`show_newly_arrived_message`** - When inside an email and a new email arrives in the thread
 
@@ -501,6 +502,7 @@ and it does the rest. **You can have multiple triggers**
   - **discard_draft** - When a draft is dicarded
   - **send_message** - When a message is sent
   - **expand_categories** - When a category is expanded from the left nav sidebar
+  - **restore_message_in_thread** - When a deleted message is restored inside a thread
   - **delete_label** - When a label is deleted
   - **show_newly_arrived_message** - When inside an email and a new email arrives in the thread
 
@@ -544,6 +546,10 @@ gmail.observe.on("delete_forever", function(id, url, body) {
 })
 
 gmail.observe.on("delete_message_in_thread", function(id, url, body) {
+  console.log("id:", id, "url:", url, 'body', body);
+})
+
+gmail.observe.on("restore_message_in_thread", function(id, url, body) {
   console.log("id:", id, "url:", url, 'body', body);
 })
 
