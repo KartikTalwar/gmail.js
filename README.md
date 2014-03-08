@@ -211,6 +211,7 @@ the data for the specified id is returned instead of the email currently visible
   "threads": {
     "141d44da39d6caf8": {
       "reply_to_id": "",
+      "is_deleted" : false,
       "from": "California",
       "to" : ["hi@kartikt.com"],
       "cc" : [],
