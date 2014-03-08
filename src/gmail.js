@@ -545,7 +545,8 @@ var Gmail =  function() {
                       'poll'        : 'poll',
                       'refresh'     : 'refresh',
                       'rtr'         : 'restore_message_in_thread',
-                      'open_email'  : 'open_email' 
+                      'open_email'  : 'open_email',
+                      'toggle_threads'  : 'toggle_threads' 
                      }
 
     if(typeof params.url.ik == 'string') {
@@ -619,6 +620,22 @@ var Gmail =  function() {
       var response = [params.url.th, params.url, params.body];
       if('open_email' in api.tracker.watchdog) {
         api.tracker.watchdog['open_email'].apply(undefined, response);
+      }
+    }
+
+    if((params.url.view == 'cv' || params.url.view == 'ad') && typeof params.url.th == 'object' && typeof params.url.search == 'string' && params.url.rid != undefined) {
+      var response = [params.url.th, params.url, params.body];
+      if('toggle_threads' in api.tracker.watchdog) {
+        api.tracker.watchdog['toggle_threads'].apply(undefined, response);
+      }
+    }
+
+    if((params.url.view == 'cv' || params.url.view == 'ad') && typeof params.url.th == 'string' && typeof params.url.search == 'string' && params.url.rid != undefined) {
+      if(params.url.msgs != undefined) {
+        var response = [params.url.th, params.url, params.body];
+        if('toggle_threads' in api.tracker.watchdog) {
+          api.tracker.watchdog['toggle_threads'].apply(undefined, response);
+        }
       }
     }
 
