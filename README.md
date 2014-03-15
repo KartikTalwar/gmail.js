@@ -212,6 +212,7 @@ the data for the specified id is returned instead of the email currently visible
   "threads": {
     "141d44da39d6caf8": {
       "reply_to_id": "",
+      "status": "visible_full",
       "is_deleted" : false,
       "from": "California",
       "to" : ["hi@kartikt.com"],
@@ -312,7 +313,7 @@ Returns a count of total unread emails for the current account.
   "drafts": 0,
   "spam": 0,
   "forum": 0,
-  "notifications": 0,
+  "updates": 0,
   "promotions": 0,
   "social": 0
 }
