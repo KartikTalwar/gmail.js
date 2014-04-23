@@ -851,7 +851,7 @@ var Gmail =  function() {
     if(top.length > 0){
       var info = top.find(".vh");
       info.text(message);
-      if(tyoeof time !== "undefined"){
+      if(typeof time !== "undefined"){
         top.css('visibility', 'visible').fadeTo(time, 0, function(){
           $(this).css("visibility", "hidden");
           $(this).css("opacity", "");
