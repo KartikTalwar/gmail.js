@@ -941,7 +941,7 @@ var Gmail =  function() {
 
           thread.to.forEach(function(recipient) {
             var address = api.tools.extract_email_address(recipient);
-            var name = api.tools.extract_name(recipient.replace(address, ''));
+            var name = api.tools.extract_name(recipient.replace(address, '')) || '';
 
             displayed_email_data.people_involved.push(
               [name, address]
