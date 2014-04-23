@@ -89,7 +89,7 @@ var Gmail =  function() {
     var dom = api.dom.inbox_content();
     var box = dom.find("[gh=tl]").find('.nn');
 
-    return box.length == 0; 
+    return box.length == 0;
   }
 
 
@@ -126,13 +126,13 @@ var Gmail =  function() {
 
   api.dom.email_subject = function () {
     var e = $(".hP");
-  
+
     for(var i=0; i<e.length; i++) {
       if($(e[i]).is(':visible')) {
         return $(e[i]);
       }
     };
-  
+
     return $();
   }
 
@@ -153,10 +153,10 @@ var Gmail =  function() {
     if(api.get.current_page() != null && !api.check.is_preview_pane()) {
       return false;
     }
-  
+
     var items = $('.ii.gt');
     var ids = [];
-  
+
     for(var i=0; i<items.length; i++) {
       var mail_id = items[i].getAttribute('class').split(' ')[2];
       if(mail_id != 'undefined' && mail_id != undefined) {
@@ -165,7 +165,7 @@ var Gmail =  function() {
         }
       }
     }
-  
+
     return ids.length > 0;
   }
 
@@ -195,7 +195,7 @@ var Gmail =  function() {
     }
     return [];
   }
-  
+
   api.get.compose_ids = function() {
 	  var ret = [];
 	  var dom = $(".AD [name=draft]");
@@ -501,7 +501,7 @@ var Gmail =  function() {
 
 
   api.tools.parse_actions = function(params) {
-    
+
     if(params.url.act == 'fup' || params.url.act == 'fuv' || typeof params.body == "object") {
       // a way to stop observers when files are being uploaded. See issue #22
       return;
@@ -545,7 +545,7 @@ var Gmail =  function() {
                       'poll'        : 'poll',
                       'refresh'     : 'refresh',
                       'rtr'         : 'restore_message_in_thread',
-                      'open_email'  : 'open_email' 
+                      'open_email'  : 'open_email'
                      }
 
     if(typeof params.url.ik == 'string') {
@@ -907,6 +907,86 @@ var Gmail =  function() {
     }
 
     return {};
+  }
+
+
+  api.get.displayed_email_data = function() {
+    var email_data = api.get.email_data();
+    var displayed_email_data = {};
+
+    if (api.check.is_conversation_view()) {
+      displayed_email_data = email_data;
+    }
+    else { // Supposing only one displayed email.
+      for (id in email_data.threads) {
+        var displayed_email_element = $('.ii.gt[class*="' + id + '"]');
+
+        if (displayed_email_element.length > 0) {
+          var thread = email_data.threads[id];
+
+          displayed_email_data.first_email = id;
+          displayed_email_data.last_email = id;
+          displayed_email_data.subject = email_data.subject;
+
+          displayed_email_data.threads = {};
+          displayed_email_data.threads[id] = thread;
+          displayed_email_data.total_emails = 1;
+          displayed_email_data.total_threads = [id];
+
+          displayed_email_data.people_involved = [];
+
+          displayed_email_data.people_involved.push(
+            [thread.from, thread.from_email]
+          );
+
+          thread.to.forEach(function(recipient) {
+            var address = api.tools.extract_email_address(recipient);
+            var name = api.tools.extract_name(recipient.replace(address, ''));
+
+            displayed_email_data.people_involved.push(
+              [name, address]
+            );
+          });
+
+          break;
+        }
+      }
+    }
+
+    return displayed_email_data;
+  }
+
+
+  api.check.is_conversation_view = function() {
+    var flag = api.tracker.globals[17][5][1][57][1];
+    var check = undefined;
+
+    if (flag !== undefined) {
+      var values = {
+        '0': true,
+        '1': false
+      }
+
+      check = values[flag];
+    }
+
+    return check;
+  }
+
+
+  api.tools.extract_email_address = function(str) {
+    var regex = /[\+a-z0-9._-]+@[a-z0-9._-]+\.[a-z0-9._-]+/gi;
+    var matches = (str) ? str.match(regex) : undefined;
+
+    return (matches) ? matches[0] : undefined;
+  }
+
+
+  api.tools.extract_name = function(str) {
+    var regex = /[a-z'._-\s]+/gi;
+    var matches = (str) ? str.match(regex) : undefined;
+
+    return (matches && matches[0]) ? matches[0].trim() : undefined;
   }
 
 
