@@ -861,7 +861,6 @@ var Gmail =  function() {
         top.css('visibility', 'visible');
       }
     }
-};
   }
 
   api.tools.parse_email_data = function(email_data) {
