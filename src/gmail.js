@@ -846,6 +846,24 @@ var Gmail =  function() {
   }
 
 
+  api.tools.infobox = function(message, time){
+    var top = $(".b8.UC");
+    if(top.length > 0){
+      var info = top.find(".vh");
+      info.text(message);
+      if(tyoeof time !== "undefined"){
+        top.css('visibility', 'visible').fadeTo(time, 0, function(){
+          $(this).css("visibility", "hidden");
+          $(this).css("opacity", "");
+        });	
+      }
+      else{
+        top.css('visibility', 'visible');
+      }
+    }
+};
+  }
+
   api.tools.parse_email_data = function(email_data) {
     var data = {};
     var threads = {}
