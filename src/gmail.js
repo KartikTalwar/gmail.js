@@ -916,30 +916,48 @@ var Gmail =  function() {
 
     if (api.check.is_conversation_view()) {
       displayed_email_data = email_data;
+
+      var threads = displayed_email_data.threads;
+      var total_threads = displayed_email_data.total_threads;
+
+      var hash = window.location.hash.split('#')[1] || '';
+      var is_in_trash = (hash.indexOf('trash') === 0);
+
+      for (id in threads) {
+        var email = threads[id];
+        var keep_email = (is_in_trash) ? email.is_deleted : !email.is_deleted;
+
+        if (!keep_email) {
+          delete threads[id];
+          total_threads.splice(total_threads.indexOf(id), 1);
+          displayed_email_data.total_emails--;
+          // TODO: remove people involved only in this email.
+        }
+      }
     }
     else { // Supposing only one displayed email.
       for (id in email_data.threads) {
         var displayed_email_element = $('.ii.gt[class*="' + id + '"]');
 
         if (displayed_email_element.length > 0) {
-          var thread = email_data.threads[id];
+          var email = email_data.threads[id];
 
           displayed_email_data.first_email = id;
           displayed_email_data.last_email = id;
           displayed_email_data.subject = email_data.subject;
 
           displayed_email_data.threads = {};
-          displayed_email_data.threads[id] = thread;
+          displayed_email_data.threads[id] = email;
           displayed_email_data.total_emails = 1;
           displayed_email_data.total_threads = [id];
 
           displayed_email_data.people_involved = [];
 
           displayed_email_data.people_involved.push(
-            [thread.from, thread.from_email]
+            [email.from, email.from_email]
           );
 
-          thread.to.forEach(function(recipient) {
+          email.to.forEach(function(recipient) {
             var address = api.tools.extract_email_address(recipient);
             var name = api.tools.extract_name(recipient.replace(address, '')) || '';
 
@@ -964,7 +982,7 @@ var Gmail =  function() {
     var flag = undefined;
     var array_with_flag = api.tracker.globals[17][5][1];
 
-    for (var i=0; i < array_with_flag.length; i++) {
+    for (var i = 0; i < array_with_flag.length; i++) {
       var current = array_with_flag[i];
 
       if (current[0] === flag_name) {
