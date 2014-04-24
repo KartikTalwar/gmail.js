@@ -958,8 +958,21 @@ var Gmail =  function() {
 
 
   api.check.is_conversation_view = function() {
-    var flag = api.tracker.globals[17][5][1][57][1];
     var check = undefined;
+
+    var flag_name = 'bx_vmb';
+    var flag = undefined;
+    var array_with_flag = api.tracker.globals[17][5][1];
+
+    for (var i=0; i < array_with_flag.length; i++) {
+      var current = array_with_flag[i];
+
+      if (current[0] === flag_name) {
+        flag = current[1];
+
+        break;
+      }
+    }
 
     if (flag !== undefined) {
       var values = {
