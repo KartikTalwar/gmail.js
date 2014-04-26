@@ -89,7 +89,7 @@ var Gmail =  function() {
     var dom = api.dom.inbox_content();
     var box = dom.find("[gh=tl]").find('.nn');
 
-    return box.length == 0; 
+    return box.length == 0;
   }
 
 
@@ -126,13 +126,13 @@ var Gmail =  function() {
 
   api.dom.email_subject = function () {
     var e = $(".hP");
-  
+
     for(var i=0; i<e.length; i++) {
       if($(e[i]).is(':visible')) {
         return $(e[i]);
       }
     };
-  
+
     return $();
   }
 
@@ -153,10 +153,10 @@ var Gmail =  function() {
     if(api.get.current_page() != null && !api.check.is_preview_pane()) {
       return false;
     }
-  
+
     var items = $('.ii.gt');
     var ids = [];
-  
+
     for(var i=0; i<items.length; i++) {
       var mail_id = items[i].getAttribute('class').split(' ')[2];
       if(mail_id != 'undefined' && mail_id != undefined) {
@@ -165,7 +165,7 @@ var Gmail =  function() {
         }
       }
     }
-  
+
     return ids.length > 0;
   }
 
@@ -195,16 +195,16 @@ var Gmail =  function() {
     }
     return [];
   }
-  
+
   api.get.compose_ids = function() {
-	  var ret = [];
-	  var dom = $(".AD [name=draft]");
-	  for(var i = 0; i < dom.length; i++) {
-		  if(dom[i].value != "undefined"){
-			  ret.push(dom[i].value);
-		  }
-	  };
-	  return ret;
+      var ret = [];
+      var dom = $(".AD [name=draft]");
+      for(var i = 0; i < dom.length; i++) {
+          if(dom[i].value != "undefined"){
+              ret.push(dom[i].value);
+          }
+      };
+      return ret;
   }
 
   api.get.email_id = function() {
@@ -501,7 +501,7 @@ var Gmail =  function() {
 
 
   api.tools.parse_actions = function(params) {
-    
+
     if(params.url.act == 'fup' || params.url.act == 'fuv' || typeof params.body == "object") {
       // a way to stop observers when files are being uploaded. See issue #22
       return;
@@ -545,7 +545,8 @@ var Gmail =  function() {
                       'poll'        : 'poll',
                       'refresh'     : 'refresh',
                       'rtr'         : 'restore_message_in_thread',
-                      'open_email'  : 'open_email' 
+                      'open_email'  : 'open_email',
+                      'toggle_threads'  : 'toggle_threads'
                      }
 
     if(typeof params.url.ik == 'string') {
@@ -619,6 +620,22 @@ var Gmail =  function() {
       var response = [params.url.th, params.url, params.body];
       if('open_email' in api.tracker.watchdog) {
         api.tracker.watchdog['open_email'].apply(undefined, response);
+      }
+    }
+
+    if((params.url.view == 'cv' || params.url.view == 'ad') && typeof params.url.th == 'object' && typeof params.url.search == 'string' && params.url.rid != undefined) {
+      var response = [params.url.th, params.url, params.body];
+      if('toggle_threads' in api.tracker.watchdog) {
+        api.tracker.watchdog['toggle_threads'].apply(undefined, response);
+      }
+    }
+
+    if((params.url.view == 'cv' || params.url.view == 'ad') && typeof params.url.th == 'string' && typeof params.url.search == 'string' && params.url.rid != undefined) {
+      if(params.url.msgs != undefined) {
+        var response = [params.url.th, params.url, params.body];
+        if('toggle_threads' in api.tracker.watchdog) {
+          api.tracker.watchdog['toggle_threads'].apply(undefined, response);
+        }
       }
     }
 
@@ -865,7 +882,14 @@ var Gmail =  function() {
 
   api.tools.parse_email_data = function(email_data) {
     var data = {};
-    var threads = {}
+    var threads = {};
+
+    var status = {
+      1: 'deleted', // An email has this status if deleted, even if being read (i.e. even if visible).
+      2: 'hidden',
+      3: 'visible_header',
+      4: 'visible_full'
+    };
 
     for(i in email_data) {
       var x = email_data[i];
@@ -884,7 +908,8 @@ var Gmail =  function() {
         }
 
         data.threads[x[1]] = {};
-        data.threads[x[1]].is_deleted = x[13] == undefined;
+        data.threads[x[1]].status = status[x[3]];
+        data.threads[x[1]].is_deleted = (data.threads[x[1]].status === 'deleted');
         data.threads[x[1]].reply_to_id = x[2];
         data.threads[x[1]].from = x[5];
         data.threads[x[1]].from_email = x[6];
