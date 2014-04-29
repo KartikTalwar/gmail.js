@@ -80,6 +80,7 @@ gmail.get.user_email();
 - [gmail.check **.is_preview_pane()**](#gmailcheckis_preview_pane)
 - [gmail.check **.is_multiple_inbox()**](#gmailcheckis_multiple_inbox)
 - [gmail.check **.is_horizontal_split()**](#gmailcheckis_horizontal_split)
+- [gmail.check **.are_shortcuts_enabled()**](#gmailcheckare_shortcuts_enabled)
 - [gmail.check **.is_vertical_split()**](#gmailcheckis_vertical_split)
 - [gmail.check **.is_tabbed_inbox()**](#gmailcheckis_tabbed_inbox)
 - [gmail.check **.is_right_side_chat()**](#gmailcheckis_right_side_chat)
@@ -375,6 +376,10 @@ Returns `True` if user has multiple inbox lab enabled, `False` otherwise
 #### gmail.check.is_horizontal_split()
 
 Returns `True` if the pane split mode is horiontal `False` otherwise
+
+#### gmail.check.are_shortcuts_enabled()
+
+Returns `True` if user has enabled mail action shortcuts, `False` otherwise
 
 #### gmail.check.is_vertical_split()
 

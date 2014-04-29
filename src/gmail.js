@@ -271,6 +271,36 @@ var Gmail =  function() {
   }
 
 
+  api.check.are_shortcuts_enabled = function() {
+    var flag_name = 'bx_hs';
+    var flag_value = undefined;
+
+    var check = true; // Flag possibly missing in convo view.
+
+    var array_with_flag = api.tracker.globals[17][5][1];
+
+    for(var i=0; i<array_with_flag.length; i++) {
+      var current = array_with_flag[i];
+
+      if(current[0] === flag_name) {
+        flag_value = current[1];
+        break;
+      }
+    }
+
+    if(flag_value !== undefined) {
+      var values = {
+        '0': true,
+        '1': false
+      }
+
+      check = values[flag_value];
+    }
+
+    return check;
+  }
+
+
   api.dom.get_left_sidebar_links = function() {
     return $("div[role=navigation] [title]");
   }
