@@ -148,6 +148,8 @@ These methods return the DOM data itself
 
 These are some helper functions that the rest of the methods use. See source for input params
 
+- gmail.tools **infobox(message, time)**
+  + Adds the yellow info box on top of gmail with the given message
 - gmail.tools **.xhr_watcher()**
 - gmail.tools **.parse_url()**
 - gmail.tools **.deparam()**
