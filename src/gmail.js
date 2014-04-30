@@ -802,7 +802,7 @@ var Gmail =  function() {
       api.tracker.shortcut_watchdog = {};
     }
 
-    if(action in api.tracker.shortcut_actions) {
+    if(action in api.tracker.shortcut_actions && api.check.are_shortcuts_enabled()) {
       api.observe.shortcuts(action, callback);
     } else if(!api.tracker.xhr_init) {
       api.tools.xhr_watcher();
