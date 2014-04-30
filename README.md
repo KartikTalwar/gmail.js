@@ -83,6 +83,7 @@ gmail.get.user_email();
 - [gmail.check **.is_vertical_split()**](#gmailcheckis_vertical_split)
 - [gmail.check **.is_tabbed_inbox()**](#gmailcheckis_tabbed_inbox)
 - [gmail.check **.is_right_side_chat()**](#gmailcheckis_right_side_chat)
+- [gmail.check **.is_conversation_view()**](#gmailcheckis_conversation_view)
 - [gmail.check **.is_google_apps_user()**](#gmailcheckis_google_apps_user)
 - [gmail.check **.is_priority_inbox()**](#gmailcheckis_priority_inbox)
 - [gmail.check **.is_rapportive_installed()**](#gmailcheckis_rapportive_installed)
@@ -153,6 +154,8 @@ These are some helper functions that the rest of the methods use. See source for
 - gmail.tools **.deparam()**
 - gmail.tools **.parse_view_data()**
 - gmail.tools **.parse_email_data()**
+- gmail.tools **.extract_email_address(str)**
+- gmail.tools **.extract_name(str)**
 - gmail.tools **.make_request()**
 - gmail.tools **.sleep(ms)**
 - gmail.tools **.multitry(ms_delay, tries, func, bool_success_check)**
@@ -226,6 +229,41 @@ the data for the specified id is returned instead of the email currently visible
     }
   }
 }
+```
+
+#### gmail.get.displayed_email_data()
+
+Returns an object representation of the emails that are being displayed.
+
+```json
+{
+  "first_email": "145881e7a8befff6",
+  "last_email": "145881e7a8befff6",
+  "total_emails": 1,
+  "total_threads": ["145881e7a8befff6"],
+  "people_involved": [
+    ["Kartik Talwar", "hi@kartikt.com"],
+    ["California", "california@gmail.com"]
+  ],
+  "subject": "test",
+  "threads": {
+    "145881e7a8befff6": {
+      "reply_to_id": "",
+      "is_deleted" : false,
+      "from": "California",
+      "to" : ["hi@kartikt.com"],
+      "cc" : [],
+      "bcc" : [],
+      "from_email": "california@gmail.com",
+      "timestamp": 1382246359000,
+      "datetime": "Sun, Nov 20, 2013 at 1:19 AM",
+      "content_plain": "another test",
+      "subject": "test",
+      "content_html": "<div dir=\"ltr\">another test</div>\n"
+    }
+  }
+}
+
 ```
 
 #### gmail.get.user_email()
@@ -385,6 +423,10 @@ Returns `True` if tabbed inbox view is enabled `False` otherwise
 #### gmail.check.is_right_side_chat()
 
 Returns `True` if chat is on the right sidebar `False` otherwise
+
+#### gmail.check.is_conversation_view()
+
+Returns `True` if emails are displayed as threads, `False` otherwise (i.e. displayed individually)
 
 #### gmail.check.is_google_apps_user()
 
