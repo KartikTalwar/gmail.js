@@ -56,6 +56,7 @@ gmail.get.user_email();
 - [gmail.get **.email_subject()**](#gmailgetemail_subject)
 - [gmail.get **.compose_ids()**](#gmailgetcompose_ids)
 - [gmail.get **.email_data(email_id=undefined)**](#gmailgetemail_dataemail_idundefined)
+- [gmail.get **.displayed_email_data()**](#gmailgetdisplayed_email_data)
 - [gmail.get **.search_query()**](#gmailgetsearch_query)
 - [gmail.get **.unread_emails()**](#gmailgetunread_emails)
  - [gmail.get **.unread_inbox_emails()**](#gmailgetunread_emails)
