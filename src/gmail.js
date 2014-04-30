@@ -979,8 +979,6 @@ var Gmail =  function() {
     var flag_name = 'bx_vmb';
     var flag_value = undefined;
 
-    var check = true; // Flag possibly missing in convo view.
-
     var array_with_flag = api.tracker.globals[17][5][1];
 
     for (var i = 0; i < array_with_flag.length; i++) {
@@ -993,16 +991,7 @@ var Gmail =  function() {
       }
     }
 
-    if (flag_value !== undefined) {
-      var values = {
-        '0': true,
-        '1': false
-      }
-
-      check = values[flag_value];
-    }
-
-    return check;
+    return flag_value === '0' || flag_value === undefined;
   }
 
 
