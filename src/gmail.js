@@ -794,8 +794,11 @@ var Gmail =  function() {
 
 
   api.observe.on = function(action, callback) {
-    if(typeof api.tracker.watchdog != "object" || typeof api.tracker.shortcut_watchdog != "object") {
+    if(typeof api.tracker.watchdog != "object") {
       api.tracker.watchdog = {};
+    }
+
+    if(typeof api.tracker.shortcut_watchdog != "object") {
       api.tracker.shortcut_watchdog = {};
     }
 
