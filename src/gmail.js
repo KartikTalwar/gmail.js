@@ -288,16 +288,7 @@ var Gmail =  function() {
       }
     }
 
-    if(flag_value !== undefined) {
-      var values = {
-        '0': true,
-        '1': false
-      }
-
-      check = values[flag_value];
-    }
-
-    return check;
+    return flag_value == '1';
   }
 
 
@@ -764,7 +755,7 @@ var Gmail =  function() {
 
   api.observe.shortcuts = function(action, callback) {
     var cb_wrapper = function(e) {
-      if(api.tracker.shortcut_actions[action].key.indexOf(e.which) != -1) {
+      if(api.tracker.shortcut_actions[action].keys.indexOf(e.which) != -1) {
         if(!(document.activeElement.nodeName == 'INPUT' || document.activeElement.nodeName == 'TEXTAREA' ||
              (document.activeElement.attributes.contenteditable != undefined &&
               document.activeElement.attributes.contenteditable.value == 'true'))) {
@@ -789,7 +780,7 @@ var Gmail =  function() {
 
 
   api.tracker.shortcut_actions = {
-                                   "reply" : {"keys" : [114]}
+                                   "reply" : {"keys" : [114, 97]}
                                  };
 
 
