@@ -762,16 +762,49 @@ var Gmail =  function() {
   }
 
 
+  api.observe.shortcuts = function(action, callback) {
+    var cb_wrapper = function(e) {
+      if(api.tracker.shortcut_actions[action].key.indexOf(e.which) != -1) {
+        if(!(document.activeElement.nodeName == 'INPUT' || document.activeElement.nodeName == 'TEXTAREA' ||
+             (document.activeElement.attributes.contenteditable != undefined &&
+              document.activeElement.attributes.contenteditable.value == 'true'))) {
+          callback();
+        }
+      }
+    }
+
+    if(typeof api.tracker.shortcut_watchdog != "object") {
+      api.tracker.shortcut_watchdog = {};
+    }
+
+    api.tracker.shortcut_watchdog[action] = cb_wrapper;
+
+    switch(action) {
+      case "reply":
+        document.body.addEventListener('keypress', api.tracker.shortcut_watchdog[action]);
+        break;
+    }
+
+  }
+
+
+  api.tracker.shortcut_actions = {
+                                   "reply" : {"keys" : [114]}
+                                 };
+
+
   api.observe.on = function(action, callback) {
-    if(typeof api.tracker.watchdog != "object") {
+    if(typeof api.tracker.watchdog != "object" || typeof api.tracker.shortcut_watchdog != "object") {
       api.tracker.watchdog = {};
+      api.tracker.shortcut_watchdog = {};
     }
 
-    if(!api.tracker.xhr_init) {
+    if(action in api.tracker.shortcut_actions) {
+      api.observe.shortcuts(action, callback);
+    } else if(!api.tracker.xhr_init) {
       api.tools.xhr_watcher();
-    }
-
-    api.tracker.watchdog[action] = callback;
+      api.tracker.watchdog[action] = callback;
+    } else {}
   }
 
 
@@ -782,11 +815,22 @@ var Gmail =  function() {
           delete api.tracker.watchdog[action];
         }
       }
+      if('shortcut_watchdog' in api.tracker) {
+        if(action in api.tracker.shortcut_watchdog) {
+          document.body.removeEventListener('keypress', api.tracker.shortcut_watchdog[action]);
+        }
+      }
     } else {
       var win = top.document.getElementById("js_frame").contentDocument.defaultView;
       win.XMLHttpRequest.prototype.open = api.tracker.xhr_open;
       win.XMLHttpRequest.prototype.send = api.tracker.xhr_send;
       api.tracker.xhr_init = false
+
+      if('shortcut_watchdog' in api.tracker) {
+        for(action in api.tracker.shortcut_watchdog) {
+          document.body.removeEventListener('keypress', api.tracker.shortcut_watchdog[action]);
+        }
+      }
     }
   }
 
