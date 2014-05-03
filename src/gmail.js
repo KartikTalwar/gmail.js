@@ -89,7 +89,7 @@ var Gmail =  function() {
     var dom = api.dom.inbox_content();
     var box = dom.find("[gh=tl]").find('.nn');
 
-    return box.length == 0; 
+    return box.length == 0;
   }
 
 
@@ -126,13 +126,13 @@ var Gmail =  function() {
 
   api.dom.email_subject = function () {
     var e = $(".hP");
-  
+
     for(var i=0; i<e.length; i++) {
       if($(e[i]).is(':visible')) {
         return $(e[i]);
       }
     };
-  
+
     return $();
   }
 
@@ -153,10 +153,10 @@ var Gmail =  function() {
     if(api.get.current_page() != null && !api.check.is_preview_pane()) {
       return false;
     }
-  
+
     var items = $('.ii.gt');
     var ids = [];
-  
+
     for(var i=0; i<items.length; i++) {
       var mail_id = items[i].getAttribute('class').split(' ')[2];
       if(mail_id != 'undefined' && mail_id != undefined) {
@@ -165,7 +165,7 @@ var Gmail =  function() {
         }
       }
     }
-  
+
     return ids.length > 0;
   }
 
@@ -195,7 +195,7 @@ var Gmail =  function() {
     }
     return [];
   }
-  
+
   api.get.compose_ids = function() {
 	  var ret = [];
 	  var dom = $(".AD [name=draft]");
@@ -522,7 +522,7 @@ var Gmail =  function() {
 
 
   api.tools.parse_actions = function(params) {
-    
+
     if(params.url.act == 'fup' || params.url.act == 'fuv' || typeof params.body == "object") {
       // a way to stop observers when files are being uploaded. See issue #22
       return;
@@ -567,7 +567,7 @@ var Gmail =  function() {
                       'refresh'     : 'refresh',
                       'rtr'         : 'restore_message_in_thread',
                       'open_email'  : 'open_email',
-                      'toggle_threads'  : 'toggle_threads' 
+                      'toggle_threads'  : 'toggle_threads'
                      }
 
     if(typeof params.url.ik == 'string') {
@@ -940,7 +940,7 @@ var Gmail =  function() {
         top.css('visibility', 'visible').fadeTo(time, 0, function(){
           $(this).css("visibility", "hidden");
           $(this).css("opacity", "");
-        });	
+        });
       }
       else{
         top.css('visibility', 'visible');
@@ -1009,6 +1009,107 @@ var Gmail =  function() {
     }
 
     return {};
+  }
+
+
+  api.get.displayed_email_data = function() {
+    var email_data = api.get.email_data();
+    var displayed_email_data = {};
+
+    if (api.check.is_conversation_view()) {
+      displayed_email_data = email_data;
+
+      var threads = displayed_email_data.threads;
+      var total_threads = displayed_email_data.total_threads;
+
+      var hash = window.location.hash.split('#')[1] || '';
+      var is_in_trash = (hash.indexOf('trash') === 0);
+
+      for (id in threads) {
+        var email = threads[id];
+        var keep_email = (is_in_trash) ? email.is_deleted : !email.is_deleted;
+
+        if (!keep_email) {
+          delete threads[id];
+          total_threads.splice(total_threads.indexOf(id), 1);
+          displayed_email_data.total_emails--;
+          // TODO: remove people involved only in this email.
+        }
+      }
+    }
+    else { // Supposing only one displayed email.
+      for (id in email_data.threads) {
+        var displayed_email_element = $('.ii.gt[class*="' + id + '"]');
+
+        if (displayed_email_element.length > 0) {
+          var email = email_data.threads[id];
+
+          displayed_email_data.first_email = id;
+          displayed_email_data.last_email = id;
+          displayed_email_data.subject = email_data.subject;
+
+          displayed_email_data.threads = {};
+          displayed_email_data.threads[id] = email;
+          displayed_email_data.total_emails = 1;
+          displayed_email_data.total_threads = [id];
+
+          displayed_email_data.people_involved = [];
+
+          displayed_email_data.people_involved.push(
+            [email.from, email.from_email]
+          );
+
+          email.to.forEach(function(recipient) {
+            var address = api.tools.extract_email_address(recipient);
+            var name = api.tools.extract_name(recipient.replace(address, '')) || '';
+
+            displayed_email_data.people_involved.push(
+              [name, address]
+            );
+          });
+
+          break;
+        }
+      }
+    }
+
+    return displayed_email_data;
+  }
+
+
+  api.check.is_conversation_view = function() {
+    var flag_name = 'bx_vmb';
+    var flag_value = undefined;
+
+    var array_with_flag = api.tracker.globals[17][5][1];
+
+    for (var i = 0; i < array_with_flag.length; i++) {
+      var current = array_with_flag[i];
+
+      if (current[0] === flag_name) {
+        flag_value = current[1];
+
+        break;
+      }
+    }
+
+    return flag_value === '0' || flag_value === undefined;
+  }
+
+
+  api.tools.extract_email_address = function(str) {
+    var regex = /[\+a-z0-9._-]+@[a-z0-9._-]+\.[a-z0-9._-]+/gi;
+    var matches = (str) ? str.match(regex) : undefined;
+
+    return (matches) ? matches[0] : undefined;
+  }
+
+
+  api.tools.extract_name = function(str) {
+    var regex = /[a-z'._-\s]+/gi;
+    var matches = (str) ? str.match(regex) : undefined;
+
+    return (matches && matches[0]) ? matches[0].trim() : undefined;
   }
 
 
