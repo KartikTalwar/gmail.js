@@ -895,17 +895,23 @@ var Gmail =  function() {
 
   api.tools.infobox = function(message, time){
     var top = $(".b8.UC");
+	
+	// initial Gmail style I noticed on 26 / 05 / 2014 for $(".b8.UC") :
+	// style="position: relative; top: -10000px;"
+	// Seems that when Gmail shows infobox, the style is simply removed
+	// - from what I can see in DevTools Elements Panel	
+	
     if(top.length > 0){
       var info = top.find(".vh");
       info.text(message);
       if(typeof time !== "undefined"){
-        top.css('visibility', 'visible').fadeTo(time, 0, function(){
-          $(this).css("visibility", "hidden");
-          $(this).css("opacity", "");
-        });
+        var initialInfoboxStyle = top.attr("style");			// backup initial style
+		top.removeAttr("style").fadeTo(time, 0, function(){  	// simply remove then restore
+          $(this).attr("style", initialInfoboxStyle);			// style attribute insteed of playing
+        });								// on visibility property
       }
       else{
-        top.css('visibility', 'visible');
+        top.removeAttr("style");					// dito
       }
     }
   }
