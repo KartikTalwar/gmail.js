@@ -295,11 +295,12 @@ Returns current user's file storage stats
 Returns what page of gmail the user is currently on. These are the possible responses
 
 ```js
-['sent', 'inbox', 'starred', 'drafts', 'imp', 'chats', 'all', 'spam', 'trash'] // pages
+['sent', 'inbox', 'starred', 'drafts', 'imp', 'chats', 'all', 'spam', 'trash', 'settings'] // pages
 null // inside email conversation
 "/search/[.+]" // inside search view
 "/label/[.+]" // inside label view
 "/category/[.+]" // inside category view
+"/settings/[.+]" // settings sub-page (excluding settings root page)
 ```
 
 #### gmail.get.email_subject()
