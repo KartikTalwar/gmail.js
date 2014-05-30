@@ -883,7 +883,7 @@ var Gmail =  function() {
       page = hash;
     }
 
-    if(hash.indexOf('label/') == 0 || hash.indexOf('category/') == 0 || hash.indexOf('search/') == 0) {
+    if(hash.indexOf('label/') == 0 || hash.indexOf('category/') == 0 || hash.indexOf('search/') == 0 || hash.indexOf('settings/') == 0) {
       if(hash.split('/').length < 3) {
         page = hash;
       }
