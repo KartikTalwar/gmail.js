@@ -694,7 +694,7 @@ var Gmail =  function() {
         var curr_onreadystatechange = xhr.onreadystatechange;
         xhr.onreadystatechange = function(progress) {
           if (this.readyState === this.DONE) {
-            response.push(progress.target);
+            response.push(api.tools.parse_response(progress.target.response));
             api.tracker.response_watchdog[action_map[action]].apply(undefined, response);
           }
           if (curr_onreadystatechange) {curr_onreadystatechange.apply(this, arguments)}
@@ -703,6 +703,44 @@ var Gmail =  function() {
 
     }
 
+  }
+
+  api.tools.parse_response = function(response) {
+      var parsedResponse = [],
+          data, dataLength, endIndex, realData;
+
+      try {
+
+        // gmail post response structure
+        // )}]'\n<datalength><rawData>\n<dataLength><rawData>...
+
+        // prepare response, remove eval protectors
+        response = response.replace(/\n/g, ' ');
+        response = response.substring(response.indexOf("'") + 1, response.length);
+
+        while(response.replace(/\s/g, '').length > 1) {
+
+          // how long is the data to get
+          dataLength = response.substring(0, response.indexOf('[')).replace(/\s/g, '');
+          if (!dataLength) {dataLength = response.length;}
+
+          // get raw data
+          endIndex = (parseInt(dataLength, 10) - 2) + response.indexOf('[');
+          data = response.substring(response.indexOf('['), endIndex);
+
+          // eval raw data
+          realData = eval(data);
+          parsedResponse.push(realData);
+
+          // prepare response for next loop
+          response = response.substring(response.indexOf('['), response.length);
+          response = response.substring(data.length, response.length);
+        }
+      } catch (e) {
+          console.log('Gmail post response parsing failed.', e);
+      }
+
+      return parsedResponse;
   }
 
   api.tools.parse_requests = function(params, xhr) {
