@@ -697,7 +697,9 @@ var Gmail =  function() {
             response.push(api.tools.parse_response(progress.target.responseText));
             api.tracker.response_watchdog[action_map[action]].apply(undefined, response);
           }
-          if (curr_onreadystatechange) {curr_onreadystatechange.apply(this, arguments)}
+          if (curr_onreadystatechange) {
+            curr_onreadystatechange.apply(this, arguments);
+          }
         }
       }
 
