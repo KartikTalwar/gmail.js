@@ -826,7 +826,9 @@ var Gmail =  function() {
       api.tools.xhr_watcher();
     }
     api.tracker.watchdog[action] = callback;
-    api.tracker.response_watchdog[action] = response_callback;
+    if (response_callback) {
+      api.tracker.response_watchdog[action] = response_callback;
+    }
   }
 
 
