@@ -197,14 +197,14 @@ var Gmail =  function() {
   }
 
   api.get.compose_ids = function() {
-	  var ret = [];
-	  var dom = $(".AD [name=draft]");
-	  for(var i = 0; i < dom.length; i++) {
-		  if(dom[i].value != "undefined"){
-			  ret.push(dom[i].value);
-		  }
-	  };
-	  return ret;
+      var ret = [];
+      var dom = $(".AD [name=draft]");
+      for(var i = 0; i < dom.length; i++) {
+          if(dom[i].value != "undefined"){
+              ret.push(dom[i].value);
+          }
+      };
+      return ret;
   }
 
   api.get.email_id = function() {
@@ -530,7 +530,7 @@ var Gmail =  function() {
   }
 
 
-  api.tools.parse_actions = function(params) {
+  api.tools.parse_actions = function(params, xhr) {
 
     if(params.url.act == 'fup' || params.url.act == 'fuv' || typeof params.body == "object") {
       // a way to stop observers when files are being uploaded. See issue #22
@@ -685,14 +685,67 @@ var Gmail =  function() {
     }
 
     if(response != null) {
+
       if(action_map[action] in api.tracker.watchdog) {
         api.tracker.watchdog[action_map[action]].apply(undefined, response);
       }
+
+      if(action_map[action] in api.tracker.response_watchdog) {
+        var curr_onreadystatechange = xhr.onreadystatechange;
+        xhr.onreadystatechange = function(progress) {
+          if (this.readyState === this.DONE) {
+            response.push(api.tools.parse_response(progress.target.responseText));
+            api.tracker.response_watchdog[action_map[action]].apply(undefined, response);
+          }
+          if (curr_onreadystatechange) {
+            curr_onreadystatechange.apply(this, arguments);
+          }
+        }
+      }
+
     }
 
   }
 
-  api.tools.parse_requests = function(params) {
+  api.tools.parse_response = function(response) {
+      var parsedResponse = [],
+          data, dataLength, endIndex, realData;
+
+      try {
+
+        // gmail post response structure
+        // )}]'\n<datalength><rawData>\n<dataLength><rawData>...
+
+        // prepare response, remove eval protectors
+        response = response.replace(/\n/g, ' ');
+        response = response.substring(response.indexOf("'") + 1, response.length);
+
+        while(response.replace(/\s/g, '').length > 1) {
+
+          // how long is the data to get
+          dataLength = response.substring(0, response.indexOf('[')).replace(/\s/g, '');
+          if (!dataLength) {dataLength = response.length;}
+
+          // get raw data
+          endIndex = (parseInt(dataLength, 10) - 2) + response.indexOf('[');
+          data = response.substring(response.indexOf('['), endIndex);
+
+          // eval raw data
+          realData = eval(data);
+          parsedResponse.push(realData);
+
+          // prepare response for next loop
+          response = response.substring(response.indexOf('['), response.length);
+          response = response.substring(data.length, response.length);
+        }
+      } catch (e) {
+          console.log('Gmail post response parsing failed.', e);
+      }
+
+      return parsedResponse;
+  }
+
+  api.tools.parse_requests = function(params, xhr) {
     params.url_raw = params.url;
     params.url = api.tools.parse_url(params.url);
 
@@ -702,7 +755,7 @@ var Gmail =  function() {
     }
 
     api.tracker.events.unshift(params);
-    api.tools.parse_actions(params);
+    api.tools.parse_actions(params, xhr);
 
     if(params.method == 'POST' && typeof params.url.act == 'string') {
       api.tracker.actions.unshift(params);
@@ -743,7 +796,7 @@ var Gmail =  function() {
         var out = this._gjs_send.apply(this, arguments);
         if (this.xhrParams) {
           this.xhrParams.body = body;
-          api.tools.parse_requests(this.xhrParams);
+          api.tools.parse_requests(this.xhrParams, this);
         }
 
         return out;
@@ -762,26 +815,34 @@ var Gmail =  function() {
   }
 
 
-  api.observe.on = function(action, callback) {
+  api.observe.on = function(action, callback, response_callback) {
     if(typeof api.tracker.watchdog != "object") {
       api.tracker.watchdog = {};
+    }
+
+    if(typeof api.tracker.response_watchdog != "object") {
+      api.tracker.response_watchdog = {};
     }
 
     if(!api.tracker.xhr_init) {
       api.tools.xhr_watcher();
     }
-
     api.tracker.watchdog[action] = callback;
+    if (response_callback) {
+      api.tracker.response_watchdog[action] = response_callback;
+    }
   }
 
 
   api.observe.off = function(action) {
     if(action) {
-      if('watchdog' in api.tracker) {
-        if(action in api.tracker.watchdog) {
-          delete api.tracker.watchdog[action];
+      ['watchdog', 'response_watchdog'].forEach(function(watcher) {
+        if(watcher in api.tracker) {
+          if(action in api.tracker[watcher]) {
+            delete api.tracker[watcher][action];
+          }
         }
-      }
+      });
     } else {
       var win = top.document.getElementById("js_frame").contentDocument.defaultView;
       win.XMLHttpRequest.prototype.open = api.tracker.xhr_open;
@@ -895,23 +956,23 @@ var Gmail =  function() {
 
   api.tools.infobox = function(message, time){
     var top = $(".b8.UC");
-	
-	// initial Gmail style I noticed on 26 / 05 / 2014 for $(".b8.UC") :
-	// style="position: relative; top: -10000px;"
-	// Seems that when Gmail shows infobox, the style is simply removed
-	// - from what I can see in DevTools Elements Panel	
-	
+
+    // initial Gmail style I noticed on 26 / 05 / 2014 for $(".b8.UC") :
+    // style="position: relative; top: -10000px;"
+    // Seems that when Gmail shows infobox, the style is simply removed
+    // - from what I can see in DevTools Elements Panel
+
     if(top.length > 0){
       var info = top.find(".vh");
       info.text(message);
       if(typeof time !== "undefined"){
-        var initialInfoboxStyle = top.attr("style");			// backup initial style
-		top.removeAttr("style").fadeTo(time, 0, function(){  	// simply remove then restore
-          $(this).attr("style", initialInfoboxStyle);			// style attribute insteed of playing
-        });								// on visibility property
+        var initialInfoboxStyle = top.attr("style");            // backup initial style
+        top.removeAttr("style").fadeTo(time, 0, function(){     // simply remove then restore
+          $(this).attr("style", initialInfoboxStyle);           // style attribute insteed of playing
+        });                             // on visibility property
       }
       else{
-        top.removeAttr("style");					// dito
+        top.removeAttr("style");                    // dito
       }
     }
   }
