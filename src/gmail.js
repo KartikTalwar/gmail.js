@@ -6,7 +6,8 @@ var Gmail =  function() {
               check : {},
               tools : {},
               tracker : {},
-              dom : {}
+              dom : {},
+              chat : {}
             };
 
 
@@ -1176,6 +1177,19 @@ var Gmail =  function() {
     return dictionary[label];
   }
 
+  api.chat.is_hangouts = function() {
+    // Returns true if the user is using hangouts instead of the classic chat
+    iframes = $('iframe');
+    for(frame in iframes) {
+      if(typeof frame.src === 'string') {
+        console.log(frame.src);
+      }
+      if(typeof frame.src === 'string' && frame.src.indexOf("https://talkgadget.google.com") == 0) {
+        return true;
+      }
+    }
+    return false;
+  }
 
   return api;
 }
