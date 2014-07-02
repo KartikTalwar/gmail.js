@@ -15,7 +15,7 @@ var Gmail =  function() {
   api.tracker.globals   = GLOBALS;
   api.tracker.view_data = VIEW_DATA;
   api.tracker.ik        = api.tracker.globals[9];
-
+  api.tracker.hangouts  = undefined;
 
 
   api.get.last_active = function() {
@@ -1178,17 +1178,35 @@ var Gmail =  function() {
   }
 
   api.chat.is_hangouts = function() {
-    // Returns true if the user is using hangouts instead of the classic chat
-    iframes = $('iframe');
-    for(frame in iframes) {
-      if(typeof frame.src === 'string') {
-        console.log(frame.src);
-      }
-      if(typeof frame.src === 'string' && frame.src.indexOf("https://talkgadget.google.com") == 0) {
-        return true;
-      }
+    if(api.tracker.hangouts != undefined) {
+      return api.tracker.hangouts;
     }
-    return false;
+
+    // Returns true if the user is using hangouts instead of the classic chat
+    dwClasses = $(".dw")
+    if(dwClasses.length > 1) {
+      throw "Figuring out is hangouts - more than one dw classes found";
+    }
+    if(dwClasses.length == 0) {
+      throw "Figuring out is hangouts - no dw classes found";
+    }
+
+    dw = dwClasses[0]
+
+    chatWindows = $('.nH.aJl.nn', dw)
+    if(chatWindows.length > 0) {
+      // hangouts
+      api.tracker.hangouts = true;
+      return true;
+    }
+
+    chatWindows = $('.nH.nn', dw)
+    if(chatWindows.length > 2) {
+      // classic
+      api.tracker.hangouts = false;
+      return false;
+    }
+    return undefined;
   }
 
   return api;
