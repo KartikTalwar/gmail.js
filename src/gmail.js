@@ -1183,7 +1183,7 @@ var Gmail =  function() {
     }
 
     // Returns true if the user is using hangouts instead of the classic chat
-    dwClasses = $(".dw")
+    var dwClasses = $(".dw")
     if(dwClasses.length > 1) {
       throw "Figuring out is hangouts - more than one dw classes found";
     }
@@ -1191,16 +1191,16 @@ var Gmail =  function() {
       throw "Figuring out is hangouts - no dw classes found";
     }
 
-    dw = dwClasses[0]
+    var dw = dwClasses[0]
 
-    chatWindows = $('.nH.aJl.nn', dw)
+    var chatWindows = $('.nH.aJl.nn', dw)
     if(chatWindows.length > 0) {
       // hangouts
       api.tracker.hangouts = true;
       return true;
     }
 
-    chatWindows = $('.nH.nn', dw)
+    var chatWindows = $('.nH.nn', dw)
     if(chatWindows.length > 2) {
       // classic
       api.tracker.hangouts = false;
