@@ -96,6 +96,13 @@ gmail.get.user_email();
 - [gmail.check **.is_signal_installed()**](#gmailcheckis_signal_installed)
 
 
+#### CHAT
+
+
+- [gmail.chat **.is_hangouts()**](#gmailchatis_hangouts)
+
+
+
 #### OBSERVE
 
 - [gmail.observe **.http_requests()**](#gmailobservehttp_requests)
@@ -472,6 +479,12 @@ Returns `True` if [xobni](https://www.xobni.com) chrome extension is installed `
 #### gmail.check.is_signal_installed()
 
 Returns `True` if [Signal](https://trysignal.com) chrome extension is installed `False` otherwise
+
+
+#### gmail.chat.is_hangouts()
+
+Returns `True` if the account supports the new hangout UI for chat `False` otherwise (native chat window)
+
 
 
 #### gmail.observe.http_requests()
