@@ -73,6 +73,11 @@ var Gmail =  function() {
     return previewPaneFound;
   }
 
+  // retrieve queue of compose window dom objects
+  // latest compose at the start of the queue (index 0)
+  api.dom.composes = function() {
+    return $('div.AD');
+  }
 
   api.dom.inboxes = function() {
     var dom = api.dom.inbox_content();
@@ -817,6 +822,124 @@ var Gmail =  function() {
 
 
   api.observe.on = function(action, callback, response_callback) {
+
+    // var dom = {
+    //   'compose_inline': [ '#\\:3g div[role="button"]', 99 ]
+    //   'reply': 'td.amr div.nr span[role=link]:contains(Reply)',
+    //   'forward': 'td.amr div.nr span[role=link]:contains(Forward)'
+    // };
+
+    // map observers to DOM class names
+    // as elements are inserted into the DOM, these classes will be checked for and mapped events triggered,
+    // receiving 'e' event object, and a jquery bound inserted DOM element
+    // Config example: event_name: {
+    //                   class: 'className', // required - check for this className in the inserted DOM element
+    //                   sub_selector: 'div.className', // if specified, we do a jquery element.find for the passed selector on the inserted element
+    //                   handler: function( matchElement, callback ) {}, // if specified this handler is called if a match is found. Otherwise default calls the callback & passes the jQuery matchElement
+    //                 },
+    // TODO: current limitation allows only 1 action per watched className (i.e. each watched class must be 
+    //       unique). If this functionality is needed this can be worked around by pushing actions to an array
+    //       in api.tracker.dom_observer_map below
+    // console.log( 'Observer set for', action, callback);
+    api.tracker.dom_observers = {
+      'compose': {
+        class: 'nH',
+        sub_selector: 'div.AD',
+      },
+      'compose:recipient': {
+        class: 'vN',
+        handler: function(match, callback) {
+          // console.log('compose:recipient handler called',match,callback);
+          callback(match);
+        },
+      }
+    };
+
+    // support for DOM observers
+    if( api.tracker.dom_observers[action] ) {
+
+      // console.log('observer found',api.tracker.dom_observers[action]);
+
+      // if we haven't yet bound the DOM insertion observer, do it now
+      if(!api.tracker.observing_dom) {
+        api.tracker.observing_dom = true;
+        api.tracker.dom_watchdog = {}; // store passed observer callbacks for different DOM events
+
+        // map observed classNames to actions
+        api.tracker.dom_observer_map = {};
+        $.each(api.tracker.dom_observers, function(act,config){
+          api.tracker.dom_observer_map[config.class] = act;
+        });
+
+        // default handler
+        var default_handler = function(match, callback) {
+          callback(match);
+        };
+
+        // this listener will check every element inserted into the DOM
+        // for specified classes (as defined in api.tracker.dom_observers above) which indicate 
+        // specified actions which need triggering
+        $(window.document).bind('DOMNodeInserted', function(e) {
+          // console.log('insertion', e.target);
+
+          // loop through each of the inserted elements classes & check for a defined observer on that class
+          $.each(e.target.className.split(/\s+/), function(idx, className) {
+            var observer = api.tracker.dom_observer_map[className];
+
+            // check if this is a defined observer, and callbacks are bound to that observer
+            if(observer && api.tracker.dom_watchdog[observer]) {
+              var element = $(e.target);
+              var config = api.tracker.dom_observers[observer];
+              if(config.sub_selector) {
+                element = element.find(config.sub_selector);
+                // console.log('checking for subselector', config.sub_selector, element);
+              }
+              
+              // if an element has been found, execute the observer handler (or if none defined, execute the callback)
+              if(element.length) {
+                var handler = config.handler ? config.handler : default_handler;
+                // console.log( 'inserted DOM: class match in watchdog',api.tracker.dom_watchdog[observer] );
+                $.each(api.tracker.dom_watchdog[observer], function(idx, callback) {
+                  handler(element, callback);
+                });
+              }
+            }
+          });
+        });
+      }
+
+      // add callback to an array in the dom watchdog
+      if(typeof api.tracker.dom_watchdog[action] != 'object') {
+        api.tracker.dom_watchdog[action] = [];
+      }
+      api.tracker.dom_watchdog[action].push( callback );
+      // console.log(api.tracker.observing_dom,'dom_watchdog is now:',api.tracker.dom_watchdog);
+
+    // support for gmail interface load event
+    } else if( action == 'load' ) {
+
+      // wait until the gmail interface has finished loading and then
+      // execute the passed handler. If interface is already loaded,
+      // then will just execute callback
+      if( api.dom.inbox_content().length ) return callback();
+      var load_count = 0;
+      var delay = 200; // 200ms per check
+      var attempts = 50; // try 50 times before giving up & assuming an error
+      var timer = setInterval( function() {
+        //console.log('attempt ' + load_count);
+        var test = api.dom.inbox_content().length;
+        if( test > 0 ) {
+          clearInterval(timer);
+          //console.log( 'INERFACE LOADED!');
+          return callback();
+        } else if( ++load_count > attempts ) {
+          clearInterval(timer);
+          console.log('Failed to detect interface load in ' + (delay*attempts/1000) + ' seconds. Will automatically fire event in 5 further seconds.');
+          setTimeout(callback, 5000);
+        }
+      }, delay );
+    }
+
     if(typeof api.tracker.watchdog != "object") {
       api.tracker.watchdog = {};
     }
