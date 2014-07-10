@@ -446,7 +446,6 @@ var Gmail =  function() {
     return params;
   }
 
-
   api.tools.sleep = function(milliseconds) {
     var start = new Date().getTime();
     while(true) {
@@ -846,19 +845,57 @@ var Gmail =  function() {
         class: 'nH',
         sub_selector: 'div.AD',
       },
-      'compose:recipient': {
-        class: 'vN',
+      'recipient_change': {
+        class: 'vR',
         handler: function(match, callback) {
           // console.log('compose:recipient handler called',match,callback);
-          callback(match);
+
+          // we need to small delay on the execution of the handler as when the recipients field initialises on a reply (or reinstated compose/draft)
+          // then multiple DOM elements will be inserted for each recipient causing this handler to execute multiple times
+          // in reality we only want a single callback, so give other nodes time to be inserted & then only execute the callback once
+          if(typeof api.tracker.recipient_matches != 'object') {
+            api.tracker.recipient_matches = [];
+          }
+          api.tracker.recipient_matches.push(match);
+          setTimeout(function(){
+            // console.log('recipient timeout handler', api.tracker.recipient_matches.length);
+            if(!api.tracker.recipient_matches.length) return;
+            // console.log('executing recipient timeout handler', api.tracker.recipient_matches);
+
+            // determine an array of all emails specified for To, CC and BCC and extract addresses into an object for the callback
+            var compose = api.tracker.recipient_matches[0].closest('.GS');
+            var recipients = {};
+            compose.find('input[type=hidden]').each(function(idx, recipient ){
+              if(!recipients[recipient.name]) recipients[recipient.name] = [];
+              recipients[recipient.name].push(recipient.value);
+            });
+            callback(api.tracker.recipient_matches, recipients);
+
+            // reset matches so no future delayed instances of this function execute
+            api.tracker.recipient_matches = [];
+          },100);
         },
-      }
+      },
+
+      // this will fire if a new reply or forward is created. it won't fire if a reply changes to a forward & vice versa
+      'reply_forward': {
+        class: 'An', // M9 would be better but this isn't set at the point of insertion
+        handler: function(match, callback) {
+          // console.log('reply_forward handler called', match, callback);
+
+          // look back up the DOM tree for M9 (the main reply/forward node)
+          match = match.closest('div.M9');
+          if(!match.length) return;
+          var type = match.find('input[name=subject]').val().indexOf('Fw') == 0 ? 'Forward' : 'Reply';
+          callback(match,type);
+        }
+      },
     };
 
     // support for DOM observers
     if( api.tracker.dom_observers[action] ) {
 
-      // console.log('observer found',api.tracker.dom_observers[action]);
+      //console.log('observer found',api.tracker.dom_observers[action]);
 
       // if we haven't yet bound the DOM insertion observer, do it now
       if(!api.tracker.observing_dom) {
@@ -870,6 +907,7 @@ var Gmail =  function() {
         $.each(api.tracker.dom_observers, function(act,config){
           api.tracker.dom_observer_map[config.class] = act;
         });
+        // console.log( 'dom_observer_map', api.tracker.dom_observer_map);
 
         // default handler
         var default_handler = function(match, callback) {
@@ -880,7 +918,7 @@ var Gmail =  function() {
         // for specified classes (as defined in api.tracker.dom_observers above) which indicate 
         // specified actions which need triggering
         $(window.document).bind('DOMNodeInserted', function(e) {
-          // console.log('insertion', e.target);
+          //console.log('insertion', e.target);
 
           // loop through each of the inserted elements classes & check for a defined observer on that class
           $.each(e.target.className.split(/\s+/), function(idx, className) {
@@ -898,7 +936,7 @@ var Gmail =  function() {
               // if an element has been found, execute the observer handler (or if none defined, execute the callback)
               if(element.length) {
                 var handler = config.handler ? config.handler : default_handler;
-                // console.log( 'inserted DOM: class match in watchdog',api.tracker.dom_watchdog[observer] );
+                // console.log( 'inserted DOM: class match in watchdog',observer,api.tracker.dom_watchdog[observer] );
                 $.each(api.tracker.dom_watchdog[observer], function(idx, callback) {
                   handler(element, callback);
                 });
@@ -926,11 +964,9 @@ var Gmail =  function() {
       var delay = 200; // 200ms per check
       var attempts = 50; // try 50 times before giving up & assuming an error
       var timer = setInterval( function() {
-        //console.log('attempt ' + load_count);
         var test = api.dom.inbox_content().length;
         if( test > 0 ) {
           clearInterval(timer);
-          //console.log( 'INERFACE LOADED!');
           return callback();
         } else if( ++load_count > attempts ) {
           clearInterval(timer);
