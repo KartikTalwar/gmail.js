@@ -999,9 +999,9 @@ var Gmail =  function() {
 
     $.each(events.triggered, function(action,response) {
 
-      // TODO: backwards compat for after events requires we push onreadystatechange parsed response first
       // we have to do this here each time to keep backwards compatibility with old response_callback implementation
       response = $.extend([], response); // break the reference so it doesn't keep growing each trigger
+      if(type == 'after') response.push(xhr.xhrResponse); // backwards compat for after events requires we push onreadystatechange parsed response first
       response.push(xhr); 
       if(api.tracker.bound(action, type)) {
         $.each(api.tracker.watchdog[type][action], function(idx, callback) {
