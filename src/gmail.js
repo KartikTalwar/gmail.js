@@ -73,18 +73,6 @@ var Gmail =  function() {
     return previewPaneFound;
   }
 
-  // retrieve queue of compose window dom objects
-  // latest compose at the start of the queue (index 0)
-  api.dom.composes = function() {
-    return $('div.AD');
-  }
-
-  api.dom.inboxes = function() {
-    var dom = api.dom.inbox_content();
-    return dom.find("[gh=tl]");
-  }
-
-
   api.check.is_multiple_inbox = function() {
     var dom = api.dom.inboxes();
     return dom.length > 1;
@@ -129,6 +117,11 @@ var Gmail =  function() {
     return {used : used, total : total, percent : Math.floor(percent)}
   }
 
+
+  api.dom.inboxes = function() {
+    var dom = api.dom.inbox_content();
+    return dom.find("[gh=tl]");
+  }
 
   api.dom.email_subject = function () {
     var e = $(".hP");
@@ -534,7 +527,6 @@ var Gmail =  function() {
     return obj;
   }
 
-
   api.tools.parse_actions = function(params, xhr) {
 
     if(params.url.act == 'fup' || params.url.act == 'fuv' || typeof params.body == "object") {
@@ -844,6 +836,9 @@ var Gmail =  function() {
       'compose': {
         class: 'nH',
         sub_selector: 'div.AD',
+        handler: function(match, callback) {
+          callback(new api.dom.compose(match));
+        },
       },
       'recipient_change': {
         class: 'vR',
@@ -992,7 +987,6 @@ var Gmail =  function() {
       api.tracker.response_watchdog[action] = response_callback;
     }
   }
-
 
   api.observe.off = function(action) {
     if(action) {
@@ -1367,6 +1361,117 @@ var Gmail =  function() {
     }
     return undefined;
   }
+
+  // retrieve queue of compose window dom objects
+  // latest compose at the start of the queue (index 0)
+  api.dom.composes = function() {
+    objs = [];
+    $('div.AD').each(function(idx, el) {
+      objs.push( new api.dom.compose(el) );
+    });
+    return objs;
+  }
+
+  /**
+    A compose object. Represents a compose window in the DOM and provides a bunch of methods and properties to access & interact with the window
+    Expects a jQuery DOM element for the compose div
+    TODO: Make to, cc, cc, subject etc functions receive an argument to set these fields
+   */
+  api.dom.compose = function(element) {
+    element = $(element);
+    if(!element || !element.hasClass('AD')) throw('api.dom.compose called with invalid element');
+    this.$el = element;
+    return this;
+  }
+  $.extend(api.dom.compose.prototype, {
+
+    /**
+      Retrieves to, cc, bcc and returns them in a hash of arrays
+      Parameters:
+        options.type  string  to, cc, or bcc to check a specific one
+        options.flat  boolean if true will just return an array of all recipients instead of splitting out into to, cc, and bcc
+     */
+    recipients: function(options) {
+      if( typeof options != 'object' ) options = {};
+      var name_selector = options.type ? '[name=' + options.type + ']' : '';
+
+      // determine an array of all emails specified for To, CC and BCC and extract addresses into an object for the callback
+      var recipients = options.flat ? [] : {};
+      this.$el.find('.GS input[type=hidden]'+name_selector).each(function(idx, recipient ){
+        if(options.flat) {
+          recipients.push(recipient.value);
+        } else {
+          if(!recipients[recipient.name]) recipients[recipient.name] = [];
+          recipients[recipient.name].push(recipient.value);
+        }
+      });
+      return recipients;
+    },
+//document.activeElement
+    /**
+      Retrieve the current 'to' recipients
+      TODO: ability to set
+     */
+    to: function(to) {
+      return this.recipients( { type: 'to', flat: true } );
+    },
+
+    /**
+      Retrieve the current 'cc' recipients
+      TODO: ability to set
+     */
+    cc: function() {
+      return this.recipients( { type: 'cc', flat: true } );
+    },
+
+    /**
+      Retrieve the current 'bcc' recipients
+      TODO: ability to set
+     */
+    bcc: function() {
+      return this.recipients( { type: 'bcc', flat: true } );
+    },
+
+    /**
+      Get/Set the current subject
+      Parameters:
+        subject   string  set as new subject
+     */
+    subject: function(subject) {
+      var el = this.dom('subject');
+      if(subject) el.val(subject);
+      return el.val();
+    },
+
+    /**
+      Get/Set the email body
+     */
+    body: function(body) {
+      var el = this.dom('body');
+      if(body) el.html(body);
+      return el.html();
+    },
+
+    /**
+      Map find through to jquery element
+     */
+    find: function(selector) {
+      return this.$el.find(selector);
+    },
+
+    /**
+      Retrieve preconfigured dom elements for this compose window
+     */
+    dom: function(lookup) {
+      var config = {
+        subject: 'input[name=subjectbox]',
+        body: 'div[contenteditable=true]'
+      };
+      if(!config[lookup]) throw('Dom lookup failed. Unable to find config for \'' + lookup + '\'');
+      return this.$el.find(config[lookup]);
+    }
+
+  });
 
   return api;
 }
