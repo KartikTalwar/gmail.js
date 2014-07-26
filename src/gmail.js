@@ -542,6 +542,7 @@ var Gmail =  function() {
       // console.log(params.url, params.body, params.url_raw);
     }
 
+    var triggered = {}; // store an object of event_name: [response_args] for events triggered by parsing the actions
     var action_map = {
                       'tae'         : 'add_to_tasks',
                       'rc_^i'       : 'archive',
@@ -638,30 +639,34 @@ var Gmail =  function() {
 
     if(typeof params.url._reqid == 'string' && typeof params.url.th == 'string') {
       var response = [params.url.th, params.url, params.body];
-      if('new_email' in api.tracker.watchdog) {
-        api.tracker.watchdog['new_email'].apply(undefined, response);
+      if(api.observe.bound('new_email')) {
+        triggered.new_email = response;
+        //api.tracker.watchdog['new_email'].apply(undefined, response);
       }
     }
 
     if((params.url.view == 'cv' || params.url.view == 'ad') && typeof params.url.th == 'string' && typeof params.url.search == 'string' && params.url.rid == undefined) {
       var response = [params.url.th, params.url, params.body];
-      if('open_email' in api.tracker.watchdog) {
-        api.tracker.watchdog['open_email'].apply(undefined, response);
+      if(api.observe.bound('open_email')) {
+        triggered.open_email = response;
+        //api.tracker.watchdog['open_email'].apply(undefined, response);
       }
     }
 
     if((params.url.view == 'cv' || params.url.view == 'ad') && typeof params.url.th == 'object' && typeof params.url.search == 'string' && params.url.rid != undefined) {
       var response = [params.url.th, params.url, params.body];
-      if('toggle_threads' in api.tracker.watchdog) {
-        api.tracker.watchdog['toggle_threads'].apply(undefined, response);
+      if(api.observe.bound('toggle_threads')) {
+        triggered.toggle_threads = response;
+        // api.tracker.watchdog['toggle_threads'].apply(undefined, response);
       }
     }
 
     if((params.url.view == 'cv' || params.url.view == 'ad') && typeof params.url.th == 'string' && typeof params.url.search == 'string' && params.url.rid != undefined) {
       if(params.url.msgs != undefined) {
         var response = [params.url.th, params.url, params.body];
-        if('toggle_threads' in api.tracker.watchdog) {
-          api.tracker.watchdog['toggle_threads'].apply(undefined, response);
+        if(api.observe.bound('toggle_threads')) {
+          triggered.toggle_threads = response;
+          // api.tracker.watchdog['toggle_threads'].apply(undefined, response);
         }
       }
     }
@@ -669,22 +674,34 @@ var Gmail =  function() {
     if(typeof params.url.SID == 'string' && typeof params.url.zx == 'string' && params.body.indexOf('req0_') != -1) {
       api.tracker.SID = params.url.SID;
       var response = [params.url, params.body, sent_params];
-      if('poll' in api.tracker.watchdog) {
-        api.tracker.watchdog['poll'].apply(undefined, response);
+      if(api.observe.bound('poll')) {
+        triggered.poll = response;
+        //api.tracker.watchdog['poll'].apply(undefined, response);
       }
     }
 
     if(typeof params.url.ik == 'string' && typeof params.url.search == 'string' && params.body.length == 0 && typeof params.url._reqid == 'string') {
       var response = [params.url, params.body, sent_params];
-      if('refresh' in api.tracker.watchdog) {
-        api.tracker.watchdog['refresh'].apply(undefined, response);
+      if(api.observe.bound('refresh')) {
+        triggered.refresh = response;
+        //api.tracker.watchdog['refresh'].apply(undefined, response);
       }
     }
 
+    if(response && api.observe.bound(action_map[action])) {
+      triggered[action_map[action]] = response;
+    }
+    return {
+      triggered: triggered,
+      body_params: sent_params,
+      email_ids: email_ids
+    };
+    /*
     if(response != null) {
 
-      if(action_map[action] in api.tracker.watchdog) {
-        api.tracker.watchdog[action_map[action]].apply(undefined, response);
+      if(api.observe.bound(action_map[action])) {
+        triggered[action_map[action]] = response;
+        //api.tracker.watchdog[action_map[action]].apply(undefined, response);
       }
 
       if(action_map[action] in api.tracker.response_watchdog) {
@@ -700,7 +717,7 @@ var Gmail =  function() {
         }
       }
 
-    }
+    }*/
 
   }
 
@@ -752,7 +769,7 @@ var Gmail =  function() {
     }
 
     api.tracker.events.unshift(params);
-    api.tools.parse_actions(params, xhr);
+    var events = api.tools.parse_actions(params, xhr);
 
     if(params.method == 'POST' && typeof params.url.act == 'string') {
       api.tracker.actions.unshift(params);
@@ -765,6 +782,7 @@ var Gmail =  function() {
     if(api.tracker.actions.length > 10) {
       api.tracker.actions.pop();
     }
+    return events;
   }
 
 
@@ -790,12 +808,42 @@ var Gmail =  function() {
 
       win.XMLHttpRequest.prototype._gjs_send = win.XMLHttpRequest.prototype.send;
       win.XMLHttpRequest.prototype.send = function (body) {
-        var out = this._gjs_send.apply(this, arguments);
+
+        // parse the xhr request to determine if any events should be triggered
+        var events = false;
         if (this.xhrParams) {
           this.xhrParams.body = body;
-          api.tools.parse_requests(this.xhrParams, this);
+          events = api.tools.parse_requests(this.xhrParams, this);
+          this.xhrParams.body_params = events.body_params;
         }
 
+        // fire before events
+        api.observe.trigger('before', events, this);
+
+        // TODO: recreate the url & arguments[0]/body strings
+
+        // send the original request off
+        var out = this._gjs_send.apply(this, arguments);
+
+        // fire on events
+        api.observe.trigger('before', events, this);
+
+        // if any after events, bind onreadystatechange callback
+        if(api.observe.bound(null,'after')) {
+          var curr_onreadystatechange = this.onreadystatechange;
+          var xhr = this;
+          this.onreadystatechange = function(progress) {
+            if (this.readyState === this.DONE) {
+              //response.push(api.tools.parse_response(progress.target.responseText));
+              xhr.xhrResponse = api.tools.parse_response(progress.target.responseText);
+              api.observe.trigger('after', events, xhr);
+              //api.tracker.response_watchdog[action_map[action]].apply(undefined, response);
+            }
+            if (curr_onreadystatechange) {
+              curr_onreadystatechange.apply(this, arguments);
+            }
+          }
+        }
         return out;
       }
     }
@@ -811,15 +859,164 @@ var Gmail =  function() {
     return api.tracker.actions;
   }
 
+  /**
+    Bind a specified callback to an array of callbacks against a specified type & action
+   */
+  api.observe.bind = function(type, action, callback) {
 
+    // set up watchdog data structure
+    if(typeof api.tracker.watchdog != "object") {
+      api.tracker.watchdog = {
+        before: {},
+        on: {},
+        after: {},
+        dom: {}
+      };
+      api.tracker.bound = {};
+    }
+    if( typeof api.tracker.watchdog[type] != "object" ) {
+      throw('api.observe.bind called with invalid type: ' + type);
+    }
+
+    // ensure we are watching xhr requests
+    if(type != 'dom' && !api.tracker.xhr_init) {
+      api.tools.xhr_watcher();
+    }
+
+    // add callback to an array in the watchdog
+    if(typeof api.tracker.watchdog[type][action] != 'object') {
+      api.tracker.watchdog[type][action] = [];
+    }
+    api.tracker.watchdog[type][action].push(callback);
+    
+    // allow checking for bound events to specific action/type as efficiently as possible (without in looping) - bit dirtier code, 
+    // but lookups (api.observer.bound) are executed by the hundreds & I think the extra efficiency is worth the tradeoff
+    api.tracker.bound[action] = typeof api.tracker.bound[action] == 'undefined' ? 1 : api.tracker.bound[action]+1;
+    api.tracker.bound[type] = typeof api.tracker.bound[type] == 'undefined' ? 1 : api.tracker.bound[type]+1;
+    //api.tracker.watchdog[action] = callback;
+  }
+
+  /**
+    an on event is observed just after gmail sends an xhr request
+   */
   api.observe.on = function(action, callback, response_callback) {
 
-    // var dom = {
-    //   'compose_inline': [ '#\\:3g div[role="button"]', 99 ]
-    //   'reply': 'td.amr div.nr span[role=link]:contains(Reply)',
-    //   'forward': 'td.amr div.nr span[role=link]:contains(Forward)'
-    // };
+    // check for DOM observer actions, and if none found, the assume an XHR observer
+    if(api.observe.on_dom(action, callback)) return true;
+    
+    // bind xhr observers
+    api.observe.bind('on', action, callback);
+    if (response_callback) {
+      api.observe.after(action, callback);
+    }
+  }
 
+  /**
+    an before event is observed just prior to the gmail xhr request being sent
+    before events have the ability to modify the xhr request before it is sent
+   */
+  api.observe.before = function(action, callback) {
+    api.observe.bind('before', action, callback);
+  }
+
+  /**
+    an after event is observed when the gmail xhr request returns from the server
+    with the server response
+   */
+  api.observe.after = function(action, callback) {
+    api.observe.bind('after', action, callback);
+  }
+
+  /**
+    Checks if a specified action & type has anything bound to it
+    If type is null, will check for this action bound on any type
+    If action is null, will check for any actions bound to a type
+   */
+  api.observe.bound = function(action, type) {
+    if(typeof api.tracker.watchdog != "object") return false;
+    if(action) {
+      if(type) return typeof api.tracker.watchdog[type][action] == "object";
+      return api.tracker.bound[action] > 0;
+    } else {
+      if(type) return api.tracker.bound[type] > 0;
+      throw('api.observe.bound called with invalid args');
+    }
+    
+    
+    /*var found = false;
+    $.each(api.tracker.watchdog, function(type, val) {
+      if(api.tracker.watchdog[type][action]) found = true;
+    });
+    return found;*/
+  }
+
+  /**
+    Clear all callbacks for a specific type (before, on, after, dom) and action
+    If action is null, all actions will be cleared
+    If type is null, all types will be cleared
+   */
+  api.observe.off = function(action, type) {
+
+    // if watchdog is not set, bind has not yet been called so nothing to turn off
+    if(typeof api.tracker.watchdog != "object") return true;
+
+    // if clearing everything, stop watching xhr
+    if( !type && !action) {
+      var win = top.document.getElementById("js_frame").contentDocument.defaultView;
+      win.XMLHttpRequest.prototype.open = api.tracker.xhr_open;
+      win.XMLHttpRequest.prototype.send = api.tracker.xhr_send;
+      api.tracker.xhr_init = false
+    }
+
+    // loop through applicable types
+    var types = type ? [ type ] : [ 'before', 'on', 'after', 'dom' ];
+    $.each(types, function(idx, type) {
+      if( typeof api.tracker.watchdog[type] != 'object' ) return true; // no callbacks for this type
+
+      // if action specified, remove any callbacks for this action, otherwise remove all callbacks for all actions
+      if(action) {
+        if( typeof api.tracker.watchdog[type][action] == 'object' ) {
+          api.tracker.bound[action] -= api.tracker.watchdog[type][action].length;
+          api.tracker.bound[type] -= api.tracker.watchdog[type][action].length;
+          delete api.tracker.watchdog[type][action];
+        }
+      } else {
+        $.each(api.tracker.watchdog[type], function(act,callbacks) {
+          if( typeof api.tracker.watchdog[type][act] == 'object' ) {
+            api.tracker.bound[act] -= api.tracker.watchdog[type][act].length;
+            api.tracker.bound[type] -= api.tracker.watchdog[type][act].length;
+            delete api.tracker.watchdog[type][act];
+          }
+        });
+      }
+    });
+  }
+
+  /**
+    Trigger any specified events bound to the passed type
+   */
+  api.observe.trigger = function(type, events, xhr) {
+
+    $.each(events.triggered, function(action,response) {
+
+      // TODO: backwards compat for after events requires we push onreadystatechange parsed response first
+      // we have to do this here each time to keep backwards compatibility with old response_callback implementation
+      response = $.extend([], response); // break the reference so it doesn't keep growing each trigger
+      response.push(xhr); 
+      if(api.tracker.bound(action, type)) {
+        $.each(api.tracker.watchdog[type][action], function(idx, callback) {
+          callback.apply(undefined, response);
+        });
+      }
+    });
+  }
+
+  /**
+    Observe DOM nodes being inserted. When a node with a class defined in api.tracker.dom_observers is inserted,
+    trigger the related event and fire off any relevant bound callbacks
+    This function should return true if a dom observer is found for the specified action
+   */
+  api.observe.on_dom = function(action, callback) {
     // map observers to DOM class names
     // as elements are inserted into the DOM, these classes will be checked for and mapped events triggered,
     // receiving 'e' event object, and a jquery bound inserted DOM element
@@ -895,7 +1092,7 @@ var Gmail =  function() {
       // if we haven't yet bound the DOM insertion observer, do it now
       if(!api.tracker.observing_dom) {
         api.tracker.observing_dom = true;
-        api.tracker.dom_watchdog = {}; // store passed observer callbacks for different DOM events
+        //api.tracker.dom_watchdog = {}; // store passed observer callbacks for different DOM events
 
         // map observed classNames to actions
         api.tracker.dom_observer_map = {};
@@ -920,7 +1117,7 @@ var Gmail =  function() {
             var observer = api.tracker.dom_observer_map[className];
 
             // check if this is a defined observer, and callbacks are bound to that observer
-            if(observer && api.tracker.dom_watchdog[observer]) {
+            if(observer && api.tracker.watchdog.dom[observer]) {
               var element = $(e.target);
               var config = api.tracker.dom_observers[observer];
               if(config.sub_selector) {
@@ -931,8 +1128,8 @@ var Gmail =  function() {
               // if an element has been found, execute the observer handler (or if none defined, execute the callback)
               if(element.length) {
                 var handler = config.handler ? config.handler : default_handler;
-                // console.log( 'inserted DOM: class match in watchdog',observer,api.tracker.dom_watchdog[observer] );
-                $.each(api.tracker.dom_watchdog[observer], function(idx, callback) {
+                // console.log( 'inserted DOM: class match in watchdog',observer,api.tracker.watchdog.dom[observer] );
+                $.each(api.tracker.watchdog.dom[observer], function(idx, callback) {
                   handler(element, callback);
                 });
               }
@@ -940,13 +1137,9 @@ var Gmail =  function() {
           });
         });
       }
-
-      // add callback to an array in the dom watchdog
-      if(typeof api.tracker.dom_watchdog[action] != 'object') {
-        api.tracker.dom_watchdog[action] = [];
-      }
-      api.tracker.dom_watchdog[action].push( callback );
+      api.observe.bind('dom',action,callback);
       // console.log(api.tracker.observing_dom,'dom_watchdog is now:',api.tracker.dom_watchdog);
+      return true;
 
     // support for gmail interface load event
     } else if( action == 'load' ) {
@@ -969,39 +1162,7 @@ var Gmail =  function() {
           setTimeout(callback, 5000);
         }
       }, delay );
-    }
-
-    if(typeof api.tracker.watchdog != "object") {
-      api.tracker.watchdog = {};
-    }
-
-    if(typeof api.tracker.response_watchdog != "object") {
-      api.tracker.response_watchdog = {};
-    }
-
-    if(!api.tracker.xhr_init) {
-      api.tools.xhr_watcher();
-    }
-    api.tracker.watchdog[action] = callback;
-    if (response_callback) {
-      api.tracker.response_watchdog[action] = response_callback;
-    }
-  }
-
-  api.observe.off = function(action) {
-    if(action) {
-      ['watchdog', 'response_watchdog'].forEach(function(watcher) {
-        if(watcher in api.tracker) {
-          if(action in api.tracker[watcher]) {
-            delete api.tracker[watcher][action];
-          }
-        }
-      });
-    } else {
-      var win = top.document.getElementById("js_frame").contentDocument.defaultView;
-      win.XMLHttpRequest.prototype.open = api.tracker.xhr_open;
-      win.XMLHttpRequest.prototype.send = api.tracker.xhr_send;
-      api.tracker.xhr_init = false
+      return true;
     }
   }
 
