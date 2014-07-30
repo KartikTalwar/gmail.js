@@ -588,7 +588,7 @@ var Gmail =  function() {
     }
 
     var action      = decodeURIComponent(params.url.act);
-    var sent_params = api.tools.deparam(params.body)
+    var sent_params = api.tools.deparam(params.body);
     var email_ids   = (typeof sent_params.t == 'string') ? [sent_params.t] : sent_params.t;
     var response    = null;
 
@@ -687,8 +687,7 @@ var Gmail =  function() {
         //api.tracker.watchdog['refresh'].apply(undefined, response);
       }
     }
-
-    if(response && api.observe.bound(action_map[action])) {
+    if(response && action_map[action] && api.observe.bound(action_map[action])) {
       triggered[action_map[action]] = response;
     }
     return {
@@ -826,7 +825,7 @@ var Gmail =  function() {
         var out = this._gjs_send.apply(this, arguments);
 
         // fire on events
-        api.observe.trigger('before', events, this);
+        api.observe.trigger('on', events, this);
 
         // if any after events, bind onreadystatechange callback
         if(api.observe.bound(null,'after')) {
@@ -1003,7 +1002,7 @@ var Gmail =  function() {
       response = $.extend([], response); // break the reference so it doesn't keep growing each trigger
       if(type == 'after') response.push(xhr.xhrResponse); // backwards compat for after events requires we push onreadystatechange parsed response first
       response.push(xhr); 
-      if(api.tracker.bound(action, type)) {
+      if(api.observe.bound(action, type)) {
         $.each(api.tracker.watchdog[type][action], function(idx, callback) {
           callback.apply(undefined, response);
         });
