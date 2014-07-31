@@ -36,6 +36,7 @@ document.getElementsByTagName('body')[0].appendChild(jq);
 // var Gmail = {.....} // paste gmail.js code here
 
 // start using!
+// you can also pass in a reference to jQuery upon init - Gmail(localJQuery)
 var gmail = Gmail();
 gmail.get.user_email();
 ```
