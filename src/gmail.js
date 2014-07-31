@@ -1,4 +1,22 @@
-var Gmail =  function() {
+var gmailGlobalJquery;
+if (typeof jQuery !== "undefined")
+  gmailGlobalJquery = jQuery;
+
+var Gmail = function(localJquery) {
+
+  /*
+    Use provided jQuery if possible, in order to avoid conflicts with
+    other extensions that use $ for other purposes.
+    If not provided as an argument, we ensure that we capture the jQuery
+    that is currently defined. Other extensions can later redefine
+    the global jQuery or $ without affecting us.
+  */
+  var $;
+  if (typeof localJquery !== "undefined")
+    $ = localJquery;
+  else if (typeof gmailGlobalJquery !== "undefined")
+    $ = gmailGlobalJquery;
+  // else leave $ undefined, which may be fine for some purposes.
 
   var api = {
               get : {},
