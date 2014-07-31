@@ -9,7 +9,7 @@
 - Lots of api methods to work with gmail. Useful for chrome extensions
 - Most of them dont take arguments, they work on what is currently visible on the screen
 - I still need to add implementation for chrome extension, works by injecting js for now
-- Main method is **`gmail.observe.on('lots_of_actions_here', callback())`**
+- Main methods allow you to observe certain events with **`gmail.observe.on('lots_of_actions_here', callback())`** or similar **`gmail.observe.before(...)`** and **`gmail.observe.after(...)`**
 - Click on a method link to view more detailed docs
 - Create an issue/pull request for feedback, requests and fixes
 
@@ -107,7 +107,7 @@ gmail.get.user_email();
 
 - [gmail.observe **.http_requests()**](#gmailobservehttp_requests)
 - [gmail.observe **.actions()**](#gmailobserveactions)
-- [gmail.observe **.off(action)**](#gmailobserveoffactionnull)
+- [gmail.observe **.off(action,type)**](#gmailobserveoffactionnull)
 - [gmail.observe **.on(action, callback)**](#gmailobserveonaction-callback)
   - **`poll`** - When gmail automatically polls the server to check for new emails every few seconds
   - **`new_email`** - When a new email appears in the inbox
@@ -139,7 +139,18 @@ gmail.get.user_email();
   - **`restore_message_in_thread`** - When a deleted message is restored inside a thread
   - **`delete_label`** - When a label is deleted
   - **`show_newly_arrived_message`** - When inside an email and a new email arrives in the thread
-
+  - **`upload_attachment`** - When an attachment is being uploaded to an email being composed
+  - **DOM observers**
+   - **`compose`** - When a new compose window is opened
+   - **`reply_forward`** - When an email is being replied to or forwarded
+   - **`recipient_change`** - When an email being written has its to, cc or bcc recipients updated
+- [gmail.observe **.before(action, callback)**](#gmailobservebeforeaction-callback)
+- [gmail.observe **.after(action, callback)**](#gmailobserveafteraction-callback)
+- gmail.observe **.bind(type, action, callback)** - implements the on, after, before callbacks
+- gmail.observe **.bound(action, type)**
+- gmail.observe **.on_dom(action, callback)** - implements the DOM observers - called by `gmail.observe.on`
+- gmail.observe **.bound(action, type)** - checks if a specific action and/or type has any bound observers
+- gmail.observe **.trigger(type, events, xhr)** - fires any specified events for this type (on, after, before) with specified parameters
 
 #### DOM
 
@@ -152,7 +163,8 @@ These methods return the DOM data itself
 - gmail.dom **.email_contents()**
 - gmail.dom **.get_left_sidebar_links()**
 - gmail.dom **.search_bar()**
-
+- gmail.dom **.compose()** - compose dom object - receives the DOM element for the compose window and provides methods to interact
+- gmail.dom **.composes()** - retrives an array of `gmail.dom.compose` objects representing any open compose windows
 
 #### TOOLS
 
@@ -489,7 +501,7 @@ Returns `True` if the account supports the new hangout UI for chat `False` other
 
 #### gmail.observe.http_requests()
 
-After the `gmail.obsere.on()` has been initiated, this method keeps track of the last 50 http events.
+After an observer has been bound through `gmail.observe.bind()` (via a call to events `gmail.observe.before()`, `gmail.observe.on()`, or `gmail.observe.after()`), this method keeps track of the last 50 http events.
 The items contain the sent requested parameterized data
 
 ```json
@@ -537,6 +549,8 @@ your custom extension/tool with this library.
 You simply specify the action nane and your function that the method will return data to when the actions are triggered
 and it does the rest. **You can have multiple triggers**
 
+Your callback will be fired directly after Gmail's XMLHttpRequest has been sent off the the Gmail servers.
+
 **Available Actions**
 
   - **poll** - When gmail automatically polls the server to check for new emails every few seconds
@@ -570,141 +584,215 @@ and it does the rest. **You can have multiple triggers**
   - **delete_label** - When a label is deleted
   - **show_newly_arrived_message** - When inside an email and a new email arrives in the thread
 
+The on method also supports observering specific DOM events in the Gmail Interface (for example when a new compose window is opened). These are only available via the `on` method (not the `before` or `after` methods)
 
+**Available DOM Actions**
+
+ - **load** - When the gmail interface has completed loading
+ - **compose** - When a new compose window opens
+ - **reply_forward** - When an email is replied to or forwarded
+ - **recipient_change** - When the recipient (to, cc or bcc) is changed when composing a new email or replying/forwarding an email
 
 ```js
-gmail.observe.on("unread", function(id, url, body) {
-  console.log("id:", id, "url:", url, 'body', body);
+gmail.observe.on("unread", function(id, url, body, xhr) {
+  console.log("id:", id, "url:", url, 'body', body, 'xhr', xhr);
 })
 
-gmail.observe.on("read", function(id, url, body) {
-  console.log("id:", id, "url:", url, 'body', body);
+gmail.observe.on("read", function(id, url, body, xhr) {
+  console.log("id:", id, "url:", url, 'body', body, 'xhr', xhr);
 })
 
-gmail.observe.on("delete", function(id, url, body) {
-  console.log("id:", id, "url:", url, 'body', body);
+gmail.observe.on("delete", function(id, url, body, xhr) {
+  console.log("id:", id, "url:", url, 'body', body, 'xhr', xhr);
 })
 
-gmail.observe.on("mark_as_spam", function(id, url, body) {
-  console.log("id:", id, "url:", url, 'body', body);
+gmail.observe.on("mark_as_spam", function(id, url, body, xhr) {
+  console.log("id:", id, "url:", url, 'body', body, 'xhr', xhr);
 })
 
-gmail.observe.on("mark_as_not_spam", function(id, url, body) {
-  console.log("id:", id, "url:", url, 'body', body);
+gmail.observe.on("mark_as_not_spam", function(id, url, body, xhr) {
+  console.log("id:", id, "url:", url, 'body', body, 'xhr', xhr);
 })
 
-gmail.observe.on("label", function(id, url, body, label) {
-  console.log("id:", id, "url:", url, 'body', body, "label", label);
+gmail.observe.on("label", function(id, url, body, label, xhr) {
+  console.log("id:", id, "url:", url, 'body', body, "label", label, 'xhr', xhr);
 })
 
-gmail.observe.on("archive", function(id, url, body) {
-  console.log("id:", id, "url:", url, 'body', body);
+gmail.observe.on("archive", function(id, url, body, xhr) {
+  console.log("id:", id, "url:", url, 'body', body, 'xhr', xhr);
 })
 
-gmail.observe.on("move_to_inbox", function(id, url, body) {
-  console.log("id:", id, "url:", url, 'body', body);
+gmail.observe.on("move_to_inbox", function(id, url, body, xhr) {
+  console.log("id:", id, "url:", url, 'body', body, 'xhr', xhr);
 })
 
-gmail.observe.on("delete_forever", function(id, url, body) {
-  console.log("id:", id, "url:", url, 'body', body);
+gmail.observe.on("delete_forever", function(id, url, body, xhr) {
+  console.log("id:", id, "url:", url, 'body', body, 'xhr', xhr);
 })
 
-gmail.observe.on("delete_message_in_thread", function(id, url, body) {
-  console.log("id:", id, "url:", url, 'body', body);
+gmail.observe.on("delete_message_in_thread", function(id, url, body, xhr) {
+  console.log("id:", id, "url:", url, 'body', body, 'xhr', xhr);
 })
 
-gmail.observe.on("restore_message_in_thread", function(id, url, body) {
-  console.log("id:", id, "url:", url, 'body', body);
+gmail.observe.on("restore_message_in_thread", function(id, url, body, xhr) {
+  console.log("id:", id, "url:", url, 'body', body, 'xhr', xhr);
 })
 
-gmail.observe.on("star", function(id, url, body) {
-  console.log("id:", id, "url:", url, 'body', body);
+gmail.observe.on("star", function(id, url, body, xhr) {
+  console.log("id:", id, "url:", url, 'body', body, 'xhr', xhr);
 })
 
-gmail.observe.on("unstar", function(id, url, body) {
-  console.log("id:", id, "url:", url, 'body', body);
+gmail.observe.on("unstar", function(id, url, body, xhr) {
+  console.log("id:", id, "url:", url, 'body', body, 'xhr', xhr);
 })
 
-gmail.observe.on("mark_as_important", function(id, url, body) {
-  console.log("id:", id, "url:", url, 'body', body);
+gmail.observe.on("mark_as_important", function(id, url, body, xhr) {
+  console.log("id:", id, "url:", url, 'body', body, 'xhr', xhr);
 })
 
-gmail.observe.on("mark_as_not_important", function(id, url, body) {
-  console.log("id:", id, "url:", url, 'body', body);
+gmail.observe.on("mark_as_not_important", function(id, url, body, xhr) {
+  console.log("id:", id, "url:", url, 'body', body, 'xhr', xhr);
 })
 
-gmail.observe.on("filter_messages_like_these", function(id, url, body) {
-  console.log("id:", id, "url:", url, 'body', body);
+gmail.observe.on("filter_messages_like_these", function(id, url, body, xhr) {
+  console.log("id:", id, "url:", url, 'body', body, 'xhr', xhr);
 })
 
-gmail.observe.on("mute", function(id, url, body) {
-  console.log("id:", id, "url:", url, 'body', body);
+gmail.observe.on("mute", function(id, url, body, xhr) {
+  console.log("id:", id, "url:", url, 'body', body, 'xhr', xhr);
 })
 
-gmail.observe.on("unmute", function(id, url, body) {
-  console.log("id:", id, "url:", url, 'body', body);
+gmail.observe.on("unmute", function(id, url, body, xhr) {
+  console.log("id:", id, "url:", url, 'body', body, 'xhr', xhr);
 })
 
-gmail.observe.on("add_to_tasks", function(url, body, data) {
-  console.log("url:", url, 'body', body, 'task_data', data);
+gmail.observe.on("add_to_tasks", function(url, body, data, xhr) {
+  console.log("url:", url, 'body', body, 'task_data', data, 'xhr', xhr);
 })
 
-gmail.observe.on("move_label", function(id, url, body) {
-  console.log("id:", id, "url:", url, 'body', body);
+gmail.observe.on("move_label", function(id, url, body, xhr) {
+  console.log("id:", id, "url:", url, 'body', body, 'xhr', xhr);
 })
 
-gmail.observe.on("save_draft", function(url, body, data) {
-  console.log("url:", url, 'body', body, 'email_data', data);
+gmail.observe.on("save_draft", function(url, body, data, xhr) {
+  console.log("url:", url, 'body', body, 'email_data', data, 'xhr', xhr);
 })
 
-gmail.observe.on("discard_draft", function(id, url, body) {
-  console.log("id:", id, "url:", url, 'body', body);
+gmail.observe.on("discard_draft", function(id, url, body, xhr) {
+  console.log("id:", id, "url:", url, 'body', body, 'xhr', xhr);
 })
 
-gmail.observe.on("send_message", function(url, body, data) {
-  console.log("url:", url, 'body', body, 'email_data', data);
+gmail.observe.on("send_message", function(url, body, data, xhr) {
+  console.log("url:", url, 'body', body, 'email_data', data, 'xhr', xhr);
 })
 
-gmail.observe.on("expand_categories", function(url, body, data) {
-  console.log("url:", url, 'body', body, 'expanded_data', data);
+gmail.observe.on("expand_categories", function(url, body, data, xhr) {
+  console.log("url:", url, 'body', body, 'expanded_data', data, 'xhr', xhr);
 })
 
-gmail.observe.on("delete_label", function(id, url, body) {
-  console.log("id:", id, "url:", url, 'body', body);
+gmail.observe.on("delete_label", function(id, url, body, xhr) {
+  console.log("id:", id, "url:", url, 'body', body, 'xhr', xhr);
 })
 
-gmail.observe.on("show_newly_arrived_message", function(id, url, body) {
-  console.log("id:", id, "url:", url, 'body', body);
+gmail.observe.on("show_newly_arrived_message", function(id, url, body, xhr) {
+  console.log("id:", id, "url:", url, 'body', body, 'xhr', xhr);
 })
 
-gmail.observe.on("poll", function(url, body, data) {
-  console.log("url:", url, 'body', body, 'data', data);
+gmail.observe.on("poll", function(url, body, data, xhr) {
+  console.log("url:", url, 'body', body, 'data', data, 'xhr', xhr);
 })
 
-gmail.observe.on("new_email", function(id, url, body) {
-  console.log("id:", id, "url:", url, 'body', body);
+gmail.observe.on("new_email", function(id, url, body, xhr) {
+  console.log("id:", id, "url:", url, 'body', body, 'xhr', xhr);
 })
 
-gmail.observe.on("refresh", function(url, body, data) {
-  console.log("url:", url, 'body', body, 'data', data);
+gmail.observe.on("refresh", function(url, body, data, xhr) {
+  console.log("url:", url, 'body', body, 'data', data, 'xhr', xhr);
 })
 
-gmail.observe.on("open_email", function(id, url, body) {
-  console.log("id:", id, "url:", url, 'body', body);
+gmail.observe.on("open_email", function(id, url, body, xhr) {
+  console.log("id:", id, "url:", url, 'body', body, 'xhr', xhr);
   console.log(gmail.get.email_data(id));
+})
+
+gmail.observe.on("upload_attachment", function(file, xhr) {
+  console.log("file", file, 'xhr', xhr);
+})
+
+// DOM observers
+gmail.observe.on("compose", function(match_obj) {
+  console.log('api.dom.com object:', match_obj );
+});
+
+gmail.observe.on("reply_forward", function(el, type) {
+  console.log( type == 'Forward' ? 'Forward detected' : 'Reply Detected', match, type);
+});
+
+gmail.observe.on('recipient_change', function(match, recipients) {
+  console.log( 'recipients changed', match, recipients);
+});
+```
+
+#### gmail.observe.before(action, callback)
+
+Similar to `gmail.observe.on`, this method allows you to bind callbacks to specific events.
+
+All of the standard actions in `gmail.observe.on` work here, with the exception of the DOM actions
+
+The main difference between `on` and `before` is that these callbacks are fired *before* Gmail's XMLHttpRequest has been sent off the the Gmail servers. This means, where relevant, your callback function can change it prior to it departing by editing the xhrParams.body_params object in the passed xhr parameter.
+
+```js
+gmail.observe.before('send_message', function(url, body, data, xhr){
+  var body_params = xhr.xhrParams.body_params;
+
+  // lets cc this email to someone extra if the subject is 'Fake example'
+  if(data.subject == 'Fake example') {
+    if(body_params.cc) {
+      if(typeof body_params.cc != 'object') body_params.cc = [ body_params.cc ];
+    } else {
+      body_params.cc = [];
+    }
+    body_params.cc.push('brent@zeald.com');
+  }
+
+  // now change the subject
+  body_params.subject = 'Subject overwritten!';
+  console.log("sending message, url:", url, 'body', body, 'email_data', data, 'xhr', xhr);
+});
+```
+#### gmail.observe.after(action, callback)
+
+Similar to `gmail.observe.on`, this method allows you to bind callbacks to specific events.
+
+All of the standard actions in `gmail.observe.on` work here, with the exception of the DOM actions
+
+The main difference between `on` and `after` is that these callbacks are fired once Gmail's XMLHttpRequest has returned from the Gmail servers (on the XMLHttpRequest `onreadystatechange` event). 
+
+In addition to the usual parameters received by a callback, callbacks you define for an `after` event receive an additional `response` parameter prior to the last xhr parameter. This response parameter is a parsed object representation of the response from the Gmail servers.
+
+So for example, the `send_message` action would receive:
+
+```js
+gmail.observe.after("send_message", function(url, body, data, response, xhr) {
+  console.log("message sent", "url:", url, 'body', body, 'email_data', data, 'response', response, 'xhr', xhr);
 })
 ```
 
-#### gmail.observe.off(action=null)
+#### gmail.observe.off(action=null,type=null)
 
 Turn off an observe action. Providing it no argument will disable all observers.
 
+Type is either before, after, on or dom. If not specified will disable all types of specified observer.
+
 ```js
 gmail.observe.on('poll', function(x,y,z){});
-gmail.observe.on('refresh', function(x,y,z){});
+gmail.observe.before('refresh', function(x,y,z){});
+gmail.observe.after('send_message', function(x,y,z){});
 
-gmail.observe.off('poll'); // disables poll
-gmail.observe.off();  // disables both
+gmail.observe.off('poll','on'); // disables on poll
+gmail.observe.off('poll'); // disables all poll events of any type
+gmail.observe.off(null,'before'); // disables all before observers
+gmail.observe.off();  // disables all
 ```
 
 ## Author and Licensing
