@@ -1,4 +1,15 @@
-var Gmail =  function() {
+var Gmail = function(localJQuery) {
+
+  /*
+    Use the provided 'jQuery' if possible, in order to avoid conflicts with
+    other extensions that use $ for other purposes.
+  */
+  var $;
+  if (typeof localJQuery !== "undefined")
+    $ = localJQuery;
+  else if (typeof jQuery !== "undefined")
+    $ = jQuery;
+  // else leave $ undefined, which may be fine for some purposes.
 
   var api = {
               get : {},
