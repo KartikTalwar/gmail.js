@@ -149,7 +149,6 @@ gmail.get.user_email();
 - [gmail.observe **.after(action, callback)**](#gmailobserveafteraction-callback)
 - gmail.observe **.bind(type, action, callback)** - implements the on, after, before callbacks
 - gmail.observe **.bound(action, type)**
-- gmail.observe **.on_dom(action, callback)** - implements the DOM observers - called by `gmail.observe.on`
 - gmail.observe **.bound(action, type)** - checks if a specific action and/or type has any bound observers
 - gmail.observe **.trigger(type, events, xhr)** - fires any specified events for this type (on, after, before) with specified parameters
 
