@@ -850,8 +850,7 @@ var Gmail = function(localJQuery) {
       api.tracker.watchdog = {
         before: {},
         on: {},
-        after: {},
-        dom: {}
+        after: {}
       };
       api.tracker.bound = {};
     }
@@ -860,7 +859,7 @@ var Gmail = function(localJQuery) {
     }
 
     // ensure we are watching xhr requests
-    if(type != 'dom' && !api.tracker.xhr_init) {
+    if(!api.tracker.xhr_init) {
       api.tools.xhr_watcher();
     }
 
@@ -882,9 +881,6 @@ var Gmail = function(localJQuery) {
    */
   api.observe.on = function(action, callback, response_callback) {
 
-    // check for DOM observer actions, and if none found, the assume an XHR observer
-    if(api.observe.on_dom(action, callback)) return true;
-    
     // bind xhr observers
     api.observe.bind('on', action, callback);
     if (response_callback) {
@@ -952,7 +948,7 @@ var Gmail = function(localJQuery) {
     }
 
     // loop through applicable types
-    var types = type ? [ type ] : [ 'before', 'on', 'after', 'dom' ];
+    var types = type ? [ type ] : [ 'before', 'on', 'after' ];
     $.each(types, function(idx, type) {
       if(typeof api.tracker.watchdog[type] != 'object') return true; // no callbacks for this type
 
@@ -996,161 +992,6 @@ var Gmail = function(localJQuery) {
       }
     });
     return fired;
-  }
-
-  /**
-    Observe DOM nodes being inserted. When a node with a class defined in api.tracker.dom_observers is inserted,
-    trigger the related event and fire off any relevant bound callbacks
-    This function should return true if a dom observer is found for the specified action
-   */
-  api.observe.on_dom = function(action, callback) {
-    // map observers to DOM class names
-    // as elements are inserted into the DOM, these classes will be checked for and mapped events triggered,
-    // receiving 'e' event object, and a jquery bound inserted DOM element
-    // Config example: event_name: {
-    //                   class: 'className', // required - check for this className in the inserted DOM element
-    //                   sub_selector: 'div.className', // if specified, we do a jquery element.find for the passed selector on the inserted element
-    //                   handler: function( matchElement, callback ) {}, // if specified this handler is called if a match is found. Otherwise default calls the callback & passes the jQuery matchElement
-    //                 },
-    // TODO: current limitation allows only 1 action per watched className (i.e. each watched class must be 
-    //       unique). If this functionality is needed this can be worked around by pushing actions to an array
-    //       in api.tracker.dom_observer_map below
-    // console.log( 'Observer set for', action, callback);
-    api.tracker.dom_observers = {
-      'compose': {
-        class: 'nH',
-        sub_selector: 'div.AD',
-        handler: function(match, callback) {
-          callback(new api.dom.compose(match));
-        },
-      },
-      'recipient_change': {
-        class: 'vR',
-        handler: function(match, callback) {
-          // console.log('compose:recipient handler called',match,callback);
-
-          // we need to small delay on the execution of the handler as when the recipients field initialises on a reply (or reinstated compose/draft)
-          // then multiple DOM elements will be inserted for each recipient causing this handler to execute multiple times
-          // in reality we only want a single callback, so give other nodes time to be inserted & then only execute the callback once
-          if(typeof api.tracker.recipient_matches != 'object') {
-            api.tracker.recipient_matches = [];
-          }
-          api.tracker.recipient_matches.push(match);
-          setTimeout(function(){
-            // console.log('recipient timeout handler', api.tracker.recipient_matches.length);
-            if(!api.tracker.recipient_matches.length) return;
-            // console.log('executing recipient timeout handler', api.tracker.recipient_matches);
-
-            // determine an array of all emails specified for To, CC and BCC and extract addresses into an object for the callback
-            var compose = api.tracker.recipient_matches[0].closest('.GS');
-            var recipients = {};
-            compose.find('input[type=hidden]').each(function(idx, recipient ){
-              if(!recipients[recipient.name]) recipients[recipient.name] = [];
-              recipients[recipient.name].push(recipient.value);
-            });
-            callback(api.tracker.recipient_matches, recipients);
-
-            // reset matches so no future delayed instances of this function execute
-            api.tracker.recipient_matches = [];
-          },100);
-        },
-      },
-
-      // this will fire if a new reply or forward is created. it won't fire if a reply changes to a forward & vice versa
-      'reply_forward': {
-        class: 'An', // M9 would be better but this isn't set at the point of insertion
-        handler: function(match, callback) {
-          // console.log('reply_forward handler called', match, callback);
-
-          // look back up the DOM tree for M9 (the main reply/forward node)
-          match = match.closest('div.M9');
-          if(!match.length) return;
-          var type = match.find('input[name=subject]').val().indexOf('Fw') == 0 ? 'Forward' : 'Reply';
-          callback(match,type);
-        }
-      },
-    };
-
-    // support for DOM observers
-    if(api.tracker.dom_observers[action]) {
-
-      //console.log('observer found',api.tracker.dom_observers[action]);
-
-      // if we haven't yet bound the DOM insertion observer, do it now
-      if(!api.tracker.observing_dom) {
-        api.tracker.observing_dom = true;
-        //api.tracker.dom_watchdog = {}; // store passed observer callbacks for different DOM events
-
-        // map observed classNames to actions
-        api.tracker.dom_observer_map = {};
-        $.each(api.tracker.dom_observers, function(act,config){
-          api.tracker.dom_observer_map[config.class] = act;
-        });
-        // console.log( 'dom_observer_map', api.tracker.dom_observer_map);
-
-        // default handler
-        var default_handler = function(match, callback) {
-          callback(match);
-        };
-
-        // this listener will check every element inserted into the DOM
-        // for specified classes (as defined in api.tracker.dom_observers above) which indicate 
-        // specified actions which need triggering
-        $(window.document).bind('DOMNodeInserted', function(e) {
-          //console.log('insertion', e.target);
-
-          // loop through each of the inserted elements classes & check for a defined observer on that class
-          $.each(e.target.className.split(/\s+/), function(idx, className) {
-            var observer = api.tracker.dom_observer_map[className];
-
-            // check if this is a defined observer, and callbacks are bound to that observer
-            if(observer && api.tracker.watchdog.dom[observer]) {
-              var element = $(e.target);
-              var config = api.tracker.dom_observers[observer];
-              if(config.sub_selector) {
-                element = element.find(config.sub_selector);
-                // console.log('checking for subselector', config.sub_selector, element);
-              }
-              
-              // if an element has been found, execute the observer handler (or if none defined, execute the callback)
-              if(element.length) {
-                var handler = config.handler ? config.handler : default_handler;
-                // console.log( 'inserted DOM: class match in watchdog',observer,api.tracker.watchdog.dom[observer] );
-                $.each(api.tracker.watchdog.dom[observer], function(idx, callback) {
-                  handler(element, callback);
-                });
-              }
-            }
-          });
-        });
-      }
-      api.observe.bind('dom',action,callback);
-      // console.log(api.tracker.observing_dom,'dom_watchdog is now:',api.tracker.dom_watchdog);
-      return true;
-
-    // support for gmail interface load event
-    } else if(action == 'load') {
-
-      // wait until the gmail interface has finished loading and then
-      // execute the passed handler. If interface is already loaded,
-      // then will just execute callback
-      if(api.dom.inbox_content().length) return callback();
-      var load_count = 0;
-      var delay = 200; // 200ms per check
-      var attempts = 50; // try 50 times before giving up & assuming an error
-      var timer = setInterval(function() {
-        var test = api.dom.inbox_content().length;
-        if(test > 0) {
-          clearInterval(timer);
-          return callback();
-        } else if(++load_count > attempts) {
-          clearInterval(timer);
-          console.log('Failed to detect interface load in ' + (delay*attempts/1000) + ' seconds. Will automatically fire event in 5 further seconds.');
-          setTimeout(callback, 5000);
-        }
-      }, delay);
-      return true;
-    }
   }
 
 
