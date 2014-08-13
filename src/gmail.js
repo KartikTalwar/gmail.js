@@ -1301,6 +1301,18 @@ var Gmail = function(localJQuery) {
           'social_updates': 'Réseaux sociaux'
         };
         break;
+        
+      case 'nl':
+        dictionary = {
+          'inbox': 'Postvak IN',
+          'drafts': 'Concepten',
+          'spam': 'Spam',
+          'forums': 'Forums',
+          'updates': 'Updates',
+          'promotions': 'Reclame',
+          'social_updates': 'Sociaal'
+        };
+        break;        
 
       case 'en':
       default:
