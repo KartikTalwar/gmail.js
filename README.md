@@ -1,8 +1,12 @@
 # Gmail.js - JavaScript API for Gmail
 
+
+**Note:** The new Content Security Policy will prevent direct injection. **[Here](https://github.com/KartikTalwar/gmail-chrome-extension-boilerplate)** is how to get around it
+
 **Note:** This is not an official Gmail API, and isn't affiliated with Google.
 
 **Note:** Gmail.js requires jQuery to work
+
 
 ### TL;DR Summary
 
@@ -17,6 +21,15 @@
 
 - **[Signal](https://trysignal.com)** - Edit your inbox!
 - **[Gmail Hacks](https://chrome.google.com/webstore/detail/gmail-hacks/aacloklpepaibhlikiakfcgjjappeppo)** by [@arpitnext](https://github.com/arpitnext) (*[Source](https://github.com/arpitnext/play_with_gmail.js)*)
+
+
+## Content Security Policy
+
+
+The new Content Security Policy will prevent direct injection. Please see the following repository to get around the policies. More details can also be found in issue #75
+
+#### https://github.com/KartikTalwar/gmail-chrome-extension-boilerplate
+
 
 ## Setup
 
