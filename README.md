@@ -599,12 +599,6 @@ Your callback will be fired directly after Gmail's XMLHttpRequest has been sent 
 
 The on method also supports observering specific DOM events in the Gmail Interface (for example when a new compose window is opened). These are only available via the `on` method (not the `before` or `after` methods)
 
-**Available DOM Actions**
-
- - **load** - When the gmail interface has completed loading
- - **compose** - When a new compose window opens
- - **reply_forward** - When an email is replied to or forwarded
- - **recipient_change** - When the recipient (to, cc or bcc) is changed when composing a new email or replying/forwarding an email
 
 ```js
 gmail.observe.on("unread", function(id, url, body, xhr) {
