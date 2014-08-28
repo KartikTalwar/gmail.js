@@ -1067,6 +1067,10 @@ var Gmail = function(localJQuery) {
     var emails = [];
 
     for(i in api.tracker.view_data) {
+      if (typeof(api.tracker.view_data[i]) === 'function') {
+        continue;
+      }
+
       var cdata = api.tools.parse_view_data(api.tracker.view_data[i]);
       if(cdata.length > 0) {
         $.merge(emails, cdata);
