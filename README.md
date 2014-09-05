@@ -154,10 +154,6 @@ gmail.get.user_email();
   - **`delete_label`** - When a label is deleted
   - **`show_newly_arrived_message`** - When inside an email and a new email arrives in the thread
   - **`upload_attachment`** - When an attachment is being uploaded to an email being composed
-  - **DOM observers**
-   - **`compose`** - When a new compose window is opened
-   - **`reply_forward`** - When an email is being replied to or forwarded
-   - **`recipient_change`** - When an email being written has its to, cc or bcc recipients updated
 - [gmail.observe **.before(action, callback)**](#gmailobservebeforeaction-callback)
 - [gmail.observe **.after(action, callback)**](#gmailobserveafteraction-callback)
 - gmail.observe **.bind(type, action, callback)** - implements the on, after, before callbacks
@@ -725,19 +721,6 @@ gmail.observe.on("open_email", function(id, url, body, xhr) {
 gmail.observe.on("upload_attachment", function(file, xhr) {
   console.log("file", file, 'xhr', xhr);
 })
-
-// DOM observers
-gmail.observe.on("compose", function(match_obj) {
-  console.log('api.dom.com object:', match_obj );
-});
-
-gmail.observe.on("reply_forward", function(el, type) {
-  console.log( type == 'Forward' ? 'Forward detected' : 'Reply Detected', match, type);
-});
-
-gmail.observe.on('recipient_change', function(match, recipients) {
-  console.log( 'recipients changed', match, recipients);
-});
 ```
 
 #### gmail.observe.before(action, callback)
