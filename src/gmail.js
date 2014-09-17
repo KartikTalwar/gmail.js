@@ -1151,8 +1151,8 @@ var Gmail = function(localJQuery) {
         data.threads[x[1]].content_plain = (x[13] != undefined) ? $(x[13][6]).text() : x[8];
         data.threads[x[1]].subject = x[12];
         data.threads[x[1]].content_html = (x[13] != undefined) ? x[13][6] : x[8];
-        data.threads[x[1]].to = (x[13] != undefined) ? x[13][1] : [];
-        data.threads[x[1]].cc = (x[13] != undefined) ? x[13][2] : [];
+        data.threads[x[1]].to = (x[13] != undefined) ? x[13][1] : ((x[37] != undefined) ? x[37][1]:[]);
+	    data.threads[x[1]].cc = (x[13] != undefined) ? x[13][2] : [];
         data.threads[x[1]].bcc = (x[13] != undefined) ? x[13][3] : [];
       }
     }
