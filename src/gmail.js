@@ -610,49 +610,49 @@ var Gmail =  function() {
       case "mt":
       case "cffm":
       case "rc_^i":
-        var response = [email_ids, params.url, params.body];
+        response = [email_ids, params.url, params.body];
         break;
 
       case "arl":
-        var response = [email_ids, params.url, params.body, params.url.acn];
+        response = [email_ids, params.url, params.body, params.url.acn];
         break;
 
       case "sd":
-        var response = [email_ids, params.url, sent_params];
+        response = [email_ids, params.url, sent_params];
         break;
 
       case "tae":
       case "sm":
-        var response = [params.url, params.body, sent_params];
+        response = [params.url, params.body, sent_params];
         break;
 
       case "el":
-        var response = [params.url, params.body, sent_params.ex == '1'];
+        response = [params.url, params.body, sent_params.ex == '1'];
         break;
 
       case "dm":
       case "rtr":
-        var response = [sent_params.m, params.url, params.body];
+        response = [sent_params.m, params.url, params.body];
         break;
 
     }
 
     if(typeof params.url._reqid == 'string' && typeof params.url.th == 'string') {
-      var response = [params.url.th, params.url, params.body];
+      response = [params.url.th, params.url, params.body];
       if(api.observe.bound('new_email')) {
         triggered.new_email = response;
       }
     }
 
     if((params.url.view == 'cv' || params.url.view == 'ad') && typeof params.url.th == 'string' && typeof params.url.search == 'string' && params.url.rid == undefined) {
-      var response = [params.url.th, params.url, params.body];
+      response = [params.url.th, params.url, params.body];
       if(api.observe.bound('open_email')) {
         triggered.open_email = response;
       }
     }
 
     if((params.url.view == 'cv' || params.url.view == 'ad') && typeof params.url.th == 'object' && typeof params.url.search == 'string' && params.url.rid != undefined) {
-      var response = [params.url.th, params.url, params.body];
+      response = [params.url.th, params.url, params.body];
       if(api.observe.bound('toggle_threads')) {
         triggered.toggle_threads = response;
       }
@@ -660,7 +660,7 @@ var Gmail =  function() {
 
     if((params.url.view == 'cv' || params.url.view == 'ad') && typeof params.url.th == 'string' && typeof params.url.search == 'string' && params.url.rid != undefined) {
       if(params.url.msgs != undefined) {
-        var response = [params.url.th, params.url, params.body];
+        response = [params.url.th, params.url, params.body];
         if(api.observe.bound('toggle_threads')) {
           triggered.toggle_threads = response;
         }
@@ -669,14 +669,14 @@ var Gmail =  function() {
 
     if(typeof params.url.SID == 'string' && typeof params.url.zx == 'string' && params.body.indexOf('req0_') != -1) {
       api.tracker.SID = params.url.SID;
-      var response = [params.url, params.body, sent_params];
+      response = [params.url, params.body, sent_params];
       if(api.observe.bound('poll')) {
         triggered.poll = response;
       }
     }
 
     if(typeof params.url.ik == 'string' && typeof params.url.search == 'string' && params.body.length == 0 && typeof params.url._reqid == 'string') {
-      var response = [params.url, params.body, sent_params];
+      response = [params.url, params.body, sent_params];
       if(api.observe.bound('refresh')) {
         triggered.refresh = response;
       }
@@ -988,6 +988,20 @@ var Gmail =  function() {
   }
 
   /**
+    Trigger any specified DOM events passing a specified element & optional handler
+   */
+  api.observe.trigger_dom = function(observer, element, handler) {
+    if(!handler) {
+      handler = function(match, callback) {
+        callback(match)
+      };
+    }
+    $.each(api.tracker.watchdog.dom[observer], function(idx, callback) {
+      handler(element, callback);
+    });
+  }
+
+  /**
     Observe DOM nodes being inserted. When a node with a class defined in api.tracker.dom_observers is inserted,
     trigger the related event and fire off any relevant bound callbacks
     This function should return true if a dom observer is found for the specified action
@@ -996,23 +1010,65 @@ var Gmail =  function() {
     // map observers to DOM class names
     // as elements are inserted into the DOM, these classes will be checked for and mapped events triggered,
     // receiving 'e' event object, and a jquery bound inserted DOM element
+    // NOTE: supported observers and sub_observers must be registered in the supported_observers array as well as the dom_observers config
     // Config example: event_name: {
     //                   class: 'className', // required - check for this className in the inserted DOM element
-    //                   sub_selector: 'div.className', // if specified, we do a jquery element.find for the passed selector on the inserted element
+    //                   selector: 'div.className#myId', // if you need to match more than just the className of a specific element to indicate a match, you can use this selector for further checking (uses element.is(selector) on matched element). E.g. if there are multiple elements with a class indicating an observer should fire, but you only want it to fire on a specific id, then you would use this
+    //                   sub_selector: 'div.className', // if specified, we do a jquery element.find for the passed selector on the inserted element and ensure we can find a match
     //                   handler: function( matchElement, callback ) {}, // if specified this handler is called if a match is found. Otherwise default calls the callback & passes the jQuery matchElement
+    //                   sub_observers: { }, // hash of event_name: config_hash's - config hash supports all properties of this config hash. Observer will be bound as DOMNodeInserted to the matching class+sub_selector element.
     //                 },
     // TODO: current limitation allows only 1 action per watched className (i.e. each watched class must be 
     //       unique). If this functionality is needed this can be worked around by pushing actions to an array
     //       in api.tracker.dom_observer_map below
     // console.log( 'Observer set for', action, callback);
+    api.tracker.supported_observers = ['view_thread', 'view_email', 'load_email_menu', 'recipient_change', 'compose'];
     api.tracker.dom_observers = {
-      'compose': {
+      /*'compose': {
         class: 'nH',
         sub_selector: 'div.AD',
         handler: function(match, callback) {
+          console.log('compose handler',match);
           callback(new api.dom.compose(match));
         },
+      },*/
+
+      // when a thread is clicked on in a mailbox for viewing - note: this should fire at a similar time (directly after) as the open_email XHR observer
+      // which is triggered by the XHR request rather than nodes being inserted into the DOM (and thus returns different information)
+      'view_thread': {
+        class: 'Bu', 
+        sub_selector: 'div.if',
+        handler: function(match, callback) {
+          callback(match);
+
+          // look for any email elements in this thread that are currently displaying
+          // and fire off any view_email sub_observers for each of them
+          var email = match.find('div.adn');
+          if (email.length) {
+            api.observe.trigger_dom('view_email',email);
+          }
+        },
+        sub_observers: {
+
+          // when an individual email is loaded within a thread (also fires when thread loads displaying the latest email)
+          'view_email': {
+            class: '',
+            sub_selector: 'div.adn'
+          },
+
+          // when the dropdown menu next to the reply button is inserted into the DOM when viewing an email
+          'load_email_menu': {
+              class: 'J-N',
+              selector: 'div[role=menu] div[role=menuitem]:first-child', // use the first menu item in the popoup as the indicator to trigger this observer
+              handler: function(match, callback) {
+                match = match.closest('div[role=menu]');
+                callback(match);
+              }
+          }
+        }
       },
+
+      // a new email address is added to any of the to,cc,bcc fields when composing a new email or replying/forwarding
       'recipient_change': {
         class: 'vR',
         handler: function(match, callback) {
@@ -1028,16 +1084,11 @@ var Gmail =  function() {
           setTimeout(function(){
             // console.log('recipient timeout handler', api.tracker.recipient_matches.length);
             if(!api.tracker.recipient_matches.length) return;
-            // console.log('executing recipient timeout handler', api.tracker.recipient_matches);
 
             // determine an array of all emails specified for To, CC and BCC and extract addresses into an object for the callback
-            var compose = api.tracker.recipient_matches[0].closest('.GS');
-            var recipients = {};
-            compose.find('input[type=hidden]').each(function(idx, recipient ){
-              if(!recipients[recipient.name]) recipients[recipient.name] = [];
-              recipients[recipient.name].push(recipient.value);
-            });
-            callback(api.tracker.recipient_matches, recipients);
+            var compose = new api.dom.compose(api.tracker.recipient_matches[0].closest('div.M9'));
+            var recipients = compose.recipients();
+            callback(compose, recipients, api.tracker.recipient_matches);
 
             // reset matches so no future delayed instances of this function execute
             api.tracker.recipient_matches = [];
@@ -1045,23 +1096,30 @@ var Gmail =  function() {
         },
       },
 
-      // this will fire if a new reply or forward is created. it won't fire if a reply changes to a forward & vice versa
-      'reply_forward': {
+      // this will fire if a new compose, reply or forward is created. it won't fire if a reply changes to a forward & vice versa
+      // passes a type of compose, reply, or forward to the callback
+      'compose': {
         class: 'An', // M9 would be better but this isn't set at the point of insertion
         handler: function(match, callback) {
           // console.log('reply_forward handler called', match, callback);
 
           // look back up the DOM tree for M9 (the main reply/forward node)
           match = match.closest('div.M9');
-          if(!match.length) return;
-          var type = match.find('input[name=subject]').val().indexOf('Fw') == 0 ? 'Forward' : 'Reply';
+          if (!match.length) return;
+          match = new api.dom.compose(match);
+          var type;
+          if (match.is_inline()) {
+            type = match.find('input[name=subject]').val().indexOf('Fw') == 0 ? 'forward' : 'reply';
+          } else {
+            type = 'compose';
+          }
           callback(match,type);
         }
       },
     };
 
     // support for DOM observers
-    if(api.tracker.dom_observers[action]) {
+    if($.inArray(action, api.tracker.supported_observers) > -1) {
 
       //console.log('observer found',api.tracker.dom_observers[action]);
 
@@ -1077,40 +1135,11 @@ var Gmail =  function() {
         });
         // console.log( 'dom_observer_map', api.tracker.dom_observer_map);
 
-        // default handler
-        var default_handler = function(match, callback) {
-          callback(match);
-        };
-
         // this listener will check every element inserted into the DOM
         // for specified classes (as defined in api.tracker.dom_observers above) which indicate 
         // specified actions which need triggering
         $(window.document).bind('DOMNodeInserted', function(e) {
-          //console.log('insertion', e.target);
-
-          // loop through each of the inserted elements classes & check for a defined observer on that class
-          $.each(e.target.className.split(/\s+/), function(idx, className) {
-            var observer = api.tracker.dom_observer_map[className];
-
-            // check if this is a defined observer, and callbacks are bound to that observer
-            if(observer && api.tracker.watchdog.dom[observer]) {
-              var element = $(e.target);
-              var config = api.tracker.dom_observers[observer];
-              if(config.sub_selector) {
-                element = element.find(config.sub_selector);
-                // console.log('checking for subselector', config.sub_selector, element);
-              }
-              
-              // if an element has been found, execute the observer handler (or if none defined, execute the callback)
-              if(element.length) {
-                var handler = config.handler ? config.handler : default_handler;
-                // console.log( 'inserted DOM: class match in watchdog',observer,api.tracker.watchdog.dom[observer] );
-                $.each(api.tracker.watchdog.dom[observer], function(idx, callback) {
-                  handler(element, callback);
-                });
-              }
-            }
-          });
+          api.tools.insertion_observer(e.target, api.tracker.dom_observers, api.tracker.dom_observer_map);
         });
       }
       api.observe.bind('dom',action,callback);
@@ -1140,6 +1169,58 @@ var Gmail =  function() {
       }, delay);
       return true;
     }
+  }
+
+  api.tools.insertion_observer = function(target, dom_observers, dom_observer_map, sub) {
+//if( target.className == '' && $(target).find('div.adn').length ) console.log('insertion', target, target.className);
+
+    // loop through each of the inserted elements classes & check for a defined observer on that class
+    var classes = target.className.trim().split(/\s+/);
+    if(!classes.length) classes.push(''); // if no class, then check for anything observing nodes with no class
+//if( sub ) console.log(sub + 'insertion', target, classes, dom_observer_map);
+    $.each(classes, function(idx, className) {
+      var observer = dom_observer_map[className];
+    //if (className == 'aaq' || className == 'Bu') console.log('insertion', target, target.className);
+      // check if this is a defined observer, and callbacks are bound to that observer
+      if(observer && api.tracker.watchdog.dom[observer]) {
+        var element = $(target);
+        var config = dom_observers[observer];
+
+        // if a config id specified for this observer, ensure it matches for this element
+        if(config.selector && !element.is(config.selector)) {
+          return;
+        }
+
+        // if 
+        if(config.sub_selector) {
+          element = element.find(config.sub_selector);
+          // console.log('checking for subselector', config.sub_selector, element);
+        }
+        
+        // if an element has been found, execute the observer handler (or if none defined, execute the callback)
+        if(element.length) {
+          var handler = config.handler ? config.handler : function(match, callback) { callback(match) };
+          // console.log( 'inserted DOM: class match in watchdog',observer,api.tracker.watchdog.dom[observer] );
+          api.observe.trigger_dom(observer, element, handler);
+
+          // if sub_observers are configured for this observer, bind a DOMNodeInsertion listener to this element & to check for specific elements being added to this particular element
+          if(config.sub_observers) {
+
+            // create observer_map for the sub_observers
+            var observer_map = {};
+            $.each(config.sub_observers, function(act,cfg){
+              observer_map[cfg.class] = act;
+            });
+
+            // this listener will check every element inserted into the DOM below the current element
+            // and repeat this method, but specifically below the current element rather than the global DOM
+            element.bind('DOMNodeInserted', function(e) {
+              api.tools.insertion_observer(e.target, config.sub_observers, observer_map, 'SUB ');
+            });
+          }
+        }
+      }
+    });
   }
 
 
@@ -1331,6 +1412,17 @@ var Gmail =  function() {
     return {};
   }
 
+  api.get.email_source = function(email_id) {
+    if(api.check.is_inside_email() && email_id == undefined) {
+      email_id = api.get.email_id();
+    }
+
+    if(email_id != undefined) {
+      var url = window.location.origin + window.location.pathname + '?ui=2&ik=' + api.tracker.ik + '&view=om&th=' + email_id;
+      return api.tools.make_request(url);
+    }
+    return '';
+  }
 
   api.get.displayed_email_data = function() {
     var email_data = api.get.email_data();
@@ -1504,7 +1596,7 @@ var Gmail =  function() {
   api.dom.composes = function() {
     objs = [];
     $('div.AD').each(function(idx, el) {
-      objs.push( new api.dom.compose(el) );
+      objs.push( new api.dom.compose(el.find('div.M9')) );
     });
     return objs;
   }
@@ -1516,11 +1608,25 @@ var Gmail =  function() {
    */
   api.dom.compose = function(element) {
     element = $(element);
-    if(!element || !element.hasClass('AD')) throw('api.dom.compose called with invalid element');
+    if(!element || (!element.hasClass('M9') && !element.hasClass('AD'))) throw('api.dom.compose called with invalid element');
     this.$el = element;
     return this;
   }
   $.extend(api.dom.compose.prototype, {
+
+    /**
+      Retrieve the compose id
+     */
+    id: function() {
+      return this.dom('id').val();
+    },
+
+    /**
+      Is this compose instance inline (as with reply & forwards) or a popup (as with a new compose)
+     */
+    is_inline: function() {
+      return this.$el.closest('td.Bu').length > 0;
+    },
 
     /**
       Retrieves to, cc, bcc and returns them in a hash of arrays
@@ -1544,7 +1650,7 @@ var Gmail =  function() {
       });
       return recipients;
     },
-//document.activeElement
+
     /**
       Retrieve the current 'to' recipients
       TODO: ability to set
@@ -1575,9 +1681,10 @@ var Gmail =  function() {
         subject   string  set as new subject
      */
     subject: function(subject) {
-      var el = this.dom('subject');
-      if(subject) el.val(subject);
-      return el.val();
+      var el = this.dom('subjectbox');
+      if(subject) this.dom('all_subjects').val(subject);
+      subject = this.dom('subjectbox').val();
+      return subject ? subject : this.dom('subject').val();
     },
 
     /**
@@ -1601,8 +1708,12 @@ var Gmail =  function() {
      */
     dom: function(lookup) {
       var config = {
-        subject: 'input[name=subjectbox]',
-        body: 'div[contenteditable=true]'
+        id: 'input[name=composeid]',
+        subject: 'input[name=subject]',
+        subjectbox: 'input[name=subjectbox]',
+        body: 'div[contenteditable=true]',
+        reply: 'M9',
+        forward: 'M9',
       };
       if(!config[lookup]) throw('Dom lookup failed. Unable to find config for \'' + lookup + '\'');
       return this.$el.find(config[lookup]);

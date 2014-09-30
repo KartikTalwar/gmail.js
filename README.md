@@ -57,6 +57,7 @@ gmail.get.user_email();
 - [gmail.get **.compose_ids()**](#gmailgetcompose_ids)
 - [gmail.get **.email_data(email_id=undefined)**](#gmailgetemail_dataemail_idundefined)
 - [gmail.get **.displayed_email_data()**](#gmailgetdisplayed_email_data)
+- [gmail.get **.email_source(email_id=undefined)**](#gmailgetemail_sourceemail_idundefined)
 - [gmail.get **.search_query()**](#gmailgetsearch_query)
 - [gmail.get **.unread_emails()**](#gmailgetunread_emails)
  - [gmail.get **.unread_inbox_emails()**](#gmailgetunread_emails)
@@ -288,6 +289,11 @@ Returns an object representation of the emails that are being displayed.
 }
 
 ```
+
+#### gmail.get.email_source(email_id=undefined)
+
+Retrieves raw MIME message source from the gmail server for the specified email id. It takes the optional email_id parameter where
+the data for the specified id is returned instead of the email currently visible in the dom
 
 #### gmail.get.user_email()
 
@@ -589,9 +595,11 @@ The on method also supports observering specific DOM events in the Gmail Interfa
 **Available DOM Actions**
 
  - **load** - When the gmail interface has completed loading
- - **compose** - When a new compose window opens
- - **reply_forward** - When an email is replied to or forwarded
+ - **compose** - When a new compose window opens, or a message is replied to or forwarded
  - **recipient_change** - When the recipient (to, cc or bcc) is changed when composing a new email or replying/forwarding an email
+ - **view_thread** - When a new coversation thread is opened
+ - **view_email** - When an individual email is loaded within a thread (also fires when thread loads displaying the latest email)
+ - **load_email_menu** - When the dropdown menu next to the reply button is clicked
 
 ```js
 gmail.observe.on("unread", function(id, url, body, xhr) {
@@ -720,17 +728,33 @@ gmail.observe.on("upload_attachment", function(file, xhr) {
 })
 
 // DOM observers
-gmail.observe.on("compose", function(match_obj) {
-  console.log('api.dom.com object:', match_obj );
-});
+gmail.observe.on("compose", function(compose, type) {
 
-gmail.observe.on("reply_forward", function(el, type) {
-  console.log( type == 'Forward' ? 'Forward detected' : 'Reply Detected', match, type);
+  // type can be compose, reply or forward
+  console.log('api.dom.compose object:', compose, 'type is:', type );
 });
 
 gmail.observe.on('recipient_change', function(match, recipients) {
-  console.log( 'recipients changed', match, recipients);
+  console.log('recipients changed', match, recipients);
 });
+
+gmail.observe.on('view_thread', function(match) {
+  console.log('conversation thread opened', match);
+});
+
+gmail.observe.on('view_email', function(match) {
+  console.log('individual email opened', match);
+});
+
+gmail.observe.on('load_email_menu', function(match) {
+  console.log('Menu loaded',match);
+
+  // insert a new element into the menu
+  $('<div />').addClass('J-N-Jz')
+      .html('New element')
+      .appendTo(match);
+});
+
 ```
 
 #### gmail.observe.before(action, callback)
