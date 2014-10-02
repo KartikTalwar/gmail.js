@@ -1022,101 +1022,119 @@ var Gmail =  function() {
     //       unique). If this functionality is needed this can be worked around by pushing actions to an array
     //       in api.tracker.dom_observer_map below
     // console.log( 'Observer set for', action, callback);
-    api.tracker.supported_observers = ['view_thread', 'view_email', 'load_email_menu', 'recipient_change', 'compose'];
-    api.tracker.dom_observers = {
-      /*'compose': {
-        class: 'nH',
-        sub_selector: 'div.AD',
-        handler: function(match, callback) {
-          console.log('compose handler',match);
-          callback(new api.dom.compose(match));
-        },
-      },*/
-
-      // when a thread is clicked on in a mailbox for viewing - note: this should fire at a similar time (directly after) as the open_email XHR observer
-      // which is triggered by the XHR request rather than nodes being inserted into the DOM (and thus returns different information)
-      'view_thread': {
-        class: 'Bu', 
-        sub_selector: 'div.if',
-        handler: function(match, callback) {
-          callback(match);
-
-          // look for any email elements in this thread that are currently displaying
-          // and fire off any view_email sub_observers for each of them
-          var email = match.find('div.adn');
-          if (email.length) {
-            api.observe.trigger_dom('view_email',email);
-          }
-        },
-        sub_observers: {
-
-          // when an individual email is loaded within a thread (also fires when thread loads displaying the latest email)
-          'view_email': {
-            class: '',
-            sub_selector: 'div.adn'
+    if(!api.tracker.supported_observers) {
+      api.tracker.supported_observers = ['view_thread', 'view_email', 'load_email_menu', 'recipient_change', 'compose'];
+      api.tracker.dom_observers = {
+        /*'compose': {
+          class: 'nH',
+          sub_selector: 'div.AD',
+          handler: function(match, callback) {
+            console.log('compose handler',match);
+            callback(new api.dom.compose(match));
           },
+        },*/
 
-          // when the dropdown menu next to the reply button is inserted into the DOM when viewing an email
-          'load_email_menu': {
-              class: 'J-N',
-              selector: 'div[role=menu] div[role=menuitem]:first-child', // use the first menu item in the popoup as the indicator to trigger this observer
-              handler: function(match, callback) {
-                match = match.closest('div[role=menu]');
-                callback(match);
-              }
+        // when a thread is clicked on in a mailbox for viewing - note: this should fire at a similar time (directly after) as the open_email XHR observer
+        // which is triggered by the XHR request rather than nodes being inserted into the DOM (and thus returns different information)
+        'view_thread': {
+
+          // this class is set once the interface is loaded (see below) so we can detect the relevant class which is 'Bs', but 'Bu' if the preview pane labs addon is enabled
+          class: null, 
+          sub_selector: 'div.if',
+          handler: function(match, callback) {
+            callback(match);
+
+            // look for any email elements in this thread that are currently displaying
+            // and fire off any view_email sub_observers for each of them
+            var email = match.find('div.adn');
+            if (email.length) {
+              api.observe.trigger_dom('view_email',email);
+            }
+          },
+          sub_observers: {
+
+            // when an individual email is loaded within a thread (also fires when thread loads displaying the latest email)
+            'view_email': {
+              class: '',
+              sub_selector: 'div.adn'
+            },
+
+            // when the dropdown menu next to the reply button is inserted into the DOM when viewing an email
+            'load_email_menu': {
+                class: 'J-N',
+                selector: 'div[role=menu] div[role=menuitem]:first-child', // use the first menu item in the popoup as the indicator to trigger this observer
+                handler: function(match, callback) {
+                  match = match.closest('div[role=menu]');
+                  callback(match);
+                }
+            }
           }
-        }
-      },
-
-      // a new email address is added to any of the to,cc,bcc fields when composing a new email or replying/forwarding
-      'recipient_change': {
-        class: 'vR',
-        handler: function(match, callback) {
-          // console.log('compose:recipient handler called',match,callback);
-
-          // we need to small delay on the execution of the handler as when the recipients field initialises on a reply (or reinstated compose/draft)
-          // then multiple DOM elements will be inserted for each recipient causing this handler to execute multiple times
-          // in reality we only want a single callback, so give other nodes time to be inserted & then only execute the callback once
-          if(typeof api.tracker.recipient_matches != 'object') {
-            api.tracker.recipient_matches = [];
-          }
-          api.tracker.recipient_matches.push(match);
-          setTimeout(function(){
-            // console.log('recipient timeout handler', api.tracker.recipient_matches.length);
-            if(!api.tracker.recipient_matches.length) return;
-
-            // determine an array of all emails specified for To, CC and BCC and extract addresses into an object for the callback
-            var compose = new api.dom.compose(api.tracker.recipient_matches[0].closest('div.M9'));
-            var recipients = compose.recipients();
-            callback(compose, recipients, api.tracker.recipient_matches);
-
-            // reset matches so no future delayed instances of this function execute
-            api.tracker.recipient_matches = [];
-          },100);
         },
-      },
 
-      // this will fire if a new compose, reply or forward is created. it won't fire if a reply changes to a forward & vice versa
-      // passes a type of compose, reply, or forward to the callback
-      'compose': {
-        class: 'An', // M9 would be better but this isn't set at the point of insertion
-        handler: function(match, callback) {
-          // console.log('reply_forward handler called', match, callback);
+        // a new email address is added to any of the to,cc,bcc fields when composing a new email or replying/forwarding
+        'recipient_change': {
+          class: 'vR',
+          handler: function(match, callback) {
+            // console.log('compose:recipient handler called',match,callback);
 
-          // look back up the DOM tree for M9 (the main reply/forward node)
-          match = match.closest('div.M9');
-          if (!match.length) return;
-          match = new api.dom.compose(match);
-          var type;
-          if (match.is_inline()) {
-            type = match.find('input[name=subject]').val().indexOf('Fw') == 0 ? 'forward' : 'reply';
-          } else {
-            type = 'compose';
+            // we need to small delay on the execution of the handler as when the recipients field initialises on a reply (or reinstated compose/draft)
+            // then multiple DOM elements will be inserted for each recipient causing this handler to execute multiple times
+            // in reality we only want a single callback, so give other nodes time to be inserted & then only execute the callback once
+            if(typeof api.tracker.recipient_matches != 'object') {
+              api.tracker.recipient_matches = [];
+            }
+            api.tracker.recipient_matches.push(match);
+            setTimeout(function(){
+              // console.log('recipient timeout handler', api.tracker.recipient_matches.length);
+              if(!api.tracker.recipient_matches.length) return;
+
+              // determine an array of all emails specified for To, CC and BCC and extract addresses into an object for the callback
+              var compose = new api.dom.compose(api.tracker.recipient_matches[0].closest('div.M9'));
+              var recipients = compose.recipients();
+              callback(compose, recipients, api.tracker.recipient_matches);
+
+              // reset matches so no future delayed instances of this function execute
+              api.tracker.recipient_matches = [];
+            },100);
+          },
+        },
+
+        // this will fire if a new compose, reply or forward is created. it won't fire if a reply changes to a forward & vice versa
+        // passes a type of compose, reply, or forward to the callback
+        'compose': {
+          class: 'An', // M9 would be better but this isn't set at the point of insertion
+          handler: function(match, callback) {
+            // console.log('reply_forward handler called', match, callback);
+
+            // look back up the DOM tree for M9 (the main reply/forward node)
+            match = match.closest('div.M9');
+            if (!match.length) return;
+            match = new api.dom.compose(match);
+            var type;
+            if (match.is_inline()) {
+              type = match.find('input[name=subject]').val().indexOf('Fw') == 0 ? 'forward' : 'reply';
+            } else {
+              type = 'compose';
+            }
+            callback(match,type);
           }
-          callback(match,type);
-        }
-      },
-    };
+        },
+      };
+
+      // after the interface has loaded, update configuration of any observers that are affected by various
+      // interface configuration, addons etc
+      api.observe.on('load', function() {
+        
+        // detect if preview_pane is enabled & set the class config for view_thread which differs depending on the mode
+        api.tracker.dom_observers.view_thread.class = api.check.is_preview_pane() ? 'Bu' : 'Bs';
+
+        // map observed classNames to actions
+        api.tracker.dom_observer_map = {};
+        $.each(api.tracker.dom_observers, function(act,config){
+          api.tracker.dom_observer_map[config.class] = act;
+        });
+      });
+    }
 
     // support for DOM observers
     if($.inArray(action, api.tracker.supported_observers) > -1) {
@@ -1128,16 +1146,9 @@ var Gmail =  function() {
         api.tracker.observing_dom = true;
         //api.tracker.dom_watchdog = {}; // store passed observer callbacks for different DOM events
 
-        // map observed classNames to actions
-        api.tracker.dom_observer_map = {};
-        $.each(api.tracker.dom_observers, function(act,config){
-          api.tracker.dom_observer_map[config.class] = act;
-        });
-        // console.log( 'dom_observer_map', api.tracker.dom_observer_map);
-
         // this listener will check every element inserted into the DOM
         // for specified classes (as defined in api.tracker.dom_observers above) which indicate 
-        // specified actions which need triggering
+        // related actions which need triggering
         $(window.document).bind('DOMNodeInserted', function(e) {
           api.tools.insertion_observer(e.target, api.tracker.dom_observers, api.tracker.dom_observer_map);
         });
@@ -1172,15 +1183,17 @@ var Gmail =  function() {
   }
 
   api.tools.insertion_observer = function(target, dom_observers, dom_observer_map, sub) {
-//if( target.className == '' && $(target).find('div.adn').length ) console.log('insertion', target, target.className);
+    //console.log('insertion', target, target.className);
 
+    // dont bother tracking dom insertions until we have a mapping over observers which is set after the initial interface load
+    if(!api.tracker.dom_observer_map) return;
+    
     // loop through each of the inserted elements classes & check for a defined observer on that class
     var classes = target.className.trim().split(/\s+/);
     if(!classes.length) classes.push(''); // if no class, then check for anything observing nodes with no class
-//if( sub ) console.log(sub + 'insertion', target, classes, dom_observer_map);
     $.each(classes, function(idx, className) {
       var observer = dom_observer_map[className];
-    //if (className == 'aaq' || className == 'Bu') console.log('insertion', target, target.className);
+
       // check if this is a defined observer, and callbacks are bound to that observer
       if(observer && api.tracker.watchdog.dom[observer]) {
         var element = $(target);
@@ -1191,7 +1204,8 @@ var Gmail =  function() {
           return;
         }
 
-        // if 
+        // check for any defined sub_selector match - if not found, then this is not a match for this observer
+        // if found, then set the matching element to be the one that matches the sub_selector
         if(config.sub_selector) {
           element = element.find(config.sub_selector);
           // console.log('checking for subselector', config.sub_selector, element);
@@ -1223,15 +1237,11 @@ var Gmail =  function() {
     });
   }
 
-
   api.tools.make_request = function (link, method) {
-
     var method  = (typeof method == undefined || typeof method == null) ? 'GET' : method;
     var request = $.ajax({ type: method, url: encodeURI(link), async:false });
-
     return request.responseText;
   }
-
 
   api.tools.parse_view_data = function(view_data) {
     var parsed = [];
