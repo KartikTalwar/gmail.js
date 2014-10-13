@@ -1324,17 +1324,21 @@ var Gmail =  function() {
   }
 
 
-  api.tools.infobox = function(message, time){
+  api.tools.infobox = function(message, time, html){
     var top = $(".b8.UC");
 
     // initial Gmail style I noticed on 26 / 05 / 2014 for $(".b8.UC") :
     // style="position: relative; top: -10000px;"
     // Seems that when Gmail shows infobox, the style is simply removed
     // - from what I can see in DevTools Elements Panel
-
     if(top.length > 0){
+      top.stop(false, true); // cancel any existing fade so we can start again
       var info = top.find(".vh");
-      info.text(message);
+      if (!html) {
+        info.text(message);
+      } else {
+        info.html(message);
+      }
       if(typeof time !== "undefined"){
         var initialInfoboxStyle = top.attr("style");            // backup initial style
         top.removeAttr("style").fadeTo(time, 0, function(){     // simply remove then restore
@@ -1594,7 +1598,7 @@ var Gmail =  function() {
   api.dom.composes = function() {
     objs = [];
     $('div.AD').each(function(idx, el) {
-      objs.push( new api.dom.compose(el.find('div.M9')) );
+      objs.push( new api.dom.compose($(el).find('div.M9')) );
     });
     return objs;
   }
