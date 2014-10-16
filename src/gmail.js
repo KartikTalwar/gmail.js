@@ -868,8 +868,8 @@ var Gmail = function(localJQuery) {
       api.tracker.watchdog[type][action] = [];
     }
     api.tracker.watchdog[type][action].push(callback);
-    
-    // allow checking for bound events to specific action/type as efficiently as possible (without in looping) - bit dirtier code, 
+
+    // allow checking for bound events to specific action/type as efficiently as possible (without in looping) - bit dirtier code,
     // but lookups (api.observer.bound) are executed by the hundreds & I think the extra efficiency is worth the tradeoff
     api.tracker.bound[action] = typeof api.tracker.bound[action] == 'undefined' ? 1 : api.tracker.bound[action]+1;
     api.tracker.bound[type] = typeof api.tracker.bound[type] == 'undefined' ? 1 : api.tracker.bound[type]+1;
@@ -983,7 +983,7 @@ var Gmail = function(localJQuery) {
       // we have to do this here each time to keep backwards compatibility with old response_callback implementation
       response = $.extend([], response); // break the reference so it doesn't keep growing each trigger
       if(type == 'after') response.push(xhr.xhrResponse); // backwards compat for after events requires we push onreadystatechange parsed response first
-      response.push(xhr); 
+      response.push(xhr);
       if(api.observe.bound(action, type)) {
         fired = true;
         $.each(api.tracker.watchdog[type][action], function(idx, callback) {
@@ -1152,12 +1152,18 @@ var Gmail = function(localJQuery) {
         data.threads[x[1]].timestamp = x[7];
         data.threads[x[1]].datetime = x[24];
         data.threads[x[1]].attachments = x[21].split(',');
-        data.threads[x[1]].content_plain = (x[13] != undefined) ? $(x[13][6]).text() : x[8];
         data.threads[x[1]].subject = x[12];
         data.threads[x[1]].content_html = (x[13] != undefined) ? x[13][6] : x[8];
         data.threads[x[1]].to = (x[13] != undefined) ? x[13][1] : ((x[37] != undefined) ? x[37][1]:[]);
         data.threads[x[1]].cc = (x[13] != undefined) ? x[13][2] : [];
         data.threads[x[1]].bcc = (x[13] != undefined) ? x[13][3] : [];
+
+        try { // jQuery will sometime fail to parse x[13][6], if so, putting the raw HTML
+          data.threads[x[1]].content_plain = (x[13] != undefined) ? $(x[13][6]).text() : x[8];
+        }
+        catch(e) {
+          data.threads[x[1]].content_plain = (x[13] != undefined) ? x[13][6] : x[8];
+        }
       }
     }
 
@@ -1305,7 +1311,7 @@ var Gmail = function(localJQuery) {
           'social_updates': 'Réseaux sociaux'
         };
         break;
-        
+
       case 'nl':
         dictionary = {
           'inbox': 'Postvak IN',
@@ -1316,7 +1322,7 @@ var Gmail = function(localJQuery) {
           'promotions': 'Reclame',
           'social_updates': 'Sociaal'
         };
-        break;        
+        break;
 
       case 'en':
       default:
