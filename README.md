@@ -116,6 +116,10 @@ gmail.get.user_email();
 - [gmail.chat **.is_hangouts()**](#gmailchatis_hangouts)
 
 
+### COMPOSE
+
+- [gmail.compose **.start_compose()**](#gmailcomposestart_compose)
+
 
 #### OBSERVE
 
@@ -506,6 +510,10 @@ Returns `True` if [Signal](https://trysignal.com) chrome extension is installed 
 
 Returns `True` if the account supports the new hangout UI for chat `False` otherwise (native chat window)
 
+
+#### gmail.compose.start_compose()
+
+Clicks on the compose button making the inbox compose view to popup
 
 
 #### gmail.observe.http_requests()
