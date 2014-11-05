@@ -18,7 +18,8 @@ var Gmail = function(localJQuery) {
               tools : {},
               tracker : {},
               dom : {},
-              chat : {}
+              chat : {},
+              compose : {}
             };
 
 
@@ -1366,5 +1367,32 @@ var Gmail = function(localJQuery) {
     }
     return undefined;
   }
+
+  /**
+  *  Show a compose window
+  * @returns {boolean}
+  */
+  api.compose.start_compose = function() {
+
+    //The compose button
+    var composeEl = $('.T-I.J-J5-Ji.T-I-KE.L3')[0];
+
+    if(composeEl) {
+      //Trigger mouse down event
+      var mouseDown = document.createEvent('MouseEvents');
+      mouseDown.initEvent( 'mousedown', true, false );
+      composeEl.dispatchEvent(mouseDown)
+
+      //Trigger mouse up event
+      var mouseUp = document.createEvent('MouseEvents');
+      mouseUp.initEvent( 'mouseup', true, false );
+      composeEl.dispatchEvent(mouseUp)
+
+      return true;
+    }
+    return false;
+  }
   return api;
 }
+
+
