@@ -166,6 +166,7 @@ These methods return the DOM data itself
 - gmail.dom **.search_bar()**
 - gmail.dom **.compose()** - compose dom object - receives the DOM element for the compose window and provides methods to interact
 - gmail.dom **.composes()** - retrives an array of `gmail.dom.compose` objects representing any open compose windows
+- gmail.dom **.email()** - email dom object - receives an email DOM element or email id for an email currently being viewed. Abstracts interaction with that email.
 
 #### TOOLS
 
@@ -817,6 +818,125 @@ gmail.observe.off('poll','on'); // disables on poll
 gmail.observe.off('poll'); // disables all poll events of any type
 gmail.observe.off(null,'before'); // disables all before observers
 gmail.observe.off();  // disables all
+```
+
+### gmail.dom.compose(compose_el)
+
+An object used to abstract interation with a compose popup
+
+```js
+
+```
+
+### gmail.dom.email(email_el or email_id)
+
+An object for interacting with an email currently present in the DOM. Represents an individual email message within a thread, and provides a number of methods and properties to access & interact with the interface and email data.
+
+Expects a jQuery DOM element for the email div (div.adn as returned by the 'view_email' observer), or an email_id
+
+- **.id** - property storing the id of the email
+- **.body([body])** - allows get/set the html body in the DOM
+- **.to([to_array])** - allows retrieve or updating to/from DOM who the email is addressed to
+- **.from([email_address],[name])** - allows get/set who the email is from in the DOM
+- **.data()** - retrieves object of email data from the Gmail servers
+- **.source()** - retrieves the email raw source from the Gmail servers  
+- **.dom()** - retrieves the primary element, or other defined elements from the DOM
+
+#### gmail.dom.email.body([body=null])
+
+Get/Set the full email body as it sits in the DOM. Note: This gets & sets the body html after it has been parsed & marked up by GMAIL. To retrieve it as it exists in the email message source, use a call to ``.data()``
+
+If you want the actual DOM element use .dom('body');
+
+Receives optional argument containing html to update the email body with.
+
+```js
+var email = new gmail.dom.email(email_id); // optionally can pass relevant $('div.adn');
+var body = email.body();
+var id = email.id;
+
+// add a heading at the start of the email and update in the interface
+email.body('<h1>My New Heading!</h1>' + body);
+```
+
+#### gmail.dom.email.to([to_array=null])
+
+Get/Set who the email is showing as To.
+Optionally receives an array of objects containing email and/or name properties. If received replaces the values in the DOM.
+Returns an array of objects containing email & name of who is showing in the DOM as the email is to.
+
+```js
+var email = new gmail.dom.email(email_id);
+var to = email.to();
+console.log('Email is to', to); // [{email: 'user@user.com', name: 'Display Name'}, {email: 'user2@user.com', name: 'User Two'}]
+
+// update values that appear in the interface. This supports the popup hovers in gmail interface etc
+to = email.to([
+  {email: 'user@user.com', name: 'Display Name'},
+  {email: 'user2@user.com', name: 'User Two'}
+]);
+```
+#### gmail.dom.email.from([email_address=null], [display_name=null])
+
+Get/Set the sender of the email that is displayed in the interface.
+Optionally receives email and name properties. If received updates the values in the DOM
+Returns an object containing email & name of the sender and dom element
+
+```js
+var email = new gmail.dom.email(email_id);
+var from = email.from();
+console.log('Email is from', from); // {email: 'user@user.com', name: 'Display Name'}
+
+// update who the email is from in the interface
+from.name = 'New Name';
+email.from(from);
+```
+
+#### gmail.dom.email.data()
+
+Retrieve relevant email data from the Gmail servers for this email
+Makes use of the gmail.get.email_data() method
+Returns an object containing the email data. Caches email data for all emails in the thread
+
+```js
+var email = new gmail.dom.email(email_id);
+var data = email.data();
+console.log('Email data is',data);
+```
+
+#### gmail.dom.email.source()
+
+Retrieve email source for this email from the Gmail servers
+Makes use of the gmail.get.email_source() method
+Returns string of email raw source
+
+```js
+var email = new gmail.dom.email(email_id);
+var source = email.source();
+console.log('Email source is',source);
+```
+
+#### gmail.dom.email.dom([lookup=null])
+
+Retrieve preconfigured dom elements for this email
+Abstracts relevant dom elements so code can be centralized - making it easier to update if Gmail updates its interface
+Retrieves the primary DOM element if you pass no lookup
+Supported lookups:
+      -  body
+      -  from
+      -  to
+      -  to_wrapper
+      -  timestamp
+      -  star
+      -  reply_button
+      -  menu_button
+      -  details_button
+
+```js
+var email = new gmail.dom.email(email_id);
+var el = email.dom();
+var to_dom = email.dom('to');
+console.log('El is',el,'To elements are',to);
 ```
 
 ## Author and Licensing

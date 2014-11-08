@@ -991,11 +991,14 @@ var Gmail =  function() {
     Trigger any specified DOM events passing a specified element & optional handler
    */
   api.observe.trigger_dom = function(observer, element, handler) {
-    if(!handler) {
+
+    // if no defined handler, just call the callback
+    if (!handler) {
       handler = function(match, callback) {
         callback(match)
       };
     }
+
     $.each(api.tracker.watchdog.dom[observer], function(idx, callback) {
       handler(element, callback);
     });
@@ -1038,7 +1041,7 @@ var Gmail =  function() {
             // and fire off any view_email sub_observers for each of them
             var email = match.find('div.adn');
             if (email.length) {
-              api.observe.trigger_dom('view_email',email);
+              api.observe.trigger_dom('view_email', email, api.tracker.dom_observers.view_thread.sub_observers.view_email.handler);
             }
           },
           sub_observers: {
@@ -1046,7 +1049,11 @@ var Gmail =  function() {
             // when an individual email is loaded within a thread (also fires when thread loads displaying the latest email)
             'view_email': {
               class: '',
-              sub_selector: 'div.adn'
+              sub_selector: 'div.adn',
+              handler: function(match, callback) {
+                match = new api.dom.email(match);
+                callback(match);
+              }
             },
 
             // when the dropdown menu next to the reply button is inserted into the DOM when viewing an email
@@ -1197,6 +1204,7 @@ var Gmail =  function() {
         
         // if an element has been found, execute the observer handler (or if none defined, execute the callback)
         if(element.length) {
+
           var handler = config.handler ? config.handler : function(match, callback) { callback(match) };
           // console.log( 'inserted DOM: class match in watchdog',observer,api.tracker.watchdog.dom[observer] );
           api.observe.trigger_dom(observer, element, handler);
@@ -1606,7 +1614,7 @@ var Gmail =  function() {
   /**
     A compose object. Represents a compose window in the DOM and provides a bunch of methods and properties to access & interact with the window
     Expects a jQuery DOM element for the compose div
-    TODO: Make to, cc, cc, subject etc functions receive an argument to set these fields
+    TODO: Make to, cc, cc etc functions receive an argument to set these fields
    */
   api.dom.compose = function(element) {
     element = $(element);
@@ -1709,6 +1717,7 @@ var Gmail =  function() {
       Retrieve preconfigured dom elements for this compose window
      */
     dom: function(lookup) {
+      if (!lookup) return this.$el;
       var config = {
         id: 'input[name=composeid]',
         subject: 'input[name=subject]',
@@ -1716,6 +1725,157 @@ var Gmail =  function() {
         body: 'div[contenteditable=true]',
         reply: 'M9',
         forward: 'M9',
+      };
+      if(!config[lookup]) throw('Dom lookup failed. Unable to find config for \'' + lookup + '\'',config,lookup,config[lookup]);
+      return this.$el.find(config[lookup]);
+    }
+
+  });
+
+  /**
+    An object for interacting with an email currently present in the DOM. Represents an individual email message within a thread
+    Provides a number of methods and properties to access & interact with it
+    Expects a jQuery DOM element for the email div (div.adn as returned by the 'view_email' observer), or an email_id
+   */
+  api.dom.email = function(element) {
+    if (typeof element == 'string') {
+      this.id = element;
+      this.id_element = $('div.ii.gt.m' + this.id);
+      element = this.id_element.closest('div.adn');
+    } else {
+      element = $(element);
+    }
+    if (!element || (!element.hasClass('adn'))) throw('api.dom.email called with invalid element/id');
+
+    // if no id specified, extract from the body wrapper class (starts with 'm' followed by the id)
+    if (!this.id) {
+      this.id_element = element.find('div.ii.gt');
+      this.id = this.id_element.attr('class').match(/(^|\s)m([\S]*)/).pop();
+    }
+    this.$el = element;
+    return this;
+  }
+  $.extend(api.dom.email.prototype, {
+
+    /**
+      Get/Set the full email body as it sits in the DOM
+      If you want the actual DOM element use .dom('body');
+      Note: This gets & sets the body html after it has been parsed & marked up by GMAIL. To retrieve it as it exists in the email message source, use a call to .data();
+     */
+    body: function(body) {
+      var el = this.dom('body');
+      if (body) {
+        el.html(body);
+      }
+      return el.html();
+    },
+
+    /**
+      Get/Set the sender
+      Optionally receives email and name properties. If received updates the values in the DOM
+      Returns an object containing email & name of the sender and dom element
+     */
+    from: function(email, name) {
+      var el = this.dom('from');
+      if (email) {
+        el.attr('email',email);
+      }
+      if (name) {
+        el.attr('name',name);
+        el.html(name);
+      }
+      return {
+        email: el.attr('email'),
+        name: el.attr('name'),
+        el: el
+      };
+    },
+
+    /**
+      Get/Set who the email is showing as To
+      Optionally receives an object containing email and/or name properties. If received updates the values in the DOM.
+      Optionally receives an array of these objects if multiple recipients
+      Returns an array of objects containing email & name of who is showing in the DOM as the email is to
+     */
+    to: function(to_array) {
+
+      // if update data has been passeed, loop through & create a new to_wrapper contents
+      if (to_array) {
+        if (!$.isArray(to_array)) {
+          to_array = [to_array];
+        }
+        var html = [];
+        $.each(to_array, function(index, obj) {
+          html.push( $('<span />').attr({
+            dir: 'ltr',
+            email: obj.email,
+            name: obj.name
+          }).addClass('g2').html(obj.name).wrap('<p/>').parent().html());
+        });
+        this.dom('to_wrapper').html('to ' + html.join(', '));
+      }
+
+
+      // loop through any matching to elements & prepare for output
+      var out = new Array();
+      this.dom('to').each(function(index) {
+        el = $(this);
+        out.push({
+          email:  el.attr('email'),
+          name: el.attr('name'),
+          el: el
+        });
+      });
+      return out;
+    },
+
+    /**
+      Retrieve relevant email from the Gmail servers for this email
+      Makes use of the gmail.get.email_data() method
+      Returns an object
+     */
+    data: function() {
+      if (typeof api.dom.email_cache != 'object') {
+        api.dom.email_cache = {};
+      }
+      if (!api.dom.email_cache[this.id]) {
+
+        // retrieve & cache the data for this whole thread of emails
+        var data = api.get.email_data(this.id);
+        $.each(data.threads, function(email_id, email_data) {
+          api.dom.email_cache[email_id] = email_data;
+        });
+        console.log('cache is',api.dom.email_cache);
+      }
+      return api.dom.email_cache[this.id];
+    },
+
+    /**
+      Retrieve email source for this email from the Gmail servers
+      Makes use of the gmail.get.email_source() method
+      Returns string of email raw source
+     */
+    source: function() {
+      return api.get.email_source(this.id);
+    },
+
+    /**
+      Retrieve preconfigured dom elements for this compose window
+     */
+    dom: function(lookup) {
+      if (!lookup) return this.$el;
+      var config = {
+        body: 'div.a3s',
+        from: 'span[email].gD',
+        to: 'span[email].g2',
+        to_wrapper: 'span.hb',
+        timestamp: 'span.g3',
+        star: 'div.zd',
+
+        // buttons
+        reply_button: 'div[role=button].aaq',
+        menu_button: 'div[role=button].aap',
+        details_button: 'div[role=button].ajz',
       };
       if(!config[lookup]) throw('Dom lookup failed. Unable to find config for \'' + lookup + '\'');
       return this.$el.find(config[lookup]);
