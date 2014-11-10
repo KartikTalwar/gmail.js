@@ -1846,7 +1846,6 @@ var Gmail =  function() {
         $.each(data.threads, function(email_id, email_data) {
           api.dom.email_cache[email_id] = email_data;
         });
-        console.log('cache is',api.dom.email_cache);
       }
       return api.dom.email_cache[this.id];
     },

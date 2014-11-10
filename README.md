@@ -166,7 +166,8 @@ These methods return the DOM data itself
 - gmail.dom **.search_bar()**
 - gmail.dom **.compose()** - compose dom object - receives the DOM element for the compose window and provides methods to interact
 - gmail.dom **.composes()** - retrives an array of `gmail.dom.compose` objects representing any open compose windows
-- gmail.dom **.email()** - email dom object - receives an email DOM element or email id for an email currently being viewed. Abstracts interaction with that email.
+- [gmail.dom **.email()**](#gmaildomemailemail_el-or-email_id) - email dom object - receives an email DOM element or email id for an email currently being viewed. Abstracts interaction with that email.
+- [gmail.dom **.thread()**](#gmaildomthreadthread_el) - thread dom object - receives a conversation thread DOM element currently being viewed. Abstracts interaction with that thread.
 
 #### TOOLS
 
@@ -832,7 +833,7 @@ An object used to abstract interation with a compose popup
 
 An object for interacting with an email currently present in the DOM. Represents an individual email message within a thread, and provides a number of methods and properties to access & interact with the interface and email data.
 
-Expects a jQuery DOM element for the email div (div.adn as returned by the 'view_email' observer), or an email_id
+Expects a jQuery DOM element for the email div (div.adn as returned by the ``view_email`` observer), or an email_id
 
 - **.id** - property storing the id of the email
 - **.body([body])** - allows get/set the html body in the DOM
@@ -922,6 +923,7 @@ Retrieve preconfigured dom elements for this email
 Abstracts relevant dom elements so code can be centralized - making it easier to update if Gmail updates its interface
 Retrieves the primary DOM element if you pass no lookup
 Supported lookups:
+      -  _null_ (primary element)
       -  body
       -  from
       -  to
@@ -937,6 +939,32 @@ var email = new gmail.dom.email(email_id);
 var el = email.dom();
 var to_dom = email.dom('to');
 console.log('El is',el,'To elements are',to);
+```
+
+### gmail.dom.thread(thread_el)
+
+An object for interacting with a conversation thread currently present in the DOM. Provides methods to access & interact with the interface.
+
+Expects a jQuery DOM element for the thread wrapper div (div.if as returned by the ``view_thread`` observer)
+
+- **.dom()** - retrieves the primary element, or other defined elements from the DOM
+
+#### gmail.dom.thread.dom([lookup=null])
+
+Retrieve preconfigured dom elements for this conversation thread
+Abstracts relevant dom elements so code can be centralized - making it easier to update if Gmail updates its interface
+Retrieves the primary DOM element if you pass no lookup
+Supported lookups:
+      -  _null_ (primary element)
+      -  opened_email
+      -  subject
+      -  labels
+
+```js
+var thread = new gmail.dom.thread($('div.if'));
+var el = thread.dom();
+var subject = thread.dom('subject');
+console.log('El is',el,'Subject element is',subject);
 ```
 
 ## Author and Licensing
