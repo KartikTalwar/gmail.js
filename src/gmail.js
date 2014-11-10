@@ -1035,11 +1035,12 @@ var Gmail =  function() {
           class: ['Bu', 'Bs'], // class depends if is_preview_pane - Bu for preview pane, Bs for standard view
           sub_selector: 'div.if',
           handler: function(match, callback) {
+            match = new api.dom.thread(match);
             callback(match);
 
             // look for any email elements in this thread that are currently displaying
             // and fire off any view_email sub_observers for each of them
-            var email = match.find('div.adn');
+            var email = match.dom('opened_email');
             if (email.length) {
               api.observe.trigger_dom('view_email', email, api.tracker.dom_observers.view_thread.sub_observers.view_email.handler);
             }
@@ -1860,7 +1861,7 @@ var Gmail =  function() {
     },
 
     /**
-      Retrieve preconfigured dom elements for this compose window
+      Retrieve preconfigured dom elements for this email
      */
     dom: function(lookup) {
       if (!lookup) return this.$el;
@@ -1881,6 +1882,34 @@ var Gmail =  function() {
       return this.$el.find(config[lookup]);
     }
 
+  });
+
+  /**
+    An object for interacting with an email currently present in the DOM. Represents a conversation thread
+    Provides a number of methods and properties to access & interact with it
+    Expects a jQuery DOM element for the thread wrapper div (div.if as returned by the 'view_thread' observer)
+   */
+  api.dom.thread = function(element) {
+    if (!element || (!element.hasClass('if'))) throw('api.dom.thread called with invalid element/id');
+    this.$el = element;
+    return this;
+  }
+  $.extend(api.dom.thread.prototype, {
+
+    /**
+      Retrieve preconfigured dom elements for this email
+     */
+    dom: function(lookup) {
+      if (!lookup) return this.$el;
+      var config = {
+        opened_email: 'div.adn',
+        subject: 'h2.hP',
+        labels: 'div.hN',
+      };
+      if(!config[lookup]) throw('Dom lookup failed. Unable to find config for \'' + lookup + '\'');
+      return this.$el.find(config[lookup]);
+    }
+    
   });
 
   return api;
