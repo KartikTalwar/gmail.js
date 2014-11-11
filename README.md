@@ -142,9 +142,11 @@ gmail.get.user_email();
   - **`show_newly_arrived_message`** - When inside an email and a new email arrives in the thread
   - **`upload_attachment`** - When an attachment is being uploaded to an email being composed
   - **DOM observers**
-   - **`compose`** - When a new compose window is opened
-   - **`reply_forward`** - When an email is being replied to or forwarded
-   - **`recipient_change`** - When an email being written has its to, cc or bcc recipients updated
+  - **`compose`** - When a new compose window is opened, or a message is replied to or forwarded
+  - **`recipient_change`** - When an email being written (either new compose, reply or forward) has its to, cc or bcc recipients updated
+  - **`view_thread`** - When a conversation thread is opened to read
+    - **`view_email`** - Sub-observer to `view_thread`. When an individual email is loaded within a conversation thread
+    - **`load_email_menu`** - Sub-observer to `view_thread`. When the dropdown menu next to the reply button is clicked
 - [gmail.observe **.before(action, callback)**](#gmailobservebeforeaction-callback)
 - [gmail.observe **.after(action, callback)**](#gmailobserveafteraction-callback)
 - gmail.observe **.bind(type, action, callback)** - implements the on, after, before callbacks
@@ -592,16 +594,30 @@ Your callback will be fired directly after Gmail's XMLHttpRequest has been sent 
   - **delete_label** - When a label is deleted
   - **show_newly_arrived_message** - When inside an email and a new email arrives in the thread
 
-The on method also supports observering specific DOM events in the Gmail Interface (for example when a new compose window is opened). These are only available via the `on` method (not the `before` or `after` methods)
+The on method also supports observering specific DOM events in the Gmail Interface (for example when a new compose window is opened). These are only available via the `on` method (not the `before` or `after` methods).
 
-**Available DOM Actions**
+Some actions/observers also have defined 'sub-observers' which become available if you have an action bound to the parent observer. Sub-observers are defined as such because they only make sense once the parent has been triggered. I.e. you can have an email display as part of a conversation thread until the thread has been opened. For example:
+
+```js
+gmail.observe.on('view_thread', function(obj) {
+  console.log('view_thread', obj);
+});
+
+// now we have access to the sub observers view_email and load_email_menu
+gmail.observe.on('view_email', function(obj) {
+  console.log('view_email', obj);
+});
+```
+
+**Available DOM Actions/Observers & Sub-observers**
 
  - **load** - When the gmail interface has completed loading
  - **compose** - When a new compose window opens, or a message is replied to or forwarded
  - **recipient_change** - When the recipient (to, cc or bcc) is changed when composing a new email or replying/forwarding an email
  - **view_thread** - When a new coversation thread is opened
- - **view_email** - When an individual email is loaded within a thread (also fires when thread loads displaying the latest email)
- - **load_email_menu** - When the dropdown menu next to the reply button is clicked
+  - **view_thread Sub-observers**
+  - **view_email** - When an individual email is loaded within a thread (also fires when thread loads displaying the latest email)
+  - **load_email_menu** - When the dropdown menu next to the reply button is clicked
 
 ```js
 gmail.observe.on("unread", function(id, url, body, xhr) {

@@ -998,7 +998,9 @@ var Gmail =  function() {
         callback(match)
       };
     }
-
+    if (!api.tracker.watchdog.dom[observer]) {
+      return;
+    }
     $.each(api.tracker.watchdog.dom[observer], function(idx, callback) {
       handler(element, callback);
     });
