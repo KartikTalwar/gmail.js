@@ -7,7 +7,6 @@
 
 **Note:** Gmail.js requires jQuery to work
 
-
 ### TL;DR Summary
 
 - Lots of api methods to work with gmail. Useful for chrome extensions
@@ -71,6 +70,7 @@ gmail.get.user_email();
 - [gmail.get **.compose_ids()**](#gmailgetcompose_ids)
 - [gmail.get **.email_data(email_id=undefined)**](#gmailgetemail_dataemail_idundefined)
 - [gmail.get **.displayed_email_data()**](#gmailgetdisplayed_email_data)
+- [gmail.get **.email_source(email_id=undefined)**](#gmailgetemail_sourceemail_idundefined)
 - [gmail.get **.search_query()**](#gmailgetsearch_query)
 - [gmail.get **.unread_emails()**](#gmailgetunread_emails)
  - [gmail.get **.unread_inbox_emails()**](#gmailgetunread_emails)
@@ -158,10 +158,17 @@ gmail.get.user_email();
   - **`delete_label`** - When a label is deleted
   - **`show_newly_arrived_message`** - When inside an email and a new email arrives in the thread
   - **`upload_attachment`** - When an attachment is being uploaded to an email being composed
+  - **DOM observers**
+  - **`compose`** - When a new compose window is opened, or a message is replied to or forwarded
+  - **`recipient_change`** - When an email being written (either new compose, reply or forward) has its to, cc or bcc recipients updated
+  - **`view_thread`** - When a conversation thread is opened to read
+    - **`view_email`** - Sub-observer to `view_thread`. When an individual email is loaded within a conversation thread
+    - **`load_email_menu`** - Sub-observer to `view_thread`. When the dropdown menu next to the reply button is clicked
 - [gmail.observe **.before(action, callback)**](#gmailobservebeforeaction-callback)
 - [gmail.observe **.after(action, callback)**](#gmailobserveafteraction-callback)
 - gmail.observe **.bind(type, action, callback)** - implements the on, after, before callbacks
 - gmail.observe **.bound(action, type)**
+- gmail.observe **.on_dom(action, callback)** - implements the DOM observers - called by `gmail.observe.on`
 - gmail.observe **.bound(action, type)** - checks if a specific action and/or type has any bound observers
 - gmail.observe **.trigger(type, events, xhr)** - fires any specified events for this type (on, after, before) with specified parameters
 
@@ -178,6 +185,8 @@ These methods return the DOM data itself
 - gmail.dom **.search_bar()**
 - gmail.dom **.compose()** - compose dom object - receives the DOM element for the compose window and provides methods to interact
 - gmail.dom **.composes()** - retrives an array of `gmail.dom.compose` objects representing any open compose windows
+- [gmail.dom **.email()**](#gmaildomemailemail_el-or-email_id) - email dom object - receives an email DOM element or email id for an email currently being viewed. Abstracts interaction with that email.
+- [gmail.dom **.thread()**](#gmaildomthreadthread_el) - thread dom object - receives a conversation thread DOM element currently being viewed. Abstracts interaction with that thread.
 
 #### TOOLS
 
@@ -301,6 +310,11 @@ Returns an object representation of the emails that are being displayed.
 }
 
 ```
+
+#### gmail.get.email_source(email_id=undefined)
+
+Retrieves raw MIME message source from the gmail server for the specified email id. It takes the optional email_id parameter where
+the data for the specified id is returned instead of the email currently visible in the dom
 
 #### gmail.get.user_email()
 
@@ -513,7 +527,7 @@ Returns `True` if the account supports the new hangout UI for chat `False` other
 
 #### gmail.compose.start_compose()
 
-Clicks on the compose button making the inbox compose view to popup
+-Clicks on the compose button making the inbox compose view to popup
 
 
 #### gmail.observe.http_requests()
@@ -601,8 +615,32 @@ Your callback will be fired directly after Gmail's XMLHttpRequest has been sent 
   - **delete_label** - When a label is deleted
   - **show_newly_arrived_message** - When inside an email and a new email arrives in the thread
 
-The on method also supports observering specific DOM events in the Gmail Interface (for example when a new compose window is opened). These are only available via the `on` method (not the `before` or `after` methods)
+The on method also supports observering specific DOM events in the Gmail Interface (for example when a new compose window is opened). These are only available via the `on` method (not the `before` or `after` methods).
 
+Some actions/observers also have defined 'sub-observers' which become available if you have an action bound to the parent observer. Sub-observers are defined as such because they only make sense once the parent has been triggered. I.e. for an individual email to display as part of a conversation thread, the thread must first be opened/loaded in the interface.
+
+Example usage:
+
+```js
+gmail.observe.on('view_thread', function(obj) {
+  console.log('view_thread', obj);
+});
+
+// now we have access to the sub observers view_email and load_email_menu
+gmail.observe.on('view_email', function(obj) {
+  console.log('view_email', obj);
+});
+```
+
+**Available DOM Actions/Observers & Sub-observers**
+
+ - **load** - When the gmail interface has completed loading
+ - **compose** - When a new compose window opens, or a message is replied to or forwarded
+ - **recipient_change** - When the recipient (to, cc or bcc) is changed when composing a new email or replying/forwarding an email
+ - **view_thread** - When a new coversation thread is opened
+  - **view_thread Sub-observers**
+  - **view_email** - When an individual email is loaded within a thread (also fires when thread loads displaying the latest email)
+  - **load_email_menu** - When the dropdown menu next to the reply button is clicked
 
 ```js
 gmail.observe.on("unread", function(id, url, body, xhr) {
@@ -729,6 +767,35 @@ gmail.observe.on("open_email", function(id, url, body, xhr) {
 gmail.observe.on("upload_attachment", function(file, xhr) {
   console.log("file", file, 'xhr', xhr);
 })
+
+// DOM observers
+gmail.observe.on("compose", function(compose, type) {
+
+  // type can be compose, reply or forward
+  console.log('api.dom.compose object:', compose, 'type is:', type );  // gmail.dom.compose object
+});
+
+gmail.observe.on('recipient_change', function(match, recipients) {
+  console.log('recipients changed', match, recipients);
+});
+
+gmail.observe.on('view_thread', function(obj) {
+  console.log('conversation thread opened', obj); // gmail.dom.thread object
+});
+
+gmail.observe.on('view_email', function(obj) {
+  console.log('individual email opened', obj);  // gmail.dom.email object
+});
+
+gmail.observe.on('load_email_menu', function(match) {
+  console.log('Menu loaded',match);
+
+  // insert a new element into the menu
+  $('<div />').addClass('J-N-Jz')
+      .html('New element')
+      .appendTo(match);
+});
+
 ```
 
 #### gmail.observe.before(action, callback)
@@ -737,7 +804,7 @@ Similar to `gmail.observe.on`, this method allows you to bind callbacks to speci
 
 All of the standard actions in `gmail.observe.on` work here, with the exception of the DOM actions
 
-The main difference between `on` and `before` is that these callbacks are fired *before* Gmail's XMLHttpRequest has been sent off the the Gmail servers. This means, where relevant, your callback function can change it prior to it departing by editing the xhrParams.body_params object in the passed xhr parameter.
+The main difference between `on` and `before` is that these callbacks are fired *before* Gmail's XMLHttpRequest has been sent off the the Gmail servers.This means, where relevant, your callback function can change it prior to it departing by editing the xhrParams.body_params object in the passed xhr parameter.
 
 ```js
 gmail.observe.before('send_message', function(url, body, data, xhr){
@@ -791,6 +858,152 @@ gmail.observe.off('poll','on'); // disables on poll
 gmail.observe.off('poll'); // disables all poll events of any type
 gmail.observe.off(null,'before'); // disables all before observers
 gmail.observe.off();  // disables all
+```
+
+### gmail.dom.compose(compose_el)
+
+An object used to abstract interation with a compose popup
+
+```js
+
+```
+
+### gmail.dom.email(email_el or email_id)
+
+An object for interacting with an email currently present in the DOM. Represents an individual email message within a thread, and provides a number of methods and properties to access & interact with the interface and email data.
+
+Expects a jQuery DOM element for the email div (div.adn as returned by the ``view_email`` observer), or an email_id
+
+- **.id** - property storing the id of the email
+- **.body([body])** - allows get/set the html body in the DOM
+- **.to([to_array])** - allows retrieve or updating to/from DOM who the email is addressed to
+- **.from([email_address],[name])** - allows get/set who the email is from in the DOM
+- **.data()** - retrieves object of email data from the Gmail servers
+- **.source()** - retrieves the email raw source from the Gmail servers
+- **.dom()** - retrieves the primary element, or other defined elements from the DOM
+
+#### gmail.dom.email.body([body=null])
+
+Get/Set the full email body as it sits in the DOM. Note: This gets & sets the body html after it has been parsed & marked up by GMAIL. To retrieve it as it exists in the email message source, use a call to ``.data()``
+
+If you want the actual DOM element use .dom('body');
+
+Receives optional argument containing html to update the email body with.
+
+```js
+var email = new gmail.dom.email(email_id); // optionally can pass relevant $('div.adn');
+var body = email.body();
+var id = email.id;
+
+// add a heading at the start of the email and update in the interface
+email.body('<h1>My New Heading!</h1>' + body);
+```
+
+#### gmail.dom.email.to([to_array=null])
+
+Get/Set who the email is showing as To.
+Optionally receives an array of objects containing email and/or name properties. If received replaces the values in the DOM.
+Returns an array of objects containing email & name of who is showing in the DOM as the email is to.
+
+```js
+var email = new gmail.dom.email(email_id);
+var to = email.to();
+console.log('Email is to', to); // [{email: 'user@user.com', name: 'Display Name'}, {email: 'user2@user.com', name: 'User Two'}]
+
+// update values that appear in the interface. This supports the popup hovers in gmail interface etc
+to = email.to([
+  {email: 'user@user.com', name: 'Display Name'},
+  {email: 'user2@user.com', name: 'User Two'}
+]);
+```
+#### gmail.dom.email.from([email_address=null], [display_name=null])
+
+Get/Set the sender of the email that is displayed in the interface.
+Optionally receives email and name properties. If received updates the values in the DOM
+Returns an object containing email & name of the sender and dom element
+
+```js
+var email = new gmail.dom.email(email_id);
+var from = email.from();
+console.log('Email is from', from); // {email: 'user@user.com', name: 'Display Name'}
+
+// update who the email is from in the interface
+from.name = 'New Name';
+email.from(from);
+```
+
+#### gmail.dom.email.data()
+
+Retrieve relevant email data from the Gmail servers for this email
+Makes use of the gmail.get.email_data() method
+Returns an object containing the email data. Caches email data for all emails in the thread
+
+```js
+var email = new gmail.dom.email(email_id);
+var data = email.data();
+console.log('Email data is',data);
+```
+
+#### gmail.dom.email.source()
+
+Retrieve email source for this email from the Gmail servers
+Makes use of the gmail.get.email_source() method
+Returns string of email raw source
+
+```js
+var email = new gmail.dom.email(email_id);
+var source = email.source();
+console.log('Email source is',source);
+```
+
+#### gmail.dom.email.dom([lookup=null])
+
+Retrieve preconfigured dom elements for this email
+Abstracts relevant dom elements so code can be centralized - making it easier to update if Gmail updates its interface
+Retrieves the primary DOM element if you pass no lookup
+Supported lookups:
+      -  _null_ (primary element)
+      -  body
+      -  from
+      -  to
+      -  to_wrapper
+      -  timestamp
+      -  star
+      -  reply_button
+      -  menu_button
+      -  details_button
+
+```js
+var email = new gmail.dom.email(email_id);
+var el = email.dom();
+var to_dom = email.dom('to');
+console.log('El is',el,'To elements are',to);
+```
+
+### gmail.dom.thread(thread_el)
+
+An object for interacting with a conversation thread currently present in the DOM. Provides methods to access & interact with the interface.
+
+Expects a jQuery DOM element for the thread wrapper div (div.if as returned by the ``view_thread`` observer)
+
+- **.dom()** - retrieves the primary element, or other defined elements from the DOM
+
+#### gmail.dom.thread.dom([lookup=null])
+
+Retrieve preconfigured dom elements for this conversation thread
+Abstracts relevant dom elements so code can be centralized - making it easier to update if Gmail updates its interface
+Retrieves the primary DOM element if you pass no lookup
+Supported lookups:
+      -  _null_ (primary element)
+      -  opened_email
+      -  subject
+      -  labels
+
+```js
+var thread = new gmail.dom.thread($('div.if'));
+var el = thread.dom();
+var subject = thread.dom('subject');
+console.log('El is',el,'Subject element is',subject);
 ```
 
 ## Author and Licensing
