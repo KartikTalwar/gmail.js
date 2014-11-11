@@ -751,19 +751,19 @@ gmail.observe.on("upload_attachment", function(file, xhr) {
 gmail.observe.on("compose", function(compose, type) {
 
   // type can be compose, reply or forward
-  console.log('api.dom.compose object:', compose, 'type is:', type );
+  console.log('api.dom.compose object:', compose, 'type is:', type );  // gmail.dom.compose object
 });
 
 gmail.observe.on('recipient_change', function(match, recipients) {
   console.log('recipients changed', match, recipients);
 });
 
-gmail.observe.on('view_thread', function(match) {
-  console.log('conversation thread opened', match);
+gmail.observe.on('view_thread', function(obj) {
+  console.log('conversation thread opened', obj); // gmail.dom.thread object
 });
 
-gmail.observe.on('view_email', function(match) {
-  console.log('individual email opened', match);
+gmail.observe.on('view_email', function(obj) {
+  console.log('individual email opened', obj);  // gmail.dom.email object
 });
 
 gmail.observe.on('load_email_menu', function(match) {
