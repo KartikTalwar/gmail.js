@@ -23,7 +23,7 @@ var Gmail = function(localJQuery) {
             };
 
 
-  api.version           = "0.2.2";
+  api.version           = "0.4";
   api.tracker.globals   = GLOBALS;
   api.tracker.view_data = typeof VIEW_DATA !== 'undefined' ? VIEW_DATA : [];
   api.tracker.ik        = api.tracker.globals[9];
