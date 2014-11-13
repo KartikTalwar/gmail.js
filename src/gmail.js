@@ -1725,6 +1725,7 @@ var Gmail =  function() {
         id: 'input[name=composeid]',
         subject: 'input[name=subject]',
         subjectbox: 'input[name=subjectbox]',
+        all_subjects: 'input[name=subjectbox], input[name=subject]',
         body: 'div[contenteditable=true]',
         reply: 'M9',
         forward: 'M9',
