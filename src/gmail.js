@@ -1729,10 +1729,14 @@ var Gmail = function(localJQuery) {
         subject   string  set as new subject
      */
     subject: function(subject) {
-      var el = this.dom('subjectbox');
-      if(subject) this.dom('all_subjects').val(subject);
-      subject = this.dom('subjectbox').val();
-      return subject ? subject : this.dom('subject').val();
+       var el = this.dom('subjectbox');
+       if(subject) {
+          el.val(subject);
+       }
+       else {
+          subject = el.val();
+       }
+       return subject ? subject : this.dom('subject').val();
     },
 
     /**
