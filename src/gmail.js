@@ -1704,7 +1704,24 @@ var Gmail = function(localJQuery) {
       TODO: ability to set
      */
     to: function(to) {
-      return this.recipients( { type: 'to', flat: true } );
+
+        if(to) {
+
+            //Prep the list
+            var toList = $.isArray(to) ? to.join(', ') : to;
+
+            //Need to focus on this area before the 'to' field can accept input
+            this.dom('recipients').focus();
+
+            //A little bit hackish but it works, just focus, insert the value, and then blur.
+            var toInput = this.dom('to');
+            toInput.focus();
+            toInput.val(toList);
+            toInput.blur();
+        }
+        else {
+            return this.recipients( { type: 'to', flat: true } );
+        }
     },
 
     /**
@@ -1729,14 +1746,10 @@ var Gmail = function(localJQuery) {
         subject   string  set as new subject
      */
     subject: function(subject) {
-       var el = this.dom('subjectbox');
-       if(subject) {
-          el.val(subject);
-       }
-       else {
-          subject = el.val();
-       }
-       return subject ? subject : this.dom('subject').val();
+      var el = this.dom('subjectbox');
+      if(subject) this.dom('all_subjects').val(subject);
+      subject = this.dom('subjectbox').val();
+      return subject ? subject : this.dom('subject').val();
     },
 
     /**
@@ -1764,9 +1777,12 @@ var Gmail = function(localJQuery) {
         id: 'input[name=composeid]',
         subject: 'input[name=subject]',
         subjectbox: 'input[name=subjectbox]',
+        all_subjects: 'input[name=subjectbox], input[name=subject]',
         body: 'div[contenteditable=true]',
         reply: 'M9',
         forward: 'M9',
+        to: 'textarea[name=to]',
+        recipients: 'div.aoD.hl'
       };
       if(!config[lookup]) throw('Dom lookup failed. Unable to find config for \'' + lookup + '\'',config,lookup,config[lookup]);
       return this.$el.find(config[lookup]);
