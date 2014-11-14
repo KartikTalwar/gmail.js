@@ -1704,7 +1704,24 @@ var Gmail = function(localJQuery) {
       TODO: ability to set
      */
     to: function(to) {
-      return this.recipients( { type: 'to', flat: true } );
+
+        if(to) {
+
+            //Prep the list
+            var toList = $.isArray(to) ? to.join(', ') : to;
+
+            //Need to focus on this area before the 'to' field can accept input
+            this.dom('recipients').focus();
+
+            //A little bit hackish but it works, just focus, insert the value, and then blur.
+            var toInput = this.dom('to');
+            toInput.focus();
+            toInput.val(toList);
+            toInput.blur();
+        }
+        else {
+            return this.recipients( { type: 'to', flat: true } );
+        }
     },
 
     /**
@@ -1768,6 +1785,8 @@ var Gmail = function(localJQuery) {
         body: 'div[contenteditable=true]',
         reply: 'M9',
         forward: 'M9',
+        to: 'textarea[name=to]',
+        recipients: 'div.aoD.hl'
       };
       if(!config[lookup]) throw('Dom lookup failed. Unable to find config for \'' + lookup + '\'',config,lookup,config[lookup]);
       return this.$el.find(config[lookup]);
