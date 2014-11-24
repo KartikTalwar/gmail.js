@@ -562,7 +562,7 @@ var Gmail = function(localJQuery) {
                       'dm'          : 'delete_message_in_thread',
                       'dl'          : 'delete_forever',
                       'dc_'         : 'delete_label',
-                      'dd'          : 'discard_draft',
+                      'dr'          : 'discard_draft',
                       'el'          : 'expand_categories',
                       'cffm'        : 'filter_messages_like_these',
                       'arl'         : 'label',
@@ -618,7 +618,7 @@ var Gmail = function(localJQuery) {
       case "mani":
       case "ig":
       case "ug":
-      case "dd":
+      case "dr":
       case "mt":
       case "cffm":
       case "rc_^i":
