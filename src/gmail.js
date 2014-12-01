@@ -1643,8 +1643,8 @@ var Gmail = function(localJQuery) {
   // latest compose at the start of the queue (index 0)
   api.dom.composes = function() {
     objs = [];
-    $('div.AD').each(function(idx, el) {
-      objs.push( new api.dom.compose($(el).find('div.M9')) );
+    $('div.M9').each(function(idx, el) {
+      objs.push( new api.dom.compose(el));
     });
     return objs;
   }
