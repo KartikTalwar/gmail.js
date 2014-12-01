@@ -157,8 +157,18 @@ var Gmail = function(localJQuery) {
 
   api.dom.email_body = function() {
     return $('.nH.hx');
-  }
+  },
 
+    api.dom.toolbar = function() {
+
+      tb = $("[gh='mtb']");
+
+      while($(tb).children().length == 1){
+        tb = $(tb).children().first();
+      }
+
+      return tb;
+    }
 
   api.check.is_inside_email = function() {
     if(api.get.current_page() != null && !api.check.is_preview_pane()) {
@@ -1330,6 +1340,24 @@ var Gmail = function(localJQuery) {
     return emails;
   }
 
+  api.get.selected_emails_data = function(){
+    var selected_emails = []; 
+    if(!api.check.is_inside_email()){
+      if($('[gh="tl"] div[role="checkbox"][aria-checked="true"]').length){
+        var email = null;
+        var emails = api.get.visible_emails();
+        $('[gh="tl"] div[role="checkbox"]').each(function(index){
+          if($(this).attr('aria-checked') == "true"){
+            email = api.get.email_data(emails[index].id);
+            selected_emails.push(email);
+          }
+        });
+      }
+    }else {
+      selected_emails.push(api.get.email_data());
+    }
+    return selected_emails;
+  }
 
   api.get.current_page = function() {
     var hash  = window.location.hash.split('#').pop();
@@ -1605,6 +1633,34 @@ var Gmail = function(localJQuery) {
     }
 
     return dictionary[label];
+  }
+
+  api.tools.add_toolbar_button = function(content, onClickFunction,styleClass) {
+    var container = $(document.createElement('div'));
+    container.attr('class','G-Ni J-J5-Ji');
+
+    var button = $(document.createElement('div'));
+    var buttonClasses = 'T-I J-J5-Ji lS ';
+    if(styleClass != undefined &&
+      styleClass != null &&
+      styleClass != ''){
+      buttonClasses += styleClass;
+    }else{
+      buttonClasses += 'T-I-ax7 ar7';
+    }
+    button.attr('class', buttonClasses);
+
+    button.html(content);
+    button.click(onClickFunction);
+
+    var content = $(document.createElement('div'));
+    content.attr('class','asa');
+
+    container.html(button);
+
+    api.dom.toolbar().append(container);
+
+    return container;
   }
 
   api.chat.is_hangouts = function() {
