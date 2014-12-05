@@ -1379,6 +1379,47 @@ var Gmail = function(localJQuery) {
     }
   }
 
+  /**
+   * Re-renders the UI using the available data.
+   *
+   * This method does _not_ cause Gmail to fetch new data. This method is useful
+   * in circumstances where Gmail has data available but does not immediately
+   * render it. `observe.after` may be used to detect when Gmail has fetched the
+   * relevant data. For instance, to refresh a conversation after Gmail fetches
+   * its data:
+   *
+   *     gmail.observe.after('refresh', function(url, body, data, xhr) {
+   *       if (url.view === 'cv') {
+   *         gmail.tools.refreshUI();
+   *       }
+   *     });
+   */
+  api.tools.rerender = function() {
+    var url = window.location.href;
+    var hash = window.location.hash;
+
+    // Get Gmail to re-render by navigating away and then back to the current URL. We keep the
+    // UI from changing as we navigate away by visiting an equivalent URL: the current URL with the
+    // first parameter of the hash stripped ('#inbox/14a16fab4adc1456' -> '#/14a16fab4adc1456' or
+    // '#inbox' -> '#').
+    var tempUrl;
+    if (hash.indexOf('/') !== -1) {
+      tempUrl = url.replace(/#.*?\//, '#/');
+    } else {
+      tempUrl = url.replace(/#.*/, '#');
+    }
+    window.location.replace(tempUrl);
+
+    // Return to the original URL after a 0-timeout to force Gmail to navigate to the temp URL.
+    setTimeout(function() {
+      window.location.replace(url);
+
+      // For some reason, the two replace operations above create a history entry (tested in
+      // Chrome 39.0.2171.71). Pop it to hide our URL manipulation.
+      window.history.back();
+    }, 0);
+  }
+
   api.tools.parse_email_data = function(email_data) {
     var data = {};
     var threads = {}
