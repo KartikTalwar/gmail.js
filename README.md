@@ -866,6 +866,8 @@ Complex:
 
 ```js
 
+// this will register an observer that fires each time the autosuggest listbox pops up / changes
+// as you type an email address into a compose
 self.gmail.observe.register('compose_email_select', {
   class: 'Jd-axF',
   selector: 'div.Jd-axF:first-child'
