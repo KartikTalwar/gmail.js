@@ -108,7 +108,7 @@ gmail.get.user_email();
 
 - [gmail.observe **.http_requests()**](#gmailobservehttp_requests)
 - [gmail.observe **.actions()**](#gmailobserveactions)
-- [gmail.observe **.register(action, class/args, parent)**](#gmailobserveregisteractionclassargsparentnull) - registers a custom DOM observer 
+- [gmail.observe **.register(action, class/args, parent)**](#gmailobserveregisteraction-classargs-parentnull) - registers a custom DOM observer 
 - [gmail.observe **.off(action,type)**](#gmailobserveoffactionnulltypenull)
 - [gmail.observe **.on(action, callback)**](#gmailobserveonaction-callback)
   - **`poll`** - When gmail automatically polls the server to check for new emails every few seconds
