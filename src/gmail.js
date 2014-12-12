@@ -1393,8 +1393,10 @@ var Gmail = function(localJQuery) {
    *         gmail.tools.refreshUI();
    *       }
    *     });
+   *
+   * If a callback is passed, it will be invoked after re-rendering is complete.
    */
-  api.tools.rerender = function() {
+  api.tools.rerender = function(callback) {
     var url = window.location.href;
     var hash = window.location.hash;
 
@@ -1417,6 +1419,8 @@ var Gmail = function(localJQuery) {
       // For some reason, the two replace operations above create a history entry (tested in
       // Chrome 39.0.2171.71). Pop it to hide our URL manipulation.
       window.history.back();
+
+      if (callback) callback();
     }, 0);
   }
 
