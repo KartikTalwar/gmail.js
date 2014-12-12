@@ -194,6 +194,8 @@ These are some helper functions that the rest of the methods use. See source for
 
 - gmail.tools **infobox(message, time)**
   + Adds the yellow info box on top of gmail with the given message
+- gmail.tools **rerender(callback)**
+  + Re-renders the UI using the available data.
 - gmail.tools **.xhr_watcher()**
 - gmail.tools **.parse_url()**
 - gmail.tools **.deparam()**

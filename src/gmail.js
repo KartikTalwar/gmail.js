@@ -1390,7 +1390,7 @@ var Gmail = function(localJQuery) {
    *
    *     gmail.observe.after('refresh', function(url, body, data, xhr) {
    *       if (url.view === 'cv') {
-   *         gmail.tools.refreshUI();
+   *         gmail.tools.rerender();
    *       }
    *     });
    *
