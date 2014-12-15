@@ -84,6 +84,7 @@ gmail.get.user_email();
 - [gmail.get **.storage_info()**](#gmailgetstorage_info)
 - [gmail.get **.loggedin_accounts()**](#gmailgetloggedin_accounts)
 - [gmail.get **.beta()**](#gmailgetbeta)
+- [gmail.get **.localization()**](#gmailgetlocalization)
 
 
 
@@ -448,6 +449,10 @@ Although hand picked, this method returns the checks on beta features and deploy
 ```json
 {"new_nav_bar":true}
 ```
+
+#### gmail.get.localization()
+
+Returns the Gmail localization, e.g. 'US'.
 
 #### gmail.check.is_thread()
 

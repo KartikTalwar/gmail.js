@@ -58,6 +58,11 @@ var Gmail = function(localJQuery) {
   };
 
 
+  api.get.localization = function() {
+    return api.tracker.globals[17][9][8];
+  };
+
+
   api.check.is_thread = function() {
     var check_1 = $('.nH .if').children(":eq(1)").children().children(":eq(1)").children();
     var check_2 = api.get.email_ids();
@@ -1607,7 +1612,7 @@ var Gmail = function(localJQuery) {
 
 
   api.tools.i18n = function(label) {
-    var locale = api.tracker.globals[17][9][8];
+    var locale = api.get.localization();
     var dictionary;
 
     switch (locale) {
