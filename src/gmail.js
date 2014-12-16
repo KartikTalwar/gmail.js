@@ -60,11 +60,13 @@ var Gmail = function(localJQuery) {
 
   api.get.localization = function() {
     function isLocale(locale) {
-      // A locale is a 2-letter lowercase string.
+      // A locale is a string that begins with 2 letters, lowercase.
       // The 'lowercase' check distinguishes locales from other 2-letter strings like 'US'
       // (the user's location?).
-      return (locale && ((typeof locale) === 'string') &&
-          (locale.length === 2) && (locale.toLowerCase() === locale));
+      if (!locale || ((typeof locale) !== 'string') || locale.length < 2) return false;
+
+      var localePrefix = locale.slice(0, 2);
+      return localePrefix.toLowerCase() === localePrefix;
     }
 
     var globals = api.tracker.globals;
