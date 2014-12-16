@@ -59,7 +59,7 @@ var Gmail = function(localJQuery) {
 
 
   api.get.localization = function() {
-    return api.tracker.globals[17][9][8];
+    return api.tracker.globals[17][8][8];
   };
 
 
