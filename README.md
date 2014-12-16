@@ -85,6 +85,7 @@ gmail.get.user_email();
 - [gmail.get **.storage_info()**](#gmailgetstorage_info)
 - [gmail.get **.loggedin_accounts()**](#gmailgetloggedin_accounts)
 - [gmail.get **.beta()**](#gmailgetbeta)
+- [gmail.get **.localization()**](#gmailgetlocalization)
 
 
 
@@ -126,7 +127,8 @@ gmail.get.user_email();
 
 - [gmail.observe **.http_requests()**](#gmailobservehttp_requests)
 - [gmail.observe **.actions()**](#gmailobserveactions)
-- [gmail.observe **.off(action,type)**](#gmailobserveoffactionnull)
+- [gmail.observe **.register(action, class/args, parent)**](#gmailobserveregisteraction-classargs-parentnull) - registers a custom DOM observer 
+- [gmail.observe **.off(action,type)**](#gmailobserveoffactionnulltypenull)
 - [gmail.observe **.on(action, callback)**](#gmailobserveonaction-callback)
   - **`poll`** - When gmail automatically polls the server to check for new emails every few seconds
   - **`new_email`** - When a new email appears in the inbox
@@ -173,6 +175,7 @@ gmail.get.user_email();
 - gmail.observe **.bound(action, type)** - checks if a specific action and/or type has any bound observers
 - gmail.observe **.trigger(type, events, xhr)** - fires any specified events for this type (on, after, before) with specified parameters
 
+
 #### DOM
 
 These methods return the DOM data itself
@@ -196,6 +199,8 @@ These are some helper functions that the rest of the methods use. See source for
 
 - gmail.tools **infobox(message, time)**
   + Adds the yellow info box on top of gmail with the given message
+- gmail.tools **rerender(callback)**
+  + Re-renders the UI using the available data.
 - gmail.tools **.xhr_watcher()**
 - gmail.tools **.parse_url()**
 - gmail.tools **.deparam()**
@@ -510,6 +515,10 @@ Although hand picked, this method returns the checks on beta features and deploy
 ```json
 {"new_nav_bar":true}
 ```
+
+#### gmail.get.localization()
+
+Returns the Gmail localization, e.g. 'US'.
 
 #### gmail.check.is_thread()
 
@@ -922,6 +931,43 @@ gmail.observe.off('poll','on'); // disables on poll
 gmail.observe.off('poll'); // disables all poll events of any type
 gmail.observe.off(null,'before'); // disables all before observers
 gmail.observe.off();  // disables all
+```
+
+#### gmail.observe.register(action, class/args, parent=null)
+
+Allow an application to register a custom DOM observer specific to their application.
+Adds it to the configured DOM observers that will then be supported by the dom insertion observer.
+*Note* this method must be called prior to binding any handlers to specific actions/observers using `on`, `before` or `after`.
+Once you start binding handlers, you cannot register any further custom observers.
+
+This method can be called two different ways:
+
+Simple:
+  - action - the name of the new DOM observer
+  - class - the class of an inserted DOM element that identifies that this action should be triggered
+  - parent - optional - if specified, this observer will be registered as a sub_observer for the specified parent (meaning it will only be checked for if the parent observer has something bound to it, and has been triggered).
+
+Complex:
+  - action - the name of the new DOM observer
+  - args - an object containin properties for each of the supported DOM observer configuration agruments:
+    - class - the class of an inserted DOM element that identifies that this action should be triggered
+    - selector - if you need to match more than just the className of a specific element to indicate a match, you can use this selector for further checking (uses element.is(selector) on matched element). E.g. if there are multiple elements with a class indicating an observer should fire, but you only want it to fire on a specific id, then you would use this
+    - sub_selector - if specified, we do a jquery element.find for the passed selector on the inserted element and ensure we can find a match
+    - handler - if specified this handler is called if a match is found. Otherwise default calls the callback & passes the jQuery matchElement
+  - parent - optional - as above with simple
+
+```js
+
+// this will register an observer that fires each time the autosuggest listbox pops up / changes
+// as you type an email address into a compose
+gmail.observe.register('compose_email_select', {
+  class: 'Jd-axF',
+  selector: 'div.Jd-axF:first-child'
+});
+gmail.observe.on('compose_email_select', function(match) {
+  console.log('Email select popup',match);
+});
+
 ```
 
 ### gmail.dom.compose(compose_el)
