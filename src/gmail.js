@@ -157,18 +157,17 @@ var Gmail = function(localJQuery) {
 
   api.dom.email_body = function() {
     return $('.nH.hx');
-  },
+  }
 
-    api.dom.toolbar = function() {
+  api.dom.toolbar = function() {
+    var tb = $("[gh='mtb']");
 
-      tb = $("[gh='mtb']");
-
-      while($(tb).children().length == 1){
-        tb = $(tb).children().first();
-      }
-
-      return tb;
+    while($(tb).children().length == 1){
+      tb = $(tb).children().first();
     }
+
+    return tb;
+  }
 
   api.check.is_inside_email = function() {
     if(api.get.current_page() != null && !api.check.is_preview_pane()) {
