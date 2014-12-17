@@ -59,25 +59,31 @@ var Gmail = function(localJQuery) {
 
 
   api.get.localization = function() {
-    function isLocale(locale) {
+    var isLocale = function(locale) {
       // A locale is a string that begins with 2 letters, lowercase.
       // The 'lowercase' check distinguishes locales from other 2-letter strings like 'US'
       // (the user's location?).
-      if (!locale || ((typeof locale) !== 'string') || locale.length < 2) return false;
+      if (!locale || ((typeof locale) !== 'string') || locale.length < 2) {
+        return false;
+      }
 
       var localePrefix = locale.slice(0, 2);
       return localePrefix.toLowerCase() === localePrefix;
-    }
+    };
 
     var globals = api.tracker.globals;
 
     // First candidate.
     var locale = globals[17] && globals[17][8] && globals[17][8][8];
-    if (isLocale(locale)) return locale;
+    if (isLocale(locale)) {
+      return locale;
+    }
 
     // Second candidate.
     locale = globals[17] && globals[17][9] && globals[17][9][8];
-    if (isLocale(locale)) return locale;
+    if (isLocale(locale)) {
+      return locale;
+    }
 
     return null;
   };
