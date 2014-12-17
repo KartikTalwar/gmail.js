@@ -63,6 +63,7 @@ gmail.get.user_email();
 
 - [gmail.get **.user_email()**](#gmailgetuser_email)
 - [gmail.get **.visible_emails()**](#gmailgetvisible_emails)
+- [gmail.get **.selected_emails_data()**](#gmailgetselected_emails_data)
 - [gmail.get **.current_page()**](#gmailgetcurrent_page)
 - [gmail.get **.email_id()**](#gmailgetemail_id)
 - [gmail.get **.email_ids()**](#gmailgetemail_ids)
@@ -174,7 +175,6 @@ gmail.get.user_email();
 - gmail.observe **.bound(action, type)** - checks if a specific action and/or type has any bound observers
 - gmail.observe **.trigger(type, events, xhr)** - fires any specified events for this type (on, after, before) with specified parameters
 
-
 #### DOM
 
 These methods return the DOM data itself
@@ -186,6 +186,7 @@ These methods return the DOM data itself
 - gmail.dom **.email_contents()**
 - gmail.dom **.get_left_sidebar_links()**
 - gmail.dom **.search_bar()**
+- gmail.dom **.toolbar()**
 - gmail.dom **.compose()** - compose dom object - receives the DOM element for the compose window and provides methods to interact
 - gmail.dom **.composes()** - retrives an array of `gmail.dom.compose` objects representing any open compose windows
 - [gmail.dom **.email()**](#gmaildomemailemail_el-or-email_id) - email dom object - receives an email DOM element or email id for an email currently being viewed. Abstracts interaction with that email.
@@ -210,7 +211,7 @@ These are some helper functions that the rest of the methods use. See source for
 - gmail.tools **.sleep(ms)**
 - gmail.tools **.multitry(ms_delay, tries, func, bool_success_check)**
 - gmail.tools **.i18n(label)**
-
+- [gmail.tools **add_toolbar_button(content_html, onclick_action, custom_style_class)**](#gmailtoolsadd_toolbar_buttoncontent_html-onclick_action-custom_style_class)
 
 #### TRACKER
 
@@ -231,7 +232,6 @@ These are some of the variables that are tracked and kept in memory while the re
 
 ### Details
 
-
 #### gmail.get.visible_emails()
 
 Returns a list of emails from the server that are currently visible in the inbox view. The data does not come from the DOM
@@ -244,6 +244,67 @@ Returns a list of emails from the server that are currently visible in the inbox
   "sender": "noreply@youtube.com",
   "attachment": "",
   "labels": ["^all", "^i", "^smartlabel_social", "^unsub"]}]
+```
+
+#### gmail.get.selected_emails_data()
+
+Returns a list of object representation from emails that are currently **selected** in the inbox view.
+The data does not come from the DOM
+
+```json
+[{
+  "first_email": "141d44da39d6caf9",
+  "last_email": "141d44da39d6caf(",
+  "total_emails": 1,
+  "total_threads": ["141d44da39d6caf8"],
+  "people_involved": [
+    ["Kartik Talwar", "hi@kartikt.com"],
+    ["California", "california@gmail.com"]
+  ],
+  "subject": "test",
+  "threads": {
+    "141d44da39d6caf8": {
+      "reply_to_id": "",
+      "is_deleted" : false,
+      "from": "California",
+      "to" : ["hi@kartikt.com"],
+      "cc" : [],
+      "bcc" : [],
+      "from_email": "california@gmail.com",
+      "timestamp": 1382246359000,
+      "datetime": "Sun, Nov 20, 2013 at 1:19 AM",
+      "content_plain": "another test",
+      "subject": "test",
+      "content_html": "<div dir=\"ltr\">another test</div>\n"
+    }
+  }
+},{
+  "first_email": "141d44da39d6caf8",
+  "last_email": "141d44da39d6caf8",
+  "total_emails": 1,
+  "total_threads": ["141d44da39d6caf8"],
+  "people_involved": [
+    ["Kartik Talwar", "hi@kartikt.com"],
+    ["California", "california@gmail.com"]
+  ],
+  "subject": "test",
+  "threads": {
+    "141d44da39d6caf8": {
+      "reply_to_id": "",
+      "is_deleted" : false,
+      "from": "California",
+      "to" : ["hi@kartikt.com"],
+      "cc" : [],
+      "bcc" : [],
+      "from_email": "california@gmail.com",
+      "timestamp": 1382246359000,
+      "datetime": "Sun, Nov 20, 2013 at 1:19 AM",
+      "content_plain": "another test",
+      "subject": "test",
+      "content_html": "<div dir=\"ltr\">another test</div>\n"
+    }
+  }
+}]
 ```
 
 #### gmail.get.email_data(email_id=undefined)
@@ -1050,6 +1111,16 @@ var thread = new gmail.dom.thread($('div.if'));
 var el = thread.dom();
 var subject = thread.dom('subject');
 console.log('El is',el,'Subject element is',subject);
+```
+
+#### gmail.tools.add_toolbar_button(content_html, onclick_action, custom_style_class)
+
+Add a new button to Gmail Toolbar
+
+```js
+gmail.tools.add_toolbar_button('content_html', function() {
+  // Code here
+}, 'Custom Style Classes');
 ```
 
 ## Author and Licensing
