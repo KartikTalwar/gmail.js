@@ -1808,6 +1808,19 @@ var Gmail = function(localJQuery) {
     return container;
   }
 
+  api.tools.add_compose_button =  function(composeWindow, content, onClickFunction, styleClass) {
+    var button = $(document.createElement('div'));
+    var buttonClasses = 'T-I J-J5-Ji aoO L3 ';
+    if(styleClass != undefined){
+      buttonClasses += styleClass;
+    }
+    button.attr('class', buttonClasses);
+    button.html(content);
+    button.click(onClickFunction);
+
+    composeWindow.find('.gU.Up  > .J-J5-Ji').append(button);
+  }
+
   api.chat.is_hangouts = function() {
     if(api.tracker.hangouts != undefined) {
       return api.tracker.hangouts;
