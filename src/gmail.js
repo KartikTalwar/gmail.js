@@ -1162,7 +1162,7 @@ var Gmail = function(localJQuery) {
         class: 'An', // M9 would be better but this isn't set at the point of insertion
         handler: function(match, callback) {
           // console.log('reply_forward handler called', match, callback);
-
+          var originalMatch = match;
           // look back up the DOM tree for M9 (the main reply/forward node)
           match = match.closest('div.M9');
           if (!match.length) return;
@@ -1172,6 +1172,15 @@ var Gmail = function(localJQuery) {
             type = match.find('input[name=subject]').val().indexOf('Fw') == 0 ? 'forward' : 'reply';
           } else {
             type = 'compose';
+              //Find the close button and set an event listener so we can forward the compose_cancelled event.
+              var composeWindow = originalMatch.closest('div.AD');
+              composeWindow.find('.Ha').mouseup(function() {
+                  if(api.tracker.composeCancelledCallback) {
+                      api.tracker.composeCancelledCallback(match);
+                  }
+                  return true;
+              });
+
           }
           callback(match,type);
         }
