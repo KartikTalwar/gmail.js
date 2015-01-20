@@ -63,6 +63,7 @@ gmail.get.user_email();
 
 - [gmail.get **.user_email()**](#gmailgetuser_email)
 - [gmail.get **.visible_emails()**](#gmailgetvisible_emails)
+- [gmail.get **.selected_emails_data()**](#gmailgetselected_emails_data)
 - [gmail.get **.current_page()**](#gmailgetcurrent_page)
 - [gmail.get **.email_id()**](#gmailgetemail_id)
 - [gmail.get **.email_ids()**](#gmailgetemail_ids)
@@ -84,6 +85,7 @@ gmail.get.user_email();
 - [gmail.get **.storage_info()**](#gmailgetstorage_info)
 - [gmail.get **.loggedin_accounts()**](#gmailgetloggedin_accounts)
 - [gmail.get **.beta()**](#gmailgetbeta)
+- [gmail.get **.localization()**](#gmailgetlocalization)
 
 
 
@@ -125,7 +127,8 @@ gmail.get.user_email();
 
 - [gmail.observe **.http_requests()**](#gmailobservehttp_requests)
 - [gmail.observe **.actions()**](#gmailobserveactions)
-- [gmail.observe **.off(action,type)**](#gmailobserveoffactionnull)
+- [gmail.observe **.register(action, class/args, parent)**](#gmailobserveregisteraction-classargs-parentnull) - registers a custom DOM observer 
+- [gmail.observe **.off(action,type)**](#gmailobserveoffactionnulltypenull)
 - [gmail.observe **.on(action, callback)**](#gmailobserveonaction-callback)
   - **`poll`** - When gmail automatically polls the server to check for new emails every few seconds
   - **`new_email`** - When a new email appears in the inbox
@@ -183,6 +186,7 @@ These methods return the DOM data itself
 - gmail.dom **.email_contents()**
 - gmail.dom **.get_left_sidebar_links()**
 - gmail.dom **.search_bar()**
+- gmail.dom **.toolbar()**
 - gmail.dom **.compose()** - compose dom object - receives the DOM element for the compose window and provides methods to interact
 - gmail.dom **.composes()** - retrives an array of `gmail.dom.compose` objects representing any open compose windows
 - [gmail.dom **.email()**](#gmaildomemailemail_el-or-email_id) - email dom object - receives an email DOM element or email id for an email currently being viewed. Abstracts interaction with that email.
@@ -194,6 +198,8 @@ These are some helper functions that the rest of the methods use. See source for
 
 - gmail.tools **infobox(message, time)**
   + Adds the yellow info box on top of gmail with the given message
+- gmail.tools **rerender(callback)**
+  + Re-renders the UI using the available data.
 - gmail.tools **.xhr_watcher()**
 - gmail.tools **.parse_url()**
 - gmail.tools **.deparam()**
@@ -205,7 +211,7 @@ These are some helper functions that the rest of the methods use. See source for
 - gmail.tools **.sleep(ms)**
 - gmail.tools **.multitry(ms_delay, tries, func, bool_success_check)**
 - gmail.tools **.i18n(label)**
-
+- [gmail.tools **add_toolbar_button(content_html, onclick_action, custom_style_class)**](#gmailtoolsadd_toolbar_buttoncontent_html-onclick_action-custom_style_class)
 
 #### TRACKER
 
@@ -226,7 +232,6 @@ These are some of the variables that are tracked and kept in memory while the re
 
 ### Details
 
-
 #### gmail.get.visible_emails()
 
 Returns a list of emails from the server that are currently visible in the inbox view. The data does not come from the DOM
@@ -239,6 +244,67 @@ Returns a list of emails from the server that are currently visible in the inbox
   "sender": "noreply@youtube.com",
   "attachment": "",
   "labels": ["^all", "^i", "^smartlabel_social", "^unsub"]}]
+```
+
+#### gmail.get.selected_emails_data()
+
+Returns a list of object representation from emails that are currently **selected** in the inbox view.
+The data does not come from the DOM
+
+```json
+[{
+  "first_email": "141d44da39d6caf9",
+  "last_email": "141d44da39d6caf(",
+  "total_emails": 1,
+  "total_threads": ["141d44da39d6caf8"],
+  "people_involved": [
+    ["Kartik Talwar", "hi@kartikt.com"],
+    ["California", "california@gmail.com"]
+  ],
+  "subject": "test",
+  "threads": {
+    "141d44da39d6caf8": {
+      "reply_to_id": "",
+      "is_deleted" : false,
+      "from": "California",
+      "to" : ["hi@kartikt.com"],
+      "cc" : [],
+      "bcc" : [],
+      "from_email": "california@gmail.com",
+      "timestamp": 1382246359000,
+      "datetime": "Sun, Nov 20, 2013 at 1:19 AM",
+      "content_plain": "another test",
+      "subject": "test",
+      "content_html": "<div dir=\"ltr\">another test</div>\n"
+    }
+  }
+},{
+  "first_email": "141d44da39d6caf8",
+  "last_email": "141d44da39d6caf8",
+  "total_emails": 1,
+  "total_threads": ["141d44da39d6caf8"],
+  "people_involved": [
+    ["Kartik Talwar", "hi@kartikt.com"],
+    ["California", "california@gmail.com"]
+  ],
+  "subject": "test",
+  "threads": {
+    "141d44da39d6caf8": {
+      "reply_to_id": "",
+      "is_deleted" : false,
+      "from": "California",
+      "to" : ["hi@kartikt.com"],
+      "cc" : [],
+      "bcc" : [],
+      "from_email": "california@gmail.com",
+      "timestamp": 1382246359000,
+      "datetime": "Sun, Nov 20, 2013 at 1:19 AM",
+      "content_plain": "another test",
+      "subject": "test",
+      "content_html": "<div dir=\"ltr\">another test</div>\n"
+    }
+  }
+}]
 ```
 
 #### gmail.get.email_data(email_id=undefined)
@@ -446,6 +512,10 @@ Although hand picked, this method returns the checks on beta features and deploy
 ```json
 {"new_nav_bar":true}
 ```
+
+#### gmail.get.localization()
+
+Returns the Gmail localization, e.g. 'US'.
 
 #### gmail.check.is_thread()
 
@@ -860,6 +930,43 @@ gmail.observe.off(null,'before'); // disables all before observers
 gmail.observe.off();  // disables all
 ```
 
+#### gmail.observe.register(action, class/args, parent=null)
+
+Allow an application to register a custom DOM observer specific to their application.
+Adds it to the configured DOM observers that will then be supported by the dom insertion observer.
+*Note* this method must be called prior to binding any handlers to specific actions/observers using `on`, `before` or `after`.
+Once you start binding handlers, you cannot register any further custom observers.
+
+This method can be called two different ways:
+
+Simple:
+  - action - the name of the new DOM observer
+  - class - the class of an inserted DOM element that identifies that this action should be triggered
+  - parent - optional - if specified, this observer will be registered as a sub_observer for the specified parent (meaning it will only be checked for if the parent observer has something bound to it, and has been triggered).
+
+Complex:
+  - action - the name of the new DOM observer
+  - args - an object containin properties for each of the supported DOM observer configuration agruments:
+    - class - the class of an inserted DOM element that identifies that this action should be triggered
+    - selector - if you need to match more than just the className of a specific element to indicate a match, you can use this selector for further checking (uses element.is(selector) on matched element). E.g. if there are multiple elements with a class indicating an observer should fire, but you only want it to fire on a specific id, then you would use this
+    - sub_selector - if specified, we do a jquery element.find for the passed selector on the inserted element and ensure we can find a match
+    - handler - if specified this handler is called if a match is found. Otherwise default calls the callback & passes the jQuery matchElement
+  - parent - optional - as above with simple
+
+```js
+
+// this will register an observer that fires each time the autosuggest listbox pops up / changes
+// as you type an email address into a compose
+gmail.observe.register('compose_email_select', {
+  class: 'Jd-axF',
+  selector: 'div.Jd-axF:first-child'
+});
+gmail.observe.on('compose_email_select', function(match) {
+  console.log('Email select popup',match);
+});
+
+```
+
 ### gmail.dom.compose(compose_el)
 
 An object used to abstract interation with a compose popup
@@ -1004,6 +1111,16 @@ var thread = new gmail.dom.thread($('div.if'));
 var el = thread.dom();
 var subject = thread.dom('subject');
 console.log('El is',el,'Subject element is',subject);
+```
+
+#### gmail.tools.add_toolbar_button(content_html, onclick_action, custom_style_class)
+
+Add a new button to Gmail Toolbar
+
+```js
+gmail.tools.add_toolbar_button('content_html', function() {
+  // Code here
+}, 'Custom Style Classes');
 ```
 
 ## Author and Licensing
