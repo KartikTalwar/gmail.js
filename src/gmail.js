@@ -1559,7 +1559,8 @@ var Gmail = function(localJQuery) {
     for(i in email_data) {
       var x = email_data[i];
       if(x[0] == 'cs') {
-        data.first_email = x[1];
+        data.thread_id = x[1];
+	data.first_email= x[8][0];
         data.last_email = x[2];
         data.total_emails = x[3];
         data.total_threads = x[8];
