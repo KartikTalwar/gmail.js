@@ -1608,7 +1608,7 @@ var Gmail = function(localJQuery) {
     }
 
     if(email_id != undefined) {
-      var url = window.location.origin + window.location.pathname + '?ui=2&ik=' + api.tracker.ik + '&rid=' + api.tracker.rid + '&view=cv&th=' + email_id + '&msgs=&mb=0&rt=1&search=inbox';
+      var url = window.location.origin + window.location.pathname + '?ui=2&ik=' + api.tracker.ik + '&rid=' + api.tracker.rid + '&view=cv&th=' + email_id + '&msgs=&mb=0&rt=1&search=mbox';
       var get_data = api.tools.make_request(url);
           get_data = get_data.substring(get_data.indexOf('['), get_data.length);
           get_data = 'var cdata = ' + get_data;
