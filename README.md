@@ -127,7 +127,7 @@ gmail.get.user_email();
 
 - [gmail.observe **.http_requests()**](#gmailobservehttp_requests)
 - [gmail.observe **.actions()**](#gmailobserveactions)
-- [gmail.observe **.register(action, class/args, parent)**](#gmailobserveregisteraction-classargs-parentnull) - registers a custom DOM observer 
+- [gmail.observe **.register(action, class/args, parent)**](#gmailobserveregisteraction-classargs-parentnull) - registers a custom DOM observer
 - [gmail.observe **.off(action,type)**](#gmailobserveoffactionnulltypenull)
 - [gmail.observe **.on(action, callback)**](#gmailobserveonaction-callback)
   - **`poll`** - When gmail automatically polls the server to check for new emails every few seconds
@@ -235,7 +235,7 @@ These are some of the variables that are tracked and kept in memory while the re
 #### gmail.get.visible_emails()
 
 Returns a list of emails from the server that are currently visible in the inbox view. The data does not come from the DOM
-  
+
 ```json
 [{"id": "1425a3693a4c45d0",
   "title": "<b>What if video games were real? On YouTube</b>",
@@ -253,8 +253,9 @@ The data does not come from the DOM
 
 ```json
 [{
+  "thread_id":"141d44da39d6caf8",
   "first_email": "141d44da39d6caf9",
-  "last_email": "141d44da39d6caf(",
+  "last_email": "141d44da39d6caf9",
   "total_emails": 1,
   "total_threads": ["141d44da39d6caf8"],
   "people_involved": [
@@ -279,6 +280,7 @@ The data does not come from the DOM
     }
   }
 },{
+  "thread_id":"141d44da39d6caf8",
   "first_email": "141d44da39d6caf8",
   "last_email": "141d44da39d6caf8",
   "total_emails": 1,
@@ -310,10 +312,13 @@ The data does not come from the DOM
 #### gmail.get.email_data(email_id=undefined)
 
 Returns an object representation of the opened email contents and metadata. It takes the optional email_id parameter where
-the data for the specified id is returned instead of the email currently visible in the dom
+the data for the specified id is returned instead of the email currently visible in the dom.
+
+`thread_id` is added for updated gmail thread behaviour which adds support for emails created in [inbox](https://inbox.google.com). first_email remains as the first message in the thread.
 
 ```json
 {
+  "thread_id":"141d44da39d6caf8",
   "first_email": "141d44da39d6caf8",
   "last_email": "141d44da39d6caf8",
   "total_emails": 1,
@@ -348,6 +353,7 @@ Returns an object representation of the emails that are being displayed.
 
 ```json
 {
+  "thread_id":"141d44da39d6caf8",
   "first_email": "145881e7a8befff6",
   "last_email": "145881e7a8befff6",
   "total_emails": 1,
@@ -473,7 +479,7 @@ Returns a count of total unread emails for the current account.
 }
 ```
 
-You can also request the data individually 
+You can also request the data individually
 
 - **gmail.get.unread_inbox_emails()**
 - **gmail.get.unread_draft_emails()**
@@ -901,7 +907,7 @@ Similar to `gmail.observe.on`, this method allows you to bind callbacks to speci
 
 All of the standard actions in `gmail.observe.on` work here, with the exception of the DOM actions
 
-The main difference between `on` and `after` is that these callbacks are fired once Gmail's XMLHttpRequest has returned from the Gmail servers (on the XMLHttpRequest `onreadystatechange` event). 
+The main difference between `on` and `after` is that these callbacks are fired once Gmail's XMLHttpRequest has returned from the Gmail servers (on the XMLHttpRequest `onreadystatechange` event).
 
 In addition to the usual parameters received by a callback, callbacks you define for an `after` event receive an additional `response` parameter prior to the last xhr parameter. This response parameter is a parsed object representation of the response from the Gmail servers.
 
