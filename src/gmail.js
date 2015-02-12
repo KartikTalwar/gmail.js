@@ -693,6 +693,7 @@ var Gmail = function(localJQuery) {
 
       case "dm":
       case "rtr":
+      case "mo":
         response = [sent_params.m, params.url, params.body];
         break;
 
