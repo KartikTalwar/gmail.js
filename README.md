@@ -756,12 +756,12 @@ gmail.observe.on("delete_forever", function(id, url, body, xhr) {
   console.log("id:", id, "url:", url, 'body', body, 'xhr', xhr);
 })
 
-gmail.observe.on("delete_message_in_thread", function(id, url, body, xhr) {
-  console.log("id:", id, "url:", url, 'body', body, 'xhr', xhr);
+gmail.observe.on("delete_message_in_thread", function(id, url, body) {
+  console.log("id:", id, "url:", url, 'body', body);
 })
 
-gmail.observe.on("restore_message_in_thread", function(id, url, body, xhr) {
-  console.log("id:", id, "url:", url, 'body', body, 'xhr', xhr);
+gmail.observe.on("restore_message_in_thread", function(id, url, body) {
+  console.log("id:", id, "url:", url, 'body', body);
 })
 
 gmail.observe.on("star", function(id, url, body, xhr) {
@@ -820,8 +820,8 @@ gmail.observe.on("delete_label", function(id, url, body, xhr) {
   console.log("id:", id, "url:", url, 'body', body, 'xhr', xhr);
 })
 
-gmail.observe.on("show_newly_arrived_message", function(id, url, body, xhr) {
-  console.log("id:", id, "url:", url, 'body', body, 'xhr', xhr);
+gmail.observe.on("show_newly_arrived_message", function(id, url, body) {
+  console.log("id:", id, "url:", url, 'body', body);
 })
 
 gmail.observe.on("poll", function(url, body, data, xhr) {
