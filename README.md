@@ -212,6 +212,7 @@ These are some helper functions that the rest of the methods use. See source for
 - gmail.tools **.multitry(ms_delay, tries, func, bool_success_check)**
 - gmail.tools **.i18n(label)**
 - [gmail.tools **add_toolbar_button(content_html, onclick_action, custom_style_class)**](#gmailtoolsadd_toolbar_buttoncontent_html-onclick_action-custom_style_class)
+- [gmail.tools **add_compose_button(compose_ref,content_html, onclick_action, custom_style_class)**](#gmailtoolsadd_toolbar_buttoncompose_ref-content_html-onclick_action-custom_style_class)
 
 #### TRACKER
 
@@ -755,12 +756,12 @@ gmail.observe.on("delete_forever", function(id, url, body, xhr) {
   console.log("id:", id, "url:", url, 'body', body, 'xhr', xhr);
 })
 
-gmail.observe.on("delete_message_in_thread", function(id, url, body, xhr) {
-  console.log("id:", id, "url:", url, 'body', body, 'xhr', xhr);
+gmail.observe.on("delete_message_in_thread", function(id, url, body) {
+  console.log("id:", id, "url:", url, 'body', body);
 })
 
-gmail.observe.on("restore_message_in_thread", function(id, url, body, xhr) {
-  console.log("id:", id, "url:", url, 'body', body, 'xhr', xhr);
+gmail.observe.on("restore_message_in_thread", function(id, url, body) {
+  console.log("id:", id, "url:", url, 'body', body);
 })
 
 gmail.observe.on("star", function(id, url, body, xhr) {
@@ -819,8 +820,8 @@ gmail.observe.on("delete_label", function(id, url, body, xhr) {
   console.log("id:", id, "url:", url, 'body', body, 'xhr', xhr);
 })
 
-gmail.observe.on("show_newly_arrived_message", function(id, url, body, xhr) {
-  console.log("id:", id, "url:", url, 'body', body, 'xhr', xhr);
+gmail.observe.on("show_newly_arrived_message", function(id, url, body) {
+  console.log("id:", id, "url:", url, 'body', body);
 })
 
 gmail.observe.on("poll", function(url, body, data, xhr) {
@@ -1125,6 +1126,18 @@ Add a new button to Gmail Toolbar
 
 ```js
 gmail.tools.add_toolbar_button('content_html', function() {
+  // Code here
+}, 'Custom Style Classes');
+```
+
+#### gmail.tools.add_compose_button(compose_ref, content_html, onclick_action, custom_style_class)
+
+Add button to compose window.
+You can use gmail.dom.composes() to get compose reference.
+
+```js
+var compose_ref = gmail.dom.composes()[0];
+gmail.tools.add_compose_button(compose_ref, 'content_html', function() {
   // Code here
 }, 'Custom Style Classes');
 ```
