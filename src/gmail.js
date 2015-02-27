@@ -1555,6 +1555,19 @@ var Gmail = function(localJQuery) {
     }, 0);
   }
 
+  api.tools.get_reply_to = function(ms13) {
+    // reply to is an array if exists
+    var reply_to = (ms13 != undefined) ? ms13[4] : [];
+
+    // if reply to set get email from it and return it
+    if (reply_to.length !== 0) {
+      return api.tools.extract_email_address(reply_to[0]);
+    }
+
+    // otherwise return undefined
+    return;
+  }
+
   api.tools.parse_email_data = function(email_data) {
     var data = {};
     var threads = {}
@@ -1589,6 +1602,7 @@ var Gmail = function(localJQuery) {
         data.threads[x[1]].to = (x[13] != undefined) ? x[13][1] : ((x[37] != undefined) ? x[37][1]:[]);
         data.threads[x[1]].cc = (x[13] != undefined) ? x[13][2] : [];
         data.threads[x[1]].bcc = (x[13] != undefined) ? x[13][3] : [];
+        data.threads[x[1]].reply_to = api.tools.get_reply_to(x[13]);
 
         try { // jQuery will sometime fail to parse x[13][6], if so, putting the raw HTML
           data.threads[x[1]].content_plain = (x[13] != undefined) ? $(x[13][6]).text() : x[8];
