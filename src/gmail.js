@@ -270,7 +270,8 @@ var Gmail = function(localJQuery) {
         for(var i=0; i<items.length; i++) {
           var mail_id = items[i].getAttribute('class').split(' ')[2];
           var is_editable = items[i].getAttribute('contenteditable');
-          if(mail_id != 'undefined' && mail_id != undefined) {
+          var is_visible = items[i].offsetWidth > 0 && items[i].offsetHeight > 0;
+          if(mail_id != 'undefined' && mail_id != undefined && is_visible) {
             if(is_editable != 'true') {
               text.push(mail_id);
             }
