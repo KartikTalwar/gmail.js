@@ -1564,8 +1564,8 @@ var Gmail = function(localJQuery) {
       return api.tools.extract_email_address(reply_to[0]);
     }
 
-    // otherwise return undefined
-    return;
+    // otherwise return null
+    return null;
   }
 
   api.tools.parse_email_data = function(email_data) {
