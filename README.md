@@ -267,6 +267,7 @@ The data does not come from the DOM
   "threads": {
     "141d44da39d6caf8": {
       "reply_to_id": "",
+      "reply_to": "replytome@gmail.com",
       "is_deleted" : false,
       "from": "California",
       "to" : ["hi@kartikt.com"],
@@ -294,6 +295,7 @@ The data does not come from the DOM
   "threads": {
     "141d44da39d6caf8": {
       "reply_to_id": "",
+      "reply_to": null,
       "is_deleted" : false,
       "from": "California",
       "to" : ["hi@kartikt.com"],
@@ -332,6 +334,7 @@ the data for the specified id is returned instead of the email currently visible
   "threads": {
     "141d44da39d6caf8": {
       "reply_to_id": "",
+      "reply_to": "replytome@gmail.com",
       "is_deleted" : false,
       "from": "California",
       "to" : ["hi@kartikt.com"],
@@ -367,6 +370,7 @@ Returns an object representation of the emails that are being displayed.
   "threads": {
     "145881e7a8befff6": {
       "reply_to_id": "",
+      "reply_to": "replytome@gmail.com",
       "is_deleted" : false,
       "from": "California",
       "to" : ["hi@kartikt.com"],
