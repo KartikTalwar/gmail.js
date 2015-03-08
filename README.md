@@ -650,7 +650,7 @@ The items contain the sent requested parameterized data
 
 #### gmail.observe.actions()
 
-Similar to `gmail.obsere.http_requests()` this keeps track of the last 10 gmail actions (vs all http requests).
+Similar to `gmail.observe.http_requests()` this keeps track of the last 10 gmail actions (vs all http requests).
 Actions here correspond to things like clicking refres, archiving, deleting, starring etc.
 
 #### gmail.observe.on(action, callback)
