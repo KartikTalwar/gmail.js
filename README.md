@@ -1140,29 +1140,29 @@ gmail.tools.add_toolbar_button('content_html', function() {
 Add button to compose window.
 You can use gmail.dom.composes() to get compose reference.
 
-#### gmail.tools.add_modal_window(title, content_html, onClickOk, onClickCancel, onClickClose)
-
-Create a modal window with specified title, content and callback functions.
-
-```onClickOk``` triggers when the user clicks the OK button on the modal window. 
-```onClickCancel``` triggers when the user clicks the Cancel button on the modal window. 
-```onClickClose``` triggers when the user clicks the X in the upper right hand side of the modal window.
-
-By default, if ```onClickCancel``` or ```onClickClose``` are left blank, their corresponding buttons will remove the modal window.
-
-```js
-gmail.tools.add_modal_window('Clean inbox', 'Are you <strong>sure</strong> you want to continue?',
-function() {
-	cleanMyInbox();
-});
-```
-
 ```js
 var compose_ref = gmail.dom.composes()[0];
 gmail.tools.add_compose_button(compose_ref, 'content_html', function() {
   // Code here
 }, 'Custom Style Classes');
 ```
+
+#### gmail.tools.add_modal_window(title, content_html, onClickOk, onClickCancel, onClickClose)
+
+Create a modal window with specified title, content and callback functions.
+
+```onClickOk``` triggers when the user clicks the OK button on the modal window. ```onClickCancel``` triggers when the user clicks the Cancel button on the modal window. ```onClickClose``` triggers when the user clicks the X in the upper right hand side of the modal window.
+
+By default, if ```onClickCancel``` or ```onClickClose``` are left blank, their corresponding buttons will remove the modal window.
+
+```js
+gmail.tools.add_modal_window('Clean inbox', 'Do you want to continue?',
+function() {
+	cleanMyInbox();
+});
+```
+
+![](https://cloud.githubusercontent.com/assets/137350/6630847/abbcd6e0-c971-11e4-9153-9327444a6ddd.png)
 
 ## Author and Licensing
 
