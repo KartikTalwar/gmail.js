@@ -1799,7 +1799,7 @@ var Gmail = function(localJQuery) {
     return dictionary[label];
   }
 
-  api.tools.add_toolbar_button = function(content, onClickFunction, styleClass) {
+  api.tools.add_toolbar_button = function(content_html, onClickFunction, styleClass) {
     var container = $(document.createElement('div'));
     container.attr('class','G-Ni J-J5-Ji');
 
@@ -1814,7 +1814,7 @@ var Gmail = function(localJQuery) {
     }
     button.attr('class', buttonClasses);
 
-    button.html(content);
+    button.html(content_html);
     button.click(onClickFunction);
 
     var content = $(document.createElement('div'));
@@ -1827,20 +1827,20 @@ var Gmail = function(localJQuery) {
     return container;
   }
 
-  api.tools.add_compose_button =  function(composeWindow, content, onClickFunction, styleClass) {
+  api.tools.add_compose_button =  function(composeWindow, content_html, onClickFunction, styleClass) {
     var button = $(document.createElement('div'));
     var buttonClasses = 'T-I J-J5-Ji aoO L3 ';
     if(styleClass != undefined){
       buttonClasses += styleClass;
     }
     button.attr('class', buttonClasses);
-    button.html(content);
+    button.html(content_html);
     button.click(onClickFunction);
 
     composeWindow.find('.gU.Up  > .J-J5-Ji').append(button);
   }
   
-  api.tools.add_modal_window = function(title, content, onClickOk, onClickCancel, onClickClose) {
+  api.tools.add_modal_window = function(title, content_html, onClickOk, onClickCancel, onClickClose) {
     var remove = function() {
       $('#gmailJsModalBackground').remove();
       $('#gmailJsModalWindow').remove();
@@ -1890,7 +1890,7 @@ var Gmail = function(localJQuery) {
     var contents = $(document.createElement('div'));
     contents.attr('id', 'gmailJsModalWindowContent');
     contents.attr('class', 'Kj-JD-Jz');
-    contents.html(content);
+    contents.html(content_html);
     
     // Modal window controls
     var controls = $(document.createElement('div'));
