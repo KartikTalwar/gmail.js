@@ -130,6 +130,7 @@ gmail.get.user_email();
 - [gmail.observe**.register(action, class/args, parent)**](#gmailobserveregisteraction-classargs-parentnull) - registers a custom DOM observer
 - [gmail.observe**.off(action,type)**](#gmailobserveoffactionnulltypenull)
 - [gmail.observe**.on(action, callback)**](#gmailobserveonaction-callback)
+  - **`http_event`** - When gmail any CRUD operation happens on gmail
   - **`poll`** - When gmail automatically polls the server to check for new emails every few seconds
   - **`new_email`** - When a new email appears in the inbox
   - **`open_email`** - When an email is opened from the inbox view
@@ -170,7 +171,6 @@ gmail.get.user_email();
 - [gmail.observe**.before(action, callback)**](#gmailobservebeforeaction-callback)
 - [gmail.observe**.after(action, callback)**](#gmailobserveafteraction-callback)
 - gmail.observe**.bind(type, action, callback)** - implements the on, after, before callbacks
-- gmail.observe**.bound(action, type)**
 - gmail.observe**.on_dom(action, callback)** - implements the DOM observers - called by `gmail.observe.on`
 - gmail.observe**.bound(action, type)** - checks if a specific action and/or type has any bound observers
 - gmail.observe**.trigger(type, events, xhr)** - fires any specified events for this type (on, after, before) with specified parameters
@@ -666,6 +666,7 @@ Your callback will be fired directly after Gmail's XMLHttpRequest has been sent 
 
 **Available Actions**
 
+  - **http_event** - When gmail any CRUD operation happens on gmail
   - **poll** - When gmail automatically polls the server to check for new emails every few seconds
   - **new_email** - When a new email appears in the inbox
   - **open_email** - When a new email appears in the inbox
@@ -725,6 +726,10 @@ gmail.observe.on('view_email', function(obj) {
   - **load_email_menu** - When the dropdown menu next to the reply button is clicked
 
 ```js
+gmail.observe.on("http_event", function(params) {
+  console.log("url data:", params);
+})
+
 gmail.observe.on("unread", function(id, url, body, xhr) {
   console.log("id:", id, "url:", url, 'body', body, 'xhr', xhr);
 })

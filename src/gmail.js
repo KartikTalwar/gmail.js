@@ -596,10 +596,6 @@ var Gmail = function(localJQuery) {
       return params.body_is_object && api.observe.bound('upload_attachment') ? { upload_attachment: [ params.body_params ] } : false; // trigger attachment event
     }
 
-    if(params.method == 'POST' && typeof params.url.act == 'string') {
-      // console.log(params.url, params.body);
-    }
-
     if(params.url.search != undefined) {
       // console.log(params.url, params.body, params.url_raw);
     }
@@ -744,9 +740,17 @@ var Gmail = function(localJQuery) {
         triggered.refresh = response;
       }
     }
+
     if(response && action_map[action] && api.observe.bound(action_map[action])) {
       triggered[action_map[action]] = response;
     }
+
+    if(params.method == 'POST' && (typeof params.url.SID == 'string'
+                                   || typeof params.url.ik == 'string'
+                                   || typeof params.url.act == 'string')) {
+      triggered.http_event = [params]; // send every event and all data
+    }
+
     return triggered;
   }
 
