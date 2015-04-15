@@ -669,7 +669,7 @@ Your callback will be fired directly after Gmail's XMLHttpRequest has been sent 
   - **http_event** - When gmail any CRUD operation happens on gmail
   - **poll** - When gmail automatically polls the server to check for new emails every few seconds
   - **new_email** - When a new email appears in the inbox
-  - **open_email** - When a new email appears in the inbox
+  - **open_email** - When an email is opened from the inbox view
   - **refresh** - When you click the refresh button
   - **unread** - When a conversation(s) is marked unread
   - **read** - When a conversation(s) is marked read
