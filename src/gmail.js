@@ -22,6 +22,17 @@ var Gmail = function(localJQuery) {
               compose : {}
             };
 
+  // The helper object is private
+  var helper = {
+                  get : {},
+                  observe : {},
+                  check : {},
+                  tools : {},
+                  tracker : {},
+                  dom : {},
+                  chat : {},
+                  compose : {}
+                };
 
   api.version           = "0.4";
   api.tracker.globals   = GLOBALS;
@@ -1414,10 +1425,10 @@ var Gmail = function(localJQuery) {
   }
 
 
-  api.get.visible_emails = function() {
+  helper.get.visible_emails_pre = function() {
     var page = api.get.current_page();
     var url = window.location.origin + window.location.pathname + '?ui=2&ik=' + api.tracker.ik+'&rid=' + api.tracker.rid + '&view=tl&start=0&num=120&rt=1';
-
+    
     if(page.indexOf('label/') == 0) {
       url += '&cat=' + page.split('/')[1] +'&search=cat';
     } else if(page.indexOf('category/') == 0) {
@@ -1438,77 +1449,44 @@ var Gmail = function(localJQuery) {
     }else {
       url += '&search=' + page;
     }
+    return url;
+  }
 
-    var get_data = api.tools.make_request(url);
-        get_data = get_data.substring(get_data.indexOf('['), get_data.length);
-        get_data = 'api.tracker.view_data = ' + get_data;
+  helper.get.visible_emails_post = function(get_data) {
 
+    get_data = get_data.substring(get_data.indexOf('['), get_data.length);
+    get_data = 'api.tracker.view_data = ' + get_data;
+    
     eval(get_data)
-
+    
     var emails = [];
-
+    
     for(i in api.tracker.view_data) {
       if (typeof(api.tracker.view_data[i]) === 'function') {
         continue;
       }
-
+      
       var cdata = api.tools.parse_view_data(api.tracker.view_data[i]);
       if(cdata.length > 0) {
         $.merge(emails, cdata);
       }
     }
-
     return emails;
   }
 
+  api.get.visible_emails = function() {
+    var url = helper.get.visible_emails_pre();
+    var get_data = api.tools.make_request(url);
+    var emails = helper.get.visible_emails_post(get_data);
+    return emails;
+  }
 
   api.get.visible_emails_async = function(callback) {
-    var page = api.get.current_page();
-    var url = window.location.origin + window.location.pathname + '?ui=2&ik=' + api.tracker.ik+'&rid=' + api.tracker.rid + '&view=tl&start=0&num=120&rt=1';
-    
-    if(page.indexOf('label/') == 0) {
-      url += '&cat=' + page.split('/')[1] +'&search=cat';
-    } else if(page.indexOf('category/') == 0) {
-      if(page.indexOf('forums') != -1) {
-        cat_label = 'group';
-      } else if(page.indexOf('updates') != -1) {
-        cat_label = 'notification';
-      } else if(page.indexOf('promotion') != -1) {
-        cat_label = 'promo';
-      } else if(page.indexOf('social') != -1) {
-        cat_label = 'social';
-      }
-      url += '&cat=^smartlabel_' + cat_label +'&search=category';
-    } else if(page.indexOf('search/') == 0) {
-      url += '&qs=true&q=' + page.split('/')[1] +'&search=query';
-    } else if(page == 'inbox'){
-      url += '&search=' + 'mbox';
-    }else {
-      url += '&search=' + page;
-    }
-    
-    var postprocess = function (get_data) {
-      get_data = get_data.substring(get_data.indexOf('['), get_data.length);
-      get_data = 'api.tracker.view_data = ' + get_data;
-      
-      eval(get_data)
-      
-      var emails = [];
-      
-      for(i in api.tracker.view_data) {
-        if (typeof(api.tracker.view_data[i]) === 'function') {
-          continue;
-        }
-        
-        var cdata = api.tools.parse_view_data(api.tracker.view_data[i]);
-        if(cdata.length > 0) {
-          $.merge(emails, cdata);
-        }
-      }
+    var url = helper.get.visible_emails_pre();
+    api.tools.make_request_async(url, 'GET', function(get_data) {
+      var emails = helper.get.visible_emails_post(get_data);
       callback(emails);
-    }
-
-    api.tools.make_request_async(url, 'GET', postprocess);
+    });
   }
 
 
@@ -1686,75 +1664,89 @@ var Gmail = function(localJQuery) {
   }
 
 
-  api.get.email_data = function(email_id) {
-
+  helper.get.email_data_pre = function(email_id) {
+    
     if(api.check.is_inside_email() && email_id == undefined) {
       email_id = api.get.email_id();
     }
 
+    var url = null;
     if(email_id != undefined) {
-      var url = window.location.origin + window.location.pathname + '?ui=2&ik=' + api.tracker.ik + '&rid=' + api.tracker.rid + '&view=cv&th=' + email_id + '&msgs=&mb=0&rt=1&search=mbox';
-      var get_data = api.tools.make_request(url);
-          get_data = get_data.substring(get_data.indexOf('['), get_data.length);
-          get_data = 'var cdata = ' + get_data;
-
-      eval(get_data);
-
-      api.tracker.email_data = cdata[0];
-
-      return api.tools.parse_email_data(api.tracker.email_data);
+      url = window.location.origin + window.location.pathname + '?ui=2&ik=' + api.tracker.ik + '&rid=' + api.tracker.rid + '&view=cv&th=' + email_id + '&msgs=&mb=0&rt=1&search=mbox';
     }
+    return url;
+  }
 
+  helper.get.email_data_post = function(get_data) {
+
+    get_data = get_data.substring(get_data.indexOf('['), get_data.length);
+    get_data = 'var cdata = ' + get_data;
+    
+    eval(get_data);
+    
+    api.tracker.email_data = cdata[0];
+    return api.tools.parse_email_data(api.tracker.email_data);
+  }
+
+  api.get.email_data = function(email_id) {
+
+    var url = helper.get.email_data_pre(email_id);
+    if (url != null)
+    {
+      var get_data = api.tools.make_request(url);
+      var email_data = helper.get.email_data_post(get_data);
+      return email_data;
+    }
     return {};
   }
 
-
   api.get.email_data_async = function(email_id, callback) {
-    
-    if(api.check.is_inside_email() && email_id == undefined) {
-      email_id = api.get.email_id();
-    }
-    
-    if(email_id != undefined) {
-      var url = window.location.origin + window.location.pathname + '?ui=2&ik=' + api.tracker.ik + '&rid=' + api.tracker.rid + '&view=cv&th=' + email_id + '&msgs=&mb=0&rt=1&search=mbox';
-      
-      var postprocess = function (get_data) {
 
-        get_data = get_data.substring(get_data.indexOf('['), get_data.length);
-        get_data = 'var cdata = ' + get_data;
-        eval(get_data);
-        api.tracker.email_data = cdata[0];
-        callback(api.tools.parse_email_data(api.tracker.email_data));
-      };
-
-      api.tools.make_request_async(url, 'GET', postprocess);
+    var url = helper.get.email_data_pre(email_id);
+    if (url != null)
+    {
+      api.tools.make_request_async(url, 'GET', function (get_data) {
+        var email_data = helper.get.email_data_post(get_data);
+        callback(email_data);
+      });
     }
+    else
+      callback({});
   }
 
 
-  api.get.email_source = function(email_id) {
+  helper.get.email_source_pre = function(email_id) {
+
     if(api.check.is_inside_email() && email_id == undefined) {
       email_id = api.get.email_id();
     }
 
+    var url = null;
     if(email_id != undefined) {
       var url = window.location.origin + window.location.pathname + '?ui=2&ik=' + api.tracker.ik + '&view=om&th=' + email_id;
+    }
+    return url;
+  }
+
+  api.get.email_source = function(email_id) {
+
+    var url = helper.get.email_source_pre(email_id);
+    if (url != null)
+    {
       return api.tools.make_request(url);
     }
     return '';
   }
 
-
   api.get.email_source_async = function(email_id, callback) {
 
-    if(api.check.is_inside_email() && email_id == undefined) {
-      email_id = api.get.email_id();
-    }
-        
-    if(email_id != undefined) {
-      var url = window.location.origin + window.location.pathname + '?ui=2&ik=' + api.tracker.ik + '&view=om&th=' + email_id;
+    var url = helper.get.email_source_pre(email_id);
+    if (url != null)
+    {
       api.tools.make_request_async(url, 'GET', callback);
     }
+    else
+      callback('');
   }
 
 
