@@ -1370,6 +1370,19 @@ var Gmail = function(localJQuery) {
   }
 
 
+  api.tools.make_request_async = function (link, method, callback) {
+
+    var method  = (typeof method == undefined || typeof method == null) ? 'GET' : method;
+    $.ajax({ type: method, url: encodeURI(link), async:true, dataType: 'text' })
+      .done(function(data, textStatus, jqxhr) {
+        callback(jqxhr.responseText);
+      })
+      .fail(function(jqxhr, textStatus, errorThrown) {
+        console.error('Request Failed', errorThrown);
+      });
+  }
+
+
   api.tools.parse_view_data = function(view_data) {
     var parsed = [];
     var data = [];
@@ -1447,6 +1460,57 @@ var Gmail = function(localJQuery) {
 
     return emails;
   }
+
+
+  api.get.visible_emails_async = function(callback) {
+    var page = api.get.current_page();
+    var url = window.location.origin + window.location.pathname + '?ui=2&ik=' + api.tracker.ik+'&rid=' + api.tracker.rid + '&view=tl&start=0&num=120&rt=1';
+    
+    if(page.indexOf('label/') == 0) {
+      url += '&cat=' + page.split('/')[1] +'&search=cat';
+    } else if(page.indexOf('category/') == 0) {
+      if(page.indexOf('forums') != -1) {
+        cat_label = 'group';
+      } else if(page.indexOf('updates') != -1) {
+        cat_label = 'notification';
+      } else if(page.indexOf('promotion') != -1) {
+        cat_label = 'promo';
+      } else if(page.indexOf('social') != -1) {
+        cat_label = 'social';
+      }
+      url += '&cat=^smartlabel_' + cat_label +'&search=category';
+    } else if(page.indexOf('search/') == 0) {
+      url += '&qs=true&q=' + page.split('/')[1] +'&search=query';
+    } else if(page == 'inbox'){
+      url += '&search=' + 'mbox';
+    }else {
+      url += '&search=' + page;
+    }
+    
+    var postprocess = function (get_data) {
+      get_data = get_data.substring(get_data.indexOf('['), get_data.length);
+      get_data = 'api.tracker.view_data = ' + get_data;
+      
+      eval(get_data)
+      
+      var emails = [];
+      
+      for(i in api.tracker.view_data) {
+        if (typeof(api.tracker.view_data[i]) === 'function') {
+          continue;
+        }
+        
+        var cdata = api.tools.parse_view_data(api.tracker.view_data[i]);
+        if(cdata.length > 0) {
+          $.merge(emails, cdata);
+        }
+      }
+      callback(emails);
+    }
+
+    api.tools.make_request_async(url, 'GET', postprocess);
+  }
+
 
   api.get.selected_emails_data = function(){
     var selected_emails = [];
@@ -1644,6 +1708,30 @@ var Gmail = function(localJQuery) {
     return {};
   }
 
+
+  api.get.email_data_async = function(email_id, callback) {
+    
+    if(api.check.is_inside_email() && email_id == undefined) {
+      email_id = api.get.email_id();
+    }
+    
+    if(email_id != undefined) {
+      var url = window.location.origin + window.location.pathname + '?ui=2&ik=' + api.tracker.ik + '&rid=' + api.tracker.rid + '&view=cv&th=' + email_id + '&msgs=&mb=0&rt=1&search=mbox';
+      
+      var postprocess = function (get_data) {
+
+        get_data = get_data.substring(get_data.indexOf('['), get_data.length);
+        get_data = 'var cdata = ' + get_data;
+        eval(get_data);
+        api.tracker.email_data = cdata[0];
+        callback(api.tools.parse_email_data(api.tracker.email_data));
+      };
+
+      api.tools.make_request_async(url, 'GET', postprocess);
+    }
+  }
+
+
   api.get.email_source = function(email_id) {
     if(api.check.is_inside_email() && email_id == undefined) {
       email_id = api.get.email_id();
@@ -1655,6 +1743,20 @@ var Gmail = function(localJQuery) {
     }
     return '';
   }
+
+
+  api.get.email_source_async = function(email_id, callback) {
+
+    if(api.check.is_inside_email() && email_id == undefined) {
+      email_id = api.get.email_id();
+    }
+        
+    if(email_id != undefined) {
+      var url = window.location.origin + window.location.pathname + '?ui=2&ik=' + api.tracker.ik + '&view=om&th=' + email_id;
+      api.tools.make_request_async(url, 'GET', callback);
+    }
+  }
+
 
   api.get.displayed_email_data = function() {
     var email_data = api.get.email_data();
