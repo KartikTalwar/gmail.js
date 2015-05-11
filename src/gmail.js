@@ -773,12 +773,12 @@ var Gmail = function(localJQuery) {
           dataLength = response.substring(0, response.indexOf('[')).replace(/\s/g, '');
           if (!dataLength) {dataLength = response.length;}
 
-          // get raw data
           endIndex = (parseInt(dataLength, 10) - 2) + response.indexOf('[');
           data = response.substring(response.indexOf('['), endIndex);
 
-          // eval raw data
-          realData = eval(data);
+          var get_data = new Function('"use strict"; return ' + data);
+          realData = get_data();
+
           parsedResponse.push(realData);
 
           // prepare response for next loop
@@ -1428,9 +1428,10 @@ var Gmail = function(localJQuery) {
 
     var get_data = api.tools.make_request(url);
         get_data = get_data.substring(get_data.indexOf('['), get_data.length);
-        get_data = 'api.tracker.view_data = ' + get_data;
+        get_data = '"use strict"; return ' + get_data;
+        get_data = new Function(get_data);
 
-    eval(get_data)
+    api.tracker.view_data = get_data();
 
     var emails = [];
 
@@ -1632,9 +1633,10 @@ var Gmail = function(localJQuery) {
       var url = window.location.origin + window.location.pathname + '?ui=2&ik=' + api.tracker.ik + '&rid=' + api.tracker.rid + '&view=cv&th=' + email_id + '&msgs=&mb=0&rt=1&search=mbox';
       var get_data = api.tools.make_request(url);
           get_data = get_data.substring(get_data.indexOf('['), get_data.length);
-          get_data = 'var cdata = ' + get_data;
+          get_data = '"use strict"; return ' + get_data;
+          get_data = new Function(get_data);
 
-      eval(get_data);
+      cdata = get_data();
 
       api.tracker.email_data = cdata[0];
 
