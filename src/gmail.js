@@ -1362,7 +1362,7 @@ var Gmail = function(localJQuery) {
 
 
   api.tools.make_request = function (link, method) {
-
+    link = decodeURIComponent(link);
     var method  = (typeof method == undefined || typeof method == null) ? 'GET' : method;
     var request = $.ajax({ type: method, url: encodeURI(link), async:false });
 
