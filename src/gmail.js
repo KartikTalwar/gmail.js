@@ -5,10 +5,11 @@ var Gmail = function(localJQuery) {
     other extensions that use $ for other purposes.
   */
   var $;
-  if (typeof localJQuery !== "undefined")
+  if (typeof localJQuery !== "undefined") {
     $ = localJQuery;
-  else if (typeof jQuery !== "undefined")
+  } else if (typeof jQuery !== "undefined") {
     $ = jQuery;
+  }
   // else leave $ undefined, which may be fine for some purposes.
 
   var api = {
@@ -19,9 +20,9 @@ var Gmail = function(localJQuery) {
               tracker : {},
               dom : {},
               chat : {},
-              compose : {}
+              compose : {},
+              helper : {get: {}}
             };
-
 
   api.version           = "0.4";
   api.tracker.globals   = GLOBALS;
@@ -248,6 +249,7 @@ var Gmail = function(localJQuery) {
     return [];
   }
 
+
   api.get.compose_ids = function() {
       var ret = [];
       var dom = $(".AD [name=draft]");
@@ -258,6 +260,7 @@ var Gmail = function(localJQuery) {
       };
       return ret;
   }
+
 
   api.get.email_id = function() {
     var hash = null;
@@ -1370,6 +1373,19 @@ var Gmail = function(localJQuery) {
   }
 
 
+  api.tools.make_request_async = function (link, method, callback) {
+    var method  = (typeof method == undefined || typeof method == null) ? 'GET' : method;
+
+    $.ajax({ type: method, url: encodeURI(link), async:true, dataType: 'text' })
+      .done(function(data, textStatus, jqxhr) {
+        callback(jqxhr.responseText);
+      })
+      .fail(function(jqxhr, textStatus, errorThrown) {
+        console.error('Request Failed', errorThrown);
+      });
+  }
+
+
   api.tools.parse_view_data = function(view_data) {
     var parsed = [];
     var data = [];
@@ -1401,10 +1417,10 @@ var Gmail = function(localJQuery) {
   }
 
 
-  api.get.visible_emails = function() {
+  api.helper.get.visible_emails_pre = function() {
     var page = api.get.current_page();
     var url = window.location.origin + window.location.pathname + '?ui=2&ik=' + api.tracker.ik+'&rid=' + api.tracker.rid + '&view=tl&start=0&num=120&rt=1';
-
+    
     if(page.indexOf('label/') == 0) {
       url += '&cat=' + page.split('/')[1] +'&search=cat';
     } else if(page.indexOf('category/') == 0) {
@@ -1425,29 +1441,50 @@ var Gmail = function(localJQuery) {
     }else {
       url += '&search=' + page;
     }
+    return url;
+  }
 
-    var get_data = api.tools.make_request(url);
-        get_data = get_data.substring(get_data.indexOf('['), get_data.length);
+
+  api.helper.get.visible_emails_post = function(get_data) {
+    var emails = [];
+
+    var get_data = get_data.substring(get_data.indexOf('['), get_data.length);
         get_data = '"use strict"; return ' + get_data;
         get_data = new Function(get_data);
 
     api.tracker.view_data = get_data();
 
-    var emails = [];
-
     for(i in api.tracker.view_data) {
       if (typeof(api.tracker.view_data[i]) === 'function') {
         continue;
       }
-
+      
       var cdata = api.tools.parse_view_data(api.tracker.view_data[i]);
       if(cdata.length > 0) {
         $.merge(emails, cdata);
       }
     }
+    return emails;
+  }
+
+
+  api.get.visible_emails = function() {
+    var url = api.helper.get.visible_emails_pre();
+    var get_data = api.tools.make_request(url);
+    var emails = api.helper.get.visible_emails_post(get_data);
 
     return emails;
   }
+
+
+  api.get.visible_emails_async = function(callback) {
+    var url = api.helper.get.visible_emails_pre();
+    api.tools.make_request_async(url, 'GET', function(get_data) {
+      var emails = api.helper.get.visible_emails_post(get_data);
+      callback(emails);
+    });
+  }
+
 
   api.get.selected_emails_data = function(){
     var selected_emails = [];
@@ -1623,40 +1660,89 @@ var Gmail = function(localJQuery) {
   }
 
 
-  api.get.email_data = function(email_id) {
-
+  api.helper.get.email_data_pre = function(email_id) {
     if(api.check.is_inside_email() && email_id == undefined) {
       email_id = api.get.email_id();
     }
 
+    var url = null;
     if(email_id != undefined) {
-      var url = window.location.origin + window.location.pathname + '?ui=2&ik=' + api.tracker.ik + '&rid=' + api.tracker.rid + '&view=cv&th=' + email_id + '&msgs=&mb=0&rt=1&search=mbox';
+      url = window.location.origin + window.location.pathname + '?ui=2&ik=' + api.tracker.ik + '&rid=' + api.tracker.rid + '&view=cv&th=' + email_id + '&msgs=&mb=0&rt=1&search=mbox';
+    }
+    return url;
+  }
+
+
+  api.helper.get.email_data_post = function(get_data) {
+    var get_data = get_data.substring(get_data.indexOf('['), get_data.length);
+        get_data = '"use strict"; return ' + get_data;
+        get_data = new Function(get_data);
+
+    cdata = get_data();
+
+    api.tracker.email_data = cdata[0];
+    return api.tools.parse_email_data(api.tracker.email_data);
+  }
+
+
+  api.get.email_data = function(email_id) {
+    var url = api.helper.get.email_data_pre(email_id);
+
+    if (url != null) {
       var get_data = api.tools.make_request(url);
-          get_data = get_data.substring(get_data.indexOf('['), get_data.length);
-          get_data = '"use strict"; return ' + get_data;
-          get_data = new Function(get_data);
-
-      cdata = get_data();
-
-      api.tracker.email_data = cdata[0];
-
-      return api.tools.parse_email_data(api.tracker.email_data);
+      var email_data = api.helper.get.email_data_post(get_data);
+      return email_data;
     }
 
     return {};
   }
 
-  api.get.email_source = function(email_id) {
+
+  api.get.email_data_async = function(email_id, callback) {
+    var url = api.helper.get.email_data_pre(email_id);
+    if (url != null) {
+      api.tools.make_request_async(url, 'GET', function (get_data) {
+        var email_data = api.helper.get.email_data_post(get_data);
+        callback(email_data);
+      });
+    } else {
+      callback({});
+    }
+  }
+
+
+  api.helper.get.email_source_pre = function(email_id) {
     if(api.check.is_inside_email() && email_id == undefined) {
       email_id = api.get.email_id();
     }
 
+    var url = null;
     if(email_id != undefined) {
       var url = window.location.origin + window.location.pathname + '?ui=2&ik=' + api.tracker.ik + '&view=om&th=' + email_id;
+    }
+
+    return url;
+  }
+
+
+  api.get.email_source = function(email_id) {
+    var url = api.helper.get.email_source_pre(email_id);
+    if (url != null) {
       return api.tools.make_request(url);
     }
     return '';
   }
+
+
+  api.get.email_source_async = function(email_id, callback) {
+    var url = api.helper.get.email_source_pre(email_id);
+    if (url != null) {
+      api.tools.make_request_async(url, 'GET', callback);
+    } else {
+      callback('');
+    }
+  }
+
 
   api.get.displayed_email_data = function() {
     var email_data = api.get.email_data();
