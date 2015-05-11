@@ -63,6 +63,7 @@ gmail.get.user_email();
 
 - [gmail.get**.user_email()**](#gmailgetuser_email)
 - [gmail.get**.visible_emails()**](#gmailgetvisible_emails)
+- [gmail.get**.visible_emails_async(callback)**](#gmailgetvisible_emailscallback)
 - [gmail.get**.selected_emails_data()**](#gmailgetselected_emails_data)
 - [gmail.get**.current_page()**](#gmailgetcurrent_page)
 - [gmail.get**.email_id()**](#gmailgetemail_id)
@@ -70,8 +71,10 @@ gmail.get.user_email();
 - [gmail.get**.email_subject()**](#gmailgetemail_subject)
 - [gmail.get**.compose_ids()**](#gmailgetcompose_ids)
 - [gmail.get**.email_data(email_id=undefined)**](#gmailgetemail_dataemail_idundefined)
+- [gmail.get**.email_data_async(email_id=undefined, callback)**](#gmailgetemail_dataemail_idundefined-callback)
 - [gmail.get**.displayed_email_data()**](#gmailgetdisplayed_email_data)
 - [gmail.get**.email_source(email_id=undefined)**](#gmailgetemail_sourceemail_idundefined)
+- [gmail.get**.email_source_async(email_id=undefined, callback)**](#gmailgetemail_sourceemail_idundefined-callback)
 - [gmail.get**.search_query()**](#gmailgetsearch_query)
 - [gmail.get**.unread_emails()**](#gmailgetunread_emails)
  - [gmail.get**.unread_inbox_emails()**](#gmailgetunread_emails)
@@ -208,6 +211,7 @@ These are some helper functions that the rest of the methods use. See source for
 - gmail.tools**.extract_email_address(str)**
 - gmail.tools**.extract_name(str)**
 - gmail.tools**.make_request()**
+- gmail.tools**.make_request_async()**
 - gmail.tools**.sleep(ms)**
 - gmail.tools**.multitry(ms_delay, tries, func, bool_success_check)**
 - gmail.tools**.i18n(label)**
@@ -247,6 +251,10 @@ Returns a list of emails from the server that are currently visible in the inbox
   "attachment": "",
   "labels": ["^all", "^i", "^smartlabel_social", "^unsub"]}]
 ```
+
+#### gmail.get.visible_emails(async)
+
+Does the same as above but accepts a callback function
 
 #### gmail.get.selected_emails_data()
 
@@ -352,6 +360,12 @@ the data for the specified id is returned instead of the email currently visible
 }
 ```
 
+#### gmail.get.email_data(email_id=undefined, callback)
+
+
+Does the same as above but accepts a callback function
+
+
 #### gmail.get.displayed_email_data()
 
 Returns an object representation of the emails that are being displayed.
@@ -393,6 +407,12 @@ Returns an object representation of the emails that are being displayed.
 
 Retrieves raw MIME message source from the gmail server for the specified email id. It takes the optional email_id parameter where
 the data for the specified id is returned instead of the email currently visible in the dom
+
+
+#### gmail.get.email_source(email_id=undefined, callback)
+
+Does the same as above but accepts a callback function
+
 
 #### gmail.get.user_email()
 
