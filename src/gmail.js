@@ -1506,7 +1506,7 @@ var Gmail = function(localJQuery) {
   }
 
   api.get.current_page = function() {
-    var hash  = window.location.hash.split('#').pop();
+    var hash  = window.location.hash.split('#').pop().split('?').shift();
     var pages = ['sent', 'inbox', 'starred', 'drafts', 'imp', 'chats', 'all', 'spam', 'trash', 'settings'];
 
     var page = null;
