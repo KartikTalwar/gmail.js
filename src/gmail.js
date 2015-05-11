@@ -696,7 +696,7 @@ var Gmail = function(localJQuery) {
 
     }
 
-    if(typeof params.url._reqid == 'string' && typeof params.url.th == 'string') {
+    if(typeof params.url._reqid == 'string' && params.url.view === 'tl' && params.url.auto != undefined) {
       response = [params.url.th, params.url, params.body];
       if(api.observe.bound('new_email')) {
         triggered.new_email = response;
