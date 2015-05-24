@@ -1,3 +1,4 @@
+
 var Gmail = function(localJQuery) {
 
   /*
@@ -1418,12 +1419,16 @@ var Gmail = function(localJQuery) {
 
 
   api.helper.get.visible_emails_pre = function() {
-    var page = api.get.current_page();
-    var url = window.location.origin + window.location.pathname + '?ui=2&ik=' + api.tracker.ik+'&rid=' + api.tracker.rid + '&view=tl&start=0&num=120&rt=1';
-    
+    var page = api.get.current_page(),
+      limit = api.get.emails_per_page(),
+      page_number = api.get.current_page_number(),
+      start = page_number * limit;
+    var url = window.location.origin + window.location.pathname + '?ui=2&ik=' + api.tracker.ik+'&rid=' + api.tracker.rid + '&view=tl&start=' + (start) + '&num=' + (limit) + '&rt=1';
+
     if(page.indexOf('label/') == 0) {
       url += '&cat=' + page.split('/')[1] +'&search=cat';
     } else if(page.indexOf('category/') == 0) {
+      var cat_label;
       if(page.indexOf('forums') != -1) {
         cat_label = 'group';
       } else if(page.indexOf('updates') != -1) {
@@ -1505,23 +1510,68 @@ var Gmail = function(localJQuery) {
     return selected_emails;
   }
 
+  /*
+   * @case   https://mail.google.com/mail/u/0/#inbox
+   * @case   https://mail.google.com/mail/u/0/#inbox?compose=14c0f011dffd86bc
+   * @case   https://mail.google.com/mail/u/0/#inbox/p2
+   * @case   https://mail.google.com/mail/u/0/#inbox/p2?compose=14c0f011dffd86bc
+   * @case   https://mail.google.com/mail/u/0/#label/name
+   * @case   https://mail.google.com/mail/u/0/#label/name?compose=14c0f011dffd86bc
+   * @case   https://mail.google.com/mail/u/0/#label/name/p2
+   * @case   https://mail.google.com/mail/u/0/#label/name/p2?compose=14c0f011dffd86bc
+   */
   api.get.current_page = function() {
-    var hash  = window.location.hash.split('#').pop().split('?').shift();
-    var pages = ['sent', 'inbox', 'starred', 'drafts', 'imp', 'chats', 'all', 'spam', 'trash', 'settings'];
-
-    var page = null;
-
-    if($.inArray(hash, pages) > -1) {
-      page = hash;
+    var pages = ['sent', 'inbox', 'starred', 'drafts', 'imp', 'chats', 'all', 'spam', 'trash'];
+    var expression = '^#(' + (pages.join('|')) + ')';
+    var check = (new RegExp(expression));
+    var pieces;
+    if (check.test(location.hash) === true) {
+      if (location.hash.split('/').length === 1) {
+        pieces = check.exec(location.hash);
+        return pieces[1];
+      }
+      if (/p[0-9]+/.test(location.hash.split('/')[1]) === true) {
+        return location.hash.split('#').pop().split('/').shift();
+      }
+      return null;
     }
+    expression = '^#(search|label|category)\/.+\/p([0-9]+)';
+    check = (new RegExp(expression));
+    if (check.test(location.hash)) {// paged
+      pieces = check.exec(location.hash);
+      return pieces[0].split('#').pop().replace(/\/p[0-9]{1}.*/, '');
+    }
+    if (location.hash.split('/').length === 2) {
+      return location.hash.split('#').pop().split('?').shift();
+    }
+    return null;
+  }
 
-    if(hash.indexOf('label/') == 0 || hash.indexOf('category/') == 0 || hash.indexOf('search/') == 0 || hash.indexOf('settings/') == 0) {
-      if(hash.split('/').length < 3) {
-        page = hash;
+  /*
+   * @note could not just do a /p([0-9]+)/ search, since labels and search terms
+   *       can start with the letter p
+   */
+  api.get.current_page_number = function() {
+    var page_number = 0;
+    var expression = '^#(search|label|category)\/.+\/p([0-9]+)';
+    var check = (new RegExp(expression));
+    if (check.test(location.hash)) {
+      var pieces = check.exec(location.hash);
+      page_number = parseInt(pieces.pop()) - 1;
+    } else {
+      var pages = ['sent', 'inbox', 'starred', 'drafts', 'imp', 'chats', 'all', 'spam', 'trash'];
+      expression = '^#(' + (pages.join('|')) + ')\/p([0-9]+)';
+      check = (new RegExp(expression));
+      if (check.test(location.hash)) {
+        pieces = check.exec(location.hash);
+        page_number = parseInt(pieces.pop()) - 1;
       }
     }
+    return page_number;
+  }
 
-    return page;
+  api.get.emails_per_page = function() {
+    return api.tracker.globals[8];
   }
 
 
@@ -2388,6 +2438,20 @@ var Gmail = function(localJQuery) {
     }
     return false;
   }
+
+  /**
+   * Track the change of emails per page
+   * 
+   */
+  api.observe.on(
+    'http_event',
+    function(obj) {
+      if (obj && obj.body_params && obj.body_params.p_ix_nt) {
+        GLOBALS[8] = parseInt(obj.body_params.p_ix_nt);
+        api.tracker.globals[8] = parseInt(obj.body_params.p_ix_nt);
+      }
+    }
+  );
 
   return api;
 }
