@@ -2068,7 +2068,6 @@ var Gmail = function(localJQuery) {
   /**
     A compose object. Represents a compose window in the DOM and provides a bunch of methods and properties to access & interact with the window
     Expects a jQuery DOM element for the compose div
-    TODO: Make to, cc, cc etc functions receive an argument to set these fields
    */
   api.dom.compose = function(element) {
     element = $(element);
@@ -2117,7 +2116,6 @@ var Gmail = function(localJQuery) {
 
     /**
       Retrieve the current 'to' recipients
-      TODO: ability to set
      */
     to: function(to) {
       return this.dom('to').val(to);
@@ -2125,7 +2123,6 @@ var Gmail = function(localJQuery) {
 
     /**
       Retrieve the current 'cc' recipients
-      TODO: ability to set
      */
     cc: function(cc) {
       return this.dom('cc').val(cc);
@@ -2133,7 +2130,6 @@ var Gmail = function(localJQuery) {
 
     /**
       Retrieve the current 'bcc' recipients
-      TODO: ability to set
      */
     bcc: function(bcc) {
       return this.dom('bcc').val(bcc);
