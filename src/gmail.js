@@ -1162,7 +1162,7 @@ var Gmail = function(localJQuery) {
             // reset matches so no future delayed instances of this function execute
             api.tracker.recipient_matches = [];
           },100);
-        },
+        }
       },
 
       // this will fire if a new compose, reply or forward is created. it won't fire if a reply changes to a forward & vice versa
@@ -1184,7 +1184,7 @@ var Gmail = function(localJQuery) {
           }
           callback(match,type);
         }
-      },
+      }
     };
 
     // support extending with custom observers
@@ -2120,23 +2120,23 @@ var Gmail = function(localJQuery) {
       TODO: ability to set
      */
     to: function(to) {
-      return this.recipients( { type: 'to', flat: true } );
+      return this.dom('to').val(to);
     },
 
     /**
       Retrieve the current 'cc' recipients
       TODO: ability to set
      */
-    cc: function() {
-      return this.recipients( { type: 'cc', flat: true } );
+    cc: function(cc) {
+      return this.dom('cc').val(cc);
     },
 
     /**
       Retrieve the current 'bcc' recipients
       TODO: ability to set
      */
-    bcc: function() {
-      return this.recipients( { type: 'bcc', flat: true } );
+    bcc: function(bcc) {
+      return this.dom('bcc').val(bcc);
     },
 
     /**
@@ -2173,13 +2173,16 @@ var Gmail = function(localJQuery) {
     dom: function(lookup) {
       if (!lookup) return this.$el;
       var config = {
+        to:'textarea[name=to]',
+        cc:'textarea[name=cc]',
+        bcc:'textarea[name=bcc]',
         id: 'input[name=composeid]',
         subject: 'input[name=subject]',
         subjectbox: 'input[name=subjectbox]',
         all_subjects: 'input[name=subjectbox], input[name=subject]',
         body: 'div[contenteditable=true]',
         reply: 'M9',
-        forward: 'M9',
+        forward: 'M9'
       };
       if(!config[lookup]) api.tools.error('Dom lookup failed. Unable to find config for \'' + lookup + '\'',config,lookup,config[lookup]);
       return this.$el.find(config[lookup]);
@@ -2329,7 +2332,7 @@ var Gmail = function(localJQuery) {
         // buttons
         reply_button: 'div[role=button].aaq',
         menu_button: 'div[role=button].aap',
-        details_button: 'div[role=button].ajz',
+        details_button: 'div[role=button].ajz'
       };
       if(!config[lookup]) api.tools.error('Dom lookup failed. Unable to find config for \'' + lookup + '\'');
       return this.$el.find(config[lookup]);
@@ -2357,7 +2360,7 @@ var Gmail = function(localJQuery) {
       var config = {
         opened_email: 'div.adn',
         subject: 'h2.hP',
-        labels: 'div.hN',
+        labels: 'div.hN'
       };
       if(!config[lookup]) api.tools.error('Dom lookup failed. Unable to find config for \'' + lookup + '\'');
       return this.$el.find(config[lookup]);
