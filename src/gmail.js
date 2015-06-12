@@ -1313,6 +1313,9 @@ var Gmail = function(localJQuery) {
     //console.log('insertion', target, target.className);
     if(!api.tracker.dom_observer_map) return;
 
+    // comments will not have this attribute, but still count as dom insertion, causing un-needed errors
+    if(!target.className) return;
+
     // loop through each of the inserted elements classes & check for a defined observer on that class
     var classes = target.className.trim().split(/\s+/);
     if(!classes.length) classes.push(''); // if no class, then check for anything observing nodes with no class
