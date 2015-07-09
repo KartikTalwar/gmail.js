@@ -333,7 +333,7 @@ var Gmail = function(localJQuery) {
 
     var check = true; // Flag possibly missing in convo view.
 
-    var array_with_flag = api.tracker.globals[17][5][1];
+    var array_with_flag = api.tracker.globals[17][4][1];
 
     for(var i=0; i<array_with_flag.length; i++) {
       var current = array_with_flag[i];
@@ -1813,7 +1813,7 @@ var Gmail = function(localJQuery) {
     var flag_name = 'bx_vmb';
     var flag_value = undefined;
 
-    var array_with_flag = api.tracker.globals[17][5][1];
+    var array_with_flag = api.tracker.globals[17][4][1];
 
     for (var i = 0; i < array_with_flag.length; i++) {
       var current = array_with_flag[i];
