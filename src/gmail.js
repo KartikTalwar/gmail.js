@@ -2076,12 +2076,18 @@ var Gmail = function(localJQuery) {
     return this;
   }
   $.extend(api.dom.compose.prototype, {
-
     /**
       Retrieve the compose id
      */
     id: function() {
       return this.dom('id').val();
+    },
+
+    /**
+      Retrieve the draft email id
+     */
+    email_id: function() {
+      return this.dom('draft').val();
     },
 
     /**
@@ -2173,6 +2179,7 @@ var Gmail = function(localJQuery) {
         cc:'textarea[name=cc]',
         bcc:'textarea[name=bcc]',
         id: 'input[name=composeid]',
+        draft: 'input[name=draft]',
         subject: 'input[name=subject]',
         subjectbox: 'input[name=subjectbox]',
         all_subjects: 'input[name=subjectbox], input[name=subject]',
