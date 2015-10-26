@@ -1930,6 +1930,8 @@ var Gmail = function(localJQuery) {
     button.click(onClickFunction);
 
     composeWindow.find('.gU.Up  > .J-J5-Ji').append(button);
+
+    return button;
   }
   
   api.tools.add_modal_window = function(title, content_html, onClickOk, onClickCancel, onClickClose) {
