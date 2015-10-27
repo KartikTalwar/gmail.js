@@ -25,9 +25,9 @@ var Gmail = function(localJQuery) {
             };
 
   api.version           = "0.4";
-  api.tracker.globals   = GLOBALS;
-  api.tracker.view_data = typeof VIEW_DATA !== 'undefined' ? VIEW_DATA : [];
-  api.tracker.ik        = api.tracker.globals[9];
+  api.tracker.globals   = typeof GLOBALS !== 'undefined' ? GLOBALS : ( typeof window.opener.GLOBALS !== 'undefined' ? window.opener.GLOBALS : [] );
+  api.tracker.view_data = typeof VIEW_DATA !== 'undefined' ? VIEW_DATA : ( typeof window.opener.VIEW_DATA !== 'undefined' ? window.opener.VIEW_DATA : [] );
+  api.tracker.ik        = api.tracker.globals[9] || "";
   api.tracker.hangouts  = undefined;
 
 
@@ -830,7 +830,7 @@ var Gmail = function(localJQuery) {
 
   api.tools.xhr_watcher = function () {
     if (!api.tracker.xhr_init) {
-      var win = top.document.getElementById("js_frame").contentDocument.defaultView;
+      var win = top.document.getElementById("js_frame") ? top.document.getElementById("js_frame").contentDocument.defaultView : window.opener.top.document.getElementById("js_frame").contentDocument.defaultView;
 
       api.tracker.xhr_init = true;
       api.tracker.xhr_open = win.XMLHttpRequest.prototype.open;
@@ -1930,6 +1930,8 @@ var Gmail = function(localJQuery) {
     button.click(onClickFunction);
 
     composeWindow.find('.gU.Up  > .J-J5-Ji').append(button);
+
+    return button;
   }
   
   api.tools.add_modal_window = function(title, content_html, onClickOk, onClickCancel, onClickClose) {
