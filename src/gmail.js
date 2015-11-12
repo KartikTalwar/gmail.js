@@ -1285,11 +1285,10 @@ var Gmail = function(localJQuery) {
             var removedNodes = mutation.removedNodes;
             for (var j = 0; j < removedNodes.length; j++) {
               var removedNode = removedNodes[j];
-              console.log(removedNode);
               if (removedNode.className == 'vR') {
                 var observer = api.tracker.dom_observer_map['vR'];
                 var handler = api.tracker.dom_observers.recipient_change.handler;
-                api.observe.trigger_dom(observer, $(removedNode), handler);
+                api.observe.trigger_dom(observer, $(mutation.target), handler);
               }
             }
           }
