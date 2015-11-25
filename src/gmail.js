@@ -1293,7 +1293,7 @@ var Gmail = function(localJQuery) {
             }
           }
         });
-        mutationObserver.observe($('div.dw')[0], {subtree: true, childList: true});
+        mutationObserver.observe(document.body, {subtree: true, childList: true});
 
       }
       api.observe.bind('dom',action,callback);
