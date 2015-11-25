@@ -2155,6 +2155,21 @@ var Gmail = function(localJQuery) {
       return subject ? subject : this.dom('subject').val();
     },
 
+    /** 
+      Get the from email
+      if user only has one email account they can send from, returns that email address
+      */
+    from: function() {
+      var el = this.dom('from');
+      if (el.length) {
+        var fromNameAndEmail = el.val();
+        if (fromNameAndEmail) {
+          return gmail.tools.extract_email_address(fromNameAndEmail);
+        }
+      }
+      return gmail.get.user_email();
+    },
+
     /**
       Get/Set the email body
      */
@@ -2187,7 +2202,8 @@ var Gmail = function(localJQuery) {
         all_subjects: 'input[name=subjectbox], input[name=subject]',
         body: 'div[contenteditable=true]',
         reply: 'M9',
-        forward: 'M9'
+        forward: 'M9',
+        from: 'input[name=from]'
       };
       if(!config[lookup]) api.tools.error('Dom lookup failed. Unable to find config for \'' + lookup + '\'',config,lookup,config[lookup]);
       return this.$el.find(config[lookup]);
