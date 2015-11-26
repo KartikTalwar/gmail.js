@@ -1277,6 +1277,24 @@ var Gmail = function(localJQuery) {
         $(window.document).bind('DOMNodeInserted', function(e) {
           api.tools.insertion_observer(e.target, api.tracker.dom_observers, api.tracker.dom_observer_map);
         });
+
+        // recipient_change also needs to listen to removals
+        var mutationObserver = new MutationObserver(function(mutations) {
+          for (var i = 0; i < mutations.length; i++) {
+            var mutation = mutations[i];
+            var removedNodes = mutation.removedNodes;
+            for (var j = 0; j < removedNodes.length; j++) {
+              var removedNode = removedNodes[j];
+              if (removedNode.className == 'vR') {
+                var observer = api.tracker.dom_observer_map['vR'];
+                var handler = api.tracker.dom_observers.recipient_change.handler;
+                api.observe.trigger_dom(observer, $(mutation.target), handler);
+              }
+            }
+          }
+        });
+        mutationObserver.observe(document.body, {subtree: true, childList: true});
+
       }
       api.observe.bind('dom',action,callback);
       // console.log(api.tracker.observing_dom,'dom_watchdog is now:',api.tracker.dom_watchdog);
