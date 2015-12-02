@@ -1524,19 +1524,13 @@ var Gmail = function(localJQuery) {
   }
 
   api.get.current_page = function() {
-    var hash  = window.location.hash.split('#').pop().split('?').shift().split("/").pop();
-    var pages = ['sent', 'inbox', 'starred', 'drafts', 'imp', 'chats', 'all', 'spam', 'trash', 'settings'];
+    var hash  = window.location.hash.split('#').pop().split('?').shift().split("/") || [null];
+    var pages = ['sent', 'inbox', 'starred', 'drafts', 'imp', 'chats', 'all', 'spam', 'trash', 'settings', 'label', 'category', 'circle'];
 
     var page = null;
 
-    if($.inArray(hash, pages) > -1) {
-      page = hash;
-    }
-
-    if(hash.indexOf('label/') == 0 || hash.indexOf('category/') == 0 || hash.indexOf('search/') == 0 || hash.indexOf('settings/') == 0) {
-      if(hash.split('/').length < 3) {
-        page = hash;
-      }
+    if($.inArray(hash[0], pages) > -1) {
+      page = hash[0];
     }
 
     return page;
