@@ -439,8 +439,8 @@ Returns current user's file storage stats
 Returns what page of gmail the user is currently on. These are the possible responses
 
 ```js
-['sent', 'inbox', 'starred', 'drafts', 'imp', 'chats', 'all', 'spam', 'trash', 'settings'] // pages
-null // inside email conversation
+['sent', 'inbox', 'starred', 'drafts', 'imp', 'chats', 'all', 'spam', 'trash', 'circle'] // pages
+"email" // inside email conversation
 "/search/[.+]" // inside search view
 "/label/[.+]" // inside label view
 "/category/[.+]" // inside category view
