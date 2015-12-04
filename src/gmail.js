@@ -1533,6 +1533,10 @@ var Gmail = function(localJQuery) {
       page = hash[0];
     }
 
+    if(page == 'inbox' && hash.length == 2) {
+      return 'email';
+    }
+
     return page;
   }
 
