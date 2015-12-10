@@ -46,7 +46,7 @@ var Gmail = function(localJQuery) {
     var data = api.tracker.globals[17][23];
     var users = [];
 
-    for(i in data[1]) {
+    for(var i in data[1]) {
       users.push({name : data[1][i][4], email : data[1][i][0]})
     }
 
