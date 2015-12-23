@@ -25,9 +25,9 @@ var Gmail = function(localJQuery) {
             };
 
   api.version           = "0.4";
-  api.tracker.globals   = GLOBALS;
-  api.tracker.view_data = typeof VIEW_DATA !== 'undefined' ? VIEW_DATA : [];
-  api.tracker.ik        = api.tracker.globals[9];
+  api.tracker.globals   = typeof GLOBALS !== 'undefined' ? GLOBALS : ( typeof window.opener.GLOBALS !== 'undefined' ? window.opener.GLOBALS : [] );
+  api.tracker.view_data = typeof VIEW_DATA !== 'undefined' ? VIEW_DATA : ( typeof window.opener.VIEW_DATA !== 'undefined' ? window.opener.VIEW_DATA : [] );
+  api.tracker.ik        = api.tracker.globals[9] || "";
   api.tracker.hangouts  = undefined;
 
 
@@ -46,7 +46,7 @@ var Gmail = function(localJQuery) {
     var data = api.tracker.globals[17][23];
     var users = [];
 
-    for(i in data[1]) {
+    for(var i in data[1]) {
       users.push({name : data[1][i][4], email : data[1][i][0]})
     }
 
@@ -830,7 +830,7 @@ var Gmail = function(localJQuery) {
 
   api.tools.xhr_watcher = function () {
     if (!api.tracker.xhr_init) {
-      var win = top.document.getElementById("js_frame").contentDocument.defaultView;
+      var win = top.document.getElementById("js_frame") ? top.document.getElementById("js_frame").contentDocument.defaultView : window.opener.top.document.getElementById("js_frame").contentDocument.defaultView;
 
       api.tracker.xhr_init = true;
       api.tracker.xhr_open = win.XMLHttpRequest.prototype.open;
@@ -1277,6 +1277,24 @@ var Gmail = function(localJQuery) {
         $(window.document).bind('DOMNodeInserted', function(e) {
           api.tools.insertion_observer(e.target, api.tracker.dom_observers, api.tracker.dom_observer_map);
         });
+
+        // recipient_change also needs to listen to removals
+        var mutationObserver = new MutationObserver(function(mutations) {
+          for (var i = 0; i < mutations.length; i++) {
+            var mutation = mutations[i];
+            var removedNodes = mutation.removedNodes;
+            for (var j = 0; j < removedNodes.length; j++) {
+              var removedNode = removedNodes[j];
+              if (removedNode.className == 'vR') {
+                var observer = api.tracker.dom_observer_map['vR'];
+                var handler = api.tracker.dom_observers.recipient_change.handler;
+                api.observe.trigger_dom(observer, $(mutation.target), handler);
+              }
+            }
+          }
+        });
+        mutationObserver.observe(document.body, {subtree: true, childList: true});
+
       }
       api.observe.bind('dom',action,callback);
       // console.log(api.tracker.observing_dom,'dom_watchdog is now:',api.tracker.dom_watchdog);
@@ -1314,7 +1332,8 @@ var Gmail = function(localJQuery) {
     if(!api.tracker.dom_observer_map) return;
 
     // loop through each of the inserted elements classes & check for a defined observer on that class
-    var classes = target.className.trim().split(/\s+/);
+    var className = target.className;
+    var classes = className ? className.trim().split(/\s+/) : [];
     if(!classes.length) classes.push(''); // if no class, then check for anything observing nodes with no class
     $.each(classes, function(idx, className) {
       var observer = dom_observer_map[className];
@@ -1506,19 +1525,18 @@ var Gmail = function(localJQuery) {
   }
 
   api.get.current_page = function() {
-    var hash  = window.location.hash.split('#').pop().split('?').shift().split("/").pop();
-    var pages = ['sent', 'inbox', 'starred', 'drafts', 'imp', 'chats', 'all', 'spam', 'trash', 'settings'];
+    var hash  = window.location.hash.split('#').pop().split('?').shift().split("/") || [null];
+    var pages = ['sent', 'inbox', 'starred', 'drafts', 'imp', 'chats', 'all', 'spam', 'trash',
+                 'settings', 'label', 'category', 'circle', 'search'];
 
     var page = null;
 
-    if($.inArray(hash, pages) > -1) {
-      page = hash;
+    if($.inArray(hash[0], pages) > -1) {
+      page = hash[0];
     }
 
-    if(hash.indexOf('label/') == 0 || hash.indexOf('category/') == 0 || hash.indexOf('search/') == 0 || hash.indexOf('settings/') == 0) {
-      if(hash.split('/').length < 3) {
-        page = hash;
-      }
+    if(page == 'inbox' && hash.length == 2) {
+      return 'email';
     }
 
     return page;
@@ -1930,6 +1948,8 @@ var Gmail = function(localJQuery) {
     button.click(onClickFunction);
 
     composeWindow.find('.gU.Up  > .J-J5-Ji').append(button);
+
+    return button;
   }
   
   api.tools.add_modal_window = function(title, content_html, onClickOk, onClickCancel, onClickClose) {
@@ -2153,6 +2173,21 @@ var Gmail = function(localJQuery) {
       return subject ? subject : this.dom('subject').val();
     },
 
+    /** 
+      Get the from email
+      if user only has one email account they can send from, returns that email address
+      */
+    from: function() {
+      var el = this.dom('from');
+      if (el.length) {
+        var fromNameAndEmail = el.val();
+        if (fromNameAndEmail) {
+          return gmail.tools.extract_email_address(fromNameAndEmail);
+        }
+      }
+      return gmail.get.user_email();
+    },
+
     /**
       Get/Set the email body
      */
@@ -2185,7 +2220,8 @@ var Gmail = function(localJQuery) {
         all_subjects: 'input[name=subjectbox], input[name=subject]',
         body: 'div[contenteditable=true]',
         reply: 'M9',
-        forward: 'M9'
+        forward: 'M9',
+        from: 'input[name=from]'
       };
       if(!config[lookup]) api.tools.error('Dom lookup failed. Unable to find config for \'' + lookup + '\'',config,lookup,config[lookup]);
       return this.$el.find(config[lookup]);
