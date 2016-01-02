@@ -62,6 +62,7 @@ gmail.get.user_email();
 
 
 - [gmail.get**.user_email()**](#gmailgetuser_email)
+- [gmail.get**.manager_email()**](#gmailgetmanager_email)
 - [gmail.get**.visible_emails()**](#gmailgetvisible_emails)
 - [gmail.get**.visible_emails_async(callback)**](#gmailgetvisible_emailscallback)
 - [gmail.get**.selected_emails_data()**](#gmailgetselected_emails_data)
@@ -417,6 +418,22 @@ Does the same as above but accepts a callback function
 #### gmail.get.user_email()
 
 Returns the current user's email address
+
+```js
+"california@gmail.com"
+```
+
+#### gmail.get.manager_email()
+
+Returns the email address of the user currently managing the account (if the inbox is used by the owner, this function returns the same value as [gmail.get**.user_email()**](#gmailgetuser_email))
+
+```js
+"california@gmail.com"
+```
+
+#### gmail.get.delegated_to_email()
+
+Returns the email address of the user the account is currently delegated to (if the inbox is used by the owner, this function returns null)
 
 ```js
 "california@gmail.com"
