@@ -203,7 +203,7 @@ var Gmail = function(localJQuery) {
 
 
   api.check.is_inside_email = function() {
-    if(api.get.current_page() != null && !api.check.is_preview_pane()) {
+    if(api.get.current_page() != 'email' && !api.check.is_preview_pane()) {
       return false;
     }
 
