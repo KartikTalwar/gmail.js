@@ -18,7 +18,6 @@
 
 ### Examples
 
-- **[Signal](https://trysignal.com)** - Edit your inbox!
 - **[Gmail Hacks](https://chrome.google.com/webstore/detail/gmail-hacks/aacloklpepaibhlikiakfcgjjappeppo)** by [@arpitnext](https://github.com/arpitnext) (*[Source](https://github.com/arpitnext/play_with_gmail.js)*)
 - **[Example to use gmail.js in firefox addon](https://github.com/rinkudas/gmail-firefox-addon-boilerplate)** - It provides basic functionality to inject gmail.js within gmail for using it in a Firefox addon.
 
