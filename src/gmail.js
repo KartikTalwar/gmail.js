@@ -2006,15 +2006,15 @@ var Gmail = function(localJQuery) {
     return button;
   }
 
-  api.tools.add_modal_window = function(title, content_html, onClickOk, onClickCancel, onClickClose) {
-    var remove = function() {
-      $('#gmailJsModalBackground').remove();
-      $('#gmailJsModalWindow').remove();
-    };
+  api.tools.remove_modal_window = function() {
+    $('#gmailJsModalBackground').remove();
+    $('#gmailJsModalWindow').remove();
+  }
 
+  api.tools.add_modal_window = function(title, content_html, onClickOk, onClickCancel, onClickClose) {
     // By default, clicking on cancel or close should clean up the modal window
-    onClickClose = onClickClose || remove;
-    onClickCancel = onClickCancel || remove;
+    onClickClose = onClickClose || api.tools.remove_modal_window;
+    onClickCancel = onClickCancel || api.tools.remove_modal_window;
 
     var background = $(document.createElement('div'));
     background.attr('id','gmailJsModalBackground');
