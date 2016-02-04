@@ -97,6 +97,7 @@ gmail.get.user_email();
 
 - [gmail.check**.is_thread()**](#gmailcheckis_thread)
 - [gmail.check**.is_inside_email()**](#gmailcheckis_inside_email)
+- [gmail.check**.is_plain_text()**](#gmailcheckis_plain_text)
 - [gmail.check**.is_preview_pane()**](#gmailcheckis_preview_pane)
 - [gmail.check**.is_multiple_inbox()**](#gmailcheckis_multiple_inbox)
 - [gmail.check**.is_horizontal_split()**](#gmailcheckis_horizontal_split)
@@ -592,6 +593,10 @@ Returns `True` if the current user is google apps user (email not ending in gmai
 #### gmail.check.is_inside_email()
 
 Returns `True` if you are currently inside an email conversation `False` otherwise
+
+#### gmail.check.is_plain_text()
+
+Returns `True` if compose is in plain text mode, `False` if in rich text mode
 
 #### gmail.check.is_priority_inbox()
 
