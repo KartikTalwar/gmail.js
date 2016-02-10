@@ -271,6 +271,19 @@ var Gmail = function(localJQuery) {
     return ids.length > 0;
   }
 
+  api.check.is_plain_text = function() {
+    var settings = GLOBALS[17][4][1];
+
+    for (var i = 0; i < settings.length; i++) {
+      var plain_text_setting = settings[i];
+      if (plain_text_setting[0] === 'bx_cm') {
+        return plain_text_setting[1] === '0';
+      }
+    }
+
+    // default to rich text mode, which is more common nowadays
+    return false;
+  }
 
   api.dom.email_contents = function() {
     var items = $('.ii.gt');
