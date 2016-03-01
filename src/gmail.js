@@ -2145,7 +2145,7 @@ var Gmail = function(localJQuery) {
   // retrieve queue of compose window dom objects
   // latest compose at the start of the queue (index 0)
   api.dom.composes = function() {
-    objs = [];
+    var objs = [];
     $('div.M9').each(function(idx, el) {
       objs.push( new api.dom.compose(el));
     });
