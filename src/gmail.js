@@ -1591,22 +1591,23 @@ var Gmail = function(localJQuery) {
     return selected_emails;
   }
 
+
   api.get.current_page = function() {
-    var hash  = window.location.hash.split('#').pop().split('?').shift().split("/") || [null];
+    var hash  = window.location.hash.split('#').pop().split('?').shift() || 'inbox';
     var pages = ['sent', 'inbox', 'starred', 'drafts', 'imp', 'chats', 'all', 'spam', 'trash',
                  'settings', 'label', 'category', 'circle', 'search'];
 
     var page = null;
 
-    if($.inArray(hash[0], pages) > -1) {
-      page = hash[0];
+    if($.inArray(hash, pages) > -1) {
+      page = hash;
     }
 
-    if(page == 'inbox' && hash.length == 2) {
-      return 'email';
+    if(hash.indexOf('inbox/') !== -1) {
+      page = 'email';
     }
 
-    return page;
+    return page || hash;
   }
 
 
