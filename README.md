@@ -16,6 +16,16 @@
 - Click on a method link to view more detailed docs
 - Create an issue/pull request for feedback, requests and fixes
 
+
+### Installation
+
+Since this is a chrome extension library, you can still use npm to get new changes
+
+```
+npm install gmail-js
+```
+
+
 ### Examples
 
 - **[Gmail Hacks](https://chrome.google.com/webstore/detail/gmail-hacks/aacloklpepaibhlikiakfcgjjappeppo)** by [@arpitnext](https://github.com/arpitnext) (*[Source](https://github.com/arpitnext/play_with_gmail.js)*)
