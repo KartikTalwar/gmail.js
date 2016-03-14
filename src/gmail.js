@@ -1,3 +1,9 @@
+///////////////////////////////////////////
+// gmail.js
+// Kartik Talwar
+// https://github.com/KartikTalwar/gmail.js
+//
+
 var Gmail = function(localJQuery) {
 
   /*
