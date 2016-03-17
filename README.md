@@ -16,11 +16,20 @@
 - Click on a method link to view more detailed docs
 - Create an issue/pull request for feedback, requests and fixes
 
+
+### Installation
+
+Since this is a chrome extension library, you can still use npm to get new changes
+
+```
+npm install gmail-js
+```
+
+
 ### Examples
 
-- **[Signal](https://trysignal.com)** - Edit your inbox!
 - **[Gmail Hacks](https://chrome.google.com/webstore/detail/gmail-hacks/aacloklpepaibhlikiakfcgjjappeppo)** by [@arpitnext](https://github.com/arpitnext) (*[Source](https://github.com/arpitnext/play_with_gmail.js)*)
-
+- **[Example to use gmail.js in firefox addon](https://github.com/rinkudas/gmail-firefox-addon-boilerplate)** - It provides basic functionality to inject gmail.js within gmail for using it in a Firefox addon.
 
 ## Content Security Policy
 
@@ -61,75 +70,81 @@ gmail.get.user_email();
 #### GET
 
 
-- [gmail.get **.user_email()**](#gmailgetuser_email)
-- [gmail.get **.visible_emails()**](#gmailgetvisible_emails)
-- [gmail.get **.selected_emails_data()**](#gmailgetselected_emails_data)
-- [gmail.get **.current_page()**](#gmailgetcurrent_page)
-- [gmail.get **.email_id()**](#gmailgetemail_id)
-- [gmail.get **.email_ids()**](#gmailgetemail_ids)
-- [gmail.get **.email_subject()**](#gmailgetemail_subject)
-- [gmail.get **.compose_ids()**](#gmailgetcompose_ids)
-- [gmail.get **.email_data(email_id=undefined)**](#gmailgetemail_dataemail_idundefined)
-- [gmail.get **.displayed_email_data()**](#gmailgetdisplayed_email_data)
-- [gmail.get **.email_source(email_id=undefined)**](#gmailgetemail_sourceemail_idundefined)
-- [gmail.get **.search_query()**](#gmailgetsearch_query)
-- [gmail.get **.unread_emails()**](#gmailgetunread_emails)
- - [gmail.get **.unread_inbox_emails()**](#gmailgetunread_emails)
-  - [gmail.get **.unread_draft_emails()**](#gmailgetunread_emails)
-  - [gmail.get **.unread_spam_emails()**](#gmailgetunread_emails)
-  - [gmail.get **.unread_forum_emails()**](#gmailgetunread_emails)
-  - [gmail.get **.unread_update_emails()**](#gmailgetunread_emails)
-  - [gmail.get **.unread_promotion_emails()**](#gmailgetunread_emails)
-  - [gmail.get **.unread_social_emails()**](#gmailgetunread_emails)
-- [gmail.get **.last_active()**](#gmailgetlast_active)
-- [gmail.get **.storage_info()**](#gmailgetstorage_info)
-- [gmail.get **.loggedin_accounts()**](#gmailgetloggedin_accounts)
-- [gmail.get **.beta()**](#gmailgetbeta)
-- [gmail.get **.localization()**](#gmailgetlocalization)
+- [gmail.get**.user_email()**](#gmailgetuser_email)
+- [gmail.get**.manager_email()**](#gmailgetmanager_email)
+- [gmail.get**.visible_emails()**](#gmailgetvisible_emails)
+- [gmail.get**.visible_emails_async(callback)**](#gmailgetvisible_emailscallback)
+- [gmail.get**.selected_emails_data()**](#gmailgetselected_emails_data)
+- [gmail.get**.current_page()**](#gmailgetcurrent_page)
+- [gmail.get**.email_id()**](#gmailgetemail_id)
+- [gmail.get**.email_ids()**](#gmailgetemail_ids)
+- [gmail.get**.email_subject()**](#gmailgetemail_subject)
+- [gmail.get**.compose_ids()**](#gmailgetcompose_ids)
+- [gmail.get**.email_data(email_id=undefined)**](#gmailgetemail_dataemail_idundefined)
+- [gmail.get**.email_data_async(email_id=undefined, callback)**](#gmailgetemail_dataemail_idundefined-callback)
+- [gmail.get**.displayed_email_data()**](#gmailgetdisplayed_email_data)
+- [gmail.get**.email_source(email_id=undefined)**](#gmailgetemail_sourceemail_idundefined)
+- [gmail.get**.email_source_async(email_id=undefined, callback)**](#gmailgetemail_sourceemail_idundefined-callback)
+- [gmail.get**.search_query()**](#gmailgetsearch_query)
+- [gmail.get**.unread_emails()**](#gmailgetunread_emails)
+ - [gmail.get**.unread_inbox_emails()**](#gmailgetunread_emails)
+  - [gmail.get**.unread_draft_emails()**](#gmailgetunread_emails)
+  - [gmail.get**.unread_spam_emails()**](#gmailgetunread_emails)
+  - [gmail.get**.unread_forum_emails()**](#gmailgetunread_emails)
+  - [gmail.get**.unread_update_emails()**](#gmailgetunread_emails)
+  - [gmail.get**.unread_promotion_emails()**](#gmailgetunread_emails)
+  - [gmail.get**.unread_social_emails()**](#gmailgetunread_emails)
+- [gmail.get**.last_active()**](#gmailgetlast_active)
+- [gmail.get**.storage_info()**](#gmailgetstorage_info)
+- [gmail.get**.loggedin_accounts()**](#gmailgetloggedin_accounts)
+- [gmail.get**.beta()**](#gmailgetbeta)
+- [gmail.get**.localization()**](#gmailgetlocalization)
 
 
 
 #### CHECK
 
 
-- [gmail.check **.is_thread()**](#gmailcheckis_thread)
-- [gmail.check **.is_inside_email()**](#gmailcheckis_inside_email)
-- [gmail.check **.is_preview_pane()**](#gmailcheckis_preview_pane)
-- [gmail.check **.is_multiple_inbox()**](#gmailcheckis_multiple_inbox)
-- [gmail.check **.is_horizontal_split()**](#gmailcheckis_horizontal_split)
-- [gmail.check **.are_shortcuts_enabled()**](#gmailcheckare_shortcuts_enabled)
-- [gmail.check **.is_vertical_split()**](#gmailcheckis_vertical_split)
-- [gmail.check **.is_tabbed_inbox()**](#gmailcheckis_tabbed_inbox)
-- [gmail.check **.is_right_side_chat()**](#gmailcheckis_right_side_chat)
-- [gmail.check **.is_conversation_view()**](#gmailcheckis_conversation_view)
-- [gmail.check **.is_google_apps_user()**](#gmailcheckis_google_apps_user)
-- [gmail.check **.is_priority_inbox()**](#gmailcheckis_priority_inbox)
-- [gmail.check **.is_rapportive_installed()**](#gmailcheckis_rapportive_installed)
-- [gmail.check **.is_streak_installed()**](#gmailcheckis_streak_installed)
-- [gmail.check **.is_anydo_installed()**](#gmailcheckis_anydo_installed)
-- [gmail.check **.is_boomerang_installed()**](#gmailcheckis_boomerang_installed)
-- [gmail.check **.is_xobni_installed()**](#gmailcheckis_xobni_installed)
-- [gmail.check **.is_signal_installed()**](#gmailcheckis_signal_installed)
+- [gmail.check**.is_thread()**](#gmailcheckis_thread)
+- [gmail.check**.is_inside_email()**](#gmailcheckis_inside_email)
+- [gmail.check**.is_plain_text()**](#gmailcheckis_plain_text)
+- [gmail.check**.is_preview_pane()**](#gmailcheckis_preview_pane)
+- [gmail.check**.is_multiple_inbox()**](#gmailcheckis_multiple_inbox)
+- [gmail.check**.is_horizontal_split()**](#gmailcheckis_horizontal_split)
+- [gmail.check**.are_shortcuts_enabled()**](#gmailcheckare_shortcuts_enabled)
+- [gmail.check**.is_vertical_split()**](#gmailcheckis_vertical_split)
+- [gmail.check**.is_tabbed_inbox()**](#gmailcheckis_tabbed_inbox)
+- [gmail.check**.is_right_side_chat()**](#gmailcheckis_right_side_chat)
+- [gmail.check**.is_conversation_view()**](#gmailcheckis_conversation_view)
+- [gmail.check**.is_google_apps_user()**](#gmailcheckis_google_apps_user)
+- [gmail.check**.is_priority_inbox()**](#gmailcheckis_priority_inbox)
+- [gmail.check**.is_rapportive_installed()**](#gmailcheckis_rapportive_installed)
+- [gmail.check**.is_streak_installed()**](#gmailcheckis_streak_installed)
+- [gmail.check**.is_anydo_installed()**](#gmailcheckis_anydo_installed)
+- [gmail.check**.is_boomerang_installed()**](#gmailcheckis_boomerang_installed)
+- [gmail.check**.is_xobni_installed()**](#gmailcheckis_xobni_installed)
+- [gmail.check**.is_signal_installed()**](#gmailcheckis_signal_installed)
 
 
 #### CHAT
 
 
-- [gmail.chat **.is_hangouts()**](#gmailchatis_hangouts)
+- [gmail.chat**.is_hangouts()**](#gmailchatis_hangouts)
 
 
 ### COMPOSE
 
-- [gmail.compose **.start_compose()**](#gmailcomposestart_compose)
+- [gmail.compose**.start_compose()**](#gmailcomposestart_compose)
 
 
 #### OBSERVE
 
-- [gmail.observe **.http_requests()**](#gmailobservehttp_requests)
-- [gmail.observe **.actions()**](#gmailobserveactions)
-- [gmail.observe **.register(action, class/args, parent)**](#gmailobserveregisteraction-classargs-parentnull) - registers a custom DOM observer
-- [gmail.observe **.off(action,type)**](#gmailobserveoffactionnulltypenull)
-- [gmail.observe **.on(action, callback)**](#gmailobserveonaction-callback)
+- [gmail.observe**.http_requests()**](#gmailobservehttp_requests)
+- [gmail.observe**.actions()**](#gmailobserveactions)
+- [gmail.observe**.register(action, class/args, parent)**](#gmailobserveregisteraction-classargs-parentnull) - registers a custom DOM observer
+- [gmail.observe**.off(action,type)**](#gmailobserveoffactionnulltypenull)
+- [gmail.observe**.on(action, callback)**](#gmailobserveonaction-callback)
+  - **`http_event`** - When gmail any CRUD operation happens on gmail
   - **`poll`** - When gmail automatically polls the server to check for new emails every few seconds
   - **`new_email`** - When a new email appears in the inbox
   - **`open_email`** - When an email is opened from the inbox view
@@ -167,67 +182,69 @@ gmail.get.user_email();
   - **`view_thread`** - When a conversation thread is opened to read
     - **`view_email`** - Sub-observer to `view_thread`. When an individual email is loaded within a conversation thread
     - **`load_email_menu`** - Sub-observer to `view_thread`. When the dropdown menu next to the reply button is clicked
-- [gmail.observe **.before(action, callback)**](#gmailobservebeforeaction-callback)
-- [gmail.observe **.after(action, callback)**](#gmailobserveafteraction-callback)
-- gmail.observe **.bind(type, action, callback)** - implements the on, after, before callbacks
-- gmail.observe **.bound(action, type)**
-- gmail.observe **.on_dom(action, callback)** - implements the DOM observers - called by `gmail.observe.on`
-- gmail.observe **.bound(action, type)** - checks if a specific action and/or type has any bound observers
-- gmail.observe **.trigger(type, events, xhr)** - fires any specified events for this type (on, after, before) with specified parameters
+- [gmail.observe**.before(action, callback)**](#gmailobservebeforeaction-callback)
+- [gmail.observe**.after(action, callback)**](#gmailobserveafteraction-callback)
+- gmail.observe**.bind(type, action, callback)** - implements the on, after, before callbacks
+- gmail.observe**.on_dom(action, callback)** - implements the DOM observers - called by `gmail.observe.on`
+- gmail.observe**.bound(action, type)** - checks if a specific action and/or type has any bound observers
+- gmail.observe**.trigger(type, events, xhr)** - fires any specified events for this type (on, after, before) with specified parameters
 
 #### DOM
 
 These methods return the DOM data itself
 
-- gmail.dom **.inboxes()**
-- gmail.dom **.inbox_content()**
-- gmail.dom **.email_subject()**
-- gmail.dom **.email_body()**
-- gmail.dom **.email_contents()**
-- gmail.dom **.get_left_sidebar_links()**
-- gmail.dom **.search_bar()**
-- gmail.dom **.toolbar()**
-- gmail.dom **.compose()** - compose dom object - receives the DOM element for the compose window and provides methods to interact
-- gmail.dom **.composes()** - retrives an array of `gmail.dom.compose` objects representing any open compose windows
-- [gmail.dom **.email()**](#gmaildomemailemail_el-or-email_id) - email dom object - receives an email DOM element or email id for an email currently being viewed. Abstracts interaction with that email.
-- [gmail.dom **.thread()**](#gmaildomthreadthread_el) - thread dom object - receives a conversation thread DOM element currently being viewed. Abstracts interaction with that thread.
+- gmail.dom**.inboxes()**
+- gmail.dom**.inbox_content()**
+- gmail.dom**.email_subject()**
+- gmail.dom**.email_body()**
+- gmail.dom**.email_contents()**
+- gmail.dom**.get_left_sidebar_links()**
+- gmail.dom**.search_bar()**
+- gmail.dom**.toolbar()**
+- gmail.dom**.compose()** - compose dom object - receives the DOM element for the compose window and provides methods to interact
+- gmail.dom**.composes()** - retrives an array of `gmail.dom.compose` objects representing any open compose windows
+- [gmail.dom**.email()**](#gmaildomemailemail_el-or-email_id) - email dom object - receives an email DOM element or email id for an email currently being viewed. Abstracts interaction with that email.
+- [gmail.dom**.thread()**](#gmaildomthreadthread_el) - thread dom object - receives a conversation thread DOM element currently being viewed. Abstracts interaction with that thread.
 
 #### TOOLS
 
 These are some helper functions that the rest of the methods use. See source for input params
 
-- gmail.tools **infobox(message, time)**
+- gmail.tools**.infobox(message, time)**
   + Adds the yellow info box on top of gmail with the given message
-- gmail.tools **rerender(callback)**
+- gmail.tools**.rerender(callback)**
   + Re-renders the UI using the available data.
-- gmail.tools **.xhr_watcher()**
-- gmail.tools **.parse_url()**
-- gmail.tools **.deparam()**
-- gmail.tools **.parse_view_data()**
-- gmail.tools **.parse_email_data()**
-- gmail.tools **.extract_email_address(str)**
-- gmail.tools **.extract_name(str)**
-- gmail.tools **.make_request()**
-- gmail.tools **.sleep(ms)**
-- gmail.tools **.multitry(ms_delay, tries, func, bool_success_check)**
-- gmail.tools **.i18n(label)**
-- [gmail.tools **add_toolbar_button(content_html, onclick_action, custom_style_class)**](#gmailtoolsadd_toolbar_buttoncontent_html-onclick_action-custom_style_class)
-- [gmail.tools **add_compose_button(compose_ref,content_html, onclick_action, custom_style_class)**](#gmailtoolsadd_toolbar_buttoncompose_ref-content_html-onclick_action-custom_style_class)
+- gmail.tools**.xhr_watcher()**
+- gmail.tools**.parse_url()**
+- gmail.tools**.deparam()**
+- gmail.tools**.parse_view_data()**
+- gmail.tools**.parse_email_data()**
+- gmail.tools**.extract_email_address(str)**
+- gmail.tools**.extract_name(str)**
+- gmail.tools**.make_request()**
+- gmail.tools**.make_request_async()**
+- gmail.tools**.sleep(ms)**
+- gmail.tools**.multitry(ms_delay, tries, func, bool_success_check)**
+- gmail.tools**.i18n(label)**
+- [gmail.tools**.add_toolbar_button(content_html, onclick_action, custom_style_class)**](#gmailtoolsadd_toolbar_buttoncontent_html-onclick_action-custom_style_class)
+- [gmail.tools**.add_compose_button(compose_ref, content_html, onclick_action, custom_style_class)**](#gmailtoolsadd_toolbar_buttoncompose_ref-content_html-onclick_action-custom_style_class)
+- [gmail.tools**.add_modal_window(title, content_html, onClickOk, onClickCancel, onClickClose)**](#gmailtoolsadd_modal_windowtitle-content_html-onClickOk-onClickCancel-onClickClose)
+- [gmail.tools**.remove_modal_window()**](#gmailtoolsremove_modal_window)
 
 #### TRACKER
 
 These are some of the variables that are tracked and kept in memory while the rest of the methods are in use.
 
 - gmail.version
-- gmail.tracker **.events**
-- gmail.tracker **.xhr_init**
-- gmail.tracker **.xhr_open**
-- gmail.tracker **.xhr_send**
-- gmail.tracker **.watchdog**
-- gmail.tracker **.view_data**
-- gmail.tracker **.email_data**
-- gmail.tracker **.ik**
-- gmail.tracker **.rid**
+- gmail.tracker**.events**
+- gmail.tracker**.xhr_init**
+- gmail.tracker**.xhr_open**
+- gmail.tracker**.xhr_send**
+- gmail.tracker**.watchdog**
+- gmail.tracker**.view_data**
+- gmail.tracker**.email_data**
+- gmail.tracker**.ik**
+- gmail.tracker**.rid**
 
 
 
@@ -246,6 +263,10 @@ Returns a list of emails from the server that are currently visible in the inbox
   "attachment": "",
   "labels": ["^all", "^i", "^smartlabel_social", "^unsub"]}]
 ```
+
+#### gmail.get.visible_emails(async)
+
+Does the same as above but accepts a callback function
 
 #### gmail.get.selected_emails_data()
 
@@ -267,6 +288,7 @@ The data does not come from the DOM
   "threads": {
     "141d44da39d6caf8": {
       "reply_to_id": "",
+      "reply_to": "replytome@gmail.com",
       "is_deleted" : false,
       "from": "California",
       "to" : ["hi@kartikt.com"],
@@ -294,6 +316,7 @@ The data does not come from the DOM
   "threads": {
     "141d44da39d6caf8": {
       "reply_to_id": "",
+      "reply_to": null,
       "is_deleted" : false,
       "from": "California",
       "to" : ["hi@kartikt.com"],
@@ -332,6 +355,7 @@ the data for the specified id is returned instead of the email currently visible
   "threads": {
     "141d44da39d6caf8": {
       "reply_to_id": "",
+      "reply_to": "replytome@gmail.com",
       "is_deleted" : false,
       "from": "California",
       "to" : ["hi@kartikt.com"],
@@ -347,6 +371,12 @@ the data for the specified id is returned instead of the email currently visible
   }
 }
 ```
+
+#### gmail.get.email_data(email_id=undefined, callback)
+
+
+Does the same as above but accepts a callback function
+
 
 #### gmail.get.displayed_email_data()
 
@@ -367,6 +397,7 @@ Returns an object representation of the emails that are being displayed.
   "threads": {
     "145881e7a8befff6": {
       "reply_to_id": "",
+      "reply_to": "replytome@gmail.com",
       "is_deleted" : false,
       "from": "California",
       "to" : ["hi@kartikt.com"],
@@ -389,9 +420,31 @@ Returns an object representation of the emails that are being displayed.
 Retrieves raw MIME message source from the gmail server for the specified email id. It takes the optional email_id parameter where
 the data for the specified id is returned instead of the email currently visible in the dom
 
+
+#### gmail.get.email_source(email_id=undefined, callback)
+
+Does the same as above but accepts a callback function
+
+
 #### gmail.get.user_email()
 
 Returns the current user's email address
+
+```js
+"california@gmail.com"
+```
+
+#### gmail.get.manager_email()
+
+Returns the email address of the user currently managing the account (if the inbox is used by the owner, this function returns the same value as [gmail.get**.user_email()**](#gmailgetuser_email))
+
+```js
+"california@gmail.com"
+```
+
+#### gmail.get.delegated_to_email()
+
+Returns the email address of the user the account is currently delegated to (if the inbox is used by the owner, this function returns null)
 
 ```js
 "california@gmail.com"
@@ -414,8 +467,8 @@ Returns current user's file storage stats
 Returns what page of gmail the user is currently on. These are the possible responses
 
 ```js
-['sent', 'inbox', 'starred', 'drafts', 'imp', 'chats', 'all', 'spam', 'trash', 'settings'] // pages
-null // inside email conversation
+['sent', 'inbox', 'starred', 'drafts', 'imp', 'chats', 'all', 'spam', 'trash', 'circle'] // pages
+"email" // inside email conversation
 "/search/[.+]" // inside search view
 "/label/[.+]" // inside label view
 "/category/[.+]" // inside category view
@@ -568,6 +621,10 @@ Returns `True` if the current user is google apps user (email not ending in gmai
 
 Returns `True` if you are currently inside an email conversation `False` otherwise
 
+#### gmail.check.is_plain_text()
+
+Returns `True` if compose is in plain text mode, `False` if in rich text mode
+
 #### gmail.check.is_priority_inbox()
 
 Returns `True` if priority inbox is enabled `False` otherwise
@@ -646,7 +703,7 @@ The items contain the sent requested parameterized data
 
 #### gmail.observe.actions()
 
-Similar to `gmail.obsere.http_requests()` this keeps track of the last 10 gmail actions (vs all http requests).
+Similar to `gmail.observe.http_requests()` this keeps track of the last 10 gmail actions (vs all http requests).
 Actions here correspond to things like clicking refres, archiving, deleting, starring etc.
 
 #### gmail.observe.on(action, callback)
@@ -661,9 +718,10 @@ Your callback will be fired directly after Gmail's XMLHttpRequest has been sent 
 
 **Available Actions**
 
+  - **http_event** - When gmail any CRUD operation happens on gmail
   - **poll** - When gmail automatically polls the server to check for new emails every few seconds
   - **new_email** - When a new email appears in the inbox
-  - **open_email** - When a new email appears in the inbox
+  - **open_email** - When an email is opened from the inbox view
   - **refresh** - When you click the refresh button
   - **unread** - When a conversation(s) is marked unread
   - **read** - When a conversation(s) is marked read
@@ -720,6 +778,10 @@ gmail.observe.on('view_email', function(obj) {
   - **load_email_menu** - When the dropdown menu next to the reply button is clicked
 
 ```js
+gmail.observe.on("http_event", function(params) {
+  console.log("url data:", params);
+})
+
 gmail.observe.on("unread", function(id, url, body, xhr) {
   console.log("id:", id, "url:", url, 'body', body, 'xhr', xhr);
 })
@@ -978,9 +1040,6 @@ gmail.observe.on('compose_email_select', function(match) {
 
 An object used to abstract interation with a compose popup
 
-```js
-
-```
 
 ### gmail.dom.email(email_el or email_id)
 
@@ -989,6 +1048,7 @@ An object for interacting with an email currently present in the DOM. Represents
 Expects a jQuery DOM element for the email div (div.adn as returned by the ``view_email`` observer), or an email_id
 
 - **.id** - property storing the id of the email
+- **.email_id()** - draft id of the email
 - **.body([body])** - allows get/set the html body in the DOM
 - **.to([to_array])** - allows retrieve or updating to/from DOM who the email is addressed to
 - **.from([email_address],[name])** - allows get/set who the email is from in the DOM
@@ -1140,6 +1200,36 @@ var compose_ref = gmail.dom.composes()[0];
 gmail.tools.add_compose_button(compose_ref, 'content_html', function() {
   // Code here
 }, 'Custom Style Classes');
+```
+
+#### gmail.tools.add_modal_window(title, content_html, onClickOk, onClickCancel, onClickClose)
+
+Create a modal window with specified title, content and callback functions.
+
+```onClickOk``` triggers when the user clicks the OK button on the modal window. ```onClickCancel``` triggers when the user clicks the Cancel button on the modal window. ```onClickClose``` triggers when the user clicks the X in the upper right hand side of the modal window.
+
+By default, if ```onClickCancel``` or ```onClickClose``` are left blank, their corresponding buttons will remove the modal window by calling ```gmail.tools.remove_modal_window```.
+
+```js
+gmail.tools.add_modal_window('Clean inbox', 'Do you want to continue?',
+function() {
+	cleanMyInbox();
+	gmail.tools.remove_modal_window();
+});
+```
+
+![](https://cloud.githubusercontent.com/assets/137350/6630847/abbcd6e0-c971-11e4-9153-9327444a6ddd.png)
+
+#### gmail.tools.remove_modal_window()
+
+Removes a modal window created using ```gmail.tools.create_modal_window```.
+
+```js
+gmail.tools.add_modal_window('Clean inbox', 'Do you want to continue?',
+function() {
+	cleanMyInbox();
+	gmail.tools.remove_modal_window();
+});
 ```
 
 ## Author and Licensing
