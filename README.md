@@ -611,7 +611,7 @@ Returns `True` if chat is on the right sidebar `False` otherwise
 
 #### gmail.check.should_compose_fullscreen()
 
-Returns `True` if compose is in fullscreen mode `False` otherwie
+Returns `True` if compose is in fullscreen mode `False` otherwise
 
 #### gmail.check.is_conversation_view()
 
