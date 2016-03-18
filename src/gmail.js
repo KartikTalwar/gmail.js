@@ -200,6 +200,16 @@ var Gmail = function(localJQuery) {
     return $('.ApVoH')[0].getAttribute('aria-labelledby') == ':wf';
   }
 
+  api.check.should_compose_fullscreen = function(){
+    var bx_scfs = [];
+    try {
+      bx_scfs = api.tracker.globals[17][4][1][32];
+    } catch(er) {
+      bx_scfs = ['bx_scfs','false'];
+    }
+     return (bx_scfs[1] == 'true' ) ? true : false;
+  }
+
 
   api.check.is_google_apps_user =function() {
     var email = api.get.user_email();
