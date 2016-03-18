@@ -115,6 +115,7 @@ gmail.get.user_email();
 - [gmail.check**.is_vertical_split()**](#gmailcheckis_vertical_split)
 - [gmail.check**.is_tabbed_inbox()**](#gmailcheckis_tabbed_inbox)
 - [gmail.check**.is_right_side_chat()**](#gmailcheckis_right_side_chat)
+- [gmail.check**.should_compose_fullscreen()**](#gmailcheckshould_compose_fullscreen)
 - [gmail.check**.is_conversation_view()**](#gmailcheckis_conversation_view)
 - [gmail.check**.is_google_apps_user()**](#gmailcheckis_google_apps_user)
 - [gmail.check**.is_priority_inbox()**](#gmailcheckis_priority_inbox)
