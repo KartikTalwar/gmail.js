@@ -609,6 +609,10 @@ Returns `True` if tabbed inbox view is enabled `False` otherwise
 
 Returns `True` if chat is on the right sidebar `False` otherwise
 
+#### gmail.check.should_compose_fullscreen()
+
+Returns `True` if compose is in fullscreen mode `False` otherwie
+
 #### gmail.check.is_conversation_view()
 
 Returns `True` if emails are displayed as threads, `False` otherwise (i.e. displayed individually)
