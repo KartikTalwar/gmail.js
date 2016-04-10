@@ -1471,6 +1471,7 @@ var Gmail = function(localJQuery) {
 
 
   api.tools.make_request_async = function (link, method, callback) {
+    link = decodeURIComponent(link);
     var method  = (typeof method == undefined || typeof method == null) ? 'GET' : method;
 
     $.ajax({ type: method, url: encodeURI(link), async:true, dataType: 'text' })
