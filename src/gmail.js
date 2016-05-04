@@ -1549,6 +1549,10 @@ var Gmail = function(localJQuery) {
 
   api.helper.get.visible_emails_post = function(get_data) {
     var emails = [];
+    
+    if (!get_data) {
+        return emails;
+    }
 
     var get_data = get_data.substring(get_data.indexOf('['), get_data.length);
         get_data = '"use strict"; return ' + get_data;
@@ -1776,6 +1780,9 @@ var Gmail = function(localJQuery) {
 
 
   api.helper.get.email_data_post = function(get_data) {
+    if (!get_data) {
+        return {};
+    }
     var get_data = get_data.substring(get_data.indexOf('['), get_data.length);
         get_data = '"use strict"; return ' + get_data;
         get_data = new Function(get_data);
