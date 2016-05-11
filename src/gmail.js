@@ -1787,7 +1787,7 @@ var Gmail = function(localJQuery) {
         get_data = '"use strict"; return ' + get_data;
         get_data = new Function(get_data);
 
-    cdata = get_data();
+    var cdata = get_data();
 
     api.tracker.email_data = cdata[0];
     return api.tools.parse_email_data(api.tracker.email_data);
