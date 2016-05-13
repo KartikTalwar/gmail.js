@@ -53,13 +53,13 @@ var Gmail = function(localJQuery) {
     var users = [];
 
     var globals17 = api.tracker.globals[17];
-    for (i in globals17) {
+    for (var i in globals17) {
       // at least for the delegated inboxes, the index of the mla is not stable
       // it was observed to be somewhere between 22 and 24, but we should not depend on it
       data = globals17[i];
 
       if (data[0] === 'mla') {
-        for(j in data[1]) {
+        for(var j in data[1]) {
           users.push({
             name : data[1][j][4],
             email : data[1][j][0],
@@ -101,7 +101,7 @@ var Gmail = function(localJQuery) {
 
     var loggedInAccounts = api.get.loggedin_accounts();
     if (loggedInAccounts && loggedInAccounts.length > 0) {
-      for (i in loggedInAccounts) {
+      for (var i in loggedInAccounts) {
         account = loggedInAccounts[i];
         if (account.index === delegatedToUserIndex) {
           return account.email;
@@ -613,7 +613,7 @@ var Gmail = function(localJQuery) {
 
     var each = function (arr, fnc) {
       var data = [];
-      for (i = 0; i < arr.length; i++) {
+      for (var i = 0; i < arr.length; i++) {
         data.push(fnc(arr[i]));
       }
       return data;
@@ -1560,7 +1560,7 @@ var Gmail = function(localJQuery) {
 
     api.tracker.view_data = get_data();
 
-    for(i in api.tracker.view_data) {
+    for(var i in api.tracker.view_data) {
       if (typeof(api.tracker.view_data[i]) === 'function') {
         continue;
       }
@@ -1721,7 +1721,7 @@ var Gmail = function(localJQuery) {
     var data = {};
     var threads = {}
 
-    for(i in email_data) {
+    for(var i in email_data) {
       var x = email_data[i];
       if(x[0] == 'cs') {
         data.thread_id = x[1];
@@ -1787,7 +1787,7 @@ var Gmail = function(localJQuery) {
         get_data = '"use strict"; return ' + get_data;
         get_data = new Function(get_data);
 
-    cdata = get_data();
+    var cdata = get_data();
 
     api.tracker.email_data = cdata[0];
     return api.tools.parse_email_data(api.tracker.email_data);
@@ -1866,7 +1866,7 @@ var Gmail = function(localJQuery) {
       var hash = window.location.hash.split('#')[1] || '';
       var is_in_trash = (hash.indexOf('trash') === 0);
 
-      for (id in threads) {
+      for (var id in threads) {
         var email = threads[id];
         var keep_email = (is_in_trash) ? email.is_deleted : !email.is_deleted;
 
@@ -1879,7 +1879,7 @@ var Gmail = function(localJQuery) {
       }
     }
     else { // Supposing only one displayed email.
-      for (id in email_data.threads) {
+      for (var id in email_data.threads) {
         var displayed_email_element = $('.ii.gt[class*="' + id + '"]');
 
         if (displayed_email_element.length > 0) {
@@ -2328,7 +2328,7 @@ var Gmail = function(localJQuery) {
   api.dom.email = function(element) {
     if (typeof element == 'string') {
       this.id = element;
-      this.id_element = $('div.ii.gt.m' + this.id);
+      this.id_element = $('div.ii.gt .a3s.m' + this.id);
       element = this.id_element.closest('div.adn');
     } else {
       element = $(element);
@@ -2337,7 +2337,7 @@ var Gmail = function(localJQuery) {
 
     // if no id specified, extract from the body wrapper class (starts with 'm' followed by the id)
     if (!this.id) {
-      this.id_element = element.find('div.ii.gt');
+      this.id_element = element.find('div.ii.gt .a3s');
       this.id = this.id_element.attr('class').match(/(^|\s)m([\S]*)/).pop();
     }
     this.$el = element;
