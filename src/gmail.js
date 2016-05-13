@@ -1814,7 +1814,7 @@ var Gmail =  function() {
   api.dom.email = function(element) {
     if (typeof element == 'string') {
       this.id = element;
-      this.id_element = $('div.ii.gt.m' + this.id);
+      this.id_element = $('div.ii.gt div.a3s.aXjCH.m' + this.id);
       element = this.id_element.closest('div.adn');
     } else {
       element = $(element);
@@ -1823,7 +1823,7 @@ var Gmail =  function() {
 
     // if no id specified, extract from the body wrapper class (starts with 'm' followed by the id)
     if (!this.id) {
-      this.id_element = element.find('div.ii.gt');
+      this.id_element = element.find('div.ii.gt div.a3s.aXjCH');
       this.id = this.id_element.attr('class').match(/(^|\s)m([\S]*)/).pop();
     }
     this.$el = element;
