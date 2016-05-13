@@ -2328,7 +2328,7 @@ var Gmail = function(localJQuery) {
   api.dom.email = function(element) {
     if (typeof element == 'string') {
       this.id = element;
-      this.id_element = $('div.ii.gt.m' + this.id);
+      this.id_element = $('div.ii.gt .a3s.m' + this.id);
       element = this.id_element.closest('div.adn');
     } else {
       element = $(element);
