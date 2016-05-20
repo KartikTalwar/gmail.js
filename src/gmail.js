@@ -365,7 +365,7 @@ var Gmail = function(localJQuery) {
       }
     }
     else {
-      hash = api.tools.parse_url(window.location.href).type;
+      hash = api.tools.parse_url(window.location.href).th;
     }
     
     return hash;
