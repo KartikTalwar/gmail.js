@@ -2337,7 +2337,7 @@ var Gmail = function(localJQuery) {
 
     // if no id specified, extract from the body wrapper class (starts with 'm' followed by the id)
     if (!this.id) {
-      this.id_element = element.find('div.ii.gt');
+      this.id_element = element.find('div.ii.gt > .a3s');
       this.id = this.id_element.attr('class').match(/(^|\s)m([\S]*)/).pop();
     }
     this.$el = element;
