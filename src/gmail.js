@@ -720,6 +720,10 @@ var Gmail = function(localJQuery) {
       api.tracker.ik = params.url.ik;
     }
 
+    if(typeof params.url.at == 'string') {
+      api.tracker.at = params.url.at
+    }
+
     if(typeof params.url.rid == 'string') {
       if(params.url.rid.indexOf("mail") != -1) {
         api.tracker.rid = params.url.rid;
@@ -1521,7 +1525,7 @@ var Gmail = function(localJQuery) {
 
   api.helper.get.visible_emails_pre = function() {
     var page = api.get.current_page();
-    var url = window.location.origin + window.location.pathname + '?ui=2&ik=' + api.tracker.ik+'&rid=' + api.tracker.rid + '&view=tl&start=0&num=120&rt=1';
+    var url = window.location.origin + window.location.pathname + '?ui=2&ik=' + api.tracker.ik+'&rid=' + api.tracker.rid + '&at=' + api.tracker.at + '&view=tl&start=0&num=120&rt=1';
 
     if(page.indexOf('label/') == 0) {
       url += '&cat=' + page.split('/')[1] +'&search=cat';
