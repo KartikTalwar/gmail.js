@@ -31,8 +31,8 @@ var Gmail = function(localJQuery) {
             };
 
   api.version           = "0.4";
-  api.tracker.globals   = typeof GLOBALS !== 'undefined' ? GLOBALS : ( typeof window.opener.GLOBALS !== 'undefined' ? window.opener.GLOBALS : [] );
-  api.tracker.view_data = typeof VIEW_DATA !== 'undefined' ? VIEW_DATA : ( typeof window.opener != 'undefined' && window.opener != null && typeof window.opener.VIEW_DATA !== 'undefined' ? window.opener.VIEW_DATA : [] );
+  api.tracker.globals   = typeof GLOBALS !== 'undefined' ? GLOBALS : ( window.opener != null && typeof window.opener.GLOBALS !== 'undefined' ? window.opener.GLOBALS : [] );
+  api.tracker.view_data = typeof VIEW_DATA !== 'undefined' ? VIEW_DATA : ( window.opener != null && typeof window.opener.VIEW_DATA !== 'undefined' ? window.opener.VIEW_DATA : [] );
   api.tracker.ik        = api.tracker.globals[9] || "";
   api.tracker.hangouts  = undefined;
 
