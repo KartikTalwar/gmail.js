@@ -31,8 +31,8 @@ var Gmail = function(localJQuery) {
             };
 
   api.version           = "0.4";
-  api.tracker.globals   = typeof GLOBALS !== 'undefined' ? GLOBALS : ( typeof window.opener.GLOBALS !== 'undefined' ? window.opener.GLOBALS : [] );
-  api.tracker.view_data = typeof VIEW_DATA !== 'undefined' ? VIEW_DATA : ( typeof window.opener != 'undefined' && window.opener != null && typeof window.opener.VIEW_DATA !== 'undefined' ? window.opener.VIEW_DATA : [] );
+  api.tracker.globals   = typeof GLOBALS !== 'undefined' ? GLOBALS : ( window.opener != null && typeof window.opener.GLOBALS !== 'undefined' ? window.opener.GLOBALS : [] );
+  api.tracker.view_data = typeof VIEW_DATA !== 'undefined' ? VIEW_DATA : ( window.opener != null && typeof window.opener.VIEW_DATA !== 'undefined' ? window.opener.VIEW_DATA : [] );
   api.tracker.ik        = api.tracker.globals[9] || "";
   api.tracker.hangouts  = undefined;
 
@@ -2338,7 +2338,13 @@ var Gmail = function(localJQuery) {
     // if no id specified, extract from the body wrapper class (starts with 'm' followed by the id)
     if (!this.id) {
       this.id_element = element.find('div.ii.gt');
-      this.id = this.id_element.attr('class').match(/(^|\s)m([\S]*)/).pop();
+      var classValue = this.id_element.attr('class');
+      if (classValue != null) {
+        var matches = classValue.match(/(^|\s)m([\S]*)/);
+        if (matches !== null) {
+          this.id = matches.pop();
+        }
+      }
     }
     this.$el = element;
     return this;
