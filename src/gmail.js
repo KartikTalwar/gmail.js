@@ -272,7 +272,7 @@ var Gmail = function(localJQuery) {
       return false;
     }
 
-    var items = $('.ii.gt');
+    var items = $('.ii.gt .a3s.aXjCH');
     var ids = [];
 
     for(var i=0; i<items.length; i++) {
@@ -302,7 +302,7 @@ var Gmail = function(localJQuery) {
   }
 
   api.dom.email_contents = function() {
-    var items = $('.ii.gt');
+    var items = $('.ii.gt div.a3s.aXjCH');
     var ids = [];
 
     for(var i=0; i<items.length; i++) {
@@ -1550,7 +1550,7 @@ var Gmail = function(localJQuery) {
 
   api.helper.get.visible_emails_post = function(get_data) {
     var emails = [];
-    
+
     if (!get_data) {
         return emails;
     }
@@ -1881,7 +1881,8 @@ var Gmail = function(localJQuery) {
     }
     else { // Supposing only one displayed email.
       for (id in email_data.threads) {
-        var displayed_email_element = $('.ii.gt[class*="' + id + '"]');
+        var message_class_id = 'm'+id;
+        var displayed_email_element = $('.ii.gt .a3s.aXjCH.' + message_class_id);
 
         if (displayed_email_element.length > 0) {
           var email = email_data.threads[id];
@@ -2329,7 +2330,8 @@ var Gmail = function(localJQuery) {
   api.dom.email = function(element) {
     if (typeof element == 'string') {
       this.id = element;
-      this.id_element = $('div.ii.gt.m' + this.id);
+      var message_class_id = 'm' + this.id;
+      this.id_element = $('div.ii.gt div.a3s.aXjCH.' + message_class_id);
       element = this.id_element.closest('div.adn');
     } else {
       element = $(element);
@@ -2338,7 +2340,7 @@ var Gmail = function(localJQuery) {
 
     // if no id specified, extract from the body wrapper class (starts with 'm' followed by the id)
     if (!this.id) {
-      this.id_element = element.find('div.ii.gt');
+      this.id_element = element.find('div.ii.gt div.a3s.aXjCH');
       var classValue = this.id_element.attr('class');
       if (classValue != null) {
         var matches = classValue.match(/(^|\s)m([\S]*)/);
