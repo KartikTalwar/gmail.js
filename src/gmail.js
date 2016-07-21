@@ -4,7 +4,7 @@
 // https://github.com/KartikTalwar/gmail.js
 //
 
-var Gmail = function(localJQuery) {
+var Gmail_ = function(localJQuery) {
 
   /*
     Use the provided 'jQuery' if possible, in order to avoid conflicts with
@@ -908,15 +908,15 @@ var Gmail = function(localJQuery) {
 
   api.tools.xhr_watcher = function () {
     if (!api.tracker.xhr_init) {
+      api.tracker.xhr_init = true;
       var win = top.document.getElementById("js_frame") ? top.document.getElementById("js_frame").contentDocument.defaultView : window.opener.top.document.getElementById("js_frame").contentDocument.defaultView;
 
-      api.tracker.xhr_init = true;
-      api.tracker.xhr_open = win.XMLHttpRequest.prototype.open;
-      api.tracker.xhr_send = win.XMLHttpRequest.prototype.send;
+      if (!win.XMLHttpRequest.prototype._gjs_open) {
+        win.XMLHttpRequest.prototype._gjs_open = win.XMLHttpRequest.prototype.open;
+      }
 
-      win.XMLHttpRequest.prototype._gjs_open = win.XMLHttpRequest.prototype.open;
       win.XMLHttpRequest.prototype.open = function (method, url, async, user, password) {
-        var out = this._gjs_open.apply(this, arguments);
+        var out = win.XMLHttpRequest.prototype._gjs_open.apply(this, arguments);
         this.xhrParams = {
           method: method.toString(),
           url: url.toString()
@@ -924,9 +924,11 @@ var Gmail = function(localJQuery) {
         return out;
       };
 
-      win.XMLHttpRequest.prototype._gjs_send = win.XMLHttpRequest.prototype.send;
-      win.XMLHttpRequest.prototype.send = function (body) {
+      if (!win.XMLHttpRequest.prototype._gjs_send) {
+        win.XMLHttpRequest.prototype._gjs_send = win.XMLHttpRequest.prototype.send;
+      }
 
+      win.XMLHttpRequest.prototype.send = function (body) {
         // parse the xhr request to determine if any events should be triggered
         var events = false;
         if (this.xhrParams) {
@@ -1079,14 +1081,6 @@ var Gmail = function(localJQuery) {
 
     // if watchdog is not set, bind has not yet been called so nothing to turn off
     if(typeof api.tracker.watchdog != "object") return true;
-
-    // if clearing everything, stop watching xhr
-    if(!type && !action) {
-      var win = top.document.getElementById("js_frame").contentDocument.defaultView;
-      win.XMLHttpRequest.prototype.open = api.tracker.xhr_open;
-      win.XMLHttpRequest.prototype.send = api.tracker.xhr_send;
-      api.tracker.xhr_init = false
-    }
 
     // loop through applicable types
     var types = type ? [ type ] : [ 'before', 'on', 'after', 'dom' ];
@@ -2533,4 +2527,20 @@ var Gmail = function(localJQuery) {
   }
 
   return api;
+};
+
+if (!window.Gmail) {
+  window.Gmail = initalizeOnce(Gmail_);
 }
+
+function initalizeOnce(fn) {
+  var result;
+  return function() {
+    if (fn) {
+      result = fn.apply(this, arguments);
+    }
+    fn = null;
+    return result;
+  }
+}
+
