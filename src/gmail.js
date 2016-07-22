@@ -44,8 +44,8 @@ var Gmail_ = function(localJQuery) {
              ip : data[3],
              mac_address : data[9],
              time_relative : data[10]
-           }
-  }
+           };
+  };
 
 
   api.get.loggedin_accounts = function() {
@@ -72,7 +72,7 @@ var Gmail_ = function(localJQuery) {
     }
 
     return users;
-  }
+  };
 
 
   api.get.user_email = function() {
@@ -155,7 +155,7 @@ var Gmail_ = function(localJQuery) {
 
   api.dom.inbox_content = function() {
     return $('div[role=main]:first');
-  }
+  };
 
 
   api.check.is_preview_pane = function() {
@@ -170,12 +170,12 @@ var Gmail_ = function(localJQuery) {
     });
 
     return previewPaneFound;
-  }
+  };
 
   api.check.is_multiple_inbox = function() {
     var dom = api.dom.inboxes();
     return dom.length > 1;
-  }
+  };
 
 
   api.check.is_horizontal_split = function() {
@@ -183,17 +183,17 @@ var Gmail_ = function(localJQuery) {
     var box = dom.find("[gh=tl]").find('.nn');
 
     return box.length == 0;
-  }
+  };
 
 
   api.check.is_vertical_split = function() {
     return api.check.is_horizontal_split() == false;
-  }
+  };
 
 
   api.check.is_tabbed_inbox = function() {
     return $(".aKh").length == 1;
-  }
+  };
 
 
   api.check.is_right_side_chat = function() {
@@ -214,7 +214,7 @@ var Gmail_ = function(localJQuery) {
   api.check.is_google_apps_user =function() {
     var email = api.get.user_email();
     return email.indexOf('gmail.com', email.length - 'gmail.com'.length) == -1;
-  }
+  };
 
 
   api.get.storage_info = function() {
@@ -224,13 +224,13 @@ var Gmail_ = function(localJQuery) {
     var percent = parseFloat(used.replace(/[^0-9\.]/g, '')) * 100 / parseFloat(total.replace(/[^0-9\.]/g, ''));
 
     return {used : used, total : total, percent : Math.floor(percent)}
-  }
+  };
 
 
   api.dom.inboxes = function() {
     var dom = api.dom.inbox_content();
     return dom.find("[gh=tl]");
-  }
+  };
 
   api.dom.email_subject = function () {
     var e = $(".hP");
@@ -239,22 +239,22 @@ var Gmail_ = function(localJQuery) {
       if($(e[i]).is(':visible')) {
         return $(e[i]);
       }
-    };
+    }
 
     return $();
-  }
+  };
 
 
   api.get.email_subject = function() {
     var subject_dom = api.dom.email_subject();
 
     return subject_dom.text();
-  }
+  };
 
 
   api.dom.email_body = function() {
     return $('.nH.hx');
-  }
+  };
 
   api.dom.toolbar = function() {
     var tb = $("[gh='mtb']");
@@ -264,7 +264,7 @@ var Gmail_ = function(localJQuery) {
     }
 
     return tb;
-}
+};
 
 
   api.check.is_inside_email = function() {
@@ -285,7 +285,7 @@ var Gmail_ = function(localJQuery) {
     }
 
     return ids.length > 0;
-  }
+  };
 
   api.check.is_plain_text = function() {
     var settings = GLOBALS[17][4][1];
@@ -299,7 +299,7 @@ var Gmail_ = function(localJQuery) {
 
     // default to rich text mode, which is more common nowadays
     return false;
-  }
+  };
 
   api.dom.email_contents = function() {
     var items = $('.ii.gt div.a3s.aXjCH');
@@ -316,7 +316,7 @@ var Gmail_ = function(localJQuery) {
     }
 
     return ids;
-  }
+  };
 
 
   api.get.email_ids = function() {
@@ -325,7 +325,7 @@ var Gmail_ = function(localJQuery) {
       return Object.keys(data.threads);
     }
     return [];
-  }
+  };
 
 
   api.get.compose_ids = function() {
@@ -335,9 +335,9 @@ var Gmail_ = function(localJQuery) {
           if(dom[i].value != "undefined"){
               ret.push(dom[i].value);
           }
-      };
+      }
       return ret;
-  }
+  };
 
 
   api.get.email_id = function() {
@@ -367,42 +367,42 @@ var Gmail_ = function(localJQuery) {
     }
 
     return hash;
-  }
+  };
 
 
   api.check.is_priority_inbox = function() {
     return $('.qh').length > 0;
-  }
+  };
 
 
   api.check.is_rapportive_installed = function() {
     return $('#rapportive-sidebar').length == 1;
-  }
+  };
 
 
   api.check.is_streak_installed = function() {
     return $("[id^='bentoBox'],[id*=' bentoBox'],[class*=' bentoBox'],[class*='bentoBox']").length > 0;
-  }
+  };
 
 
   api.check.is_anydo_installed = function() {
     return $("[id^='anydo'],[id*=' anydo'],[class*=' anydo'],[class*='anydo']").length > 0;
-  }
+  };
 
 
   api.check.is_boomerang_installed = function() {
     return $("[id^='b4g_'],[id*=' b4g_'],[class*=' b4g_'],[class*='b4g_']").length > 0;
-  }
+  };
 
 
   api.check.is_xobni_installed = function() {
     return $('#xobni_frame').length > 0;
-  }
+  };
 
 
   api.check.is_signal_installed = function() {
     return $("[id^='Signal'],[id*=' Signal'],[class*=' signal'],[class*='signal']").length > 0;
-  }
+  };
 
 
   api.check.are_shortcuts_enabled = function() {
@@ -426,29 +426,29 @@ var Gmail_ = function(localJQuery) {
       var values = {
         '0': true,
         '1': false
-      }
+      };
 
       check = values[flag_value];
     }
 
     return check;
-  }
+  };
 
 
   api.dom.get_left_sidebar_links = function() {
     return $("div[role=navigation] [title]");
-  }
+  };
 
 
   api.dom.search_bar = function() {
     return $("[gh=sb]");
-  }
+  };
 
 
   api.get.search_query = function() {
     var dom = api.dom.search_bar();
     return dom.find('input')[0].value;
-  }
+  };
 
 
   api.get.unread_inbox_emails = function() {
@@ -461,7 +461,7 @@ var Gmail_ = function(localJQuery) {
     }
 
     return 0;
-  }
+  };
 
 
   api.get.unread_draft_emails = function() {
@@ -474,7 +474,7 @@ var Gmail_ = function(localJQuery) {
     }
 
     return 0;
-  }
+  };
 
 
   api.get.unread_spam_emails = function() {
@@ -487,7 +487,7 @@ var Gmail_ = function(localJQuery) {
     }
 
     return 0;
-  }
+  };
 
 
   api.get.unread_forum_emails = function() {
@@ -500,7 +500,7 @@ var Gmail_ = function(localJQuery) {
     }
 
     return 0;
-  }
+  };
 
 
   api.get.unread_update_emails = function() {
@@ -513,7 +513,7 @@ var Gmail_ = function(localJQuery) {
     }
 
     return 0;
-  }
+  };
 
 
   api.get.unread_promotion_emails = function() {
@@ -526,7 +526,7 @@ var Gmail_ = function(localJQuery) {
     }
 
     return 0;
-  }
+  };
 
 
   api.get.unread_social_emails = function() {
@@ -539,16 +539,16 @@ var Gmail_ = function(localJQuery) {
     }
 
     return 0;
-  }
+  };
 
 
   api.get.beta = function() {
     var features = {
                     "new_nav_bar" : $('#gbz').length == 0
-                   }
+                   };
 
     return features;
-  }
+  };
 
 
   api.get.unread_emails = function() {
@@ -559,7 +559,7 @@ var Gmail_ = function(localJQuery) {
              update        : api.get.unread_update_emails(),
              promotions    : api.get.unread_promotion_emails(),
              social        : api.get.unread_social_emails() }
-  }
+  };
 
 
   api.tools.error = function(str) {
@@ -568,7 +568,7 @@ var Gmail_ = function(localJQuery) {
     } else {
       throw(str);
     }
-  }
+  };
 
   api.tools.parse_url = function(url) {
     var regex = /[?&]([^=#]+)=([^&#]*)/g;
@@ -580,7 +580,7 @@ var Gmail_ = function(localJQuery) {
     }
 
     return params;
-  }
+  };
 
   api.tools.sleep = function(milliseconds) {
     var start = new Date().getTime();
@@ -589,7 +589,7 @@ var Gmail_ = function(localJQuery) {
         break;
       }
     }
-  }
+  };
 
 
   api.tools.multitry = function(delay, tries, func, check, counter, retval) {
@@ -597,23 +597,24 @@ var Gmail_ = function(localJQuery) {
       return retval;
     }
 
-    var counter = (counter == undefined) ? 0 : counter;
+    counter = (counter == undefined) ? 0 : counter;
+
     var value = func();
 
     if(check(value)) {
       return value;
     } else {
-      api.tools.sleep(delay)
-      api.tools.multitry(delay, tries, func, check, counter+1, value)
+      api.tools.sleep(delay);
+      api.tools.multitry(delay, tries, func, check, counter+1, value);
     }
-  }
+  };
 
 
   api.tools.deparam = function (params, coerce) {
 
     var each = function (arr, fnc) {
       var data = [];
-      for (i = 0; i < arr.length; i++) {
+      for (var i = 0; i < arr.length; i++) {
         data.push(fnc(arr[i]));
       }
       return data;
@@ -668,7 +669,7 @@ var Gmail_ = function(localJQuery) {
       }
     });
     return obj;
-  }
+  };
 
   api.tools.parse_actions = function(params, xhr) {
 
@@ -714,7 +715,7 @@ var Gmail_ = function(localJQuery) {
                       'rtr'         : 'restore_message_in_thread',
                       'open_email'  : 'open_email',
                       'toggle_threads'  : 'toggle_threads'
-                     }
+                     };
 
     if(typeof params.url.ik == 'string') {
       api.tracker.ik = params.url.ik;
@@ -833,7 +834,7 @@ var Gmail_ = function(localJQuery) {
     }
 
     return triggered;
-  }
+  };
 
   api.tools.parse_response = function(response) {
       var parsedResponse = [],
@@ -871,7 +872,7 @@ var Gmail_ = function(localJQuery) {
       }
 
       return parsedResponse;
-  }
+  };
 
   api.tools.parse_requests = function(params, xhr) {
     params.url_raw = params.url;
@@ -903,10 +904,11 @@ var Gmail_ = function(localJQuery) {
       api.tracker.actions.pop();
     }
     return events;
-  }
+  };
 
 
   api.tools.xhr_watcher = function () {
+
     if (!api.tracker.xhr_init) {
       api.tracker.xhr_init = true;
       var win = top.document.getElementById("js_frame") ? top.document.getElementById("js_frame").contentDocument.defaultView : window.opener.top.document.getElementById("js_frame").contentDocument.defaultView;
@@ -967,17 +969,17 @@ var Gmail_ = function(localJQuery) {
         return out;
       }
     }
-  }
+  };
 
 
   api.observe.http_requests = function() {
     return api.tracker.events;
-  }
+  };
 
 
   api.observe.actions = function() {
     return api.tracker.actions;
-  }
+  };
 
   /**
     Bind a specified callback to an array of callbacks against a specified type & action
@@ -1014,7 +1016,7 @@ var Gmail_ = function(localJQuery) {
     api.tracker.bound[action] = typeof api.tracker.bound[action] == 'undefined' ? 1 : api.tracker.bound[action]+1;
     api.tracker.bound[type] = typeof api.tracker.bound[type] == 'undefined' ? 1 : api.tracker.bound[type]+1;
     //api.tracker.watchdog[action] = callback;
-  }
+  };
 
   /**
     an on event is observed just after gmail sends an xhr request
@@ -1029,7 +1031,7 @@ var Gmail_ = function(localJQuery) {
     if (response_callback) {
       api.observe.after(action, callback);
     }
-  }
+  };
 
   /**
     an before event is observed just prior to the gmail xhr request being sent
@@ -1037,7 +1039,7 @@ var Gmail_ = function(localJQuery) {
    */
   api.observe.before = function(action, callback) {
     api.observe.bind('before', action, callback);
-  }
+  };
 
   /**
     an after event is observed when the gmail xhr request returns from the server
@@ -1045,7 +1047,7 @@ var Gmail_ = function(localJQuery) {
    */
   api.observe.after = function(action, callback) {
     api.observe.bind('after', action, callback);
-  }
+  };
 
   /**
     Checks if a specified action & type has anything bound to it
@@ -1070,7 +1072,7 @@ var Gmail_ = function(localJQuery) {
       if(type) return api.tracker.bound[type] > 0;
       api.tools.error('api.observe.bound called with invalid args');
     }
-  }
+  };
 
   /**
     Clear all callbacks for a specific type (before, on, after, dom) and action
@@ -1104,7 +1106,7 @@ var Gmail_ = function(localJQuery) {
         });
       }
     });
-  }
+  };
 
   /**
     Trigger any specified events bound to the passed type
@@ -1127,7 +1129,7 @@ var Gmail_ = function(localJQuery) {
       }
     });
     return fired;
-  }
+  };
 
   /**
     Trigger any specified DOM events passing a specified element & optional handler
@@ -1146,7 +1148,7 @@ var Gmail_ = function(localJQuery) {
     $.each(api.tracker.watchdog.dom[observer], function(idx, callback) {
       handler(element, callback);
     });
-  }
+  };
 
   // pre-configured DOM observers
   // map observers to DOM class names
@@ -1274,7 +1276,7 @@ var Gmail_ = function(localJQuery) {
       })
     });
     //console.log( 'observer_config', api.tracker.dom_observers, 'dom_observer_map', api.tracker.dom_observer_map);
-  }
+  };
 
   /**
     Allow an application to register a custom DOM observer specific to their app.
@@ -1319,7 +1321,7 @@ var Gmail_ = function(localJQuery) {
     } else {
       api.tracker.custom_dom_observers[action] = config;
     }
-  }
+  };
 
   /**
     Observe DOM nodes being inserted. When a node with a class defined in api.tracker.dom_observers is inserted,
@@ -1395,7 +1397,7 @@ var Gmail_ = function(localJQuery) {
       }, delay);
       return true;
     }
-  }
+  };
 
   // observes every element inserted into the DOM by Gmail and looks at the classes on those elements,
   // checking for any configured observers related to those classes
@@ -1452,21 +1454,22 @@ var Gmail_ = function(localJQuery) {
         }
       }
     });
-  }
+  };
 
 
   api.tools.make_request = function (link, method) {
     link = decodeURIComponent(link);
-    var method  = (typeof method == undefined || typeof method == null) ? 'GET' : method;
+    method  = (typeof method == undefined || typeof method == null) ? 'GET' : method;
+
     var request = $.ajax({ type: method, url: encodeURI(link), async:false });
 
     return request.responseText;
-  }
+  };
 
 
   api.tools.make_request_async = function (link, method, callback) {
     link = decodeURIComponent(link);
-    var method  = (typeof method == undefined || typeof method == null) ? 'GET' : method;
+    method  = (typeof method == undefined || typeof method == null) ? 'GET' : method;
 
     $.ajax({ type: method, url: encodeURI(link), async:true, dataType: 'text' })
       .done(function(data, textStatus, jqxhr) {
@@ -1475,7 +1478,7 @@ var Gmail_ = function(localJQuery) {
       .fail(function(jqxhr, textStatus, errorThrown) {
         console.error('Request Failed', errorThrown);
       });
-  }
+  };
 
 
   api.tools.parse_view_data = function(view_data) {
@@ -1506,12 +1509,12 @@ var Gmail_ = function(localJQuery) {
     }
 
     return parsed;
-  }
+  };
 
 
   api.helper.get.is_delegated_inbox = function() {
     return api.tracker.globals[17][5][0] === 'fwd';
-  }
+  };
 
 
   api.helper.get.visible_emails_pre = function() {
@@ -1521,6 +1524,8 @@ var Gmail_ = function(localJQuery) {
     if(page.indexOf('label/') == 0) {
       url += '&cat=' + page.split('/')[1] +'&search=cat';
     } else if(page.indexOf('category/') == 0) {
+      var cat_label = "";
+
       if(page.indexOf('forums') != -1) {
         cat_label = 'group';
       } else if(page.indexOf('updates') != -1) {
@@ -1539,7 +1544,7 @@ var Gmail_ = function(localJQuery) {
       url += '&search=' + page;
     }
     return url;
-  }
+  };
 
 
   api.helper.get.visible_emails_post = function(get_data) {
@@ -1549,13 +1554,13 @@ var Gmail_ = function(localJQuery) {
         return emails;
     }
 
-    var get_data = get_data.substring(get_data.indexOf('['), get_data.length);
-        get_data = '"use strict"; return ' + get_data;
-        get_data = new Function(get_data);
+    get_data = get_data.substring(get_data.indexOf('['), get_data.length);
+    get_data = '"use strict"; return ' + get_data;
+    get_data = new Function(get_data);
 
     api.tracker.view_data = get_data();
 
-    for(i in api.tracker.view_data) {
+    for(var i in api.tracker.view_data) {
       if (typeof(api.tracker.view_data[i]) === 'function') {
         continue;
       }
@@ -1566,7 +1571,7 @@ var Gmail_ = function(localJQuery) {
       }
     }
     return emails;
-  }
+  };
 
 
   api.get.visible_emails = function() {
@@ -1575,7 +1580,7 @@ var Gmail_ = function(localJQuery) {
     var emails = api.helper.get.visible_emails_post(get_data);
 
     return emails;
-  }
+  };
 
 
   api.get.visible_emails_async = function(callback) {
@@ -1584,7 +1589,7 @@ var Gmail_ = function(localJQuery) {
       var emails = api.helper.get.visible_emails_post(get_data);
       callback(emails);
     });
-  }
+  };
 
 
   api.get.selected_emails_data = function(){
@@ -1604,8 +1609,7 @@ var Gmail_ = function(localJQuery) {
       selected_emails.push(api.get.email_data());
     }
     return selected_emails;
-  }
-
+  };
 
   api.get.current_page = function() {
     var hash  = window.location.hash.split('#').pop().split('?').shift() || 'inbox';
@@ -1623,7 +1627,7 @@ var Gmail_ = function(localJQuery) {
     }
 
     return page || hash;
-  }
+  };
 
 
   api.tools.infobox = function(message, time, html){
@@ -1652,7 +1656,7 @@ var Gmail_ = function(localJQuery) {
         top.removeAttr("style");                    // dito
       }
     }
-  }
+  };
 
   /**
    * Re-renders the UI using the available data.
@@ -1697,7 +1701,7 @@ var Gmail_ = function(localJQuery) {
 
       if (callback) callback();
     }, 0);
-  }
+  };
 
   api.tools.get_reply_to = function(ms13) {
     // reply to is an array if exists
@@ -1710,13 +1714,13 @@ var Gmail_ = function(localJQuery) {
 
     // otherwise return null
     return null;
-  }
+  };
 
   api.tools.parse_email_data = function(email_data) {
     var data = {};
-    var threads = {}
+    var threads = {};
 
-    for(i in email_data) {
+    for(var i in email_data) {
       var x = email_data[i];
       if(x[0] == 'cs') {
         data.thread_id = x[1];
@@ -1758,7 +1762,7 @@ var Gmail_ = function(localJQuery) {
     }
 
     return data;
-  }
+  };
 
 
   api.helper.get.email_data_pre = function(email_id) {
@@ -1771,22 +1775,22 @@ var Gmail_ = function(localJQuery) {
       url = window.location.origin + window.location.pathname + '?ui=2&ik=' + api.tracker.ik + '&rid=' + api.tracker.rid + '&view=cv&th=' + email_id + '&msgs=&mb=0&rt=1&search=mbox';
     }
     return url;
-  }
+  };
 
 
   api.helper.get.email_data_post = function(get_data) {
     if (!get_data) {
         return {};
     }
-    var get_data = get_data.substring(get_data.indexOf('['), get_data.length);
-        get_data = '"use strict"; return ' + get_data;
-        get_data = new Function(get_data);
+    get_data = get_data.substring(get_data.indexOf('['), get_data.length);
+    get_data = '"use strict"; return ' + get_data;
+    get_data = new Function(get_data);
 
-    cdata = get_data();
+    var cdata = get_data();
 
     api.tracker.email_data = cdata[0];
     return api.tools.parse_email_data(api.tracker.email_data);
-  }
+  };
 
 
   api.get.email_data = function(email_id) {
@@ -1799,7 +1803,7 @@ var Gmail_ = function(localJQuery) {
     }
 
     return {};
-  }
+  };
 
 
   api.get.email_data_async = function(email_id, callback) {
@@ -1812,7 +1816,7 @@ var Gmail_ = function(localJQuery) {
     } else {
       callback({});
     }
-  }
+  };
 
 
   api.helper.get.email_source_pre = function(email_id) {
@@ -1822,11 +1826,11 @@ var Gmail_ = function(localJQuery) {
 
     var url = null;
     if(email_id != undefined) {
-      var url = window.location.origin + window.location.pathname + '?ui=2&ik=' + api.tracker.ik + '&view=om&th=' + email_id;
+      url = window.location.origin + window.location.pathname + '?ui=2&ik=' + api.tracker.ik + '&view=om&th=' + email_id;
     }
 
     return url;
-  }
+  };
 
 
   api.get.email_source = function(email_id) {
@@ -1835,7 +1839,7 @@ var Gmail_ = function(localJQuery) {
       return api.tools.make_request(url);
     }
     return '';
-  }
+  };
 
 
   api.get.email_source_async = function(email_id, callback) {
@@ -1845,7 +1849,7 @@ var Gmail_ = function(localJQuery) {
     } else {
       callback('');
     }
-  }
+  };
 
 
   api.get.displayed_email_data = function() {
@@ -1861,7 +1865,7 @@ var Gmail_ = function(localJQuery) {
       var hash = window.location.hash.split('#')[1] || '';
       var is_in_trash = (hash.indexOf('trash') === 0);
 
-      for (id in threads) {
+      for (var id in threads) {
         var email = threads[id];
         var keep_email = (is_in_trash) ? email.is_deleted : !email.is_deleted;
 
@@ -1911,7 +1915,7 @@ var Gmail_ = function(localJQuery) {
     }
 
     return displayed_email_data;
-  }
+  };
 
 
   api.check.is_conversation_view = function() {
@@ -1931,7 +1935,7 @@ var Gmail_ = function(localJQuery) {
     }
 
     return flag_value === '0' || flag_value === undefined;
-  }
+  };
 
 
   api.tools.extract_email_address = function(str) {
@@ -1939,7 +1943,7 @@ var Gmail_ = function(localJQuery) {
     var matches = (str) ? str.match(regex) : undefined;
 
     return (matches) ? matches[0] : undefined;
-  }
+  };
 
 
   api.tools.extract_name = function(str) {
@@ -1947,7 +1951,7 @@ var Gmail_ = function(localJQuery) {
     var matches = (str) ? str.match(regex) : undefined;
 
     return (matches && matches[0]) ? matches[0].trim() : undefined;
-  }
+  };
 
 
   api.tools.i18n = function(label) {
@@ -1994,7 +1998,7 @@ var Gmail_ = function(localJQuery) {
     }
 
     return dictionary[label];
-  }
+  };
 
   api.tools.add_toolbar_button = function(content_html, onClickFunction, styleClass) {
     var container = $(document.createElement('div'));
@@ -2022,7 +2026,7 @@ var Gmail_ = function(localJQuery) {
     api.dom.toolbar().append(container);
 
     return container;
-  }
+  };
 
   api.tools.add_compose_button =  function(composeWindow, content_html, onClickFunction, styleClass) {
     var button = $(document.createElement('div'));
@@ -2037,12 +2041,12 @@ var Gmail_ = function(localJQuery) {
     composeWindow.find('.gU.Up  > .J-J5-Ji').append(button);
 
     return button;
-  }
+  };
 
   api.tools.remove_modal_window = function() {
     $('#gmailJsModalBackground').remove();
     $('#gmailJsModalWindow').remove();
-  }
+  };
 
   api.tools.add_modal_window = function(title, content_html, onClickOk, onClickCancel, onClickClose) {
     // By default, clicking on cancel or close should clean up the modal window
@@ -2128,7 +2132,7 @@ var Gmail_ = function(localJQuery) {
     center();
 
     $(window).resize(center);
-  }
+  };
 
   api.chat.is_hangouts = function() {
     if(api.tracker.hangouts != undefined) {
@@ -2153,14 +2157,15 @@ var Gmail_ = function(localJQuery) {
       return true;
     }
 
-    var chatWindows = $('.nH.nn', dw);
+    chatWindows = $('.nH.nn', dw);
+
     if(chatWindows.length > 2) {
       // classic
       api.tracker.hangouts = false;
       return false;
     }
     return undefined;
-  }
+  };
 
   // retrieve queue of compose window dom objects
   // latest compose at the start of the queue (index 0)
@@ -2170,7 +2175,7 @@ var Gmail_ = function(localJQuery) {
       objs.push( new api.dom.compose(el));
     });
     return objs;
-  }
+  };
 
   /**
     A compose object. Represents a compose window in the DOM and provides a bunch of methods and properties to access & interact with the window
@@ -2181,7 +2186,8 @@ var Gmail_ = function(localJQuery) {
     if(!element || (!element.hasClass('M9') && !element.hasClass('AD'))) api.tools.error('api.dom.compose called with invalid element');
     this.$el = element;
     return this;
-  }
+  };
+
   $.extend(api.dom.compose.prototype, {
     /**
       Retrieve the compose id
@@ -2345,7 +2351,8 @@ var Gmail_ = function(localJQuery) {
     }
     this.$el = element;
     return this;
-  }
+  };
+
   $.extend(api.dom.email.prototype, {
 
     /**
@@ -2409,6 +2416,7 @@ var Gmail_ = function(localJQuery) {
 
       // loop through any matching to elements & prepare for output
       var out = new Array();
+
       this.dom('to').each(function(index) {
         el = $(this);
         out.push({
@@ -2482,7 +2490,8 @@ var Gmail_ = function(localJQuery) {
     if (!element || (!element.hasClass('if'))) api.tools.error('api.dom.thread called with invalid element/id');
     this.$el = element;
     return this;
-  }
+  };
+
   $.extend(api.dom.thread.prototype, {
 
     /**
@@ -2514,17 +2523,17 @@ var Gmail_ = function(localJQuery) {
       //Trigger mouse down event
       var mouseDown = document.createEvent('MouseEvents');
       mouseDown.initEvent( 'mousedown', true, false );
-      composeEl.dispatchEvent(mouseDown)
+      composeEl.dispatchEvent(mouseDown);
 
       //Trigger mouse up event
       var mouseUp = document.createEvent('MouseEvents');
       mouseUp.initEvent( 'mouseup', true, false );
-      composeEl.dispatchEvent(mouseUp)
+      composeEl.dispatchEvent(mouseUp);
 
       return true;
     }
     return false;
-  }
+  };
 
   return api;
 };
