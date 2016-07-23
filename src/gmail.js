@@ -368,9 +368,11 @@ var Gmail_ = function(localJQuery) {
       } else {
         hash = window.location.hash.split("/").pop().replace(/#/, '').split('?')[0];
       }
-
     }
-
+    else {
+      hash = api.tools.parse_url(window.location.href).th;
+    }
+    
     return hash;
   };
 
