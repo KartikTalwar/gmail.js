@@ -197,7 +197,12 @@ var Gmail_ = function(localJQuery) {
 
 
   api.check.is_right_side_chat = function() {
-    return $('.ApVoH')[0].getAttribute('aria-labelledby') == ':wf';
+    var chat = $('.ApVoH');
+    if(chat.length === 0) {
+      return false;
+    }
+
+    return chat[0].getAttribute('aria-labelledby') == ':wf';
   }
 
   api.check.should_compose_fullscreen = function(){
