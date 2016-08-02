@@ -34,7 +34,7 @@ npm install gmail-js
 ## Content Security Policy
 
 
-The new Content Security Policy will prevent direct injection. Please see the following repository to get around the policies. More details can also be found in issue #75
+The new Content Security Policy will prevent direct injection. Please see the following repository to get around the policies. More details can also be found in issue [#75](https://github.com/KartikTalwar/gmail.js/issues/75)
 
 #### https://github.com/KartikTalwar/gmail-chrome-extension-boilerplate
 
@@ -716,7 +716,7 @@ Actions here correspond to things like clicking refres, archiving, deleting, sta
 This is the key feature of gmail.js. This method allows you to add triggers to all of these actions so you can build
 your custom extension/tool with this library.
 
-You simply specify the action nane and your function that the method will return data to when the actions are triggered
+You simply specify the action name and your function that the method will return data to when the actions are triggered
 and it does the rest. **You can have multiple triggers**
 
 Your callback will be fired directly after Gmail's XMLHttpRequest has been sent off the the Gmail servers.
