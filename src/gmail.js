@@ -372,7 +372,7 @@ var Gmail_ = function(localJQuery) {
     else {
       hash = api.tools.parse_url(window.location.href).th;
     }
-    
+
     return hash;
   };
 
@@ -1816,6 +1816,19 @@ var Gmail_ = function(localJQuery) {
     return {};
   };
 
+  api.get.email_data_full = function(email_id) {
+    var url = api.helper.get.email_data_pre(email_id);
+
+    if (url != null) {
+      var get_data = api.tools.make_request(url);
+      var email_data = api.helper.get.email_data_post(get_data);
+      var second_call = api.get.email_data(email_id, Object.keys(email_data.threads));
+      email_data.threads = second_call.threads;
+      return email_data;
+    }
+
+    return {};
+  }
 
   api.get.email_data_async = function(email_id, callback) {
     var url = api.helper.get.email_data_pre(email_id);
@@ -1829,6 +1842,21 @@ var Gmail_ = function(localJQuery) {
     }
   };
 
+  api.get.email_data_full_async = function(email_id, callback) {
+    var url = api.helper.get.email_data_pre(email_id);
+    if (url != null) {
+      api.tools.make_request_async(url, 'GET', function (get_data) {
+        var email_data = api.helper.get.email_data_post(get_data);
+        api.get.email_data_async(email_id, function(second_call) {
+            email_data.threads = second_call.threads;
+            callback(email_data);
+        }, Object.keys(email_data.threads));
+
+      });
+    } else {
+      callback({});
+    }
+  }
 
   api.helper.get.email_source_pre = function(email_id) {
     if(api.check.is_inside_email() && email_id == undefined) {
@@ -2563,4 +2591,3 @@ function initalizeOnce(fn) {
     return result;
   }
 }
-
