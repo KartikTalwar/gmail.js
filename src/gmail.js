@@ -919,17 +919,16 @@ var Gmail_ = function(localJQuery) {
 
 
   api.tools.xhr_watcher = function () {
-
     if (!api.tracker.xhr_init) {
       api.tracker.xhr_init = true;
       var win = top.document.getElementById("js_frame") ? top.document.getElementById("js_frame").contentDocument.defaultView : window.opener.top.document.getElementById("js_frame").contentDocument.defaultView;
 
-      if (!win.XMLHttpRequest.prototype._gjs_open) {
-        win.XMLHttpRequest.prototype._gjs_open = win.XMLHttpRequest.prototype.open;
+      if (!win.gjs_XMLHttpRequest_open) {
+        win.gjs_XMLHttpRequest_open = win.XMLHttpRequest.prototype.open;
       }
 
       win.XMLHttpRequest.prototype.open = function (method, url, async, user, password) {
-        var out = win.XMLHttpRequest.prototype._gjs_open.apply(this, arguments);
+        var out = win.gjs_XMLHttpRequest_open.apply(this, arguments);
         this.xhrParams = {
           method: method.toString(),
           url: url.toString()
@@ -937,8 +936,8 @@ var Gmail_ = function(localJQuery) {
         return out;
       };
 
-      if (!win.XMLHttpRequest.prototype._gjs_send) {
-        win.XMLHttpRequest.prototype._gjs_send = win.XMLHttpRequest.prototype.send;
+      if (!win.gjs_XMLHttpRequest_send) {
+        win.gjs_XMLHttpRequest_send = win.XMLHttpRequest.prototype.send;
       }
 
       win.XMLHttpRequest.prototype.send = function (body) {
@@ -973,7 +972,7 @@ var Gmail_ = function(localJQuery) {
         }
 
         // send the original request
-        var out = this._gjs_send.apply(this, arguments);
+        var out = win.gjs_XMLHttpRequest_send.apply(this, arguments);
 
         // fire on events
         api.observe.trigger('on', events, this);
