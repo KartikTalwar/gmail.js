@@ -1550,7 +1550,21 @@ var Gmail_ = function(localJQuery) {
     } else if(page.indexOf('search/') == 0) {
       url += '&qs=true&q=' + page.split('/')[1] +'&search=query';
     } else if(page == 'inbox'){
-      url += '&search=' + 'mbox';
+      if ($('div[aria-label="Social"]').attr('aria-selected') == 'true') {
+        cat_label = 'social';
+        url += '&cat=^smartlabel_' + cat_label + '&search=category';
+      } else if ($('div[aria-label="Promotions"]').attr('aria-selected') == 'true') {
+        cat_label = 'promo';
+        url += '&cat=^smartlabel_' + cat_label + '&search=category';
+      } else if ($('div[aria-label="Updates"]').attr('aria-selected') == 'true') {
+        cat_label = 'notification';
+        url += '&cat=^smartlabel_' + cat_label + '&search=category';
+      } else if ($('div[aria-label="Forums"]').attr('aria-selected') == 'true') {
+        cat_label = 'group';
+        url += '&cat=^smartlabel_' + cat_label + '&search=category';
+      } else {
+        url += '&search=' + 'mbox';
+      }
     }else {
       url += '&search=' + page;
     }
