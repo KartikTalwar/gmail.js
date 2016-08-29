@@ -1547,7 +1547,8 @@ var Gmail_ = function(localJQuery) {
       }
       url += '&cat=^smartlabel_' + cat_label +'&search=category';
     } else if(page.indexOf('search/') == 0) {
-      url += '&qs=true&q=' + page.split('/')[1] +'&search=query';
+      at = $('input[name=at]').val();
+      url += '&qs=true&q=' + page.split('/')[1] +'&at=' + at + '&search=query';
     } else if(page == 'inbox'){
       url += '&search=' + 'mbox';
     }else {
