@@ -694,6 +694,7 @@ var Gmail_ = function(localJQuery) {
                       'tae'         : 'add_to_tasks',
                       'rc_^i'       : 'archive',
                       'tr'          : 'delete',
+                      'cs'          : 'undo_send',
                       'dm'          : 'delete_message_in_thread',
                       'dl'          : 'delete_forever',
                       'dc_'         : 'delete_label',
@@ -744,6 +745,7 @@ var Gmail_ = function(localJQuery) {
     var response    = null;
 
     switch(action) {
+      case "cs":
       case "ur":
       case "rd":
       case "tr":
