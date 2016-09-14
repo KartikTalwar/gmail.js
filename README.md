@@ -162,6 +162,7 @@ gmail.get.user_email();
   - **`delete_forever`** - When a conversation(s) is deleted forever
   - **`star`** - When a conversation(s) is starred
   - **`unstar`** - When a conversation(s) is unstarred
+  - **`undo_send`** - When the Undo Send button is clicked after trying to send a new email
   - **`mark_as_important`** - When a conversation(s) is marked as important
   - **`mark_as_not_important`** - When a conversation(s) is marked as not important
   - **`filter_messages_like_these`** - When a filter button is triggered for a conversation
@@ -740,6 +741,7 @@ Your callback will be fired directly after Gmail's XMLHttpRequest has been sent 
   - **delete_forever** - When a conversation(s) is deleted forever
   - **star** - When a conversation(s) is starred
   - **unstar** - When a conversation(s) is unstarred
+  - **`undo_send`** - When the Undo Send button is clicked after trying to send a new email
   - **mark_as_important** - When a conversation(s) is marked as important
   - **mark_as_not_important** - When a conversation(s) is marked as not important
   - **filter_messages_like_these** - When a filter button is triggered for a conversation
@@ -837,6 +839,10 @@ gmail.observe.on("star", function(id, url, body, xhr) {
 
 gmail.observe.on("unstar", function(id, url, body, xhr) {
   console.log("id:", id, "url:", url, 'body', body, 'xhr', xhr);
+})
+
+gmail.observe.on("undo_send", function(url, body, data, xhr) {
+  console.log('body', body, 'xhr', xhr, 'msg_id : ', body.m);
 })
 
 gmail.observe.on("mark_as_important", function(id, url, body, xhr) {
