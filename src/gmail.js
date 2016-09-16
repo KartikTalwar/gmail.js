@@ -1473,8 +1473,11 @@ var Gmail_ = function(localJQuery) {
     method  = (typeof method == undefined || typeof method == null) ? 'GET' : method;
 
     var request = $.ajax({ type: method, url: encodeURI(link), async:false });
-
-    return request.responseText;
+    var parser = new DOMParser();
+    var doc = parser.parseFromString(request.responseText, "text/html");
+    var elem = doc.getElementById("raw_message_text");
+    var source = elem.innerHTML;
+    return source;
   };
 
 
