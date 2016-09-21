@@ -182,7 +182,7 @@ var Gmail_ = function(localJQuery) {
     var dom = api.dom.inbox_content();
     var box = dom.find("[gh=tl]").find('.nn');
 
-    return box.length == 0;
+    return box.length === 0;
   };
 
 
@@ -203,7 +203,7 @@ var Gmail_ = function(localJQuery) {
     }
 
     return chat[0].getAttribute('aria-labelledby') == ':wf';
-  }
+  };
 
   api.check.should_compose_fullscreen = function(){
     var bx_scfs = [];
@@ -213,7 +213,7 @@ var Gmail_ = function(localJQuery) {
       bx_scfs = ['bx_scfs','false'];
     }
      return (bx_scfs[1] == 'true' ) ? true : false;
-  }
+  };
 
 
   api.check.is_google_apps_user =function() {
@@ -228,7 +228,7 @@ var Gmail_ = function(localJQuery) {
     var total = $(div).find('span')[1].text;
     var percent = parseFloat(used.replace(/[^0-9\.]/g, '')) * 100 / parseFloat(total.replace(/[^0-9\.]/g, ''));
 
-    return {used : used, total : total, percent : Math.floor(percent)}
+    return {used : used, total : total, percent : Math.floor(percent)};
   };
 
 
@@ -551,7 +551,7 @@ var Gmail_ = function(localJQuery) {
 
   api.get.beta = function() {
     var features = {
-                    "new_nav_bar" : $('#gbz').length == 0
+                    "new_nav_bar" : $('#gbz').length === 0
                    };
 
     return features;
@@ -565,7 +565,7 @@ var Gmail_ = function(localJQuery) {
              forum         : api.get.unread_forum_emails(),
              update        : api.get.unread_update_emails(),
              promotions    : api.get.unread_promotion_emails(),
-             social        : api.get.unread_social_emails() }
+             social        : api.get.unread_social_emails() };
   };
 
 
@@ -730,7 +730,7 @@ var Gmail_ = function(localJQuery) {
     }
 
     if(typeof params.url.at == 'string') {
-      api.tracker.at = params.url.at
+      api.tracker.at = params.url.at;
     }
 
     if(typeof params.url.rid == 'string') {
@@ -829,7 +829,7 @@ var Gmail_ = function(localJQuery) {
       }
     }
 
-    if(typeof params.url.ik == 'string' && typeof params.url.search == 'string' && params.body.length == 0 && typeof params.url._reqid == 'string') {
+    if(typeof params.url.ik == 'string' && typeof params.url.search == 'string' && params.body.length === 0 && typeof params.url._reqid == 'string') {
       response = [params.url, params.body, sent_params];
       if(api.observe.bound('refresh')) {
         triggered.refresh = response;
@@ -970,7 +970,7 @@ var Gmail_ = function(localJQuery) {
             if (curr_onreadystatechange) {
               curr_onreadystatechange.apply(this, arguments);
             }
-          }
+          };
         }
 
         // send the original request
@@ -979,7 +979,7 @@ var Gmail_ = function(localJQuery) {
         // fire on events
         api.observe.trigger('on', events, this);
         return out;
-      }
+      };
     }
   };
 
@@ -1151,7 +1151,7 @@ var Gmail_ = function(localJQuery) {
     // if no defined handler, just call the callback
     if (!handler) {
       handler = function(match, callback) {
-        callback(match)
+        callback(match);
       };
     }
     if (!api.tracker.watchdog.dom[observer]) {
@@ -1264,7 +1264,7 @@ var Gmail_ = function(localJQuery) {
           match = new api.dom.compose(match);
           var type;
           if (match.is_inline()) {
-            type = match.find('input[name=subject]').val().indexOf('Fw') == 0 ? 'forward' : 'reply';
+            type = match.find('input[name=subject]').val().indexOf('Fw') === 0 ? 'forward' : 'reply';
           } else {
             type = 'compose';
           }
@@ -1285,7 +1285,7 @@ var Gmail_ = function(localJQuery) {
       if(!$.isArray(config.class)) config.class = [config.class];
       $.each(config.class, function(idx, className) {
         api.tracker.dom_observer_map[className] = act;
-      })
+      });
     });
     //console.log( 'observer_config', api.tracker.dom_observers, 'dom_observer_map', api.tracker.dom_observer_map);
   };
@@ -1444,7 +1444,7 @@ var Gmail_ = function(localJQuery) {
         // if an element has been found, execute the observer handler (or if none defined, execute the callback)
         if(element.length) {
 
-          var handler = config.handler ? config.handler : function(match, callback) { callback(match) };
+          var handler = config.handler ? config.handler : function(match, callback) { callback(match); };
           // console.log( 'inserted DOM: class match in watchdog',observer,api.tracker.watchdog.dom[observer] );
           api.observe.trigger_dom(observer, element, handler);
 
@@ -1533,7 +1533,7 @@ var Gmail_ = function(localJQuery) {
     var page = api.get.current_page();
     var url = window.location.origin + window.location.pathname + '?ui=2&ik=' + api.tracker.ik+'&rid=' + api.tracker.rid + '&view=tl&num=120&rt=1';
     if (!!$('.Dj:visible').find("b:first").text()) {
-      url += '&start=' + + parseInt($('.Dj:visible').find("b:first").text() - 1) + 
+      url += '&start=' + parseInt($('.Dj:visible').find("b:first").text() - 1) + 
         '&sstart=' + parseInt($('.Dj:visible').find("b:first").text() - 1);
     } else {
       url += '&start=0';
@@ -1541,7 +1541,7 @@ var Gmail_ = function(localJQuery) {
     
     if(page.indexOf('label/') == 0) {
       url += '&cat=' + page.split('/')[1] +'&search=cat';
-    } else if(page.indexOf('category/') == 0) {
+    } else if(page.indexOf('category/') === 0) {
       var cat_label = "";
 
       if(page.indexOf('forums') != -1) {
@@ -1554,7 +1554,7 @@ var Gmail_ = function(localJQuery) {
         cat_label = 'social';
       }
       url += '&cat=^smartlabel_' + cat_label +'&search=category';
-    } else if(page.indexOf('search/') == 0) {
+    } else if(page.indexOf('search/') === 0) {
       at = $('input[name=at]').val();
       url += '&qs=true&q=' + page.split('/')[1] +'&at=' + at + '&search=query';
     } else if(page == 'inbox'){
@@ -2571,10 +2571,6 @@ var Gmail_ = function(localJQuery) {
   return api;
 };
 
-if (!window.Gmail) {
-  window.Gmail = initalizeOnce(Gmail_);
-}
-
 function initalizeOnce(fn) {
   var result;
   return function() {
@@ -2583,6 +2579,11 @@ function initalizeOnce(fn) {
     }
     fn = null;
     return result;
-  }
+  };
 }
 
+if (typeof module !== 'undefined' && module['exports']) {
+  module.exports = Gmail_;
+} else if (!window.Gmail) {
+  window.Gmail = initalizeOnce(Gmail_);
+}
