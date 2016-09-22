@@ -1469,27 +1469,29 @@ var Gmail_ = function(localJQuery) {
   };
 
 
-  api.tools.make_request = function (link, method) {
-    link = decodeURIComponent(link);
+  api.tools.make_request = function (_link, method) {
+    var link = decodeURIComponent(_link.replace(/%23/g, "#-#-#"));
     method  = (typeof method == undefined || typeof method == null) ? 'GET' : method;
 
-    var request = $.ajax({ type: method, url: encodeURI(link), async:false });
+    link = encodeURI(link).replace(/#-#-#/gi, "%23");
+    var request = $.ajax({ type: method, url: link, async:false });
 
     return request.responseText;
   };
 
 
-  api.tools.make_request_async = function (link, method, callback) {
-    link = decodeURIComponent(link);
+  api.tools.make_request_async = function (_link, method, callback) {
+    var link = decodeURIComponent(_link.replace(/%23/g, "#-#-#"));
     method  = (typeof method == undefined || typeof method == null) ? 'GET' : method;
 
-    $.ajax({ type: method, url: encodeURI(link), async:true, dataType: 'text' })
-      .done(function(data, textStatus, jqxhr) {
-        callback(jqxhr.responseText);
-      })
-      .fail(function(jqxhr, textStatus, errorThrown) {
-        console.error('Request Failed', errorThrown);
-      });
+    link = encodeURI(link).replace(/#-#-#/gi, "%23");
+    $.ajax({ type: method, url: link, async:true, dataType: 'text' })
+        .done(function(data, textStatus, jqxhr) {
+          callback(jqxhr.responseText);
+        })
+        .fail(function(jqxhr, textStatus, errorThrown) {
+          console.error('Request Failed', errorThrown);
+        });
   };
 
 
@@ -1534,7 +1536,7 @@ var Gmail_ = function(localJQuery) {
     var url = window.location.origin + window.location.pathname + '?ui=2&ik=' + api.tracker.ik+'&rid=' + api.tracker.rid + '&view=tl&num=120&rt=1';
     if (!!$('.Dj:visible').find("b:first").text()) {
       url += '&start=' + + parseInt($('.Dj:visible').find("b:first").text() - 1) + 
-        '&sstart=' + parseInt($('.Dj:visible').find("b:first").text() - 1);
+        '&start=' + parseInt($('.Dj:visible').find("b:first").text() - 1);
     } else {
       url += '&start=0';
     }
@@ -1656,6 +1658,9 @@ var Gmail_ = function(localJQuery) {
     }
 
     if(hash.indexOf('inbox/') !== -1) {
+      page = 'email';
+    }
+    else if(hash.match(/\/[0-9a-f]{16,}$/gi)) {
       page = 'email';
     }
 
