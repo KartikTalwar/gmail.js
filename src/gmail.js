@@ -1660,6 +1660,9 @@ var Gmail_ = function(localJQuery) {
     if(hash.indexOf('inbox/') !== -1) {
       page = 'email';
     }
+    else if(hash.match(/\/[0-9a-f]{16,}$/gi)) {
+      page = 'email';
+    }
 
     return page || hash;
   };
