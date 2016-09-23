@@ -414,7 +414,7 @@ var Gmail_ = function(localJQuery) {
 
   api.check.are_shortcuts_enabled = function() {
     var flag_name = 'bx_hs';
-    var flag_value = undefined;
+    var flag_value;
 
     var check = true; // Flag possibly missing in convo view.
 
@@ -1539,11 +1539,12 @@ var Gmail_ = function(localJQuery) {
       url += '&start=0';
     }
     
-    if(page.indexOf('label/') == 0) {
+    var cat_label = "";
+
+    if(page.indexOf('label/') === 0) {
       url += '&cat=' + page.split('/')[1] +'&search=cat';
     } else if(page.indexOf('category/') === 0) {
-      var cat_label = "";
-
+      
       if(page.indexOf('forums') != -1) {
         cat_label = 'group';
       } else if(page.indexOf('updates') != -1) {
@@ -1887,7 +1888,7 @@ var Gmail_ = function(localJQuery) {
 
   api.get.displayed_email_data = function() {
     var email_data = api.get.email_data();
-    var displayed_email_data = {};
+    var displayed_email_data = {}, id, email;
 
     if (api.check.is_conversation_view()) {
       displayed_email_data = email_data;
@@ -1898,8 +1899,8 @@ var Gmail_ = function(localJQuery) {
       var hash = window.location.hash.split('#')[1] || '';
       var is_in_trash = (hash.indexOf('trash') === 0);
 
-      for (var id in threads) {
-        var email = threads[id];
+      for (id in threads) {
+        email = threads[id];
         var keep_email = (is_in_trash) ? email.is_deleted : !email.is_deleted;
 
         if (!keep_email) {
@@ -1916,7 +1917,7 @@ var Gmail_ = function(localJQuery) {
         var displayed_email_element = $('.ii.gt .a3s.aXjCH.' + message_class_id);
 
         if (displayed_email_element.length > 0) {
-          var email = email_data.threads[id];
+          email = email_data.threads[id];
 
           displayed_email_data.first_email = id;
           displayed_email_data.last_email = id;
@@ -1953,7 +1954,7 @@ var Gmail_ = function(localJQuery) {
 
   api.check.is_conversation_view = function() {
     var flag_name = 'bx_vmb';
-    var flag_value = undefined;
+    var flag_value;
 
     var array_with_flag = api.tracker.globals[17][4][1];
 
@@ -2579,7 +2580,7 @@ function initalizeOnce(fn) {
     }
     fn = null;
     return result;
-  };
+  }
 }
 
 if (typeof module !== 'undefined' && module['exports']) {
