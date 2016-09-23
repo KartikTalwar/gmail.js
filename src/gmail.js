@@ -203,7 +203,7 @@ var Gmail_ = function(localJQuery) {
     }
 
     return chat[0].getAttribute('aria-labelledby') == ':wf';
-  }
+  };
 
   api.check.should_compose_fullscreen = function(){
     var bx_scfs = [];
@@ -213,7 +213,7 @@ var Gmail_ = function(localJQuery) {
       bx_scfs = ['bx_scfs','false'];
     }
      return (bx_scfs[1] == 'true' ) ? true : false;
-  }
+  };
 
 
   api.check.is_google_apps_user =function() {
@@ -221,6 +221,9 @@ var Gmail_ = function(localJQuery) {
     return email.indexOf('gmail.com', email.length - 'gmail.com'.length) == -1;
   };
 
+  api.check.is_in_popout = function() {
+    return api.tools.parse_url(window.location.href).view === 'btop';
+  };
 
   api.get.storage_info = function() {
     var div = $('.md.mj').find('div')[0];
@@ -228,7 +231,7 @@ var Gmail_ = function(localJQuery) {
     var total = $(div).find('span')[1].text;
     var percent = parseFloat(used.replace(/[^0-9\.]/g, '')) * 100 / parseFloat(total.replace(/[^0-9\.]/g, ''));
 
-    return {used : used, total : total, percent : Math.floor(percent)}
+    return {used : used, total : total, percent : Math.floor(percent)};
   };
 
 
@@ -354,7 +357,7 @@ var Gmail_ = function(localJQuery) {
         var text = [];
 
         for(var i=0; i<items.length; i++) {
-          var mail_id = items[i].children[0].getAttribute('class').split(' ')[2];
+          var mail_id = items[i].className.split(' ')[2] || items[i].children[0].className.split(' ')[2];
           var is_editable = items[i].getAttribute('contenteditable');
           var is_visible = items[i].offsetWidth > 0 && items[i].offsetHeight > 0;
           if(mail_id != 'undefined' && mail_id != undefined && is_visible) {
@@ -370,7 +373,8 @@ var Gmail_ = function(localJQuery) {
       }
     }
     else {
-      hash = api.tools.parse_url(window.location.href).th;
+      hash = api.tools.parse_url(window.location.href).th || 
+        window.location.hash.split("/").pop().replace(/#/, '').split('?')[0];
     }
     
     return hash;
@@ -551,7 +555,7 @@ var Gmail_ = function(localJQuery) {
 
   api.get.beta = function() {
     var features = {
-                    "new_nav_bar" : $('#gbz').length == 0
+                    "new_nav_bar" : $('#gbz').length === 0
                    };
 
     return features;
@@ -565,7 +569,7 @@ var Gmail_ = function(localJQuery) {
              forum         : api.get.unread_forum_emails(),
              update        : api.get.unread_update_emails(),
              promotions    : api.get.unread_promotion_emails(),
-             social        : api.get.unread_social_emails() }
+             social        : api.get.unread_social_emails() };
   };
 
 
@@ -730,7 +734,7 @@ var Gmail_ = function(localJQuery) {
     }
 
     if(typeof params.url.at == 'string') {
-      api.tracker.at = params.url.at
+      api.tracker.at = params.url.at;
     }
 
     if(typeof params.url.rid == 'string') {
@@ -970,7 +974,7 @@ var Gmail_ = function(localJQuery) {
             if (curr_onreadystatechange) {
               curr_onreadystatechange.apply(this, arguments);
             }
-          }
+          };
         }
 
         // send the original request
@@ -979,7 +983,7 @@ var Gmail_ = function(localJQuery) {
         // fire on events
         api.observe.trigger('on', events, this);
         return out;
-      }
+      };
     }
   };
 
@@ -1151,7 +1155,7 @@ var Gmail_ = function(localJQuery) {
     // if no defined handler, just call the callback
     if (!handler) {
       handler = function(match, callback) {
-        callback(match)
+        callback(match);
       };
     }
     if (!api.tracker.watchdog.dom[observer]) {
@@ -1285,7 +1289,7 @@ var Gmail_ = function(localJQuery) {
       if(!$.isArray(config.class)) config.class = [config.class];
       $.each(config.class, function(idx, className) {
         api.tracker.dom_observer_map[className] = act;
-      })
+      });
     });
     //console.log( 'observer_config', api.tracker.dom_observers, 'dom_observer_map', api.tracker.dom_observer_map);
   };
@@ -1444,7 +1448,7 @@ var Gmail_ = function(localJQuery) {
         // if an element has been found, execute the observer handler (or if none defined, execute the callback)
         if(element.length) {
 
-          var handler = config.handler ? config.handler : function(match, callback) { callback(match) };
+          var handler = config.handler ? config.handler : function(match, callback) { callback(match); };
           // console.log( 'inserted DOM: class match in watchdog',observer,api.tracker.watchdog.dom[observer] );
           api.observe.trigger_dom(observer, element, handler);
 
@@ -1535,16 +1539,17 @@ var Gmail_ = function(localJQuery) {
     var page = api.get.current_page();
     var url = window.location.origin + window.location.pathname + '?ui=2&ik=' + api.tracker.ik+'&rid=' + api.tracker.rid + '&view=tl&num=120&rt=1';
     if (!!$('.Dj:visible').find("b:first").text()) {
-      url += '&start=' + + parseInt($('.Dj:visible').find("b:first").text() - 1) + 
+      url += '&start=' + parseInt($('.Dj:visible').find("b:first").text() - 1) + 
         '&start=' + parseInt($('.Dj:visible').find("b:first").text() - 1);
     } else {
       url += '&start=0';
     }
+
+    var cat_label = "";
     
-    if(page.indexOf('label/') == 0) {
+    if(page.indexOf('label/') === 0) {
       url += '&cat=' + page.split('/')[1] +'&search=cat';
-    } else if(page.indexOf('category/') == 0) {
-      var cat_label = "";
+    } else if(page.indexOf('category/') === 0) {
 
       if(page.indexOf('forums') != -1) {
         cat_label = 'group';
@@ -1556,7 +1561,7 @@ var Gmail_ = function(localJQuery) {
         cat_label = 'social';
       }
       url += '&cat=^smartlabel_' + cat_label +'&search=category';
-    } else if(page.indexOf('search/') == 0) {
+    } else if(page.indexOf('search/') === 0) {
       at = $('input[name=at]').val();
       url += '&qs=true&q=' + page.split('/')[1] +'&at=' + at + '&search=query';
     } else if(page == 'inbox'){
@@ -2576,10 +2581,6 @@ var Gmail_ = function(localJQuery) {
   return api;
 };
 
-if (!window.Gmail) {
-  window.Gmail = initalizeOnce(Gmail_);
-}
-
 function initalizeOnce(fn) {
   var result;
   return function() {
@@ -2588,6 +2589,11 @@ function initalizeOnce(fn) {
     }
     fn = null;
     return result;
-  }
+  };
 }
 
+if (typeof module !== 'undefined' && module['exports']) {
+  module.exports = Gmail_;
+} else if (!window.Gmail) {
+  window.Gmail = initalizeOnce(Gmail_);
+}
