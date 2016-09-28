@@ -1655,7 +1655,7 @@ var Gmail_ = function(localJQuery) {
       page = hash;
     }
 
-    if(hash.indexOf('inbox/') !== -1 || hash.indexOf('sent/') !== -1) {
+    if(hash.indexOf('inbox/') !== -1 || hash.indexOf('sent/') !== -1 || hash.indexOf('all/') !== -1) {
       page = 'email';
     }
 
