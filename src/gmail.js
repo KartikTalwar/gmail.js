@@ -1608,6 +1608,23 @@ var Gmail_ = function(localJQuery) {
     return emails;
   };
 
+  // dispatch mousedown and mouseup event on passed element
+  api.helper.trigger_mouse_click = function(element) {
+    if(element) {
+      //Trigger mouse down event
+      var mouseDown = document.createEvent('MouseEvents');
+      mouseDown.initEvent( 'mousedown', true, false );
+      element.dispatchEvent(mouseDown);
+
+      //Trigger mouse up event
+      var mouseUp = document.createEvent('MouseEvents');
+      mouseUp.initEvent( 'mouseup', true, false );
+      element.dispatchEvent(mouseUp);
+
+      return true;
+    }
+    return false
+  }
 
   api.get.visible_emails = function() {
     var url = api.helper.get.visible_emails_pre();
@@ -2172,6 +2189,18 @@ var Gmail_ = function(localJQuery) {
     $(window).resize(center);
   };
 
+  api.tools.toggle_minimize = function (){
+    //The minimize button
+    var minimizeButton = $('[alt="Minimize"]')[0];
+
+    if(minimizeButton) {
+      api.helper.trigger_mouse_click(minimizeButton);
+
+      return true;
+    }
+    return false;
+  }
+
   api.chat.is_hangouts = function() {
     if(api.tracker.hangouts != undefined) {
       return api.tracker.hangouts;
@@ -2558,16 +2587,8 @@ var Gmail_ = function(localJQuery) {
     var composeEl = $('.T-I.J-J5-Ji.T-I-KE.L3')[0];
 
     if(composeEl) {
-      //Trigger mouse down event
-      var mouseDown = document.createEvent('MouseEvents');
-      mouseDown.initEvent( 'mousedown', true, false );
-      composeEl.dispatchEvent(mouseDown);
-
-      //Trigger mouse up event
-      var mouseUp = document.createEvent('MouseEvents');
-      mouseUp.initEvent( 'mouseup', true, false );
-      composeEl.dispatchEvent(mouseUp);
-
+      api.helper.trigger_mouse_click(composeEl);
+      
       return true;
     }
     return false;
