@@ -15,8 +15,15 @@ var Gmail_ = function(localJQuery) {
     $ = localJQuery;
   } else if (typeof jQuery !== "undefined") {
     $ = jQuery;
+  } else {
+    // try load jQuery through node.
+    try {
+      $ = require("jquery");
+    }
+    catch(err) {
+      // else leave $ undefined, which may be fine for some purposes.
+    }
   }
-  // else leave $ undefined, which may be fine for some purposes.
 
   var api = {
               get : {},
@@ -2576,11 +2583,7 @@ var Gmail_ = function(localJQuery) {
   return api;
 };
 
-if (!window.Gmail) {
-  window.Gmail = initalizeOnce(Gmail_);
-}
-
-function initalizeOnce(fn) {
+function initializeOnce(fn) {
   var result;
   return function() {
     if (fn) {
@@ -2588,6 +2591,15 @@ function initalizeOnce(fn) {
     }
     fn = null;
     return result;
-  }
+  };
 }
 
+// required to avoid error in NodeJS.
+var GmailClass = initializeOnce(Gmail_);
+if (typeof(window) !== "undefined" && !window.Gmail) {
+    window.Gmail = GmailClass;
+}
+
+// make class accessible to require()-users.
+exports = exports || {};
+exports.Gmail = GmailClass;
