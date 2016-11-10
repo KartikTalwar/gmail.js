@@ -227,6 +227,7 @@ These are some helper functions that the rest of the methods use. See source for
 - gmail.tools**.sleep(ms)**
 - gmail.tools**.multitry(ms_delay, tries, func, bool_success_check)**
 - gmail.tools**.i18n(label)**
+- gmail.tools**.toggle_minimize()**
 - [gmail.tools**.add_toolbar_button(content_html, onclick_action, custom_style_class)**](#gmailtoolsadd_toolbar_buttoncontent_html-onclick_action-custom_style_class)
 - [gmail.tools**.add_compose_button(compose_ref, content_html, onclick_action, custom_style_class)**](#gmailtoolsadd_toolbar_buttoncompose_ref-content_html-onclick_action-custom_style_class)
 - [gmail.tools**.add_modal_window(title, content_html, onClickOk, onClickCancel, onClickClose)**](#gmailtoolsadd_modal_windowtitle-content_html-onClickOk-onClickCancel-onClickClose)
@@ -1236,6 +1237,14 @@ function() {
 	gmail.tools.remove_modal_window();
 });
 ```
+#### gmail.tools.toggle_minimize()
+
+Show/Hide compose window ```gmail.tools.toggle_minimize```.
+
+```js
+gmail.tools.toggle_minimize
+```
+
 
 ## Author and Licensing
 
