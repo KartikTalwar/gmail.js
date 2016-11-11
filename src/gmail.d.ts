@@ -383,6 +383,10 @@ interface GmailTools {
     add_compose_button(composeWindow: GmailDomCompose, content_html: string, onClickFunction: Function, styleClass: string): JQuery;
     remove_modal_window(): void;
     add_modal_window(title: string, content_html: string, onClickOk: Function, onClickCancel?: Function, onClickClose?: Function): void;
+    /**
+     * Show/Hide compose window
+     */
+    toggle_minimize(): void;
 
 }
 
@@ -484,6 +488,11 @@ interface GmailObserve {
 ////////////////////////////////////////////////////////////////////////////////
 
 interface GmailHelper {
+    /**
+     * Dispatch mousedown and mouseup event on passed element
+     */
+    trigger_mouse_click(element: HTMLElement): boolean;
+
     get: {
         is_delegated_inbox(): boolean;
         visible_emails_pre(): string;
