@@ -469,8 +469,8 @@ var Gmail_ = function(localJQuery) {
     var dom = $("div[role=navigation]").find("[title*='" + api.tools.i18n('inbox') + "']");
 
     if(dom.length > 0) {
-      if(dom[0].text.indexOf('(') != -1) {
-        return parseInt(dom[0].text.replace(/[^0-9]/g, ''));
+      if(dom[0].text.indexOf('(') != -1) { 
+        return parseInt(dom[0].text.split(':')[0].replace(/[^0-9]/g, ''));
       }
     }
 
