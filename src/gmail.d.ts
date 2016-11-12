@@ -85,6 +85,9 @@ declare type GmailEmailData = {
 };
 
 interface GmailGet {
+    /**
+       Gets user's account activity data
+    */
     last_active(): {
         time: string,
         ip: string,
@@ -92,17 +95,40 @@ interface GmailGet {
         time_relative: string
     };
 
+    /**
+       Returns a list of signed-in accounts (multiple user accounts
+       setup in gmail)
+     */
     loggedin_accounts(): {
         name: string,
         email: string,
         index: number
     }[];
 
+    /**
+       Returns the current user's email address
+     */
     user_email(): string;
+    /**
+       Returns the email address of the user currently managing the
+       account (if the inbox is used by the owner, this function
+       returns the same value as gmail.get.user_email())
+     */
     manager_email(): string;
+    /**
+       Returns the email address of the user the account is currently
+       delegated to (if the inbox is used by the owner, this function
+       returns null)
+     */
     delegated_to_email(): string;
+    /**
+       Returns the Gmail localization, e.g. 'US'.
+     */
     localization(): string;
 
+    /**
+       Returns current user's file storage stats
+     */
     storage_info(): {
         used: string,
         total: string,
@@ -110,8 +136,22 @@ interface GmailGet {
     };
 
     email_ids(): string[];
+    /**
+       Returns the latest/last email id of emails that have been saved
+       as drafts (currently open)
+     */
     compose_ids(): string[];
+    /**
+       Gets current email's ID
+     */
     email_id(): string;
+    /**
+       Returns the opened email's subject from the DOM
+    */
+    email_subject(): string;
+    /**
+       Returns the search bar data
+     */
     search_query(): string;
     unread_inbox_emails(): number;
     unread_draft_emails(): number;
@@ -120,7 +160,24 @@ interface GmailGet {
     unread_update_emails(): number;
     unread_promotion_emails(): number;
     unread_social_emails(): number;
+    /**
+       Although hand picked, this method returns the checks on beta
+       features and deployments
+    */
     beta(): { [feature: string]: boolean; };
+    /**
+       Returns a count of total unread emails for the current account.
+
+       You can also request the data individually using:
+       
+       gmail.get.unread_inbox_emails()
+       gmail.get.unread_draft_emails()
+       gmail.get.unread_spam_emails()
+       gmail.get.unread_forum_emails()
+       gmail.get.unread_update_emails()
+       gmail.get.unread_promotion_emails()
+       gmail.get.unread_social_emails()
+     */
     unread_emails(): {
         inbox: boolean;
         drafts: boolean;
@@ -131,13 +188,50 @@ interface GmailGet {
         social: boolean;
     };
 
+    /**
+       Returns a list of emails from the server that are currently
+       visible in the inbox view.  The data does not come from the DOM
+     */
     visible_emails(): string[];
+    /**
+       Does the same as visible_emails, but with a callback instead.
+     */
     visible_emails_async(callback: (emails: string[]) => void);
-    selected_emails_data(): any[];
+    /**
+       Returns a list of object representation from emails that are
+       currently selected in the inbox view.  The data does not come
+       from the DOM
+    */
+    selected_emails_data(): GmailEmailData[];
+    /**
+       Returns what page of gmail the user is currently on.
+     */
     current_page(): GmailPageType;
+    /**
+       Returns an object representation of the opened email contents
+       and metadata. It takes the optional email_id parameter where
+       the data for the specified id is returned instead of the email
+       currently visible in the dom.
+
+       thread_id is added for updated gmail thread behaviour which adds
+       support for emails created in inbox. first_email remains as the first
+       message in the thread.
+     */
     email_data(email_id?: string): GmailEmailData;
+    /**
+       Does the same as email_data but accepts a callback function
+    */
     email_data_async(email_id: string, callback: (email_data: GmailEmailData) => void): void;
+    /**
+       Retrieves raw MIME message source from the gmail server for the
+       specified email id. It takes the optional email_id parameter
+       where the data for the specified id is returned instead of the
+       email currently visible in the dom
+    */
     email_source(email_id: string): string;
+    /**
+       Does the same as email_source but accepts a callback function
+    */
     email_source_async(email_id: string, callback: (email_source: string) => void): void;
     displayed_email_data(): GmailEmailData;
 
@@ -151,25 +245,98 @@ interface GmailGet {
 ////////////////////////////////////////////////////////////////////////////////
 
 interface GmailCheck {
+    /**
+       Returns True if the conversation is threaded False otherwise
+     */
     is_thread(): boolean;
+    /**
+       Returns True if gmail is in split pane mode (vertical or
+       horizontal) False otherwise
+     */
     is_preview_pane(): boolean;
+    /**
+       Returns True if user has multiple inbox lab enabled, False otherwise
+     */
     is_multiple_inbox(): boolean;
+    /**
+       Returns True if the pane split mode is horiontal False otherwise
+     */
     is_horizontal_split(): boolean;
+    /**
+       Returns True if the pane mode is vertical False otherwise
+     */
     is_vertical_split(): boolean;
+    /**
+       Returns True if tabbed inbox view is enabled False otherwise
+     */
     is_tabbed_inbox(): boolean;
+    /**
+       Returns True if chat is on the right sidebar False otherwise
+     */
     is_right_side_chat(): boolean;
+    /**
+       Returns True if compose is in fullscreen mode False otherwise
+     */
     should_compose_fullscreen(): boolean;
+    /**
+       Returns True if the current user is google apps user (email not
+       ending in gmail.com) False otherwise
+       gmail.check.is_inside_email()
+     */
     is_google_apps_user(): boolean;
+    /**
+       Returns True if you are currently inside an email conversation
+       False otherwise
+     */
     is_inside_email(): boolean;
+    /**
+       Returns True if compose is in plain text mode, False if in rich
+       text mode
+     */
     is_plain_text(): boolean;
+    /**
+       Returns True if priority inbox is enabled False otherwise
+     */
     is_priority_inbox(): boolean;
+    /**
+       Returns True if rapportive chrome extension is installed False
+       otherwise
+     */
     is_rapportive_installed(): boolean;
+    /**
+       Returns True if streak chrome extension is installed False
+       otherwise
+     */
     is_streak_installed(): boolean;
+    /**
+       Returns True if any.do chrome extension is installed False
+       otherwise
+     */
     is_anydo_installed(): boolean;
+    /**
+       Returns True if boomerang chrome extension is installed False
+       otherwise
+     */
     is_boomerang_installed(): boolean;
+    /**
+       Returns True if xobni chrome extension is installed False
+       otherwise
+     */
     is_xobni_installed(): boolean;
+    /**
+       Returns True if Signal chrome extension is installed False
+       otherwise
+     */
     is_signal_installed(): boolean;
+    /**
+       Returns True if user has enabled mail action shortcuts, False
+       otherwise
+     */
     are_shortcuts_enabled(): boolean;
+    /**
+       Returns True if emails are displayed as threads, False
+       otherwise (i.e. displayed individually)
+     */
     is_conversation_view(): boolean;
 }
 
@@ -393,6 +560,9 @@ interface GmailTools {
     make_request(link: string, method: GmailHttpRequestMethod): string;
     make_request_async(link: string, method: GmailHttpRequestMethod, callback: (data: string) => void);
     parse_view_data(view_data: any[]): any[];
+    /**
+       Adds the yellow info box on top of gmail with the given message
+    */
     infobox(message: string, time?: number, html?: string): void;
     /**
      * Re-renders the UI using the available data.
@@ -448,7 +618,19 @@ declare type GmailBindAction =
     | 'recipient_change' | 'view_thread' | 'view_email' | 'load_email_menu';
 
 interface GmailObserve {
+    /**
+       After an observer has been bound through gmail.observe.bind() (via a
+       call to events gmail.observe.before(), gmail.observe.on(), or
+       gmail.observe.after()), this method keeps track of the last 50 http
+       events. The items contain the sent requested parameterized data
+    */
     http_requests(): {}[];
+    /**
+       Similar to gmail.observe.http_requests() this keeps track of
+       the last 10 gmail actions (vs all http requests). Actions here
+       correspond to things like clicking refres, archiving, deleting,
+       starring etc.
+     */
     actions(): {}[];
     /**
        Bind a specified callback to an array of callbacks against a specified type & action
@@ -463,6 +645,18 @@ interface GmailObserve {
     on(action: "load_email_menu", callback: (obj: JQuery) => void): void;
     on(action: "compose", callback: (GmailDomCompose, type: GmailComposeType) => void): void;
     on(action: "load", callback: () => void): void;
+    /**
+       This is the key feature of gmail.js. This method allows you to
+       add triggers to all of these actions so you can build your
+       custom extension/tool with this library.
+       
+       You simply specify the action name and your function that the
+       method will return data to when the actions are triggered and
+       it does the rest. You can have multiple triggers
+
+       Your callback will be fired directly after Gmail's XMLHttpRequest
+       has been sent off the the Gmail servers.
+    */
     on(action: GmailBindAction, callback: Function, response_callback?: Function): void;
     /**
       an before event is observed just prior to the gmail xhr request being sent
@@ -549,6 +743,10 @@ interface GmailHelper {
 ////////////////////////////////////////////////////////////////////////////////
 
 interface GmailChat {
+    /**
+       Returns True if the account supports the new hangout UI for
+       chat False otherwise (native chat window)
+     */
     is_hangouts(): boolean | undefined;
 }
 
@@ -561,8 +759,8 @@ interface GmailChat {
 
 interface GmailCompose {
     /**
-     *  Show a compose window
-     * @returns {boolean}
+     * Show a compose window
+     * (Clicks on the compose button making the inbox compose view to popup)
      */
     start_compose(): boolean;
 }
