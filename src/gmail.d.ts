@@ -776,10 +776,21 @@ declare class Gmail {
     constructor(localJQuery?: JQueryStatic);
 
     version: string;
+    /**
+       These are some of the variables that are tracked and kept in
+       memory while the rest of the methods are in use.
+     */
     tracker: GmailTracker;
     get: GmailGet;
     check: GmailCheck;
+    /**
+       These methods return the DOM data itself
+     */
     dom: GmailDom;
+    /**
+       These are some helper functions that the rest of the methods
+       use. See source for input params
+     */
     tools: GmailTools;
     observe: GmailObserve;
     helper: GmailHelper;
