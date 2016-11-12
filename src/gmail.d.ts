@@ -310,21 +310,59 @@ declare type GmailDomCompose = {
 }
 
 interface GmailDom {
+    /**
+      * Gets a jQuery object representing the inbox contents.
+      */
     inbox_content(): JQuery;
+    /**
+      * Gets a jQuery object representing the inbox contents.
+      */
     inboxes(): JQuery;
+    /**
+      * Gets a jQuery object representing the inboxes.
+      */
     email_subject(): JQuery;
+    /**
+      * Gets a jQuery object representing the email-subject.
+      */
     email_body(): JQuery;
+    /**
+      * Gets the DOM element representing the email body.
+     */
     toolbar(): HTMLElement[];
+    /**
+      * Gets a jQuery object representing the toolbar.
+      */
     email_contents(): HTMLElement[];
+    /**
+      * Gets a jQuery object representing the email contents.
+      */
     get_left_sidebar_links(): JQuery;
+    /**
+      * Gets a jQuery object representing the left sidebar links.
+      */
     search_bar(): JQuery;
+    /**
+      * Returns all known compose DOM elements.
+      */
     composes(): GmailDomCompose[];
     /**
        A compose object. Represents a compose window in the DOM and provides a bunch of methods and properties to access & interact with the window
        Expects a jQuery DOM element for the compose div
     */
     compose(element: JQuery | HTMLElement | string): GmailDomCompose;
+    /**
+       An object for interacting with an email currently present in the DOM. Represents an individual email message within a thread
+       Provides a number of methods and properties to access & interact with it
+       Expects a jQuery DOM element for the email div (div.adn as returned by the 'view_email' observer), or an email_id
+    */
     email(element: string | HTMLElement | JQuery): GmailDomEmail;
+    /**
+       An object for interacting with an email currently present in the DOM. Represents a conversation thread
+       Provides a number of methods and properties to access & interact with it
+       Expects a jQuery DOM element for the thread wrapper div (div.if as returned by the 'view_thread' observer)
+    */
+    thread(element: JQuery): GmailDomThread;
 }
 
 
