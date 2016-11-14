@@ -701,7 +701,6 @@ var Gmail_ = function(localJQuery) {
                       'tae'         : 'add_to_tasks',
                       'rc_^i'       : 'archive',
                       'tr'          : 'delete',
-                      'cs'          : 'undo_send',
                       'dm'          : 'delete_message_in_thread',
                       'dl'          : 'delete_forever',
                       'dc_'         : 'delete_label',
@@ -721,6 +720,7 @@ var Gmail_ = function(localJQuery) {
                       'sm'          : 'send_message',
                       'mo'          : 'show_newly_arrived_message',
                       'st'          : 'star',
+                      'cs'          : 'undo_send',
                       'ug'          : 'unmute',
                       'ur'          : 'unread',
                       'xst'         : 'unstar',
@@ -1681,7 +1681,7 @@ var Gmail_ = function(localJQuery) {
       page = hash;
     }
 
-    if(hash.indexOf('inbox/') !== -1) {
+    if(hash.indexOf('inbox/') !== -1 || hash.indexOf('sent/') !== -1 || hash.indexOf('all/') !== -1) {
       page = 'email';
     }
     else if(hash.match(/\/[0-9a-f]{16,}$/gi)) {
