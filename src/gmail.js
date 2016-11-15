@@ -1478,7 +1478,7 @@ var Gmail_ = function(localJQuery) {
 
   api.tools.make_request = function (_link, method) {
     var link = decodeURIComponent(_link.replace(/%23/g, "#-#-#"));
-    method  = (typeof method == undefined || typeof method == null) ? 'GET' : method;
+    method  = method || 'GET';
 
     link = encodeURI(link).replace(/#-#-#/gi, "%23");
     var request = $.ajax({ type: method, url: link, async:false });
@@ -1489,7 +1489,7 @@ var Gmail_ = function(localJQuery) {
 
   api.tools.make_request_async = function (_link, method, callback) {
     var link = decodeURIComponent(_link.replace(/%23/g, "#-#-#"));
-    method  = (typeof method == undefined || typeof method == null) ? 'GET' : method;
+    method  = method || 'GET';
 
     link = encodeURI(link).replace(/#-#-#/gi, "%23");
     $.ajax({ type: method, url: link, async:true, dataType: 'text' })
