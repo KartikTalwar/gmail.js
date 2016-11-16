@@ -779,6 +779,7 @@ gmail.observe.on('view_email', function(obj) {
 
  - **load** - When the gmail interface has completed loading
  - **compose** - When a new compose window opens, or a message is replied to or forwarded
+ - **compose_cancelled** - When an existing compose window is closed.
  - **recipient_change** - When the recipient (to, cc or bcc) is changed when composing a new email or replying/forwarding an email
  - **view_thread** - When a new coversation thread is opened
   - **view_thread Sub-observers**
