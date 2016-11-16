@@ -1910,11 +1910,34 @@ var Gmail_ = function(localJQuery) {
     return url;
   };
 
+    api.tools.reformat_source = function(responseText, callback) {
+        var result = null;
+        try {
+            // if parsing suceeds, its a HTML-embedded MIME-message
+            var parser = new DOMParser();
+            var doc = parser.parseFromString(responseText, "text/html");
+            var elem = doc.getElementById("raw_message_text");
+            var source = elem.innerHTML;
+            result = source;
+        }
+        catch (err) {
+            // if parsing fails, its a raw mime message
+        }
+        result = result || responseText;
+
+        if (callback) {
+            callback(result);
+        } else {
+            return result;
+        }
+    };
 
   api.get.email_source = function(email_id) {
     var url = api.helper.get.email_source_pre(email_id);
     if (url != null) {
-      return api.tools.make_request(url);
+      return api.tools.reformat_source(
+        api.tools.make_request(url)
+      );
     }
     return '';
   };
@@ -1923,7 +1946,9 @@ var Gmail_ = function(localJQuery) {
   api.get.email_source_async = function(email_id, callback) {
     var url = api.helper.get.email_source_pre(email_id);
     if (url != null) {
-      api.tools.make_request_async(url, 'GET', callback);
+      api.tools.make_request_async(url, 'GET', function(value) {
+          api.tools.reformat_source(value, callback);
+      });
     } else {
       callback('');
     }
