@@ -1910,26 +1910,19 @@ var Gmail_ = function(localJQuery) {
     return url;
   };
 
-    api.tools.reformat_source = function(responseText, callback) {
-        var result = null;
+    api.tools.reformat_source = function(responseText) {
         try {
             // if parsing suceeds, its a HTML-embedded MIME-message
             var parser = new DOMParser();
             var doc = parser.parseFromString(responseText, "text/html");
             var elem = doc.getElementById("raw_message_text");
             var source = elem.innerHTML;
-            result = source;
+            return source;
         }
         catch (err) {
             // if parsing fails, its a raw mime message
         }
-        result = result || responseText;
-
-        if (callback) {
-            callback(result);
-        } else {
-            return result;
-        }
+        return responseText;
     };
 
   api.get.email_source = function(email_id) {
@@ -1947,7 +1940,7 @@ var Gmail_ = function(localJQuery) {
     var url = api.helper.get.email_source_pre(email_id);
     if (url != null) {
       api.tools.make_request_async(url, 'GET', function(value) {
-          api.tools.reformat_source(value, callback);
+        callback(api.tools.reformat_source(value));
       });
     } else {
       callback('');
