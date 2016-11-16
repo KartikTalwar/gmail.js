@@ -2,8 +2,6 @@
 // gmail.d.ts
 // ==========
 //
-// Canoical source: https://github.com/josteink/gmail.ts
-//
 // This code is MIT licensed.
 
 
