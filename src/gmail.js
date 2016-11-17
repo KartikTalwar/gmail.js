@@ -589,10 +589,11 @@ var Gmail_ = function(localJQuery) {
     api.tools.parse_url = function(url) {
         var regex = /[?&]([^=#]+)=([^&#]*)/g;
         var params = {};
-        var match;
+        var match = regex.exec(url);
 
-        while (match = regex.exec(url)) {
+        while (match) {
             params[match[1]] = match[2];
+            match = regex.exec(url);
         }
 
         return params;
