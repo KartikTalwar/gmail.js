@@ -2656,5 +2656,7 @@ if (typeof(window) !== "undefined" && !window.Gmail) {
 }
 
 // make class accessible to require()-users.
-exports = exports || {};
-exports.Gmail = GmailClass;
+if (typeof(exports) !== "undefined") {
+    exports.Gmail = GmailClass;
+}
+
