@@ -1560,7 +1560,7 @@ var Gmail_ = function(localJQuery) {
         var page = api.get.current_page();
         var url = window.location.origin + window.location.pathname + "?ui=2&ik=" + api.tracker.ik+"&rid=" + api.tracker.rid + "&view=tl&num=120&rt=1";
         if ($(".Dj:visible").find("b:first").text()) {
-            url += "&start=" + + parseInt($(".Dj:visible").find("b:first").text() - 1) +
+            url += "&start=" + parseInt($(".Dj:visible").find("b:first").text() - 1) +
                 "&start=" + parseInt($(".Dj:visible").find("b:first").text() - 1);
         } else {
             url += "&start=0";
