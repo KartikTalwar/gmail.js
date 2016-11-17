@@ -1535,7 +1535,6 @@ var Gmail_ = function(localJQuery) {
 
         for(var i=0; i < data.length; i++) {
             var x = data[i];
-            var temp = {};
 
             parsed.push({
                 id: x[0],
@@ -1801,7 +1800,6 @@ var Gmail_ = function(localJQuery) {
 
     api.tools.parse_email_data = function(email_data) {
         var data = {};
-        var threads = {};
 
         for(var i in email_data) {
             var x = email_data[i];
@@ -2365,7 +2363,6 @@ var Gmail_ = function(localJQuery) {
            subject   string  set as new subject
         */
         subject: function(subject) {
-            var el = this.dom("subjectbox");
             if(subject) this.dom("all_subjects").val(subject);
             subject = this.dom("subjectbox").val();
             return subject ? subject : this.dom("subject").val();
@@ -2522,7 +2519,7 @@ var Gmail_ = function(localJQuery) {
             // loop through any matching to elements & prepare for output
             var out = new Array();
 
-            this.dom("to").each(function(index) {
+            this.dom("to").each(function() {
                 el = $(this);
                 out.push({
                     email:  el.attr("email"),
