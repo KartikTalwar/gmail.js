@@ -1937,69 +1937,76 @@ var Gmail_ = function(localJQuery) {
         }
     };
 
-
     api.get.displayed_email_data = function() {
         var email_data = api.get.email_data();
-        var displayed_email_data = {};
 
         if (api.check.is_conversation_view()) {
-            displayed_email_data = email_data;
-
-            var threads = displayed_email_data.threads;
-            var total_threads = displayed_email_data.total_threads;
-
-            var hash = window.location.hash.split("#")[1] || "";
-            var is_in_trash = (hash.indexOf("trash") === 0);
-
-            for (var id in threads) {
-                var email = threads[id];
-                var keep_email = (is_in_trash) ? email.is_deleted : !email.is_deleted;
-
-                if (!keep_email) {
-                    delete threads[id];
-                    total_threads.splice(total_threads.indexOf(id), 1);
-                    displayed_email_data.total_emails--;
-                    // TODO: remove people involved only in this email.
-                }
-            }
+            return get_displayed_email_data_for_thread(email_data);
         }
         else { // Supposing only one displayed email.
-            for (id in email_data.threads) {
-                var message_class_id = "m"+id;
-                var displayed_email_element = $(".ii.gt .a3s.aXjCH." + message_class_id);
+            return get_displayed_email_data_for_single_email(email_data);
+        }
+    };
 
-                if (displayed_email_element.length > 0) {
-                    var email = email_data.threads[id];
+    var get_displayed_email_data_for_thread = function(email_data) {
+        var displayed_email_data = email_data;
 
-                    displayed_email_data.first_email = id;
-                    displayed_email_data.last_email = id;
-                    displayed_email_data.subject = email_data.subject;
+        var threads = displayed_email_data.threads;
+        var total_threads = displayed_email_data.total_threads;
 
-                    displayed_email_data.threads = {};
-                    displayed_email_data.threads[id] = email;
-                    displayed_email_data.total_emails = 1;
-                    displayed_email_data.total_threads = [id];
+        var hash = window.location.hash.split("#")[1] || "";
+        var is_in_trash = (hash.indexOf("trash") === 0);
 
-                    displayed_email_data.people_involved = [];
+        for (var id in threads) {
+            var email = threads[id];
+            var keep_email = (is_in_trash) ? email.is_deleted : !email.is_deleted;
 
-                    displayed_email_data.people_involved.push(
-                        [email.from, email.from_email]
-                    );
-
-                    email.to.forEach(function(recipient) {
-                        var address = api.tools.extract_email_address(recipient);
-                        var name = api.tools.extract_name(recipient.replace(address, "")) || "";
-
-                        displayed_email_data.people_involved.push(
-                            [name, address]
-                        );
-                    });
-
-                    break;
-                }
+            if (!keep_email) {
+                delete threads[id];
+                total_threads.splice(total_threads.indexOf(id), 1);
+                displayed_email_data.total_emails--;
+                // TODO: remove people involved only in this email.
             }
         }
+        return displayed_email_data;
+    };
 
+    var get_displayed_email_data_for_single_email = function(email_data) {
+        var displayed_email_data = {};
+        for (id in email_data.threads) {
+            var message_class_id = "m"+id;
+            var displayed_email_element = $(".ii.gt .a3s.aXjCH." + message_class_id);
+
+            if (displayed_email_element.length > 0) {
+                var email = email_data.threads[id];
+
+                displayed_email_data.first_email = id;
+                displayed_email_data.last_email = id;
+                displayed_email_data.subject = email_data.subject;
+
+                displayed_email_data.threads = {};
+                displayed_email_data.threads[id] = email;
+                displayed_email_data.total_emails = 1;
+                displayed_email_data.total_threads = [id];
+
+                displayed_email_data.people_involved = [];
+
+                displayed_email_data.people_involved.push(
+                    [email.from, email.from_email]
+                );
+
+                email.to.forEach(function(recipient) {
+                    var address = api.tools.extract_email_address(recipient);
+                    var name = api.tools.extract_name(recipient.replace(address, "")) || "";
+
+                    displayed_email_data.people_involved.push(
+                        [name, address]
+                    );
+                });
+
+                break;
+            }
+        }
         return displayed_email_data;
     };
 
