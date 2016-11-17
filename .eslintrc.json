@@ -1,5 +1,13 @@
 {
-    "parser": "espree",
+    "env": {
+        "node": true,
+        "browser": true
+    },
+    "globals": {
+        "jQuery": true,
+        "GLOBALS": true,
+        "VIEW_DATA": true
+    },
     "ecmaFeatures": {},
     "rules": {
         "no-alert": "off",
@@ -11,9 +19,8 @@
         "no-class-assign": "error",
         "no-cond-assign": "error",
         "no-confusing-arrow": "off",
-        "no-console": "error",
         "no-const-assign": "error",
-        "no-constant-condition": "error",
+        "no-constant-condition": "off",
         "no-continue": "off",
         "no-control-regex": "error",
         "no-debugger": "error",
@@ -119,7 +126,7 @@
         "no-unsafe-negation": "error",
         "no-unused-expressions": "off",
         "no-unused-labels": "error",
-        "no-unused-vars": "error",
+        "no-unused-vars": "warn",
         "no-use-before-define": "off",
         "no-useless-call": "off",
         "no-useless-computed-key": "off",
@@ -169,7 +176,7 @@
         "id-blacklist": "off",
         "id-length": "off",
         "id-match": "off",
-        "indent": "off",
+        "indent": "error",
         "init-declarations": "off",
         "jsx-quotes": "off",
         "key-spacing": "off",
@@ -213,7 +220,7 @@
         "require-jsdoc": "off",
         "require-yield": "error",
         "rest-spread-spacing": "off",
-        "semi": "off",
+        "semi": "error",
         "semi-spacing": "off",
         "sort-keys": "off",
         "sort-imports": "off",
