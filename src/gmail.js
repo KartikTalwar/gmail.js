@@ -2377,10 +2377,10 @@ var Gmail_ = function(localJQuery) {
             if (el.length) {
                 var fromNameAndEmail = el.val();
                 if (fromNameAndEmail) {
-                    return gmail.tools.extract_email_address(fromNameAndEmail);
+                    return api.tools.extract_email_address(fromNameAndEmail);
                 }
             }
-            return gmail.get.user_email();
+            return api.get.user_email();
         },
 
         /**
