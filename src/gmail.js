@@ -1566,11 +1566,11 @@ var Gmail_ = function(localJQuery) {
             url += "&start=0";
         }
 
+        var cat_label = "";
+
         if(page.indexOf("label/") === 0) {
             url += "&cat=" + page.split("/")[1] +"&search=cat";
         } else if(page.indexOf("category/") === 0) {
-            var cat_label = "";
-
             if(page.indexOf("forums") !== -1) {
                 cat_label = "group";
             } else if(page.indexOf("updates") !== -1) {
