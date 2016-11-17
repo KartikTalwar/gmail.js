@@ -210,7 +210,7 @@ var Gmail_ = function(localJQuery) {
         }
 
         return chat[0].getAttribute("aria-labelledby") == ":wf";
-    }
+    };
 
     api.check.should_compose_fullscreen = function(){
         var bx_scfs = [];
@@ -220,7 +220,7 @@ var Gmail_ = function(localJQuery) {
             bx_scfs = ["bx_scfs","false"];
         }
         return (bx_scfs[1] == "true" ) ? true : false;
-    }
+    };
 
 
     api.check.is_google_apps_user =function() {
@@ -235,7 +235,7 @@ var Gmail_ = function(localJQuery) {
         var total = $(div).find("span")[1].text;
         var percent = parseFloat(used.replace(/[^0-9\.]/g, "")) * 100 / parseFloat(total.replace(/[^0-9\.]/g, ""));
 
-        return {used : used, total : total, percent : Math.floor(percent)}
+        return {used : used, total : total, percent : Math.floor(percent)};
     };
 
 
@@ -574,7 +574,7 @@ var Gmail_ = function(localJQuery) {
             update        : api.get.unread_update_emails(),
             promotions    : api.get.unread_promotion_emails(),
             social        : api.get.unread_social_emails()
-        }
+        };
     };
 
 
@@ -740,7 +740,7 @@ var Gmail_ = function(localJQuery) {
         }
 
         if(typeof params.url.at == "string") {
-            api.tracker.at = params.url.at
+            api.tracker.at = params.url.at;
         }
 
         if(typeof params.url.rid == "string") {
@@ -861,7 +861,7 @@ var Gmail_ = function(localJQuery) {
 
     api.tools.parse_response = function(response) {
         var parsedResponse = [],
-        data, dataLength, endIndex, realData;
+            data, dataLength, endIndex, realData;
 
         try {
 
@@ -980,7 +980,7 @@ var Gmail_ = function(localJQuery) {
                         if (curr_onreadystatechange) {
                             curr_onreadystatechange.apply(this, arguments);
                         }
-                    }
+                    };
                 }
 
                 // send the original request
@@ -989,7 +989,7 @@ var Gmail_ = function(localJQuery) {
                 // fire on events
                 api.observe.trigger("on", events, this);
                 return out;
-            }
+            };
         }
     };
 
@@ -1161,7 +1161,7 @@ var Gmail_ = function(localJQuery) {
         // if no defined handler, just call the callback
         if (!handler) {
             handler = function(match, callback) {
-                callback(match)
+                callback(match);
             };
         }
         if (!api.tracker.watchdog.dom[observer]) {
@@ -1306,7 +1306,7 @@ var Gmail_ = function(localJQuery) {
             if(!$.isArray(config.class)) config.class = [config.class];
             $.each(config.class, function(idx, className) {
                 api.tracker.dom_observer_map[className] = act;
-            })
+            });
         });
         //console.log( "observer_config", api.tracker.dom_observers, "dom_observer_map", api.tracker.dom_observer_map);
     };
@@ -1470,7 +1470,7 @@ var Gmail_ = function(localJQuery) {
                 // if an element has been found, execute the observer handler (or if none defined, execute the callback)
                 if(element.length) {
 
-                    var handler = config.handler ? config.handler : function(match, callback) { callback(match) };
+                    var handler = config.handler ? config.handler : function(match, callback) { callback(match); };
                     // console.log( "inserted DOM: class match in watchdog",observer,api.tracker.watchdog.dom[observer] );
                     api.observe.trigger_dom(observer, element, handler);
 
@@ -1649,8 +1649,8 @@ var Gmail_ = function(localJQuery) {
 
             return true;
         }
-        return false
-    }
+        return false;
+    };
 
     api.get.visible_emails = function() {
         var url = api.helper.get.visible_emails_pre();
@@ -2230,7 +2230,7 @@ var Gmail_ = function(localJQuery) {
             return true;
         }
         return false;
-    }
+    };
 
     api.chat.is_hangouts = function() {
         if(api.tracker.hangouts != undefined) {
