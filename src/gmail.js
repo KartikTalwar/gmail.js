@@ -1582,7 +1582,7 @@ var Gmail_ = function(localJQuery) {
             }
             url += "&cat=^smartlabel_" + cat_label +"&search=category";
         } else if(page.indexOf("search/") == 0) {
-            at = $("input[name=at]").val();
+            var at = $("input[name=at]").val();
             url += "&qs=true&q=" + page.split("/")[1] +"&at=" + at + "&search=query";
         } else if(page == "inbox"){
             if ($("div[aria-label='Social']").attr("aria-selected") == "true") {
@@ -1971,7 +1971,7 @@ var Gmail_ = function(localJQuery) {
 
     var get_displayed_email_data_for_single_email = function(email_data) {
         var displayed_email_data = {};
-        for (id in email_data.threads) {
+        for (var id in email_data.threads) {
             var message_class_id = "m"+id;
             var displayed_email_element = $(".ii.gt .a3s.aXjCH." + message_class_id);
 
@@ -2520,7 +2520,7 @@ var Gmail_ = function(localJQuery) {
             var out = new Array();
 
             this.dom("to").each(function() {
-                el = $(this);
+                var el = $(this);
                 out.push({
                     email:  el.attr("email"),
                     name: el.attr("name"),
