@@ -2517,7 +2517,7 @@ var Gmail_ = function(localJQuery) {
 
 
             // loop through any matching to elements & prepare for output
-            var out = new Array();
+            var out = [];
 
             this.dom("to").each(function() {
                 var el = $(this);
