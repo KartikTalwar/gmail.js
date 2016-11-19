@@ -1842,19 +1842,20 @@ var Gmail_ = function(localJQuery) {
     return data;
   };
 
-
-  api.helper.get.email_data_pre = function(email_id) {
+  api.helper.get.email_data_pre = function(email_id, message_ids) {
     if(api.check.is_inside_email() && email_id == undefined) {
       email_id = api.get.email_id();
     }
 
     var url = null;
+    var msgs_param = (message_ids && message_ids.length) ? message_ids.join(",") : message_ids;
+    if(!msgs_param) msgs_param = "";
+
     if(email_id != undefined) {
-      url = window.location.origin + window.location.pathname + '?ui=2&ik=' + api.tracker.ik + '&rid=' + api.tracker.rid + '&view=cv&th=' + email_id + '&msgs=&mb=0&rt=1&search=mbox';
+      url = window.location.origin + window.location.pathname + '?ui=2&ik=' + api.tracker.ik + '&rid=' + api.tracker.rid + '&view=cv&th=' + email_id + '&msgs=' + msgs_param + '&mb=0&rt=1&search=mbox';
     }
     return url;
-  };
-
+  }
 
   api.helper.get.email_data_post = function(get_data) {
     if (!get_data) {
@@ -1871,8 +1872,8 @@ var Gmail_ = function(localJQuery) {
   };
 
 
-  api.get.email_data = function(email_id) {
-    var url = api.helper.get.email_data_pre(email_id);
+  api.get.email_data = function(email_id, message_ids) {
+    var url = api.helper.get.email_data_pre(email_id, message_ids);
 
     if (url != null) {
       var get_data = api.tools.make_request(url);
@@ -1881,8 +1882,21 @@ var Gmail_ = function(localJQuery) {
     }
 
     return {};
-  };
+  }
 
+  api.get.email_data_full = function(email_id) {
+    var url = api.helper.get.email_data_pre(email_id);
+
+    if (url != null) {
+      var get_data = api.tools.make_request(url);
+      var email_data = api.helper.get.email_data_post(get_data);
+      var second_call = api.get.email_data(email_id, Object.keys(email_data.threads));
+      email_data.threads = second_call.threads;
+      return email_data;
+    }
+
+    return {};
+  }
 
   api.get.email_data_async = function(email_id, callback) {
     var url = api.helper.get.email_data_pre(email_id);
@@ -1896,6 +1910,21 @@ var Gmail_ = function(localJQuery) {
     }
   };
 
+  api.get.email_data_full_async = function(email_id, callback) {
+    var url = api.helper.get.email_data_pre(email_id);
+    if (url != null) {
+      api.tools.make_request_async(url, 'GET', function (get_data) {
+        var email_data = api.helper.get.email_data_post(get_data);
+        api.get.email_data_async(email_id, function(second_call) {
+            email_data.threads = second_call.threads;
+            callback(email_data);
+        }, Object.keys(email_data.threads));
+
+      });
+    } else {
+      callback({});
+    }
+  }
 
   api.helper.get.email_source_pre = function(email_id) {
     if(api.check.is_inside_email() && email_id == undefined) {
@@ -2644,4 +2673,3 @@ if (typeof(window) !== "undefined" && !window.Gmail) {
 if (typeof(exports) !== "undefined") {
     exports.Gmail = GmailClass;
 }
-

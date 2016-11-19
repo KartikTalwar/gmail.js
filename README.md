@@ -80,8 +80,10 @@ gmail.get.user_email();
 - [gmail.get**.email_ids()**](#gmailgetemail_ids)
 - [gmail.get**.email_subject()**](#gmailgetemail_subject)
 - [gmail.get**.compose_ids()**](#gmailgetcompose_ids)
-- [gmail.get**.email_data(email_id=undefined)**](#gmailgetemail_dataemail_idundefined)
+- [gmail.get**.email_data(email_id=undefined, message_ids=undefined)**](#gmailgetemail_dataemail_idundefined)
+- [gmail.get**.email_data_full(email_id=undefined)**](#gmailgetemail_data_fullemail_idundefined)
 - [gmail.get**.email_data_async(email_id=undefined, callback)**](#gmailgetemail_dataemail_idundefined-callback)
+- [gmail.get**.email_data_full_async(email_id=undefined, callback)**](#gmailgetemail_data_fullemail_idundefined-callback)
 - [gmail.get**.displayed_email_data()**](#gmailgetdisplayed_email_data)
 - [gmail.get**.email_source(email_id=undefined)**](#gmailgetemail_sourceemail_idundefined)
 - [gmail.get**.email_source_async(email_id=undefined, callback)**](#gmailgetemail_sourceemail_idundefined-callback)
@@ -336,10 +338,11 @@ The data does not come from the DOM
 }]
 ```
 
-#### gmail.get.email_data(email_id=undefined)
+#### gmail.get.email_data(email_id=undefined, message_ids=undefined)
 
 Returns an object representation of the opened email contents and metadata. It takes the optional email_id parameter where
 the data for the specified id is returned instead of the email currently visible in the dom.
+Second parameter `message_ids` is also optional and is used when calling `gmail.get.email_data_full` or `gmail.get.email_data_full_async`.
 
 `thread_id` is added for updated gmail thread behaviour which adds support for emails created in [inbox](https://inbox.google.com). first_email remains as the first message in the thread.
 
@@ -375,10 +378,20 @@ the data for the specified id is returned instead of the email currently visible
 }
 ```
 
+#### gmail.get.email_data_full(email_id=undefined)
+
+Same as above, but returns full HTML email body for each message in thread.
+(Sends two requests instead of one)
+
+
 #### gmail.get.email_data(email_id=undefined, callback)
 
+Does the same as above but accepts a callback function
+
+#### gmail.get.email_data_full(email_id=undefined, callback)
 
 Does the same as above but accepts a callback function
+(Sends two requests instead of one)
 
 
 #### gmail.get.displayed_email_data()
