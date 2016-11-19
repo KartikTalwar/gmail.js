@@ -379,7 +379,7 @@ var Gmail_ = function(localJQuery) {
     else {
       hash = api.tools.parse_url(window.location.href).th;
     }
-    
+
     return hash;
   };
 
@@ -469,7 +469,7 @@ var Gmail_ = function(localJQuery) {
     var dom = $("div[role=navigation]").find("[title*='" + api.tools.i18n('inbox') + "']");
 
     if(dom.length > 0) {
-      if(dom[0].text.indexOf('(') != -1) { 
+      if(dom[0].text.indexOf('(') != -1) {
         return parseInt(dom[0].text.split(':')[0].replace(/[^0-9]/g, ''));
       }
     }
@@ -1558,12 +1558,12 @@ var Gmail_ = function(localJQuery) {
     var page = api.get.current_page();
     var url = window.location.origin + window.location.pathname + '?ui=2&ik=' + api.tracker.ik+'&rid=' + api.tracker.rid + '&view=tl&num=120&rt=1';
     if (!!$('.Dj:visible').find("b:first").text()) {
-      url += '&start=' + + parseInt($('.Dj:visible').find("b:first").text() - 1) + 
+      url += '&start=' + + parseInt($('.Dj:visible').find("b:first").text() - 1) +
         '&start=' + parseInt($('.Dj:visible').find("b:first").text() - 1);
     } else {
       url += '&start=0';
     }
-    
+
     if(page.indexOf('label/') == 0) {
       url += '&cat=' + page.split('/')[1] +'&search=cat';
     } else if(page.indexOf('category/') == 0) {
@@ -1904,33 +1904,18 @@ var Gmail_ = function(localJQuery) {
 
     var url = null;
     if(email_id != undefined) {
-      url = window.location.origin + window.location.pathname + '?ui=2&ik=' + api.tracker.ik + '&view=om&th=' + email_id;
+      // this is normally included also but doesn't seem to be needed: '&attid=0&safe=1&zw'
+      url = window.location.origin + window.location.pathname + '?view=att&th=' + email_id + '&disp=comp';
     }
 
     return url;
   };
 
-    api.tools.reformat_source = function(responseText) {
-        try {
-            // if parsing suceeds, its a HTML-embedded MIME-message
-            var parser = new DOMParser();
-            var doc = parser.parseFromString(responseText, "text/html");
-            var elem = doc.getElementById("raw_message_text");
-            var source = elem.innerHTML;
-            return source;
-        }
-        catch (err) {
-            // if parsing fails, its a raw mime message
-        }
-        return responseText;
-    };
 
   api.get.email_source = function(email_id) {
     var url = api.helper.get.email_source_pre(email_id);
     if (url != null) {
-      return api.tools.reformat_source(
-        api.tools.make_request(url)
-      );
+      return api.tools.make_request(url);
     }
     return '';
   };
@@ -1940,7 +1925,7 @@ var Gmail_ = function(localJQuery) {
     var url = api.helper.get.email_source_pre(email_id);
     if (url != null) {
       api.tools.make_request_async(url, 'GET', function(value) {
-        callback(api.tools.reformat_source(value));
+        callback(value);
       });
     } else {
       callback('');
@@ -2629,7 +2614,7 @@ var Gmail_ = function(localJQuery) {
 
     if(composeEl) {
       api.helper.trigger_mouse_click(composeEl);
-      
+
       return true;
     }
     return false;
