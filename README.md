@@ -14,7 +14,10 @@
 - I still need to add implementation for chrome extension, works by injecting js for now
 - Main methods allow you to observe certain events with **`gmail.observe.on('lots_of_actions_here', callback())`** or similar **`gmail.observe.before(...)`** and **`gmail.observe.after(...)`**
 - Click on a method link to view more detailed docs
-- Create an issue/pull request for feedback, requests and fixes
+- Create an issue/pull request for feedback, requests and
+  fixes. See
+  [CONTRIBUTING.md](https://github.com/KartikTalwar/gmail.js/blob/master/CONTRIBUTING.md) for
+  more details.
 - Basic TypeScript-support from type-declarations file [gmail.d.ts](https://github.com/KartikTalwar/gmail.js/blob/master/src/gmail.d.ts).
 
 ### Installation
