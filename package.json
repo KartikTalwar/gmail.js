@@ -9,7 +9,7 @@
         "url": "https://github.com/KartikTalwar/gmail.js.git"
     },
     "scripts": {
-        "test": "./node_modules/.bin/eslint src/*.js"
+        "lint": "./node_modules/.bin/eslint src/*.js"
     },
     "keywords": [
         "gmail",
