@@ -1,5 +1,6 @@
 # Gmail.js - JavaScript API for Gmail
 
+![Build status](https://api.travis-ci.org/KartikTalwar/gmail.js.svg?branch=master)
 
 **Note:** The new Content Security Policy will prevent direct injection. **[Here](https://github.com/KartikTalwar/gmail-chrome-extension-boilerplate)** is how to get around it
 
