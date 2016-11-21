@@ -1,10 +1,13 @@
 
 # Changelog
 
-## Version 0.5.4
+## Version 0.6.1
+
+- Fix `api.get.localization` bug.
+
+## Version 0.6.0
 
 - Fix `api.get.email_source` format-bug.
-- Fix `api.get.localization` bug.
 - Add new event-type: `compose_cancelled`.
 - Various bug-fixes.
 
