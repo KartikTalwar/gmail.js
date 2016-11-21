@@ -10,7 +10,9 @@
     },
     "scripts": {
         "lint": "./node_modules/.bin/eslint src/*.js",
-        "ci": "npm run lint"
+        "tsc": "./node_modules/.bin/tsc",
+        "test": "./node_modules/.bin/mocha test/test.*.js",
+        "ci": "npm run tsc && npm run test && npm run lint"
     },
     "keywords": [
         "gmail",
@@ -25,6 +27,7 @@
     "devDependencies": {
         "@types/jquery": "^1.10.27",
         "eslint": "^3.10.2",
+        "mocha": "^3.1.2",
         "typescript": "^2.0.7"
     },
     "author": "Kartik Talwar",
