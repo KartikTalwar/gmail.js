@@ -37,7 +37,7 @@ var Gmail_ = function(localJQuery) {
         helper : {get: {}}
     };
 
-    api.version           = "0.5";
+    api.version           = "0.6";
     api.tracker.globals   = typeof GLOBALS !== "undefined" ? GLOBALS : ( window.opener !== null && typeof window.opener.GLOBALS !== "undefined" ? window.opener.GLOBALS : [] );
     api.tracker.view_data = typeof VIEW_DATA !== "undefined" ? VIEW_DATA : ( window.opener !== null && typeof window.opener.VIEW_DATA !== "undefined" ? window.opener.VIEW_DATA : [] );
     api.tracker.ik        = api.tracker.globals[9] || "";
