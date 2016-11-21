@@ -120,32 +120,32 @@ var Gmail_ = function(localJQuery) {
         return $(".gb_rb[href$='" + userIndexPrefix + delegatedToUserIndex + "'] .gb_yb").text().split(" ")[0];
     };
 
+    api.helper.get.is_locale = function(locale) {
+        // A locale is a string that begins with 2 letters, either lowercase or uppercase
+        // The "lowercase" check distinguishes locales from other 2-letter strings like "US"
+        // (the user"s location?).
+        if (!locale || ((typeof locale) !== "string") || locale.length < 2) {
+            return false;
+        }
+
+        var localePrefix = locale.slice(0, 2);
+        return localePrefix.toLowerCase() === localePrefix ||
+            localePrefix.toUpperCase() === localePrefix;
+    };
 
     api.get.localization = function() {
-        var isLocale = function(locale) {
-            // A locale is a string that begins with 2 letters, lowercase.
-            // The "lowercase" check distinguishes locales from other 2-letter strings like "US"
-            // (the user"s location?).
-            if (!locale || ((typeof locale) !== "string") || locale.length < 2) {
-                return false;
-            }
-
-            var localePrefix = locale.slice(0, 2);
-            return localePrefix.toLowerCase() === localePrefix;
-        };
-
         var globals = api.tracker.globals;
 
         // First candidate.
         var locale = globals[17] && globals[17][8] && globals[17][8][8];
-        if (isLocale(locale)) {
-            return locale;
+        if (api.helper.get.is_locale(locale)) {
+            return locale.toLowerCase();
         }
 
         // Second candidate.
         locale = globals[17] && globals[17][9] && globals[17][9][8];
-        if (isLocale(locale)) {
-            return locale;
+        if (api.helper.get.is_locale(locale)) {
+            return locale.toLowerCase();
         }
 
         return null;
