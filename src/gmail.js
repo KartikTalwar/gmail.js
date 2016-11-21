@@ -38,8 +38,20 @@ var Gmail_ = function(localJQuery) {
     };
 
     api.version           = "0.6.0";
-    api.tracker.globals   = typeof GLOBALS !== "undefined" ? GLOBALS : ( window.opener !== null && typeof window.opener.GLOBALS !== "undefined" ? window.opener.GLOBALS : [] );
-    api.tracker.view_data = typeof VIEW_DATA !== "undefined" ? VIEW_DATA : ( window.opener !== null && typeof window.opener.VIEW_DATA !== "undefined" ? window.opener.VIEW_DATA : [] );
+    api.tracker.globals   = typeof GLOBALS !== "undefined"
+        ? GLOBALS
+        : (
+            typeof(window) !== "undefined" && window.opener !== null && typeof window.opener.GLOBALS !== "undefined"
+                ? window.opener.GLOBALS
+                : []
+        );
+    api.tracker.view_data = typeof VIEW_DATA !== "undefined"
+        ? VIEW_DATA
+        : (
+            typeof(window) !== "undefined" && window.opener !== null && typeof window.opener.VIEW_DATA !== "undefined"
+                ? window.opener.VIEW_DATA
+                : []
+        );
     api.tracker.ik        = api.tracker.globals[9] || "";
     api.tracker.hangouts  = undefined;
 
@@ -895,6 +907,16 @@ var Gmail_ = function(localJQuery) {
         }
 
         return parsedResponse;
+    };
+
+    /**
+       Node-friendly function to extend objects without depending on jQuery
+       (which requires a browser-context)
+       */
+    var extend = function(target, extension) {
+        for (var key in extension) {
+            target[key] = extension[key];
+        }
     };
 
     api.tools.parse_requests = function(params, xhr) {
@@ -2291,7 +2313,7 @@ var Gmail_ = function(localJQuery) {
         return this;
     };
 
-    $.extend(api.dom.compose.prototype, {
+    extend(api.dom.compose.prototype, {
         /**
            Retrieve the compose id
         */
@@ -2455,7 +2477,7 @@ var Gmail_ = function(localJQuery) {
         return this;
     };
 
-    $.extend(api.dom.email.prototype, {
+    extend(api.dom.email.prototype, {
 
         /**
            Get/Set the full email body as it sits in the DOM
@@ -2594,7 +2616,7 @@ var Gmail_ = function(localJQuery) {
         return this;
     };
 
-    $.extend(api.dom.thread.prototype, {
+    extend(api.dom.thread.prototype, {
 
         /**
            Retrieve preconfigured dom elements for this email
