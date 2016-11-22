@@ -228,9 +228,9 @@ interface GmailGet {
     */
     email_source(email_id: string): string;
     /**
-       Does the same as email_source but accepts a callback function
+       Does the same as email_source but accepts a callback and an optional error_callback function
     */
-    email_source_async(email_id: string, callback: (email_source: string) => void): void;
+    email_source_async(email_id: string, callback: (email_source: string) => void, error_callback: (jqxhr, textStatus: string, errorThrown: string) => void): void;
     displayed_email_data(): GmailEmailData;
 
 }
@@ -555,8 +555,8 @@ interface GmailTools {
     */
     insertion_observer(target: HTMLElement | string, dom_observers: any, dom_observer_map: any, sub: any);
 
-    make_request(link: string, method: GmailHttpRequestMethod): string;
-    make_request_async(link: string, method: GmailHttpRequestMethod, callback: (data: string) => void);
+    make_request(link: string, method: GmailHttpRequestMethod, disable_cache: boolean): string;
+    make_request_async(link: string, method: GmailHttpRequestMethod, callback: (data: string) => void, disable_cache: boolean);
     parse_view_data(view_data: any[]): any[];
     /**
        Adds the yellow info box on top of gmail with the given message

@@ -955,6 +955,7 @@ var Gmail_ = function(localJQuery) {
     api.tools.xhr_watcher = function () {
         if (!api.tracker.xhr_init) {
             api.tracker.xhr_init = true;
+            // TODO(michi88): what to do when window.opener === null? (i've seen this in production errors)
             var win = top.document.getElementById("js_frame") ? top.document.getElementById("js_frame").contentDocument.defaultView : window.opener.top.document.getElementById("js_frame").contentDocument.defaultView;
 
             if (!win.gjs_XMLHttpRequest_open) {
@@ -1517,28 +1518,38 @@ var Gmail_ = function(localJQuery) {
     };
 
 
-    api.tools.make_request = function (_link, method) {
+    api.tools.make_request = function (_link, method, disable_cache) {
         var link = decodeURIComponent(_link.replace(/%23/g, "#-#-#"));
         method  = method || "GET";
 
         link = encodeURI(link).replace(/#-#-#/gi, "%23");
-        var request = $.ajax({ type: method, url: link, async:false });
-
+        var config = {type: method, url: link, async: false};
+        if (disable_cache) {
+            config.cache = false;
+        }
+        var request = $.ajax(config);
         return request.responseText;
     };
 
 
-    api.tools.make_request_async = function (_link, method, callback) {
+    api.tools.make_request_async = function (_link, method, callback, error_callback, disable_cache) {
         var link = decodeURIComponent(_link.replace(/%23/g, "#-#-#"));
         method  = method || "GET";
 
         link = encodeURI(link).replace(/#-#-#/gi, "%23");
-        $.ajax({ type: method, url: link, async:true, dataType: "text" })
+        var config = {type: method, url: link, async: true, dataType: "text"};
+        if (disable_cache){
+            config.cache = false;
+        }
+        $.ajax(config)
             .done(function(data, textStatus, jqxhr) {
                 callback(jqxhr.responseText);
             })
             .fail(function(jqxhr, textStatus, errorThrown) {
                 console.error("Request Failed", errorThrown);
+                if (typeof error_callback === 'function'){
+                    error_callback(jqxhr, textStatus, errorThrown)
+                }
             });
     };
 
@@ -1929,8 +1940,7 @@ var Gmail_ = function(localJQuery) {
 
         var url = null;
         if(email_id !== undefined) {
-            // this is normally included also but doesn't seem to be needed: '&attid=0&safe=1&zw'
-            url = window.location.origin + window.location.pathname + "?view=att&th=" + email_id + "&disp=comp";
+            url = window.location.origin + window.location.pathname + "?view=att&th=" + email_id + "&attid=0&disp=comp&safe=1&zw";
         }
 
         return url;
@@ -1940,18 +1950,16 @@ var Gmail_ = function(localJQuery) {
     api.get.email_source = function(email_id) {
         var url = api.helper.get.email_source_pre(email_id);
         if (url !== null) {
-            return api.tools.make_request(url);
+            return api.tools.make_request(url, "GET", true);
         }
         return "";
     };
 
 
-    api.get.email_source_async = function(email_id, callback) {
+    api.get.email_source_async = function(email_id, callback, error_callback) {
         var url = api.helper.get.email_source_pre(email_id);
         if (url !== null) {
-            api.tools.make_request_async(url, "GET", function(value) {
-                callback(value);
-            });
+            api.tools.make_request_async(url, "GET", callback, error_callback, true);
         } else {
             callback("");
         }
