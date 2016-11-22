@@ -955,7 +955,6 @@ var Gmail_ = function(localJQuery) {
     api.tools.xhr_watcher = function () {
         if (!api.tracker.xhr_init) {
             api.tracker.xhr_init = true;
-            // TODO(michi88): what to do when window.opener === null? (i've seen this in production errors)
             var win = top.document.getElementById("js_frame") ? top.document.getElementById("js_frame").contentDocument.defaultView : window.opener.top.document.getElementById("js_frame").contentDocument.defaultView;
 
             if (!win.gjs_XMLHttpRequest_open) {
