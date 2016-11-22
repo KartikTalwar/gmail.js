@@ -1547,7 +1547,7 @@ var Gmail_ = function(localJQuery) {
             .fail(function(jqxhr, textStatus, errorThrown) {
                 console.error("Request Failed", errorThrown);
                 if (typeof error_callback === 'function'){
-                    error_callback(jqxhr, textStatus, errorThrown)
+                    error_callback(jqxhr, textStatus, errorThrown);
                 }
             });
     };
