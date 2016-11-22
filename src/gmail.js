@@ -302,9 +302,7 @@ var Gmail_ = function(localJQuery) {
         for(var i=0; i<items.length; i++) {
             var mail_id = items[i].getAttribute("class").split(" ")[2];
             if(mail_id !== "undefined" && mail_id !== undefined) {
-                if($(items[i]).is(":visible")) {
-                    ids.push(items[i]);
-                }
+                ids.push(items[i]);
             }
         }
 
