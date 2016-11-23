@@ -1595,7 +1595,7 @@ var Gmail_ = function(localJQuery) {
         if (start) {
             start = parseInt(start - 1);
             url += "&start=" + start +
-                   "&start=" + start;
+                   "&sstart=" + start;
         } else {
             url += "&start=0";
         }
