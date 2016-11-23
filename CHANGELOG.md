@@ -1,6 +1,10 @@
 
 # Changelog
 
+## Version 0.6.2
+
+- Fix CORS-issue introduced in `api.get.email_source` in version 0.6.0.
+
 ## Version 0.6.1
 
 - Fix `api.get.localization` bug.
