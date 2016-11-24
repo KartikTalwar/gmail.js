@@ -87,6 +87,7 @@ gmail.get.user_email();
 - [gmail.get**.email_data(email_id=undefined)**](#gmailgetemail_dataemail_idundefined)
 - [gmail.get**.email_data_async(email_id=undefined, callback)**](#gmailgetemail_dataemail_idundefined-callback)
 - [gmail.get**.displayed_email_data()**](#gmailgetdisplayed_email_data)
+- [gmail.get**.displayed_email_data_async(callback)**](#gmailgetdisplayed_email_data_asynccallback)
 - [gmail.get**.email_source(email_id=undefined)**](#gmailgetemail_sourceemail_idundefined)
 - [gmail.get**.email_source_async(email_id=undefined, callback)**](#gmailgetemail_sourceemail_idundefined-callback)
 - [gmail.get**.search_query()**](#gmailgetsearch_query)
@@ -421,6 +422,11 @@ Returns an object representation of the emails that are being displayed.
 }
 
 ```
+
+#### gmail.get.displayed_email_data_async(callback)
+
+Does the same as above but accepts a callback function
+
 
 #### gmail.get.email_source(email_id=undefined)
 
