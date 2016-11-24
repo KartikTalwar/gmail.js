@@ -231,7 +231,15 @@ interface GmailGet {
        Does the same as email_source but accepts a callback and an optional error_callback function
     */
     email_source_async(email_id: string, callback: (email_source: string) => void, error_callback: (jqxhr, textStatus: string, errorThrown: string) => void): void;
+    /**
+     Retrieves the a email/thread data from the server that is currently
+     visible.  The data does not come from the DOM.
+     */
     displayed_email_data(): GmailEmailData;
+    /**
+     Does the same as displayed_email_data, but with a callback instead.
+     */
+    displayed_email_data_async(callback: (gmailEmailData: GmailEmailData) => void): void;
 
 }
 

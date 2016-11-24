@@ -1976,6 +1976,17 @@ var Gmail_ = function(localJQuery) {
         }
     };
 
+    api.get.displayed_email_data_async = function (callback) {
+        api.get.email_data_async(undefined, function (email_data) {
+            if (api.check.is_conversation_view()) {
+                callback(get_displayed_email_data_for_thread(email_data));
+            }
+            else { // Supposing only one displayed email.
+                callback(get_displayed_email_data_for_single_email(email_data));
+            }
+        });
+    };
+
     var get_displayed_email_data_for_thread = function(email_data) {
         var displayed_email_data = email_data;
 
