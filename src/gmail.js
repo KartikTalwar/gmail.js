@@ -1864,6 +1864,7 @@ var Gmail_ = function(localJQuery) {
                 data.threads[x[1]].cc = (x[13] !== undefined) ? x[13][2] : [];
                 data.threads[x[1]].bcc = (x[13] !== undefined) ? x[13][3] : [];
                 data.threads[x[1]].reply_to = api.tools.get_reply_to(x[13]);
+                data.threads[x[1]].labels = x[9];
 
                 try { // jQuery will sometime fail to parse x[13][6], if so, putting the raw HTML
                     data.threads[x[1]].content_plain = (x[13] !== undefined) ? $(x[13][6]).text() : x[8];
