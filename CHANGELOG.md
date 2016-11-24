@@ -1,6 +1,11 @@
 
 # Changelog
 
+## Version 0.6.3
+
+- Fix `api.check.is_inside_email` when email text is hidden/collapsed
+- Fix `api.get.visible_emails`
+
 ## Version 0.6.2
 
 - Fix CORS-issue introduced in `api.get.email_source` in version 0.6.0.
