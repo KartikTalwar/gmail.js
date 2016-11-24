@@ -1851,7 +1851,7 @@ var Gmail_ = function(localJQuery) {
                 }
 
                 data.threads[x[1]] = {};
-                data.threads[x[1]].is_deleted = x[13] ? true : false;
+                data.threads[x[1]].is_deleted = (x[9] && x[9].indexOf("^k") > -1);
                 data.threads[x[1]].reply_to_id = x[2];
                 data.threads[x[1]].from = x[5];
                 data.threads[x[1]].from_email = x[6];
