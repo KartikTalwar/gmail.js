@@ -1851,7 +1851,7 @@ var Gmail_ = function(localJQuery) {
                 }
 
                 data.threads[x[1]] = {};
-                data.threads[x[1]].is_deleted = x[13] === undefined;
+                data.threads[x[1]].is_deleted = x[13] ? true : false;
                 data.threads[x[1]].reply_to_id = x[2];
                 data.threads[x[1]].from = x[5];
                 data.threads[x[1]].from_email = x[6];
@@ -1859,17 +1859,18 @@ var Gmail_ = function(localJQuery) {
                 data.threads[x[1]].datetime = x[24];
                 data.threads[x[1]].attachments = x[21].split(",");
                 data.threads[x[1]].subject = x[12];
-                data.threads[x[1]].content_html = (x[13] !== undefined) ? x[13][6] : x[8];
-                data.threads[x[1]].to = (x[13] !== undefined) ? x[13][1] : ((x[37] !== undefined) ? x[37][1]:[]);
-                data.threads[x[1]].cc = (x[13] !== undefined) ? x[13][2] : [];
-                data.threads[x[1]].bcc = (x[13] !== undefined) ? x[13][3] : [];
+                data.threads[x[1]].content_html = x[13] ? x[13][6] : x[8];
+                data.threads[x[1]].to = x[13] ? x[13][1] : ((x[37] !== undefined) ? x[37][1]:[]);
+                data.threads[x[1]].cc = x[13] ? x[13][2] : [];
+                data.threads[x[1]].bcc = x[13] ? x[13][3] : [];
                 data.threads[x[1]].reply_to = api.tools.get_reply_to(x[13]);
+                data.threads[x[1]].labels = x[9];
 
                 try { // jQuery will sometime fail to parse x[13][6], if so, putting the raw HTML
-                    data.threads[x[1]].content_plain = (x[13] !== undefined) ? $(x[13][6]).text() : x[8];
+                    data.threads[x[1]].content_plain = x[13] ? $(x[13][6]).text() : x[8];
                 }
                 catch(e) {
-                    data.threads[x[1]].content_plain = (x[13] !== undefined) ? x[13][6] : x[8];
+                    data.threads[x[1]].content_plain = x[13] ? x[13][6] : x[8];
                 }
             }
         }
