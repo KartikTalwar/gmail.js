@@ -143,7 +143,7 @@ gmail.get.user_email();
 
 
 #### OBSERVE
-It is considered best practise to wait for the gmail interface to be loaded before observing any XHR actions.
+It is considered best practice to wait for the gmail interface to be loaded before observing any XHR actions.
 ```js
 gmail.observe.on("load", function(){
     //... now you can safely register other observers using gmail.observe.on
