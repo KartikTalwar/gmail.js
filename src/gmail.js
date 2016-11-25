@@ -227,7 +227,7 @@ var Gmail_ = function(localJQuery) {
     api.check.should_compose_fullscreen = function(){
         var bx_scfs = [];
         try {
-            bx_scfs = api.tracker.globals[17][4][1][32];
+            bx_scfs = api.tracker.globals[17][4][1][151];
         } catch(er) {
             bx_scfs = ["bx_scfs","false"];
         }
