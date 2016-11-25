@@ -1819,7 +1819,7 @@ var Gmail_ = function(localJQuery) {
 
     api.tools.get_reply_to = function(ms13) {
         // reply to is an array if exists
-        var reply_to = (ms13 !== undefined) ? ms13[4] : [];
+        var reply_to = ms13 ? ms13[4] : [];
 
         // if reply to set get email from it and return it
         if (reply_to.length !== 0) {
