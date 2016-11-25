@@ -144,12 +144,20 @@ gmail.get.user_email();
 
 
 #### OBSERVE
+It is considered best practice to wait for the gmail interface to be loaded before observing any XHR actions.
+```js
+gmail.observe.on("load", function(){
+    //... now you can safely register other observers using gmail.observe.on
+});
+```
 
 - [gmail.observe**.http_requests()**](#gmailobservehttp_requests)
 - [gmail.observe**.actions()**](#gmailobserveactions)
 - [gmail.observe**.register(action, class/args, parent)**](#gmailobserveregisteraction-classargs-parentnull) - registers a custom DOM observer
 - [gmail.observe**.off(action,type)**](#gmailobserveoffactionnulltypenull)
 - [gmail.observe**.on(action, callback)**](#gmailobserveonaction-callback)
+  - **XHR observers**
+  - **`load`** - When the gmail interface has finished loading
   - **`http_event`** - When gmail any CRUD operation happens on gmail
   - **`poll`** - When gmail automatically polls the server to check for new emails every few seconds
   - **`new_email`** - When a new email appears in the inbox

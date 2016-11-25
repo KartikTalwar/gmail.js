@@ -3,8 +3,8 @@
 
 ## Version 0.6.3
 
-- Fix `api.check.is_inside_email` when email text is hidden/collapsed
-- Fix `api.get.visible_emails`
+- Fix `api.check.is_inside_email` when email text is hidden/collapsed.
+- Fix `api.get.visible_emails`.
 - Fix `api.tools.parse_email_data` when email text is deleted
 - Fix `api.tools.get_reply_to` when input parameter is null
 - Added `api.get.displayed_email_data_async`
