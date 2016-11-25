@@ -1,15 +1,12 @@
 
 # Changelog
 
-## Version 0.6.4
-
-- Fix `api.tools.parse_email_data` when email text is deleted
-- Added `api.get.displayed_email_data_async`
-
 ## Version 0.6.3
 
 - Fix `api.check.is_inside_email` when email text is hidden/collapsed
 - Fix `api.get.visible_emails`
+- Fix `api.tools.parse_email_data` when email text is deleted
+- Added `api.get.displayed_email_data_async`
 
 ## Version 0.6.2
 
