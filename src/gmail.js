@@ -1828,7 +1828,7 @@ var Gmail_ = function(localJQuery) {
 
     api.tools.get_reply_to = function(ms13) {
         // reply to is an array if exists
-        var reply_to = (ms13 !== undefined) ? ms13[4] : [];
+        var reply_to = ms13 ? ms13[4] : [];
 
         // if reply to set get email from it and return it
         if (reply_to.length !== 0) {
@@ -1860,7 +1860,7 @@ var Gmail_ = function(localJQuery) {
                 }
 
                 data.threads[x[1]] = {};
-                data.threads[x[1]].is_deleted = x[13] ? true : false;
+                data.threads[x[1]].is_deleted = (x[9] && x[9].indexOf("^k") > -1);
                 data.threads[x[1]].reply_to_id = x[2];
                 data.threads[x[1]].from = x[5];
                 data.threads[x[1]].from_email = x[6];
@@ -1983,6 +1983,17 @@ var Gmail_ = function(localJQuery) {
         else { // Supposing only one displayed email.
             return get_displayed_email_data_for_single_email(email_data);
         }
+    };
+
+    api.get.displayed_email_data_async = function (callback) {
+        api.get.email_data_async(undefined, function (email_data) {
+            if (api.check.is_conversation_view()) {
+                callback(get_displayed_email_data_for_thread(email_data));
+            }
+            else { // Supposing only one displayed email.
+                callback(get_displayed_email_data_for_single_email(email_data));
+            }
+        });
     };
 
     var get_displayed_email_data_for_thread = function(email_data) {
