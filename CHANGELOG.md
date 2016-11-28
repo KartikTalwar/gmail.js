@@ -3,6 +3,10 @@
 
 ## Version 0.6.2
 
+- Fix bug in `api.tools.parse_response`.
+
+## Version 0.6.2
+
 - Fix `api.check.is_inside_email` when email text is hidden/collapsed.
 - Fix `api.get.visible_emails`.
 - Fix `api.tools.parse_email_data` when email text is deleted

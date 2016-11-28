@@ -880,7 +880,7 @@ var Gmail_ = function(localJQuery) {
 
             // prepare response, remove eval protectors
             response = response.replace(/\n/g, " ");
-            response = response.substring(response.indexOf("\"") + 1, response.length);
+            response = response.substring(response.indexOf("'") + 1, response.length);
 
             while(response.replace(/\s/g, "").length > 1) {
 
