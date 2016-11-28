@@ -1596,18 +1596,24 @@ var Gmail_ = function(localJQuery) {
 
 
     api.helper.get.visible_emails_pre = function() {
-        var page = api.get.current_page();
-        var url = window.location.origin + window.location.pathname + "?ui=2&ik=" + api.tracker.ik+"&rid=" + api.tracker.rid + "&view=tl&num=120&rt=1";
-        var start = $(".aqK:visible .Dj").find("span:first").text().replace(",", "").replace(".", "");
-        if (start) {
-            start = parseInt(start - 1);
-            url += "&start=" + start +
-                   "&sstart=" + start;
+        var page = api.get.current_page(),
+            url = window.location.origin + window.location.pathname + '?ui=2&ik=' + api.tracker.ik+'&rid=' + api.tracker.rid + '&view=tl&rt=1',
+            visibleMailRange = $('.aqK:visible .Dj'),
+            ioss = 50;
+        if (visibleMailRange.find("span:first").text()) {
+            var fromNumber = parseInt(visibleMailRange.find("span:first").text().replace(',', '') - 1),
+                toNumber = parseInt(visibleMailRange.find("span:nth-child(2)").text().replace(',', '')),
+                num = (toNumber && (toNumber - fromNumber > 9)) ? (toNumber - fromNumber + 20) : 50;
+            ioss = (toNumber && (toNumber - fromNumber > 50)) ? (toNumber - fromNumber) : 50;
+            url += '&num=' + num +
+                   '&start=' + fromNumber +
+                   '&sstart=' + fromNumber + ',0,0';
         } else {
-            url += "&start=0";
+            url += '&start=0';
         }
 
-        var cat_label = "";
+        var cat_label = "",
+            grp = "";
 
         if(page.indexOf("label/") === 0) {
             url += "&cat=" + page.split("/")[1] +"&search=cat";
@@ -1626,21 +1632,19 @@ var Gmail_ = function(localJQuery) {
             var at = $("input[name=at]").val();
             url += "&qs=true&q=" + page.split("/")[1] +"&at=" + at + "&search=query";
         } else if(page === "inbox"){
-            if ($("div[aria-label='Social']").attr("aria-selected") === "true") {
-                cat_label = "social";
-                url += "&cat=^smartlabel_" + cat_label + "&search=category";
-            } else if ($("div[aria-label='Promotions']").attr("aria-selected") === "true") {
-                cat_label = "promo";
-                url += "&cat=^smartlabel_" + cat_label + "&search=category";
-            } else if ($("div[aria-label='Updates']").attr("aria-selected") === "true") {
-                cat_label = "notification";
-                url += "&cat=^smartlabel_" + cat_label + "&search=category";
-            } else if ($("div[aria-label='Forums']").attr("aria-selected") === "true") {
-                cat_label = "group";
-                url += "&cat=^smartlabel_" + cat_label + "&search=category";
-            } else {
-                url += "&search=" + "mbox";
+            if ($("div.aKe-aLe").attr("aria-selected") === "true") {
+                grp = "social";
+            } else if ($("div.aJi-aLe").attr("aria-selected") === "true") {
+                grp = "promo";
+            } else if ($("div.aH2-aLe").attr("aria-selected") === "true") {
+                grp = "notification";
+            } else if ($("div.aHE-aLe").attr("aria-selected") === "true") {
+                grp = "group";
             }
+            if (grp) {
+                url += "&iosc=^smartlabel_" + grp + "&ioss=" + ioss;
+            }
+            url += "&search=mbox";
         }else {
             url += "&search=" + page;
         }
