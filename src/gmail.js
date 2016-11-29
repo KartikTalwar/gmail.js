@@ -917,6 +917,23 @@ var Gmail_ = function(localJQuery) {
         }
     };
 
+    /**
+       Node-friendly function to merge arrays without depending on jQuery
+       (which requires a browser-context).
+
+       All subsequent arrays are merged into the first one, to match
+       $.merge's behaviour.
+    */
+    var merge = function(target, mergee) {
+
+        for (var i=0; i < mergee.length; i++) {
+            var value = mergee[i];
+            target.push(value);
+        }
+
+        return target;
+    };
+
     api.tools.parse_requests = function(params, xhr) {
         params.url_raw = params.url;
         params.url = api.tools.parse_url(params.url);
@@ -1668,7 +1685,7 @@ var Gmail_ = function(localJQuery) {
 
             var cdata = api.tools.parse_view_data(api.tracker.view_data[i]);
             if(cdata.length > 0) {
-                $.merge(emails, cdata);
+                merge(emails, cdata);
             }
         }
         return emails;
