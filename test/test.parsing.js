@@ -5,9 +5,9 @@ let Gmail = require("../src/gmail").Gmail;
 
 let testData = require("./testdata-parser.js");
 
-describe("Response-parser", () => {
+describe("Response-parsing", () => {
 
-    it("Handles JSON-responses consistently.", () => {
+    it("Handles JSON-responses consistently", () => {
         var gmail = new Gmail();
         var parsed = gmail.tools.parse_response(testData.parse_response_json_data);
 
@@ -16,19 +16,15 @@ describe("Response-parser", () => {
         assert.equal(8, parsed[1].length);
     });
 
-
-
-    it("Handles email_data_post consistently.", () => {
-
+    it("Handles visible_emails_post consistently", () => {
         var gmail = new Gmail();
         var emails = gmail.helper.get.visible_emails_post(testData.visible_emails_post_data);
 
         assert.equal(17, emails.length);
         assert.equal("Selfie", emails[0].title);
-
     });
 
-    it("Handles visibl_emails_post consistently", () => {
+    it("Handles email_data_post consistently", () => {
         var gmail = new Gmail();
         var email = gmail.helper.get.email_data_post(testData.email_data_post_data);
 
