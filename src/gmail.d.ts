@@ -230,7 +230,7 @@ interface GmailGet {
     /**
        Does the same as email_source but accepts a callback and an optional error_callback function
     */
-    email_source_async(email_id: string, callback: (email_source: string) => void, error_callback: (jqxhr, textStatus: string, errorThrown: string) => void): void;
+    email_source_async(email_id: string, callback: (email_source: string) => void, error_callback?: (jqxhr, textStatus: string, errorThrown: string) => void): void;
     /**
      Retrieves the a email/thread data from the server that is currently
      visible.  The data does not come from the DOM.
