@@ -353,7 +353,7 @@ interface GmailCheck {
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-interface GmailDomEmail {
+interface GmailDomEmailEntry {
     el?: JQuery,
     email: string,
     name: string
@@ -388,14 +388,15 @@ interface GmailDomEmail {
        Optionally receives email and name properties. If received updates the values in the DOM
        Returns an object containing email & name of the sender and dom element
     */
-    from(email?: string, name?: string): GmailDomEmail;
+    from(email?: string, name?: string): GmailDomEmailEntry;
     /**
        Get/Set who the email is showing as To
        Optionally receives an object containing email and/or name properties. If received updates the values in the DOM.
        Optionally receives an array of these objects if multiple recipients
        Returns an array of objects containing email & name of who is showing in the DOM as the email is to
     */
-    to(to_array: GmailDomEmail | GmailDomEmail[]): GmailDomEmail[];
+    to(to_array: GmailDomEmailEntry | GmailDomEmailEntry[]): GmailDomEmailEntry[];
+    /**
     /**
        Retrieve relevant email from the Gmail servers for this email
        Makes use of the gmail.get.email_data() method
