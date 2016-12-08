@@ -34,4 +34,36 @@ describe("Response-parsing", () => {
         assert.equal(2, email.people_involved.length);
         assert.equal(1, email.total_emails);
     });
+
+    var email_attachment_url_png = "";
+    var email_attachment_url_pdf = "";
+
+    it("Handles attachments URLs consistently", () => {
+        var gmail = new Gmail();
+
+        var testCases = [
+            {
+                value: "image/png:typescript.png:https://mail.google.com/mail/u/0/?ui=2&ik=4b86ba4469&view=att&th=158de724051f63cf&attid=0.1&disp=safe&zw",
+                type: "image/png",
+                name: "typescript.png",
+                url: "https://mail.google.com/mail/u/0/?ui=2&ik=4b86ba4469&view=att&th=158de724051f63cf&attid=0.1&disp=safe&zw"
+            },
+            {
+                value: "application/pdf:image2016-11-15-132610.pdf:https://mail.google.com/mail/u/0/?ui=2&ik=4b86ba4469&view=att&th=158de724051f63cf&attid=0.3&disp=safe&zw",
+                type: "application/pdf",
+                name: "image2016-11-15-132610.pdf",
+                url: "https://mail.google.com/mail/u/0/?ui=2&ik=4b86ba4469&view=att&th=158de724051f63cf&attid=0.3&disp=safe&zw"
+            }
+        ];
+
+        for (var i=0; i < testCases.length; i++) {
+            var testCase = testCases[i];
+
+            var result = gmail.tools.parse_attachment_url(testCase.value);
+            assert.equal(result.type, testCase.type);
+            assert.equal(result.name, testCase.name);
+            assert.equal(result.url, testCase.url);
+        }
+    });
+
 });

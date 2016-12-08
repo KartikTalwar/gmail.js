@@ -1083,6 +1083,7 @@ Expects a jQuery DOM element for the email div (div.adn as returned by the ``vie
 - **.body([body])** - allows get/set the html body in the DOM
 - **.to([to_array])** - allows retrieve or updating to/from DOM who the email is addressed to
 - **.from([email_address],[name])** - allows get/set who the email is from in the DOM
+- **.attachments()** - retrieves the attachments for the email in the DOM
 - **.data()** - retrieves object of email data from the Gmail servers
 - **.source()** - retrieves the email raw source from the Gmail servers
 - **.dom()** - retrieves the primary element, or other defined elements from the DOM

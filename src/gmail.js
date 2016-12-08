@@ -908,6 +908,18 @@ var Gmail_ = function(localJQuery) {
     };
 
     /**
+       parses a download_url attribute from the attachments main span-element.
+     */
+    api.tools.parse_attachment_url = function(url) {
+        var parts = url.split(":");
+        return {
+            type: parts[0],
+            name: parts[1],
+            url: parts[2] + ":" + parts[3]
+        };
+    };
+
+    /**
        Node-friendly function to extend objects without depending on jQuery
        (which requires a browser-context)
        */
@@ -2616,6 +2628,22 @@ var Gmail_ = function(localJQuery) {
         },
 
         /**
+           Retries the DOM elements which represents the emails attachments
+        */
+        attachments: function() {
+            var out = [];
+
+            this.dom("attachments").each(function() {
+                var el = $(this);
+                var url = el.attr("download_url");
+                var parsed = api.tools.parse_attachment_url(url);
+                parsed.$el = el;
+                out.push(parsed);
+            });
+            return out;
+        },
+
+        /**
            Retrieve relevant email from the Gmail servers for this email
            Makes use of the gmail.get.email_data() method
            Returns an object
@@ -2656,6 +2684,7 @@ var Gmail_ = function(localJQuery) {
                 to_wrapper: "span.hb",
                 timestamp: "span.g3",
                 star: "div.zd",
+                attachments: "div.hq.gt div.aQH span.aZo",
 
                 // buttons
                 reply_button: "div[role=button].aaq",

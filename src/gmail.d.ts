@@ -369,9 +369,16 @@ interface GmailDomThread {
     dom(lookup: GmailDomThreadLookup): JQuery,
 }
 
+interface GmailDomAttachment {
+    $el: JQuery,
+    type: string,
+    name: string,
+    url: string
+}
+
 declare type GmailDomEmailLookup =
     "body" | "from" | "to" | "to_wrapper" | "timestamp" | "star"
-    | "reply_button" | "menu_button" | "details_button";
+    | "reply_button" | "menu_button" | "details_button" | "attachments";
 
 interface GmailDomEmail {
     $el: JQuery,
@@ -397,6 +404,9 @@ interface GmailDomEmail {
     */
     to(to_array: GmailDomEmailEntry | GmailDomEmailEntry[]): GmailDomEmailEntry[];
     /**
+       Retries the DOM elements which represents the emails attachments
+       */
+    attachments(): GmailDomAttachment[];
     /**
        Retrieve relevant email from the Gmail servers for this email
        Makes use of the gmail.get.email_data() method

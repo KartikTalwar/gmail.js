@@ -4,6 +4,7 @@
 ## Version 0.6.4
 
 - Introduce `api.dom.compose.send()` function.
+- Add DOM APIs for attachments (`api.dom.email(email_id).attachments()`).
 
 ## Version 0.6.3
 
