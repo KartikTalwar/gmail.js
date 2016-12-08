@@ -610,6 +610,17 @@ interface GmailTools {
     i18n(label: string): string;
     add_toolbar_button(content_html: string, onClickFunction: Function, styleClass: string): JQuery;
     add_compose_button(composeWindow: GmailDomCompose, content_html: string, onClickFunction: Function, styleClass: string): JQuery;
+    /**
+       adds a button to an email attachment.
+
+       'attachment'-parameter must be the object returned from api.dom.email().attachments().
+       'contentHtml' should represent a 21x21 image of some kind.
+       'tooltip' will be shown on hover.
+
+       return-value is jQuery-instance representing the created button.
+    */
+    add_attachment_button(attachment: GmailDomAttachment, contentHtml: string, tooltip: string, onClickFunction: Function);
+
     remove_modal_window(): void;
     add_modal_window(title: string, content_html: string, onClickOk: Function, onClickCancel?: Function, onClickClose?: Function): void;
     /**

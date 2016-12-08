@@ -2213,6 +2213,39 @@ var Gmail_ = function(localJQuery) {
         return button;
     };
 
+    /**
+       adds a button to an email attachment.
+
+       'attachment'-parameter must be the object returned from api.dom.email().attachments().
+       'contentHtml' should represent a 21x21 image of some kind.
+       'tooltip' will be shown on hover.
+
+       return-value is jQuery-instance representing the created button.
+       */
+    api.tools.add_attachment_button = function(attachment, contentHtml, tooltip, onClickFunction) {
+        var button = $(document.createElement("div"));
+        button.attr("class", "T-I J-J5-Ji aQv T-I-ax7 L3");
+        button.attr("style", "user-select: none;");
+        button.attr("aria-label", tooltip);
+        button.attr("data-tooltip", tooltip);
+
+        // make hover-state match existing buttons
+        var hoverClass = "T-I-JW";
+        button.mouseover(function() { this.classList.add(hoverClass); });
+        button.mouseout(function() { this.classList.remove(hoverClass); });
+
+        var div = $(document.createElement("div"));
+        div.attr("class", "wtScjd J-J5-Ji aYr");
+        div.html(contentHtml);
+        button.append(div);
+
+        button.click(onClickFunction);
+
+        attachment.$el.find("div.aQw").append(button);
+
+        return button;
+    };
+
     api.tools.remove_modal_window = function() {
         $("#gmailJsModalBackground").remove();
         $("#gmailJsModalWindow").remove();
