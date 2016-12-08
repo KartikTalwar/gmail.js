@@ -2671,6 +2671,7 @@ var Gmail_ = function(localJQuery) {
                 var url = el.attr("download_url");
                 var parsed = api.tools.parse_attachment_url(url);
                 parsed.$el = el;
+                parsed.size = el.find(".SaH2Ve").html();
                 out.push(parsed);
             });
             return out;

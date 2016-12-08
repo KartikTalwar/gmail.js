@@ -373,6 +373,7 @@ interface GmailDomAttachment {
     $el: JQuery,
     type: string,
     name: string,
+    size: string,
     url: string
 }
 
