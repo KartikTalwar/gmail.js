@@ -2352,7 +2352,7 @@ var Gmail_ = function(localJQuery) {
        Expects a jQuery DOM element for the compose div
     */
     api.dom.compose = function(element) {
-        if (this !== api.dom.compose) {
+        if (this.constructor !== api.dom.compose) {
             // if not invoked through new(), nothing works as expected!
             return new api.dom.compose(element);
         }
@@ -2502,7 +2502,7 @@ var Gmail_ = function(localJQuery) {
        Expects a jQuery DOM element for the email div (div.adn as returned by the "view_email" observer), or an email_id
     */
     api.dom.email = function(element) {
-        if (this !== api.dom.email) {
+        if (this.constructor !== api.dom.email) {
             // if not invoked through new(), nothing works as expected!
             return new api.dom.email(element);
         }
@@ -2666,7 +2666,7 @@ var Gmail_ = function(localJQuery) {
        Expects a jQuery DOM element for the thread wrapper div (div.if as returned by the "view_thread" observer)
     */
     api.dom.thread = function(element) {
-        if (this !== api.dom.thread) {
+        if (this.constructor !== api.dom.thread) {
             // if not invoked through new(), nothing works as expected!
             return new api.dom.thread(element);
         }
