@@ -1,7 +1,11 @@
 
 # Changelog
 
-## Version 0.6.2
+## Version 0.6.4
+
+- Introduce `api.dom.compose.send()` function.
+
+## Version 0.6.3
 
 - Fix bug in `api.tools.parse_response`.
 

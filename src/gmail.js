@@ -37,7 +37,7 @@ var Gmail_ = function(localJQuery) {
         helper : {get: {}}
     };
 
-    api.version           = "0.6.0";
+    api.version           = "0.6.4";
     api.tracker.globals   = typeof GLOBALS !== "undefined"
         ? GLOBALS
         : (
@@ -2465,6 +2465,13 @@ var Gmail_ = function(localJQuery) {
         },
 
         /**
+          Triggers the same action as clicking the "send" button would do.
+          */
+        send: function() {
+            return this.dom("send_button").click();
+        },
+
+        /**
            Map find through to jquery element
         */
         find: function(selector) {
@@ -2488,7 +2495,8 @@ var Gmail_ = function(localJQuery) {
                 body: "div[contenteditable=true]",
                 reply: "M9",
                 forward: "M9",
-                from: "input[name=from]"
+                from: "input[name=from]",
+                send_button: "div.T-I.T-I-atl"
             };
             if(!config[lookup]) api.tools.error("Dom lookup failed. Unable to find config for \"" + lookup + "\"",config,lookup,config[lookup]);
             return this.$el.find(config[lookup]);

@@ -473,6 +473,10 @@ declare type GmailDomCompose = {
        Get/Set the email html body
     */
     body(body?: string): string;
+    /*
+      Triggers the same action as clicking the "send" button would do.
+    */
+    send(): void;
     /**
        Map find through to jquery element
     */
