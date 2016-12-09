@@ -1234,20 +1234,22 @@ gmail.tools.add_compose_button(compose_ref, 'content_html', function() {
 }, 'Custom Style Classes');
 ```
 
-#### gmail.tools.add_attachment_button(attachment_ref, content_html, customCssClass tooltip, onclick_action)
+#### gmail.tools.add_attachment_button(attachment_ref, content_html, customCssClass, tooltip, onclick_action)
 
 Add a button to an attachment in email-view.
 
 ```js
 var emailDom = gmail.dom.email(gmail.get.email_id());
 var attachments = emailDom.attachments();
-var attachment = attachments[0];
 
 var iconUrl = "https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/1024px-Google_%22G%22_Logo.svg.png";
 var html = '<img src="' + iconUrl + '" width="21" height="21" />';
-gmail.tools.add_attachment_button(attachment, html, null, "Custom button!", function() {
-    alert("Attachment " + attachment.name + " clicked!");
-});
+
+for (let attachment of attachments) {
+    gmail.tools.add_attachment_button(attachment, html, null, "Custom button!", function() {
+        alert("Attachment " + attachment.name + " clicked!");
+    });
+}
 ```
 
 #### gmail.tools.add_modal_window(title, content_html, onClickOk, onClickCancel, onClickClose)
