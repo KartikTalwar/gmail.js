@@ -434,7 +434,7 @@ interface GmailDomEmail {
 
 declare type GmailDomComposeLookup =
     'to' | 'cc' | 'bcc' | 'id' | 'draft' | 'subject' | 'subjectbox'
-    | 'all_subjects' | 'body' | 'reply' | 'forward' | 'from';
+    | 'all_subjects' | 'body' | 'reply' | 'forward' | 'from' | 'send_button';
 
 declare type GmailDomCompose = {
     $el: JQuery,
