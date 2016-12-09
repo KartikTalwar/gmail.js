@@ -1,6 +1,10 @@
 
 # Changelog
 
+## Version 0.6.5
+
+- Fix possible XSS bug. (https://github.com/KartikTalwar/gmail.js/issues/281)
+
 ## Version 0.6.4
 
 - Introduce `api.dom.compose.send()` function.
