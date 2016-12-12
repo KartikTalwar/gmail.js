@@ -2660,20 +2660,34 @@ var Gmail_ = function(localJQuery) {
         },
 
         /**
-           Retries the DOM elements which represents the emails attachments
+           Retries the DOM elements which represents the emails attachments.
+           Returns undefined if UI-elements are not yet ready for parsing.
         */
         attachments: function() {
             var out = [];
+            var failed = false;
 
             this.dom("attachments").each(function() {
                 var el = $(this);
+
                 var url = el.attr("download_url");
+                if (!url) {
+                    failed = true;
+                    return;
+                }
+
                 var parsed = api.tools.parse_attachment_url(url);
                 parsed.$el = el;
                 parsed.size = el.find(".SaH2Ve").html();
+
                 out.push(parsed);
             });
-            return out;
+
+            if (failed) {
+                return undefined;
+            } else {
+                return out;
+            }
         },
 
         /**

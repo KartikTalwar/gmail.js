@@ -34,6 +34,9 @@ describe("Response-parsing", () => {
         assert.equal(2, email.people_involved.length);
         assert.equal(1, email.total_emails);
     });
+});
+
+describe("Attachment-parsing", () => {
 
     var email_attachment_url_png = "";
     var email_attachment_url_pdf = "";

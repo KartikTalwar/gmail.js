@@ -406,6 +406,7 @@ interface GmailDomEmail {
     to(to_array: GmailDomEmailEntry | GmailDomEmailEntry[]): GmailDomEmailEntry[];
     /**
        Retries the DOM elements which represents the emails attachments
+       Returns undefined if UI-elements are not yet ready for parsing.
        */
     attachments(): GmailDomAttachment[];
     /**
