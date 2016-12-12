@@ -54,6 +54,23 @@ declare type GmailPageType =
    */
 declare type GmailEmailAddress = string[];
 
+declare type GmailEmailDetails = {
+    is_deleted: boolean,
+    reply_to: string,
+    reply_to_id: string,
+    from: string,
+    from_email: string,
+    timestamp: number,
+    datetime: string,
+    attachments: string[],
+    subject: string,
+    content_html: string,
+    content_plain: string,
+    to: string[],
+    cc: string[],
+    bcc: string[]
+};
+
 declare type GmailEmailData = {
     thread_id: string,
     first_email: string,
@@ -63,45 +80,40 @@ declare type GmailEmailData = {
     people_involved: GmailEmailAddress[];
     subject: string;
     threads: {
-        [id: string]: {
-            is_deleted: boolean,
-            reply_to: string,
-            reply_to_id: string,
-            from: string,
-            from_email: string,
-            timestamp: number,
-            datetime: string,
-            attachments: string[],
-            subject: string,
-            content_html: string,
-            content_plain: string,
-            to: string[],
-            cc: string[],
-            bcc: string[]
-        }
+        [id: string]: GmailEmailDetails
     };
+};
+
+declare type GmailLastActive = {
+    time: string,
+    ip: string,
+    mac_address: string,
+    time_relative: string
+};
+
+declare type GmailLoggedInAccount = {
+    name: string,
+    email: string,
+    index: number
+};
+
+declare type GmailStorageInfo = {
+    used: string,
+    total: string,
+    percent: number
 };
 
 interface GmailGet {
     /**
        Gets user's account activity data
     */
-    last_active(): {
-        time: string,
-        ip: string,
-        mac_address: string,
-        time_relative: string
-    };
+    last_active(): GmailLastActive;
 
     /**
        Returns a list of signed-in accounts (multiple user accounts
        setup in gmail)
      */
-    loggedin_accounts(): {
-        name: string,
-        email: string,
-        index: number
-    }[];
+    loggedin_accounts(): GmailLoggedInAccount[];
 
     /**
        Returns the current user's email address
@@ -127,11 +139,7 @@ interface GmailGet {
     /**
        Returns current user's file storage stats
      */
-    storage_info(): {
-        used: string,
-        total: string,
-        percent: number
-    };
+    storage_info(): GmailStorageInfo;
 
     email_ids(): string[];
     /**
