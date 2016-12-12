@@ -621,7 +621,7 @@ interface GmailTools {
 
        return-value is jQuery-instance representing the created button.
     */
-    add_attachment_button(attachment: GmailDomAttachment, contentHtml: string, customCssClas: string, tooltip: string, onClickFunction: Function);
+    add_attachment_button(attachment: GmailDomAttachment, contentHtml: string | null, customCssClas: string | null, tooltip: string, onClickFunction: Function);
 
     remove_modal_window(): void;
     add_modal_window(title: string, content_html: string, onClickOk: Function, onClickCancel?: Function, onClickClose?: Function): void;
