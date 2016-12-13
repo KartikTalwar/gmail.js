@@ -2333,6 +2333,7 @@ var Gmail_ = function(localJQuery) {
 
         center();
 
+        container.bind("DOMSubtreeModified", center);
         $(window).resize(center);
     };
 
