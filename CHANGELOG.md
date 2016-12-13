@@ -1,6 +1,14 @@
 
 # Changelog
 
+## Version 0.6.7
+
+- Improve modal dialogs.
+
+## Version 0.6.6
+
+- Updated TypeScript bindings.
+
 ## Version 0.6.5
 
 - Fix possible XSS bug. (https://github.com/KartikTalwar/gmail.js/issues/281)
