@@ -1755,7 +1755,7 @@ var Gmail_ = function(localJQuery) {
     };
 
     api.get.current_page = function() {
-        var hash  = window.location.hash.split("#").pop().split("?").shift() || "inbox";
+        var hash  = window.location.hash.split("#").pop().split("?").shift().split("/").shift() || "inbox";
         var pages = [
             "sent", "inbox", "starred", "drafts", "imp", "chats", "all", "spam", "trash",
             "settings", "label", "category", "circle", "search"
