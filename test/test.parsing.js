@@ -70,3 +70,23 @@ describe("Attachment-parsing", () => {
     });
 
 });
+
+describe("Current-page parsing", () => {
+    it("detects known pages", () => {
+        const gmail = new Gmail();
+        const testCases = {
+            "inbox": "inbox",
+            "starred": "starred",
+            "sent": "sent",
+            // "sent/p2": "sent",
+            "drafts": "drafts"
+        };
+
+        for (let testCaseValue in testCases) {
+            let expected = testCases[testCaseValue];
+
+            let result = gmail.get.current_page(testCaseValue);
+            assert.equal(result, expected);
+        }
+    });
+});
