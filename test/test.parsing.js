@@ -82,7 +82,12 @@ describe("Current-page parsing", () => {
             "sent": "sent",
             "sent/14c313949290f26d": "email",
             "sent/p2": "sent",
-            "drafts": "drafts"
+            "drafts": "drafts",
+            "search/test": "search/test",
+            "category/social": "category/social",
+            "category/social/p2": "category/social",
+            "label/bank": "label/bank",
+            "label/bank/p2": "label/bank"
         };
 
         for (let testCaseValue in testCases) {

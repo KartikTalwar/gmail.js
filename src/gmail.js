@@ -1762,8 +1762,21 @@ var Gmail_ = function(localJQuery) {
             return "email";
         }
 
-        var hashPart  = hash.split("#").pop().split("?").shift().split("/").shift() || "inbox";
-        return hashPart;
+        var hashPart  = hash.split("#").pop().split("?").shift() || "inbox";
+
+        var isTwopart = (hashPart.indexOf("search/") === 0
+                         || hashPart.indexOf("category/") === 0
+                         || hashPart.indexOf("label/") === 0);
+
+        var result = null;
+        if (!isTwopart) {
+            result = hashPart.split("/").shift();
+            return result;
+        } else {
+            var parts = hashPart.split("/");
+            result = parts[0] + "/" + parts[1];
+            return result;
+        }
     };
 
 
