@@ -928,19 +928,6 @@ var Gmail_ = function(localJQuery) {
     };
 
     /**
-       Node-friendly function to search arrays for matches without depending on jQuery.
-       (which requires a browser-context)
-    */
-    var inArray = function(needle, haystack) {
-        for (var i=0; i < haystack.length; i++) {
-            if (haystack[i] === needle) {
-                return i;
-            }
-        }
-        return -1;
-    };
-
-    /**
        Node-friendly function to merge arrays without depending on jQuery
        (which requires a browser-context).
 
@@ -1770,26 +1757,13 @@ var Gmail_ = function(localJQuery) {
 
     api.get.current_page = function(hash) {
         hash = hash || window.location.hash;
+
+        if(hash.match(/\/[0-9a-f]{16,}$/gi)) {
+            return "email";
+        }
+
         var hashPart  = hash.split("#").pop().split("?").shift().split("/").shift() || "inbox";
-        var pages = [
-            "sent", "inbox", "starred", "drafts", "imp", "chats", "all", "spam", "trash",
-            "settings", "label", "category", "circle", "search"
-        ];
-
-        var page = null;
-
-        if(inArray(hashPart, pages) > -1) {
-            page = hashPart;
-        }
-
-        if(hashPart.indexOf("inbox/") !== -1 || hash.indexOf("sent/") !== -1 || hash.indexOf("all/") !== -1) {
-            page = "email";
-        }
-        else if(hashPart.match(/\/[0-9a-f]{16,}$/gi)) {
-            page = "email";
-        }
-
-        return page || hashPart;
+        return hashPart;
     };
 
 

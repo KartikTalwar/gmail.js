@@ -76,9 +76,12 @@ describe("Current-page parsing", () => {
         const gmail = new Gmail();
         const testCases = {
             "inbox": "inbox",
+            "inbox/14c313949290f26d": "email",
+            "inbox/p2": "inbox",
             "starred": "starred",
             "sent": "sent",
-            // "sent/p2": "sent",
+            "sent/14c313949290f26d": "email",
+            "sent/p2": "sent",
             "drafts": "drafts"
         };
 
