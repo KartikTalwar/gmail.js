@@ -77,6 +77,8 @@ describe("Current-page parsing", () => {
         const testCases = {
             "inbox": "inbox",
             "inbox/14c313949290f26d": "email",
+            "inbox/14c313949290f26d?compose=new": "email",
+            "inbox/14c313949290f26d?compose=24c313949290f26d": "email",
             "inbox/p2": "inbox",
             "starred": "starred",
             "sent": "sent",

@@ -1758,11 +1758,11 @@ var Gmail_ = function(localJQuery) {
     api.get.current_page = function(hash) {
         hash = hash || window.location.hash;
 
-        if(hash.match(/\/[0-9a-f]{16,}$/gi)) {
+        var hashPart  = hash.split("#").pop().split("?").shift() || "inbox";
+
+        if(hashPart.match(/\/[0-9a-f]{16,}$/gi)) {
             return "email";
         }
-
-        var hashPart  = hash.split("#").pop().split("?").shift() || "inbox";
 
         var isTwopart = (hashPart.indexOf("search/") === 0
                          || hashPart.indexOf("category/") === 0
