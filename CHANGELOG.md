@@ -1,6 +1,10 @@
 
 # Changelog
 
+## Version 0.6.8
+
+- Fix `api.get.current_page`.
+
 ## Version 0.6.7
 
 - Improve modal dialogs.
