@@ -4,6 +4,10 @@
 ## Version 0.6.8
 
 - Fix `api.get.current_page`.
+- Fix `api.dom.email().attachments()` for browsers not Firefox,
+  (although download url and mime-type wont be available).
+- Add `attachments_details` property to `email_data().threads[]` objects
+  which is not DOM-based and should work in all browsers.
 
 ## Version 0.6.7
 

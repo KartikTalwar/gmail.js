@@ -912,7 +912,6 @@ var Gmail_ = function(localJQuery) {
         var parts = url.split(":");
         return {
             type: parts[0],
-            name: parts[1],
             url: parts[2] + ":" + parts[3]
         };
     };
@@ -1866,6 +1865,35 @@ var Gmail_ = function(localJQuery) {
         return null;
     };
 
+    api.tools.parse_attachment_data = function(x) {
+        if (!x[7] || ! x[7][0])
+        {
+            return null;
+        }
+
+        var baseUrl = "";
+        if (typeof(window) !== "undefined") {
+            baseUrl =  window.location.origin + window.location.pathname;
+        }
+
+        var ad = x[7][0];
+        api.tracker.attachment_data = ad;
+
+        var attachments = [];
+        for (var i = 0; i < ad.length; i++)
+        {
+            var a = ad[i];
+            attachments.push({
+                attachment_id: a[0],
+                name: a[1],
+                type: a[2],
+                size: a[3],
+                url: baseUrl + a[9]
+            });
+        }
+        return attachments;
+    };
+
     api.tools.parse_email_data = function(email_data) {
         var data = {};
 
@@ -1894,6 +1922,7 @@ var Gmail_ = function(localJQuery) {
                 data.threads[x[1]].timestamp = x[7];
                 data.threads[x[1]].datetime = x[24];
                 data.threads[x[1]].attachments = x[21].split(",");
+                data.threads[x[1]].attachments_details = x[13] ? api.tools.parse_attachment_data(x[13]) : null;
                 data.threads[x[1]].subject = x[12];
                 data.threads[x[1]].content_html = x[13] ? x[13][6] : x[8];
                 data.threads[x[1]].to = x[13] ? x[13][1] : ((x[37] !== undefined) ? x[37][1]:[]);
@@ -2673,17 +2702,21 @@ var Gmail_ = function(localJQuery) {
             this.dom("attachments").each(function() {
                 var el = $(this);
 
+                var result = {};
+                result.$el = el;
+                result.name = el.find(".aV3").html();
+                result.size = el.find(".SaH2Ve").html();
+
+                // Gmail only emits the following attribute for Chrome!
+                // use email_data.threads[].attachments_details in other browsers!
                 var url = el.attr("download_url");
-                if (!url) {
-                    failed = true;
-                    return;
+                if (url) {
+                    var url_type = api.tools.parse_attachment_url(url);
+                    result.url = url_type.url;
+                    result.type = url_type.type;
                 }
 
-                var parsed = api.tools.parse_attachment_url(url);
-                parsed.$el = el;
-                parsed.size = el.find(".SaH2Ve").html();
-
-                out.push(parsed);
+                out.push(result);
             });
 
             if (failed) {

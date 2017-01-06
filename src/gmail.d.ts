@@ -54,6 +54,14 @@ declare type GmailPageType =
    */
 declare type GmailEmailAddress = string[];
 
+declare type GmailAttachmentDetails = {
+    attachment_id: string,
+    name: string,
+    type: string,
+    size: number,
+    url: string
+};
+
 declare type GmailEmailDetails = {
     is_deleted: boolean,
     reply_to: string,
@@ -63,6 +71,7 @@ declare type GmailEmailDetails = {
     timestamp: number,
     datetime: string,
     attachments: string[],
+    attachments_details: GmailAttachmentDetails[],
     subject: string,
     content_html: string,
     content_plain: string,
@@ -379,10 +388,10 @@ interface GmailDomThread {
 
 interface GmailDomAttachment {
     $el: JQuery,
-    type: string,
+    type?: string,
     name: string,
     size: string,
-    url: string
+    url?: string
 }
 
 declare type GmailDomEmailLookup =
