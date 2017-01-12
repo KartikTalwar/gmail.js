@@ -310,7 +310,7 @@ var Gmail_ = function(localJQuery) {
     };
 
     api.check.is_plain_text = function() {
-        var settings = GLOBALS[17][4][1];
+        var settings = api.tracker.globals[17][4][1];
 
         for (var i = 0; i < settings.length; i++) {
             var plain_text_setting = settings[i];
