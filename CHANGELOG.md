@@ -1,6 +1,10 @@
 
 # Changelog
 
+## Version 0.6.9
+
+- Fix potential NPE in `api.check.is_plain_text` .
+
 ## Version 0.6.8
 
 - Fix `api.get.current_page`.
