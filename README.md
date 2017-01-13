@@ -778,7 +778,7 @@ Your callback will be fired directly after Gmail's XMLHttpRequest has been sent 
 
 The on method also supports observering specific DOM events in the Gmail Interface (for example when a new compose window is opened). These are only available via the `on` method (not the `before` or `after` methods).
 
-Some actions/observers also have defined 'sub-observers' which become available if you have an action bound to the parent observer. Sub-observers are defined as such because they only make sense once the parent has been triggered. I.e. for an individual email to display as part of a conversation thread, the thread must first be opened/loaded in the interface.
+Some actions/observers also have defined 'sub-observers' which only (!) become available if you have an action bound to the parent observer. Sub-observers are defined as such because they only make sense once the parent has been triggered. I.e. for an individual email (or several emails) to display as part of a conversation thread, the thread must first be opened/loaded in the interface.
 
 Example usage:
 
