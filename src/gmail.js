@@ -787,6 +787,7 @@ var Gmail_ = function(localJQuery) {
             break;
 
         case "arl":
+        case "dc_":
             response = [email_ids, params.url, params.body, params.url.acn];
             break;
 
