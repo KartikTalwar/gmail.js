@@ -3,7 +3,8 @@
 
 ## Version 0.6.9
 
-- Fix potential NPE in `api.check.is_plain_text` .
+- Fix potential NPE in `api.check.is_plain_text`.
+- Fix `"delete_label"` observer.
 
 ## Version 0.6.8
 
