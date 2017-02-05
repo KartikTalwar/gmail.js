@@ -1267,7 +1267,15 @@ var html = '<img src="' + iconUrl + '" width="21" height="21" />';
 
 for (let attachment of attachments) {
     gmail.tools.add_attachment_button(attachment, html, null, "Custom button!", function() {
-        alert("Attachment " + attachment.name + " clicked!");
+        console.log("Attachment " + attachment.name + " clicked!");
+
+        gmail.get.email_data_async(emailDom.id, (data) => {
+            email = data.threads[emailDom.id];
+            attachment_details = email.attachments_details.filter(
+                i => i.name === attachment.name
+            )[0];
+            console.log("This attachment has URL: " + attachment_details.url);
+        });
     });
 }
 ```
