@@ -387,12 +387,13 @@ the data for the specified id is returned instead of the email currently visible
           "some_file.pdf"
       ],
       "attachments_details": [
+      {
           "attachment_id": "0.1",
           "name": "some_file.pdf",
           "size": 11235,
           "type": "application/pdf",
           "url": "https://mail.google.com/u/0/?ui=......"
-      ]
+      }]
     }
   }
 }
@@ -439,12 +440,13 @@ Returns an object representation of the emails that are being displayed.
           "some_file.pdf"
       ],
       "attachments_details": [
+      {
           "attachment_id": "0.1",
           "name": "some_file.pdf",
           "size": 11235,
           "type": "application/pdf",
           "url": "https://mail.google.com/u/0/?ui=......"
-      ]
+      }]
     }
   }
 }
