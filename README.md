@@ -382,7 +382,17 @@ the data for the specified id is returned instead of the email currently visible
       "datetime": "Sun, Nov 20, 2013 at 1:19 AM",
       "content_plain": "another test",
       "subject": "test",
-      "content_html": "<div dir=\"ltr\">another test</div>\n"
+      "content_html": "<div dir=\"ltr\">another test</div>\n",
+      "attachments": [
+          "some_file.pdf"
+      ],
+      "attachments_details": [
+          "attachment_id": "0.1",
+          "name": "some_file.pdf",
+          "size": 11235,
+          "type": "application/pdf",
+          "url": "https://mail.google.com/u/0/?ui=......"
+      ]
     }
   }
 }
@@ -424,7 +434,17 @@ Returns an object representation of the emails that are being displayed.
       "datetime": "Sun, Nov 20, 2013 at 1:19 AM",
       "content_plain": "another test",
       "subject": "test",
-      "content_html": "<div dir=\"ltr\">another test</div>\n"
+      "content_html": "<div dir=\"ltr\">another test</div>\n",
+      "attachments": [
+          "some_file.pdf"
+      ],
+      "attachments_details": [
+          "attachment_id": "0.1",
+          "name": "some_file.pdf",
+          "size": 11235,
+          "type": "application/pdf",
+          "url": "https://mail.google.com/u/0/?ui=......"
+      ]
     }
   }
 }
