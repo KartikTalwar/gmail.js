@@ -398,7 +398,7 @@ the data for the specified id is returned instead of the email currently visible
 }
 ```
 
-#### gmail.get.email_data(email_id=undefined, callback)
+#### gmail.get.email_data_async(email_id=undefined, callback)
 
 
 Does the same as above but accepts a callback function
@@ -462,7 +462,7 @@ Retrieves raw MIME message source from the gmail server for the specified email 
 the data for the specified id is returned instead of the email currently visible in the dom
 
 
-#### gmail.get.email_source(email_id=undefined, callback)
+#### gmail.get.email_source_async(email_id=undefined, callback)
 
 Does the same as above but accepts a callback function
 
