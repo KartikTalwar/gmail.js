@@ -196,7 +196,8 @@ gmail.observe.on("load", function(){
   - **`compose`** - When a new compose window is opened, or a message is replied to or forwarded
   - **`recipient_change`** - When an email being written (either new compose, reply or forward) has its to, cc or bcc recipients updated
   - **`view_thread`** - When a conversation thread is opened to read
-    - **`view_email`** - Sub-observer to `view_thread`. When an individual email is loaded within a conversation thread
+    - **`view_email`** - Sub-observer to `view_thread`. When an individual email is loaded within a conversation thread.
+      It's worth noting this event is only triggered when the email is actually rendered in the DOM. Gmail tends to cache the rendered emails, so it should not be expected to fire reliably for every viewing of the same email. It will most likely fire once, for the initial and possibly only rendering.
     - **`load_email_menu`** - Sub-observer to `view_thread`. When the dropdown menu next to the reply button is clicked
 - [gmail.observe**.before(action, callback)**](#gmailobservebeforeaction-callback)
 - [gmail.observe**.after(action, callback)**](#gmailobserveafteraction-callback)
@@ -810,7 +811,8 @@ gmail.observe.on('view_thread', function(obj) {
   console.log('view_thread', obj);
 });
 
-// now we have access to the sub observers view_email and load_email_menu
+// now we have access to the sub observers 
+and load_email_menu
 gmail.observe.on('view_email', function(obj) {
   console.log('view_email', obj);
 });
