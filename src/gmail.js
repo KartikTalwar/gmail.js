@@ -4,7 +4,7 @@
 // https://github.com/KartikTalwar/gmail.js
 //
 
-var Gmail_ = function(localJQuery) {
+var Gmail = function(localJQuery) {
 
     /*
       Use the provided "jQuery" if possible, in order to avoid conflicts with
@@ -945,8 +945,11 @@ var Gmail_ = function(localJQuery) {
     };
 
     api.tools.parse_requests = function(params, xhr) {
-        params.url_raw = params.url;
-        params.url = api.tools.parse_url(params.url);
+        // We should not be modifiying the original object
+        // but because we used to and still do we need to
+        // handle it incase an old version of gmailjs is running
+        params.url_raw = params.url_raw || params.url;
+        params.url = api.tools.parse_url(params.url_raw);
         if(typeof params.body === "object") {
             params.body_params = params.body;
             params.body_is_object = true;
@@ -991,12 +994,10 @@ var Gmail_ = function(localJQuery) {
             }
             var win = js_frame.contentDocument.defaultView;
 
-            if (!win.gjs_XMLHttpRequest_open) {
-                win.gjs_XMLHttpRequest_open = win.XMLHttpRequest.prototype.open;
-            }
+            api.tracker.xhr_open = win.XMLHttpRequest.prototype.open;
 
             win.XMLHttpRequest.prototype.open = function (method, url, async, user, password) {
-                var out = win.gjs_XMLHttpRequest_open.apply(this, arguments);
+                var out = api.tracker.xhr_open.apply(this, arguments);
                 this.xhrParams = {
                     method: method.toString(),
                     url: url.toString()
@@ -1004,9 +1005,7 @@ var Gmail_ = function(localJQuery) {
                 return out;
             };
 
-            if (!win.gjs_XMLHttpRequest_send) {
-                win.gjs_XMLHttpRequest_send = win.XMLHttpRequest.prototype.send;
-            }
+            api.tracker.xhr_send = win.XMLHttpRequest.prototype.send;
 
             win.XMLHttpRequest.prototype.send = function (body) {
                 // parse the xhr request to determine if any events should be triggered
@@ -1040,7 +1039,7 @@ var Gmail_ = function(localJQuery) {
                 }
 
                 // send the original request
-                var out = win.gjs_XMLHttpRequest_send.apply(this, arguments);
+                var out = api.trakcer.xhr_send.apply(this, arguments);
 
                 // fire on events
                 api.observe.trigger("on", events, this);
@@ -2835,19 +2834,8 @@ var Gmail_ = function(localJQuery) {
     return api;
 };
 
-function initializeOnce(fn) {
-    var result;
-    return function() {
-        if (fn) {
-            result = fn.apply(this, arguments);
-        }
-        fn = null;
-        return result;
-    };
-}
-
 // required to avoid error in NodeJS.
-var GmailClass = initializeOnce(Gmail_);
+var GmailClass = Gmail();
 if (typeof(window) !== "undefined" && !window.Gmail) {
     window.Gmail = GmailClass;
 }
