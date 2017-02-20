@@ -60,6 +60,10 @@ document.getElementsByTagName('body')[0].appendChild(jq);
 
 // {inject gmail.js} by copy pasting gmail.js contents or via url like jquery above
 // var Gmail = {.....} // paste gmail.js code here
+var gm = document.createElement('script')
+gm.src = "https://s3.amazonaws.com/karikt/gmail.js";
+document.getElementByTagName('body')[0].appendChild(gm);
+<script src="https://s3.amazonaws.com/kartikt/gmail.js"</script>
 
 // start using!
 // you can also pass in a reference to jQuery upon init - Gmail(localJQuery)
