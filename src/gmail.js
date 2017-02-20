@@ -4,6 +4,8 @@
 // https://github.com/KartikTalwar/gmail.js
 //
 
+/*eslint-env es6*/
+
 var Gmail_ = function(localJQuery) {
 
     /*
@@ -1586,6 +1588,66 @@ var Gmail_ = function(localJQuery) {
             });
     };
 
+    /**
+       Creates a request to download user-content from Gmail.
+       This can be used to download email_source or attachments.
+
+       Set `preferBinary` to receive data as an Uint8Array which is unaffected
+       by string-parsing or resolving of text-encoding.
+
+       This is required in order to correctly download attachments!
+    */
+    api.tools.make_request_download_promise = function (url, preferBinary) {
+        // if we try to download the same email/url several times,
+        // something weird happens with our cookies, causing the 302
+        // redirect to mail-attachment.googleusercontent.com (MAGUC)
+        // to redirect back to mail.google.com.
+        //
+        // mail.google.com does NOT have CORS-headers for MAGUC, so
+        // this redirect (and thus our request) fails.
+        //
+        // Adding a random variable with a constantly changing value defeats
+        // any cache, and seems to solve our problem.
+        const timeStamp = Date.now();
+        url += "&cacheCounter=" + timeStamp;
+
+        let responseType = "text";
+        if (preferBinary) {
+            responseType = "arraybuffer";
+        }
+
+        // now go download!
+        return new Promise((resolve, reject) => {
+            const request = new XMLHttpRequest();
+            request.open("GET", url, true);
+            request.responseType = responseType;
+
+            request.onreadystatechange = () => {
+                if (request.readyState !== XMLHttpRequest.DONE) {
+                    return;
+                }
+
+                if (request.status >= 200 && request.status <= 302) {
+                    const result = request.response;
+                    if (result) {
+                        if (preferBinary) {
+                            const byteArray = new Uint8Array(result);
+                            resolve(byteArray);
+                        } else {
+                            // result is regular text!
+                            resolve(result);
+                        }
+                    }
+                }
+            };
+            request.onerror = (ev) => {
+                reject(ev);
+            };
+
+            request.send();
+        });
+    };
+
 
     api.tools.parse_view_data = function(view_data) {
         var parsed = [];
@@ -2011,6 +2073,7 @@ var Gmail_ = function(localJQuery) {
 
 
     api.get.email_source = function(email_id) {
+        console.warn("Gmail.js: This function has been deprecated and will be removed in a upcoming release! Please migrate to email_source_asnc!");
         var url = api.helper.get.email_source_pre(email_id);
         if (url !== null) {
             return api.tools.make_request(url, "GET", true);
@@ -2019,12 +2082,23 @@ var Gmail_ = function(localJQuery) {
     };
 
 
-    api.get.email_source_async = function(email_id, callback, error_callback) {
-        var url = api.helper.get.email_source_pre(email_id);
+    api.get.email_source_async = function(email_id, callback, error_callback, preferBinary) {
+        api.get.email_source_promise(email_id, preferBinary)
+            .then(callback)
+            .catch(error_callback);
+    };
+
+    api.get.email_source_promise = function(email_id, preferBinary) {
+        const url = api.helper.get.email_source_pre(email_id);
         if (url !== null) {
-            api.tools.make_request_async(url, "GET", callback, error_callback, true);
+            return api.tools.make_request_download_promise(url, preferBinary);
         } else {
-            callback("");
+            return new Promise((resolve, reject) => {
+                // I honestly don't think this makes sense.  We really
+                // should reject the promise, but that would break
+                // backward compatibility W.R.T. _async...
+                resolve("");
+            });
         }
     };
 

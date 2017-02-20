@@ -89,8 +89,8 @@ gmail.get.user_email();
 - [gmail.get**.email_data_async(email_id=undefined, callback)**](#gmailgetemail_dataemail_idundefined-callback)
 - [gmail.get**.displayed_email_data()**](#gmailgetdisplayed_email_data)
 - [gmail.get**.displayed_email_data_async(callback)**](#gmailgetdisplayed_email_data_asynccallback)
-- [gmail.get**.email_source(email_id=undefined)**](#gmailgetemail_sourceemail_idundefined)
-- [gmail.get**.email_source_async(email_id=undefined, callback)**](#gmailgetemail_sourceemail_idundefined-callback)
+- [gmail.get**.email_source_async(email_id=undefined, callback, error_callback, preferBinary)**](#gmailgetemail_source_asyncemail_idundefined-callback-error_callback-preferBinaryfalse)
+- [gmail.get**.email_source_promise(email_id=undefined, preferBinary)**](#gmailgetemail_source_promiseemail_idundefined-preferBinaryfalse)
 - [gmail.get**.search_query()**](#gmailgetsearch_query)
 - [gmail.get**.unread_emails()**](#gmailgetunread_emails)
  - [gmail.get**.unread_inbox_emails()**](#gmailgetunread_emails)
@@ -240,6 +240,7 @@ These are some helper functions that the rest of the methods use. See source for
 - gmail.tools**.extract_name(str)**
 - gmail.tools**.make_request()**
 - gmail.tools**.make_request_async()**
+- gmail.tools**.make_request_download_promise(url, preferBinary)** - function specialized for downloading email MIME messages or attachments.
 - gmail.tools**.sleep(ms)**
 - gmail.tools**.multitry(ms_delay, tries, func, bool_success_check)**
 - gmail.tools**.i18n(label)**
@@ -462,13 +463,30 @@ Does the same as above but accepts a callback function.
 
 #### gmail.get.email_source(email_id=undefined)
 
+Deprecated function. Will be removed. Migrate to
+`gmail.get.email_source_async` or `gmail.get.email_source_promise`
+instead.
+
+#### gmail.get.email_source_async(email_id=undefined, callback, error_callback, preferBinary=false)
+
 Retrieves raw MIME message source from the gmail server for the specified email id. It takes the optional email_id parameter where
 the data for the specified id is returned instead of the email currently visible in the dom
 
+By default, once retrieved the resulting data will be passed to
+`callback` in text-format. **This may corrupt the actual email
+MIME-data, by causing irreversible content-encoding
+consistency-errors.**
 
-#### gmail.get.email_source_async(email_id=undefined, callback)
+If you need to parse this data in a proper MIME-parser later, the only
+way to avoid this kind of error is to download the data in binary
+format and do your own decoding inside your own MIME-parser.
 
-Does the same as above but accepts a callback function
+To get the email-source in binary form, you must set the
+`preferBinary`-parameter to `true`.
+
+#### gmail.get.email_source_promise(email_id=undefined, preferBinary=false)
+
+Does the same as above but implements it using ES6 promises.
 
 
 #### gmail.get.user_email()
@@ -811,7 +829,7 @@ gmail.observe.on('view_thread', function(obj) {
   console.log('view_thread', obj);
 });
 
-// now we have access to the sub observers 
+// now we have access to the sub observers
 and load_email_menu
 gmail.observe.on('view_email', function(obj) {
   console.log('view_email', obj);
@@ -1280,6 +1298,7 @@ for (let attachment of attachments) {
                 i => i.name === attachment.name
             )[0];
             console.log("This attachment has URL: " + attachment_details.url);
+            // download using api.tools.make_request_download_promise!
         });
     });
 }
