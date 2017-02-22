@@ -2073,7 +2073,7 @@ var Gmail_ = function(localJQuery) {
 
 
     api.get.email_source = function(email_id) {
-        console.warn("Gmail.js: This function has been deprecated and will be removed in a upcoming release! Please migrate to email_source_asnc!");
+        console.warn("Gmail.js: This function has been deprecated and will be removed in an upcoming release! Please migrate to email_source_async!");
         var url = api.helper.get.email_source_pre(email_id);
         if (url !== null) {
             return api.tools.make_request(url, "GET", true);
