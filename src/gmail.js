@@ -2093,10 +2093,7 @@ var Gmail_ = function(localJQuery) {
             return api.tools.make_request_download_promise(url, preferBinary);
         } else {
             return new Promise((resolve, reject) => {
-                // I honestly don't think this makes sense.  We really
-                // should reject the promise, but that would break
-                // backward compatibility W.R.T. _async...
-                resolve("");
+                reject("Unable to resolve URL for email source!");
             });
         }
     };
