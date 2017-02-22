@@ -2059,16 +2059,15 @@ var Gmail_ = function(localJQuery) {
 
 
     api.helper.get.email_source_pre = function(email_id) {
-        if(api.check.is_inside_email() && email_id === undefined) {
+        if(!email_id && api.check.is_inside_email()) {
             email_id = api.get.email_id();
         }
 
-        var url = null;
-        if(email_id !== undefined) {
-            url = window.location.origin + window.location.pathname + "?view=att&th=" + email_id + "&attid=0&disp=comp&safe=1&zw";
+        if(!email_id) {
+            return null;
         }
 
-        return url;
+        return window.location.origin + window.location.pathname + "?view=att&th=" + email_id + "&attid=0&disp=comp&safe=1&zw";
     };
 
 
