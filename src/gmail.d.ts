@@ -238,16 +238,25 @@ interface GmailGet {
     */
     email_data_async(email_id: string, callback: (email_data: GmailEmailData) => void): void;
     /**
-       Retrieves raw MIME message source from the gmail server for the
-       specified email id. It takes the optional email_id parameter
-       where the data for the specified id is returned instead of the
-       email currently visible in the dom
+       Deprecated function. Migrate to `email_source_async` or `email_source_promise`!
     */
     email_source(email_id: string): string;
     /**
-       Does the same as email_source but accepts a callback and an optional error_callback function
+       Retrieves raw MIME message source from the gmail server for the
+       specified email id. It takes the optional email_id parameter
+       where the data for the specified id is returned instead of the
+       email currently visible in the dom.
+
+       The `callback` is invoked with the resulting data in either
+       string or binary format depending on the value of the
+       `preferBinary`-parameter.
     */
-    email_source_async(email_id: string, callback: (email_source: string) => void, error_callback?: (jqxhr, textStatus: string, errorThrown: string) => void): void;
+    email_source_async(email_id: string, callback: (email_source: string | Uint8Array) => void, error_callback?: (jqxhr, textStatus: string, errorThrown: string) => void, preferBinary?: boolean): void;
+    /**
+       Does the same as email_source_async, but uses ES6 promises.
+    */
+    email_source_promise(email_id: string): Promise<string>;
+    email_source_promise(email_id: string, preferBinary: boolean): Promise<Uint8Array>;
     /**
      Retrieves the a email/thread data from the server that is currently
      visible.  The data does not come from the DOM.
@@ -599,6 +608,17 @@ interface GmailTools {
 
     make_request(link: string, method: GmailHttpRequestMethod, disable_cache: boolean): string;
     make_request_async(link: string, method: GmailHttpRequestMethod, callback: (data: string) => void, disable_cache: boolean);
+
+    /**
+       Creates a request to download user-content from Gmail.
+       This can be used to download email_source or attachments.
+
+       Set `preferBinary` to receive data as an Uint8Array which is unaffected
+       by string-parsing or resolving of text-encoding.
+
+       This is required in order to correctly download attachments!
+    */
+    make_request_download_promise(link: string, preferBinary?: boolean): Promise<string> | Promise<Uint8Array>;
     parse_view_data(view_data: any[]): any[];
     /**
        Adds the yellow info box on top of gmail with the given message

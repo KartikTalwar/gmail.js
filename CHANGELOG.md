@@ -1,6 +1,12 @@
 
 # Changelog
 
+## Version 0.6.10
+
+- Introduce `api.get.email_source_promise`.
+- Deprecate `api.get.email_source`.
+- Support downloading email-source in binary format.
+
 ## Version 0.6.9
 
 - Fix potential NPE in `api.check.is_plain_text`.
