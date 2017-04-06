@@ -1728,7 +1728,7 @@ var Gmail_ = function(localJQuery) {
                 cat_label = "group";
                 url += "&cat=^smartlabel_" + cat_label + "&search=category";
             } else {
-                url += "&search=" + "mbox";
+                url += "&search=" + "inbox";
             }
         }else {
             url += "&search=" + page;
@@ -2014,7 +2014,7 @@ var Gmail_ = function(localJQuery) {
 
         var url = null;
         if(email_id !== undefined) {
-            url = window.location.origin + window.location.pathname + "?ui=2&ik=" + api.tracker.ik + "&rid=" + api.tracker.rid + "&view=cv&th=" + email_id + "&msgs=&mb=0&rt=1&search=mbox";
+            url = window.location.origin + window.location.pathname + "?ui=2&ik=" + api.tracker.ik + "&rid=" + api.tracker.rid + "&view=cv&th=" + email_id + "&msgs=&mb=0&rt=1&search=inbox";
         }
         return url;
     };
