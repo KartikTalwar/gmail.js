@@ -2212,7 +2212,7 @@ var Gmail_ = function(localJQuery) {
 
 
     api.tools.extract_name = function(str) {
-        var regex = /[a-z"._-\s]+/gi;
+        var regex = /[a-z\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF"._\s-]+/gi;
         var matches = (str) ? str.match(regex) : undefined;
 
         return (matches && matches[0]) ? matches[0].trim() : undefined;

@@ -97,3 +97,36 @@ describe("Current-page parsing", () => {
         }
     });
 });
+
+describe("Name-parsing", () => {
+
+    const gmail = new Gmail();
+    const testName = function(source) {
+        const result = gmail.tools.extract_name(source + " <>");
+        assert.deepEqual(result, source);
+    };
+
+    it("handles no spaces in name", () => {
+        testName("Burt");
+    });
+
+    it("handles spaces in name", () => {
+        testName("Curt Cobain");
+    });
+
+    it("handles vikings", () => {
+        testName("Jostein Kjønigsen");
+    });
+
+    it("handles zeh germans", () => {
+        testName("Frunk Münster");
+    });
+
+    it("handles le frenchies", () => {
+        testName("Madamoselle Emálie");
+    });
+
+    it("handles mexicans", () => {
+        testName("Senõr Alapenõ on a stick");
+    });
+});
