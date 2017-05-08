@@ -292,6 +292,15 @@ var Gmail_ = function(localJQuery) {
         return tb;
     };
 
+    api.dom.right_toolbar = function() {
+        var rtb = $(".Cr.aqJ");
+
+        while($(rtb).children().length === 1){
+            rtb = $(rtb).children().first();
+        }
+
+        return rtb;
+    };
 
     api.check.is_inside_email = function() {
         if(api.get.current_page() !== "email" && !api.check.is_preview_pane()) {
@@ -2289,6 +2298,34 @@ var Gmail_ = function(localJQuery) {
         container.html(button);
 
         api.dom.toolbar().append(container);
+
+        return container;
+    };
+
+    api.tools.add_right_toolbar_button = function(content_html, onClickFunction, styleClass) {
+        var container = $(document.createElement("div"));
+        container.attr("class","G-Ni J-J5-Ji");
+
+        var button = $(document.createElement("div"));
+        var buttonClasses = "T-I J-J5-Ji ash ";
+        if(styleClass !== undefined &&
+           styleClass !== null &&
+           styleClass !== ""){
+            buttonClasses += styleClass;
+        }else{
+            buttonClasses += "T-I-ax7 L3";
+        }
+        button.attr("class", buttonClasses);
+
+        button.html(content_html);
+        button.click(onClickFunction);
+
+        var content = $(document.createElement("div"));
+        content.attr("class","asa");
+
+        container.html(button);
+
+        api.dom.right_toolbar().append(container);
 
         return container;
     };

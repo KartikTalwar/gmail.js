@@ -218,6 +218,7 @@ These methods return the DOM data itself
 - gmail.dom**.get_left_sidebar_links()**
 - gmail.dom**.search_bar()**
 - gmail.dom**.toolbar()**
+- gmail.dom**.right_toolbar()**
 - gmail.dom**.compose()** - compose dom object - receives the DOM element for the compose window and provides methods to interact
 - gmail.dom**.composes()** - retrives an array of `gmail.dom.compose` objects representing any open compose windows
 - [gmail.dom**.email()**](#gmaildomemailemail_el-or-email_id) - email dom object - receives an email DOM element or email id for an email currently being viewed. Abstracts interaction with that email.
@@ -246,6 +247,7 @@ These are some helper functions that the rest of the methods use. See source for
 - gmail.tools**.i18n(label)**
 - gmail.tools**.toggle_minimize()**
 - [gmail.tools**.add_toolbar_button(content_html, onclick_action, custom_style_class)**](#gmailtoolsadd_toolbar_buttoncontent_html-onclick_action-custom_style_class)
+- [gmail.tools**.add_right_toolbar_button(content_html, onclick_action, custom_style_class)**](#gmailtoolsadd_right_toolbar_buttoncontent_html-onclick_action-custom_style_class)
 - [gmail.tools**.add_compose_button(compose_ref, content_html, onclick_action, custom_style_class)**](#gmailtoolsadd_toolbar_buttoncompose_ref-content_html-onclick_action-custom_style_class)
 - [gmail.tools**.add_modal_window(title, content_html, onClickOk, onClickCancel, onClickClose)**](#gmailtoolsadd_modal_windowtitle-content_html-onClickOk-onClickCancel-onClickClose)
 - [gmail.tools**.remove_modal_window()**](#gmailtoolsremove_modal_window)
@@ -1261,6 +1263,16 @@ Add a new button to Gmail Toolbar
 
 ```js
 gmail.tools.add_toolbar_button('content_html', function() {
+  // Code here
+}, 'Custom Style Classes');
+```
+
+#### gmail.tools.add_right_toolbar_button(content_html, onclick_action, custom_style_class)
+
+Add a new button to Gmail Toolbar on the right hand side
+
+```js
+gmail.tools.add_right_toolbar_button('content_html', function() {
   // Code here
 }, 'Custom Style Classes');
 ```
