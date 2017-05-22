@@ -292,6 +292,15 @@ var Gmail_ = function(localJQuery) {
         return tb;
     };
 
+    api.dom.right_toolbar = function() {
+        var rtb = $("[gh='tm'] [gh='s']").parent();
+
+        while($(rtb).children().length === 1){
+            rtb = $(rtb).children().first();
+        }
+
+        return rtb;
+    };
 
     api.check.is_inside_email = function() {
         if(api.get.current_page() !== "email" && !api.check.is_preview_pane()) {
@@ -2265,18 +2274,18 @@ var Gmail_ = function(localJQuery) {
         return dictionary[label];
     };
 
-    api.tools.add_toolbar_button = function(content_html, onClickFunction, styleClass) {
+    var create_generic_toolbar_button = function(content_html, onClickFunction, basicStyle, defaultStyle, styleClass, selector) {
         var container = $(document.createElement("div"));
         container.attr("class","G-Ni J-J5-Ji");
 
         var button = $(document.createElement("div"));
-        var buttonClasses = "T-I J-J5-Ji lS ";
+        var buttonClasses = "T-I J-J5-Ji ";
         if(styleClass !== undefined &&
            styleClass !== null &&
            styleClass !== ""){
-            buttonClasses += styleClass;
+            buttonClasses += basicStyle+styleClass;
         }else{
-            buttonClasses += "T-I-ax7 ar7";
+            buttonClasses += basicStyle+defaultStyle;
         }
         button.attr("class", buttonClasses);
 
@@ -2288,9 +2297,23 @@ var Gmail_ = function(localJQuery) {
 
         container.html(button);
 
-        api.dom.toolbar().append(container);
+        selector.append(container);
 
         return container;
+    };
+
+    api.tools.add_toolbar_button = function(content_html, onClickFunction, styleClass) {
+        var basicLeftStyle = "lS ";
+        var defaultLeftStyle = "T-I-ax7 ar7";
+
+        return create_generic_toolbar_button(content_html, onClickFunction, basicLeftStyle, defaultLeftStyle, styleClass, api.dom.toolbar());
+    };
+
+    api.tools.add_right_toolbar_button = function(content_html, onClickFunction, styleClass) {
+        var basicRightStyle = "ash ";
+        var defaultRightStyle = "T-I-ax7 L3";
+
+        return create_generic_toolbar_button(content_html, onClickFunction, basicRightStyle, defaultRightStyle, styleClass, api.dom.right_toolbar());
     };
 
     api.tools.add_compose_button =  function(composeWindow, content_html, onClickFunction, styleClass) {
