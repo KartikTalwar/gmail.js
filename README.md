@@ -68,6 +68,17 @@ gmail.get.user_email();
 ```
 
 
+## Typescript
+
+Using gmail-js with TypeScript is relatively easy, but if you use normal `import` syntax it
+will fail. Instead you need to use `require`-syntax to load it:
+
+````typescript
+const GmailFactory = require("gmail-js");
+const gmail = new GmailFactory.Gmail() as Gmail;
+// working on the gmail-object now provides type-safety.
+````
+
 ## Methods
 
 ### Summary (click for more info)
