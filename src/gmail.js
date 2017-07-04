@@ -363,7 +363,7 @@ var Gmail_ = function(localJQuery) {
 
     api.get.compose_ids = function() {
         var ret = [];
-        var dom = $(".AD [name=draft]");
+        var dom = $(".M9 [name=draft]");
         for(var i = 0; i < dom.length; i++) {
             if(dom[i].value !== "undefined"){
                 ret.push(dom[i].value);
