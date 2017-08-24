@@ -1695,12 +1695,10 @@ var Gmail_ = function(localJQuery) {
 
     api.helper.get.visible_emails_pre = function() {
         var page = api.get.current_page();
-        var url = window.location.origin + window.location.pathname + "?ui=2&ik=" + api.tracker.ik+"&rid=" + api.tracker.rid + "&view=tl&num=120&rt=1";
-        var start = $(".aqK:visible .Dj").find("span:first").text().replace(",", "").replace(".", "");
+        var url = window.location.origin + window.location.pathname + "?ui=2&ik=" + api.tracker.ik+"&rid=" + api.tracker.rid + "&view=tl&rt=1&num=" + (api.tracker.globals[8] || 100);
+        var start = $(".aqK:visible .Dj").find("span.ts:first").text().replace(",", "").replace(".", "");
         if (start) {
-            start = parseInt(start - 1);
-            url += "&start=" + start +
-                   "&sstart=" + start;
+            url += "&start=" + parseInt(start - 1);
         } else {
             url += "&start=0";
         }
