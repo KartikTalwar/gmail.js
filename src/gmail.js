@@ -1695,7 +1695,7 @@ var Gmail_ = function(localJQuery) {
 
     api.helper.get.visible_emails_pre = function() {
         var page = api.get.current_page();
-        var url = window.location.origin + window.location.pathname + "?ui=2&ik=" + api.tracker.ik+"&rid=" + api.tracker.rid + "&view=tl&rt=1&num=" + (api.tracker.globals[8] || 100);
+        var url = window.location.origin + window.location.pathname + "?ui=2&ik=" + api.tracker.ik+"&rid=" + api.tracker.rid + "&view=tl&rt=1&num=" + api.get.emails_per_page();
         var start = $(".aqK:visible .Dj").find("span.ts:first").text().replace(",", "").replace(".", "");
         if (start) {
             url += "&start=" + parseInt(start - 1);
@@ -1846,6 +1846,11 @@ var Gmail_ = function(localJQuery) {
             result = parts[0] + "/" + parts[1];
             return result;
         }
+    };
+
+
+    api.get.emails_per_page = function() {
+        return api.tracker.globals[8] || 100;
     };
 
 

@@ -92,6 +92,7 @@ const gmail = new GmailFactory.Gmail() as Gmail;
 - [gmail.get**.visible_emails_async(callback)**](#gmailgetvisible_emailscallback)
 - [gmail.get**.selected_emails_data()**](#gmailgetselected_emails_data)
 - [gmail.get**.current_page()**](#gmailgetcurrent_page)
+- [gmail.get**.emails_per_page()**](#gmailgetemails_per_page)
 - [gmail.get**.email_id()**](#gmailgetemail_id)
 - [gmail.get**.email_ids()**](#gmailgetemail_ids)
 - [gmail.get**.email_subject()**](#gmailgetemail_subject)
@@ -549,6 +550,14 @@ Returns what page of gmail the user is currently on. These are the possible resp
 "/label/[.+]" // inside label view
 "/category/[.+]" // inside category view
 "/settings/[.+]" // settings sub-page (excluding settings root page)
+```
+
+#### gmail.get.emails_per_page()
+
+Returns the number of emails shown per page
+
+```js
+50
 ```
 
 #### gmail.get.email_subject()
