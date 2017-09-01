@@ -2,7 +2,11 @@
 
 ![Build status](https://api.travis-ci.org/KartikTalwar/gmail.js.svg?branch=master)
 
-**Note:** The new Content Security Policy will prevent direct injection. **[Here](https://github.com/KartikTalwar/gmail-chrome-extension-boilerplate)** is how to get around it
+### What Gmail.js is and isn't
+
+Gmail.js is meant to be used for creating WebExtension-based browser-extensions, for Chrome, Firefox and other compatible browsers.
+
+It cannot be used server-side with Node, or from another web-app to interface with Gmail.
 
 **Note:** This is not an official Gmail API, and isn't affiliated with Google.
 
@@ -10,39 +14,35 @@
 
 ### TL;DR Summary
 
-- Lots of api methods to work with gmail. Useful for chrome extensions
-- Most of them dont take arguments, they work on what is currently visible on the screen
-- I still need to add implementation for chrome extension, works by injecting js for now
+- Lots of API methods to work with gmail. See documentation below.
+- Easy to use API. Data & DOM.
+- Reasonably complete TypeScript-support.
+- Many methods are contextual and will work with whatever is on screen when no arguments are given.
+- Obtain email data, react to event, etc. No need for OAuth!
 - Main methods allow you to observe certain events with **`gmail.observe.on('lots_of_actions_here', callback())`** or similar **`gmail.observe.before(...)`** and **`gmail.observe.after(...)`**
-- Click on a method link to view more detailed docs
-- Create an issue/pull request for feedback, requests and
-  fixes. See
-  [CONTRIBUTING.md](https://github.com/KartikTalwar/gmail.js/blob/master/CONTRIBUTING.md) for
-  more details.
-- Basic TypeScript-support from type-declarations file [gmail.d.ts](https://github.com/KartikTalwar/gmail.js/blob/master/src/gmail.d.ts).
+- Create an issue/pull request for feedback, requests and fixes. See [CONTRIBUTING.md](https://github.com/KartikTalwar/gmail.js/blob/master/CONTRIBUTING.md) for more details.
 
-### Installation
+### Using Gmail.js
 
-Since this is a chrome extension library, you can still use npm to get new changes
+If you know how to create WebExtensions-based extensions for Firefox and Chrome, you can get started by pulling Gmail.js like this:
 
 ```
 npm install gmail-js
 ```
 
+**Note:** Please ensure that Gmail.js is injected into the regular DOM.
+Gmail.js does not work as a content-script.
 
-### Examples
+For some ready to use examples/boilerplate repos, look no further:
 
-- **[Gmail Hacks](https://chrome.google.com/webstore/detail/gmail-hacks/aacloklpepaibhlikiakfcgjjappeppo)** by [@arpitnext](https://github.com/arpitnext) (*[Source](https://github.com/arpitnext/play_with_gmail.js)*)
-- **[Example to use gmail.js in firefox addon](https://github.com/rinkudas/gmail-firefox-addon-boilerplate)** - It provides basic functionality to inject gmail.js within gmail for using it in a Firefox addon.
-- **[GmailJS Node Boilerplate](https://github.com/josteink/gmailjs-node-boilerplate)** - Example for how to use GmailJS with NodeJS and script-bundling for instant load-times.
+- **[GmailJS Node Boilerplate](https://github.com/josteink/gmailjs-node-boilerplate)** - Example for how to create a browser-extension using GmailJS and modern javascript with NodeJS and script-bundling for instant load-times.
+- **[GmailJS Legacy Boilerplate](https://github.com/KartikTalwar/gmail-chrome-extension-boilerplate)** - Example for how to create a browser-extension using traditional script-loading. (Requires less tooling, but is less reliable)
 
-## Content Security Policy
+### Content Security Policy
 
+Content Security Policy (CSP) will prevent direct injection. Please see the following repository to get around the policies. More details can also be found in issue [#75](https://github.com/KartikTalwar/gmail.js/issues/75)
 
-The new Content Security Policy will prevent direct injection. Please see the following repository to get around the policies. More details can also be found in issue [#75](https://github.com/KartikTalwar/gmail.js/issues/75)
-
-#### https://github.com/KartikTalwar/gmail-chrome-extension-boilerplate
-
+See the examples linked above for how to get around that.
 
 ## Setup
 
