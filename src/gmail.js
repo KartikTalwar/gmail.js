@@ -230,7 +230,7 @@ var Gmail_ = function(localJQuery) {
         console.warn("gmail.js: This function is known to be unreliable, and may be deprecated in a future release.");
         var bx_scfs = [];
         try {
-            bx_scfs = api.tracker.globals[17][4][1][32];
+            bx_scfs = api.tracker.globals[17][4][1][151];
         } catch(er) {
             bx_scfs = ["bx_scfs","false"];
         }
