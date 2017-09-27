@@ -227,6 +227,7 @@ var Gmail_ = function(localJQuery) {
     };
 
     api.check.should_compose_fullscreen = function(){
+        console.warn("gmail.js: This function is known to be unreliable, and may be deprecated in a future release.");
         var bx_scfs = [];
         try {
             bx_scfs = api.tracker.globals[17][4][1][32];
