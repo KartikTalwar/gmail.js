@@ -1,6 +1,7 @@
 # Gmail.js - JavaScript API for Gmail
 
 ![Build status](https://api.travis-ci.org/KartikTalwar/gmail.js.svg?branch=master)
+[![npm](https://img.shields.io/npm/v/gmail-js.svg)](https://www.npmjs.com/package/gmail-js)
 
 ### What Gmail.js is and isn't
 
