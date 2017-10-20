@@ -21,6 +21,14 @@ describe("Locale-parsing", () => {
             assert.ok(!result);
         });
     });
+
+    it("Rejects badly formatted string", () => {
+        let junk = ["12", "12-23", "a3", "a45b4"];
+        junk.forEach((junkValue) => {
+            let result = gmail.helper.get.is_locale(junkValue);
+            assert.ok(!result);
+        });
+    });
 });
 
 describe("Locale URL-parsing", () => {
@@ -67,5 +75,29 @@ describe("Globals local-list parsing", () => {
 
     it("returns hl-value when URLs match", () => {
         testCase(["https://account.google.com/user/stats?firstParam=value&hl=en"], "en");
+    });
+});
+
+describe("Locale-filtering", () => {
+    let testCase = function(locale, expected) {
+        const result = gmail.helper.filter_locale(locale);
+        assert.equal(expected, result);
+    };
+
+    it("filters junk values", () => {
+        testCase(null, null);
+        testCase("", null);
+        testCase("12-23", null);
+        testCase("eN", null);
+    });
+
+    it("returned value is always lower-case", () => {
+        testCase("EN", "en");
+        testCase("en", "en");
+    });
+
+    it("returned value does not contain region-denomination", () => {
+        testCase("EN-GB", "en");
+        testCase("NO-NB", "no");
     });
 });

@@ -142,9 +142,22 @@ var Gmail_ = function(localJQuery) {
             return false;
         }
 
+        if (locale.match(/[0-9]/)) {
+            return false;
+        }
+
         var localePrefix = locale.slice(0, 2);
         return localePrefix.toLowerCase() === localePrefix ||
             localePrefix.toUpperCase() === localePrefix;
+    };
+
+    api.helper.filter_locale = function(locale) {
+        if (!api.helper.get.is_locale(locale)) {
+            return null;
+        }
+
+        // strip region-denominator
+        return locale.substring(0,2).toLowerCase();
     };
 
     api.helper.array_starts_with = function(list, item) {
@@ -213,8 +226,9 @@ var Gmail_ = function(localJQuery) {
         var localeList = api.helper.get.array_sublist(globals[17], "ui");
         if (localeList !== null && localeList.length > 8) {
             var locale = api.helper.get.locale_from_globals_item(localeList);
-            if (api.helper.get.is_locale(locale)) {
-                return locale.toLowerCase();
+            locale = api.helper.filter_locale(locale);
+            if (locale) {
+                return locale;
             }
         }
 
