@@ -168,7 +168,7 @@ var Gmail_ = function(localJQuery) {
         return null;
     };
 
-    var tryGetLocaleFromUrlParams = function(value) {
+    api.helper.get.locale_from_url_params = function(value) {
         // check if is URL
         if (value && value.indexOf && value.indexOf("https://") === 0) {
             var urlParts = value.split("?");
@@ -188,10 +188,14 @@ var Gmail_ = function(localJQuery) {
         return null;
     };
 
-    var getLocaleFromGlobalsItem = function(list) {
+    api.helper.get.locale_from_globals_item = function(list) {
+        if (!list) {
+            return null;
+        }
+
         for (var i=0; i<list.length; i++) {
             var item = list[i];
-            var locale = tryGetLocaleFromUrlParams(item);
+            var locale = api.helper.get.locale_from_url_params(item);
             if (locale) {
                 return locale;
             }
@@ -208,7 +212,7 @@ var Gmail_ = function(localJQuery) {
         // has historically been observed as [7], [8] and [9]!
         var localeList = api.helper.get.array_sublist(globals[17], "ui");
         if (localeList !== null && localeList.length > 8) {
-            var locale = getLocaleFromGlobalsItem(localeList);
+            var locale = api.helper.get.locale_from_globals_item(localeList);
             if (api.helper.get.is_locale(locale)) {
                 return locale.toLowerCase();
             }
