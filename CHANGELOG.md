@@ -1,6 +1,14 @@
 
 # Changelog
 
+## Version 0.6.11
+
+- Bugfxies in email name-parsing
+- Add more button-functions.
+- Detect inlines replies.
+- Add deprecation-warning to `api.get.email_source`.
+- Other bugfixes
+
 ## Version 0.6.10
 
 - Introduce `api.get.email_source_promise`.
