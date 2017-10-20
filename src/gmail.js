@@ -147,19 +147,32 @@ var Gmail_ = function(localJQuery) {
             localePrefix.toUpperCase() === localePrefix;
     };
 
+    var arrayStartsWith = function(list, item) {
+        return (list && list.length > 0 && list[0] === item);
+    };
+
+    var findArraySubList = function(nestedArray, itemKey) {
+        for(var i=0; i<nestedArray.length; i++) {
+            var list = nestedArray[i];
+            if (arrayStartsWith(list, itemKey)) {
+                return list;
+            }
+        }
+
+        return null;
+    };
+
     api.get.localization = function() {
         var globals = api.tracker.globals;
 
-        // First candidate.
-        var locale = globals[17] && globals[17][8] && globals[17][8][8];
-        if (api.helper.get.is_locale(locale)) {
-            return locale.toLowerCase();
-        }
-
-        // Second candidate.
-        locale = globals[17] && globals[17][9] && globals[17][9][8];
-        if (api.helper.get.is_locale(locale)) {
-            return locale.toLowerCase();
+        // candidate is globals[17]-subarray which starts with "ui"
+        // has historically been observed as [7], [8] and [9]!
+        var localeList = findArraySubList(globals[17], "ui");
+        if (localeList !== null && localeList.length > 8) {
+            var locale = localeList[8];
+            if (api.helper.get.is_locale(locale)) {
+                return locale.toLowerCase();
+            }
         }
 
         return null;
