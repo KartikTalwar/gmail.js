@@ -162,6 +162,39 @@ var Gmail_ = function(localJQuery) {
         return null;
     };
 
+    var tryGetLocaleFromUrlParams = function(value) {
+        // check if is URL
+        if (value && value.indexOf && value.indexOf("https://") === 0) {
+            var urlParts = value.split("?");
+            if (urlParts.length > 1) {
+                var hash = urlParts[1];
+                var hashParts = hash.split("&");
+                for (var i=0; i < hashParts.length; i++)
+                {
+                    var kvp = hashParts[i].split("=");
+                    if (kvp.length === 2 && kvp[0] === "hl") {
+                        return kvp[1];
+                    }
+                }
+            }
+        }
+
+        return null;
+    };
+
+    var getLocaleFromGlobalsItem = function(list) {
+        for (var i=0; i<list.length; i++) {
+            var item = list[i];
+            var locale = tryGetLocaleFromUrlParams(item);
+            if (locale) {
+                return locale;
+            }
+        }
+
+        // fallback to user-locale
+        return list[8];
+    };
+
     api.get.localization = function() {
         var globals = api.tracker.globals;
 
@@ -169,7 +202,7 @@ var Gmail_ = function(localJQuery) {
         // has historically been observed as [7], [8] and [9]!
         var localeList = findArraySubList(globals[17], "ui");
         if (localeList !== null && localeList.length > 8) {
-            var locale = localeList[8];
+            var locale = getLocaleFromGlobalsItem(localeList);
             if (api.helper.get.is_locale(locale)) {
                 return locale.toLowerCase();
             }
@@ -177,7 +210,6 @@ var Gmail_ = function(localJQuery) {
 
         return null;
     };
-
 
     api.check.is_thread = function() {
         var check_1 = $(".nH .if").children(":eq(1)").children().children(":eq(1)").children();
