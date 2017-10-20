@@ -147,15 +147,21 @@ var Gmail_ = function(localJQuery) {
             localePrefix.toUpperCase() === localePrefix;
     };
 
-    var arrayStartsWith = function(list, item) {
-        return (list && list.length > 0 && list[0] === item);
+    api.helper.array_starts_with = function(list, item) {
+        if (list && list.length > 0 && list[0] === item) {
+            return true;
+        } else {
+            return false;
+        }
     };
 
-    var findArraySubList = function(nestedArray, itemKey) {
-        for(var i=0; i<nestedArray.length; i++) {
-            var list = nestedArray[i];
-            if (arrayStartsWith(list, itemKey)) {
-                return list;
+    api.helper.get.array_sublist = function(nestedArray, itemKey) {
+        if (nestedArray) {
+            for(var i=0; i<nestedArray.length; i++) {
+                var list = nestedArray[i];
+                if (api.helper.array_starts_with(list, itemKey)) {
+                    return list;
+                }
             }
         }
 
@@ -200,7 +206,7 @@ var Gmail_ = function(localJQuery) {
 
         // candidate is globals[17]-subarray which starts with "ui"
         // has historically been observed as [7], [8] and [9]!
-        var localeList = findArraySubList(globals[17], "ui");
+        var localeList = api.helper.get.array_sublist(globals[17], "ui");
         if (localeList !== null && localeList.length > 8) {
             var locale = getLocaleFromGlobalsItem(localeList);
             if (api.helper.get.is_locale(locale)) {
