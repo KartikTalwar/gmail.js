@@ -142,29 +142,98 @@ var Gmail_ = function(localJQuery) {
             return false;
         }
 
+        if (locale.match(/[0-9]/)) {
+            return false;
+        }
+
         var localePrefix = locale.slice(0, 2);
         return localePrefix.toLowerCase() === localePrefix ||
             localePrefix.toUpperCase() === localePrefix;
     };
 
-    api.get.localization = function() {
-        var globals = api.tracker.globals;
-
-        // First candidate.
-        var locale = globals[17] && globals[17][8] && globals[17][8][8];
-        if (api.helper.get.is_locale(locale)) {
-            return locale.toLowerCase();
+    api.helper.filter_locale = function(locale) {
+        if (!api.helper.get.is_locale(locale)) {
+            return null;
         }
 
-        // Second candidate.
-        locale = globals[17] && globals[17][9] && globals[17][9][8];
-        if (api.helper.get.is_locale(locale)) {
-            return locale.toLowerCase();
+        // strip region-denominator
+        return locale.substring(0,2).toLowerCase();
+    };
+
+    api.helper.array_starts_with = function(list, item) {
+        if (list && list.length > 0 && list[0] === item) {
+            return true;
+        } else {
+            return false;
+        }
+    };
+
+    api.helper.get.array_sublist = function(nestedArray, itemKey) {
+        if (nestedArray) {
+            for(var i=0; i<nestedArray.length; i++) {
+                var list = nestedArray[i];
+                if (api.helper.array_starts_with(list, itemKey)) {
+                    return list;
+                }
+            }
         }
 
         return null;
     };
 
+    api.helper.get.locale_from_url_params = function(value) {
+        // check if is URL
+        if (value && value.indexOf && value.indexOf("https://") === 0) {
+            var urlParts = value.split("?");
+            if (urlParts.length > 1) {
+                var hash = urlParts[1];
+                var hashParts = hash.split("&");
+                for (var i=0; i < hashParts.length; i++)
+                {
+                    var kvp = hashParts[i].split("=");
+                    if (kvp.length === 2 && kvp[0] === "hl") {
+                        return kvp[1];
+                    }
+                }
+            }
+        }
+
+        return null;
+    };
+
+    api.helper.get.locale_from_globals_item = function(list) {
+        if (!list) {
+            return null;
+        }
+
+        for (var i=0; i<list.length; i++) {
+            var item = list[i];
+            var locale = api.helper.get.locale_from_url_params(item);
+            if (locale) {
+                return locale;
+            }
+        }
+
+        // fallback to user-locale
+        return list[8];
+    };
+
+    api.get.localization = function() {
+        var globals = api.tracker.globals;
+
+        // candidate is globals[17]-subarray which starts with "ui"
+        // has historically been observed as [7], [8] and [9]!
+        var localeList = api.helper.get.array_sublist(globals[17], "ui");
+        if (localeList !== null && localeList.length > 8) {
+            var locale = api.helper.get.locale_from_globals_item(localeList);
+            locale = api.helper.filter_locale(locale);
+            if (locale) {
+                return locale;
+            }
+        }
+
+        return null;
+    };
 
     api.check.is_thread = function() {
         var check_1 = $(".nH .if").children(":eq(1)").children().children(":eq(1)").children();

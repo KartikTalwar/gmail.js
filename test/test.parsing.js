@@ -130,3 +130,51 @@ describe("Name-parsing", () => {
         testName("Senõr Alapenõ on a stick");
     });
 });
+
+describe("List-prefix checking", () => {
+    const gmail = new Gmail();
+
+    const testCase = function(list, searchee, expected) {
+        const result = gmail.helper.array_starts_with(list, searchee);
+        assert.equal(expected, result);
+    };
+
+    it("returns false for null or empty list", () => {
+        testCase(null, "key", false);
+        testCase([], "key", false);
+    });
+
+    it("returns false for miss", () => {
+        testCase(["ui", "yes"], "uiv", false);
+    });
+
+    it("returns true for exact hit", () => {
+        testCase(["ui", "yes"], "ui", true);
+    });
+});
+
+describe("Sub-list extraction", () => {
+    const gmail = new Gmail();
+
+    const testCase = function(listlist, prefix, expected) {
+        const result = gmail.helper.get.array_sublist(listlist, prefix);
+        assert.deepEqual(expected, result);
+    };
+
+    it("returns null for null or empty list", () => {
+        testCase(null, "ui", null);
+        testCase([], "ui", null);
+    });
+
+    it("returns null for no match", () => {
+        testCase([["uiv", "a"]], "ui", null);
+    });
+
+    it("returns the full matching list on match", () => {
+        testCase([
+            ["a", "b", "c"],
+            ["ui", "yeah"],
+            ["d", "e", "f"]
+        ], "ui", ["ui", "yeah"]);
+    });
+});
