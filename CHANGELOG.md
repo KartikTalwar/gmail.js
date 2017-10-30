@@ -1,6 +1,10 @@
 
 # Changelog
 
+## Version 0.6.12
+
+- Fix locale-detection in `api.get.localization`.
+
 ## Version 0.6.11
 
 - Bugfixes in email name-parsing
