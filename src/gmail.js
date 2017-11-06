@@ -1807,7 +1807,12 @@ var Gmail_ = function(localJQuery) {
                 cat_label = "group";
                 url += "&cat=^smartlabel_" + cat_label + "&search=category";
             } else {
-                url += "&search=" + "inbox";
+                // tentative fix for https://github.com/KartikTalwar/gmail.js/issues/417
+                if (api.check.is_google_apps_user()) {
+                    url += "&search=" + "inbox";
+                } else {
+                    url += "&search=" + "mbox";
+                }
             }
         }else {
             url += "&search=" + page;
