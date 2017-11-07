@@ -184,7 +184,7 @@ interface GmailGet {
        Returns a count of total unread emails for the current account.
 
        You can also request the data individually using:
-       
+
        gmail.get.unread_inbox_emails()
        gmail.get.unread_draft_emails()
        gmail.get.unread_spam_emails()
@@ -222,6 +222,10 @@ interface GmailGet {
        Returns what page of gmail the user is currently on.
      */
     current_page(): GmailPageType;
+    /**
+       Returns the number of emails shown per page
+     */
+    emails_per_page(): number;
     /**
        Returns an object representation of the opened email contents
        and metadata. It takes the optional email_id parameter where
@@ -723,7 +727,7 @@ interface GmailObserve {
        This is the key feature of gmail.js. This method allows you to
        add triggers to all of these actions so you can build your
        custom extension/tool with this library.
-       
+
        You simply specify the action name and your function that the
        method will return data to when the actions are triggered and
        it does the rest. You can have multiple triggers
