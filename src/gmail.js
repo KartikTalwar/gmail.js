@@ -1637,7 +1637,7 @@ var Gmail_ = function(localJQuery) {
         method  = method || "GET";
 
         link = encodeURI(link).replace(/#-#-#/gi, "%23");
-        var config = {type: method, url: link, async: false, dataType:'text'};
+        var config = {type: method, url: link, async: false, dataType:"text"};
         if (disable_cache) {
             config.cache = false;
         }
