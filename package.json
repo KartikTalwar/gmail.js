@@ -23,7 +23,7 @@
         "gmail firefox extension"
     ],
     "dependencies": {
-        "jquery": "^1.10.2"
+        "jquery": "^3.3.1"
     },
     "devDependencies": {
         "@types/jquery": "^1.10.27",
