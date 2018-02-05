@@ -1,6 +1,11 @@
 
 # Changelog
 
+## Version 0.6.13
+
+- Fix bug in `api.get.visible_emails`.
+- Upgrade jQuery to latest.
+
 ## Version 0.6.12
 
 - Fix locale-detection in `api.get.localization`.
