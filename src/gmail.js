@@ -125,7 +125,9 @@ var Gmail_ = function(localJQuery) {
             for (i in loggedInAccounts) {
                 account = loggedInAccounts[i];
                 if (account.index === delegatedToUserIndex) {
-                    return account.email;
+                    // #381 - Can't be delegated to yourself
+                    // (happened when 'Mail delegation' setting is off at a domain level)
+                    return account.email === api.get.user_email() ? null : account.email;
                 }
             }
         }
