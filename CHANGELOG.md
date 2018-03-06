@@ -1,6 +1,10 @@
 
 # Changelog
 
+## Version 0.6.14
+
+- Fix delegated inbox detection in `api.helper.get.is_delegated_inbox`
+
 ## Version 0.6.13
 
 - Fix bug in `api.get.visible_emails`.

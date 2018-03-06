@@ -1759,7 +1759,7 @@ var Gmail_ = function(localJQuery) {
 
 
     api.helper.get.is_delegated_inbox = function() {
-        return api.tracker.globals[17][5][0] === "fwd";
+        return $(".identityUserDelegatedAccount").length === 1;
     };
 
 
