@@ -1062,15 +1062,25 @@ var Gmail_ = function(localJQuery) {
         if (!api.tracker.xhr_init) {
             api.tracker.xhr_init = true;
             var js_frame = null;
+
             if (top.document.getElementById("js_frame")){
                 js_frame = top.document.getElementById("js_frame");
             } else if (window.opener) {
                 js_frame = window.opener.top.document.getElementById("js_frame");
             }
             if (!js_frame){
-                throw "Cannot register the xhr watcher as mail.google.com is not fully loaded yet. Please wrap your code in `gmail.observe.on(\"load\")`";
+                if (window.opener) {
+                    js_frame = window.opener.top;
+                } else {
+                    js_frame = top;
+                }
             }
-            var win = js_frame.contentDocument.defaultView;
+            var win;
+            if (js_frame.contentDocument) {
+                win = js_frame.contentDocument.defaultView;
+            } else {
+                win = js_frame;
+            }
 
             if (!win.gjs_XMLHttpRequest_open) {
                 win.gjs_XMLHttpRequest_open = win.XMLHttpRequest.prototype.open;
