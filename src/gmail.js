@@ -442,38 +442,22 @@ var Gmail = function(localJQuery) {
         return ret;
     };
 
-
-    api.get.email_id = function() {
-        var hash = null;
-
-        if(api.check.is_inside_email()) {
-            if(api.check.is_preview_pane()) {
-                var items = api.dom.email_contents();
-                var text = [];
-
-                for(var i=0; i<items.length; i++) {
-                    var mail_id = items[i].className.split(" ")[2] || items[i].children[0].className.split(" ")[2];
-                    var is_editable = items[i].getAttribute("contenteditable");
-                    var is_visible = items[i].offsetWidth > 0 && items[i].offsetHeight > 0;
-                    if(mail_id !== "undefined" && mail_id !== undefined && is_visible) {
-                        if(is_editable !== "true") {
-                            text.push(mail_id);
-                        }
-                    }
-                }
-
-                hash = text[0].substring(1, text[0].length);
-            } else {
-                hash = window.location.hash.split("/").pop().replace(/#/, "").split("?")[0];
-            }
+    api.get.thread_id = function() {
+        // multiple elements contains this attribute, but only the visible header of the visible email is a H2!
+        const elem = document.querySelector("h2[data-legacy-thread-id]");
+        if (elem !== null) {
+            return elem.dataset.legacyThreadId;
         }
         else {
-            hash = api.tools.parse_url(window.location.href).th;
+            // URL-based analysis is unreliable!
+            return undefined;
         }
-
-        return hash;
     };
 
+    api.get.email_id = function() {
+        console.warn("GmailJS: api.get.email_id() invoked. Please note this function actually returns thread-id, and that email-id and thread-id may not always be used interchangably! Use api.get.thread_id() instead to silence this warning.");
+        return api.get.thread_id();
+    };
 
     api.check.is_priority_inbox = function() {
         return $(".qh").length > 0;
@@ -1923,7 +1907,7 @@ var Gmail = function(localJQuery) {
 
         var hashPart  = hash.split("#").pop().split("?").shift() || "inbox";
 
-        if(hashPart.match(/\/[0-9a-f]{16,}$/gi)) {
+        if(hashPart.match(/\/[0-9a-zA-Z]{16,}$/gi)) {
             return "email";
         }
 
@@ -2108,14 +2092,14 @@ var Gmail = function(localJQuery) {
     };
 
 
-    api.helper.get.email_data_pre = function(email_id) {
-        if(api.check.is_inside_email() && email_id === undefined) {
-            email_id = api.get.email_id();
+    api.helper.get.email_data_pre = function(thread_id) {
+        if(api.check.is_inside_email() && thread_id === undefined) {
+            thread_id = api.get.thread_id();
         }
 
         var url = null;
-        if(email_id !== undefined) {
-            url = window.location.origin + window.location.pathname + "?ui=2&ik=" + api.tracker.ik + "&rid=" + api.tracker.rid + "&view=cv&th=" + email_id + "&msgs=&mb=0&rt=1&search=inbox";
+        if(thread_id !== undefined) {
+            url = window.location.origin + window.location.pathname + "?ui=2&ik=" + api.tracker.ik + "&rid=" + api.tracker.rid + "&view=cv&th=" + thread_id + "&msgs=&mb=0&rt=1&search=inbox";
         }
         return url;
     };
@@ -2133,8 +2117,8 @@ var Gmail = function(localJQuery) {
     };
 
 
-    api.get.email_data = function(email_id) {
-        var url = api.helper.get.email_data_pre(email_id);
+    api.get.email_data = function(thread_id) {
+        var url = api.helper.get.email_data_pre(thread_id);
 
         if (url !== null) {
             var get_data = api.tools.make_request(url);

@@ -366,10 +366,10 @@ The data does not come from the DOM
 }]
 ```
 
-#### gmail.get.email_data(email_id=undefined)
+#### gmail.get.email_data(thread_id=undefined)
 
-Returns an object representation of the opened email contents and metadata. It takes the optional email_id parameter where
-the data for the specified id is returned instead of the email currently visible in the dom.
+Returns an object representation of the opened email contents and metadata. It takes the optional thread_id parameter where
+the data for the specified thread is returned instead of the email-thread currently visible in the dom.
 
 `thread_id` is added for updated gmail thread behaviour which adds support for emails created in [inbox](https://inbox.google.com). first_email remains as the first message in the thread.
 
@@ -561,9 +561,18 @@ Returns the opened email's subject from the DOM
 ```
 
 
+#### gmail.get.thread_id()
+
+Gets current email-thread's ID.
+
+This can be used together with `gmail.get.email_data()` to obtain
+individual email IDs.
+
+
 #### gmail.get.email_id()
 
-Gets current email's ID
+Same as `gmail.get.thread_id()`, but kept for compatibilty.
+Using this method generates a warning!
 
 ```js
 "141de25dc0b48e4f"

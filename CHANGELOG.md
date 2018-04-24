@@ -5,6 +5,9 @@
 
 - Dramatically improve compatiblity situation: Now supports
   multiple concurrent GmailJS-instances and versions.
+- New, safer DOM-based approach to resolving email-thread IDs.
+- `api.get.email_id()` replaced by `api.get.thread_id()`. Using old
+  method now generates warning!
 
 ## Version 0.6.14
 
