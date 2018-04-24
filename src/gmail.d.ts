@@ -157,7 +157,11 @@ interface GmailGet {
      */
     compose_ids(): string[];
     /**
-       Gets current email's ID
+       Gets current email-thread's ID
+     */
+    thread_id(): string;
+    /**
+       Gets current email-thread's ID
      */
     email_id(): string;
     /**
@@ -224,7 +228,7 @@ interface GmailGet {
     current_page(): GmailPageType;
     /**
        Returns an object representation of the opened email contents
-       and metadata. It takes the optional email_id parameter where
+       and metadata. It takes the optional thread_id parameter where
        the data for the specified id is returned instead of the email
        currently visible in the dom.
 
@@ -232,7 +236,7 @@ interface GmailGet {
        support for emails created in inbox. first_email remains as the first
        message in the thread.
      */
-    email_data(email_id?: string): GmailEmailData;
+    email_data(thread_id?: string): GmailEmailData;
     /**
        Does the same as email_data but accepts a callback function
     */
