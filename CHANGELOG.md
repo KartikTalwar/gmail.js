@@ -1,6 +1,11 @@
 
 # Changelog
 
+## Version 0.7.0
+
+- Dramatically improve compatiblity situation: Now supports
+  multiple concurrent GmailJS-instances and versions.
+
 ## Version 0.6.14
 
 - Fix delegated inbox detection in `api.helper.get.is_delegated_inbox`
