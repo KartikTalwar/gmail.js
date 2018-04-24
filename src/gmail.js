@@ -2763,26 +2763,18 @@ var Gmail = function(localJQuery) {
 
         if (typeof element === "string") {
             this.id = element;
-            var message_class_id = "m" + this.id;
-            this.id_element = $("div.ii.gt div.a3s.aXjCH." + message_class_id);
-            element = this.id_element.closest("div.adn");
+            element = $("div.adn[data-legacy-message-id='" + this.id + "']");
         } else {
             element = $(element);
         }
+
         if (!element || (!element.hasClass("adn"))) api.tools.error("api.dom.email called with invalid element/id");
 
-        // if no id specified, extract from the body wrapper class (starts with "m" followed by the id)
-        if (!this.id) {
-            this.id_element = element.find("div.ii.gt div.a3s.aXjCH");
-            var classValue = this.id_element.attr("class");
-            if (classValue !== null) {
-                var matches = classValue.match(/(^|\s)m([\S]*)/);
-                if (matches !== null) {
-                    this.id = matches.pop();
-                }
-            }
-        }
         this.$el = element;
+        if (!this.id) {
+            this.id = this.$el.data("legacyMessageId");
+        }
+
         return this;
     };
 

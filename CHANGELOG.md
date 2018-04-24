@@ -8,6 +8,7 @@
 - New, safer DOM-based approach to resolving email-thread IDs.
 - `api.get.email_id()` replaced by `api.get.thread_id()`. Using old
   method now generates warning!
+- New, safer data-attribute-based implementation for `api.dom.email`.
 
 ## Version 0.6.14
 
