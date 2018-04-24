@@ -6,7 +6,7 @@
 
 /*eslint-env es6*/
 
-var Gmail_ = function(localJQuery) {
+var Gmail = function(localJQuery) {
 
     /*
       Use the provided "jQuery" if possible, in order to avoid conflicts with
@@ -3020,24 +3020,7 @@ var Gmail_ = function(localJQuery) {
     return api;
 };
 
-function initializeOnce(fn) {
-    var result;
-    return function() {
-        if (fn) {
-            result = fn.apply(this, arguments);
-        }
-        fn = null;
-        return result;
-    };
-}
-
-// required to avoid error in NodeJS.
-var GmailClass = initializeOnce(Gmail_);
-if (typeof(window) !== "undefined" && !window.Gmail) {
-    window.Gmail = GmailClass;
-}
-
 // make class accessible to require()-users.
 if (typeof(exports) !== "undefined") {
-    exports.Gmail = GmailClass;
+    exports.Gmail = Gmail;
 }
