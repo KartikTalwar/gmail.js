@@ -1015,8 +1015,12 @@ var Gmail = function(localJQuery) {
         if(typeof params.body === "object") {
             params.body_params = params.body;
             params.body_is_object = true;
-        } else {
+        } else if (typeof params.body === "string" && params.body.indexOf("{") === 0){
+            params.body_params = JSON.parse(params.body);
+        } else if (params.body !== undefined) {
             params.body_params = api.tools.deparam(params.body);
+        } else {
+            params.body_params = {};
         }
 
         if(typeof api.tracker.events !== "object" && typeof api.tracker.actions !== "object") {
