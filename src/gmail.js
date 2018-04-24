@@ -1057,6 +1057,9 @@ var Gmail_ = function(localJQuery) {
         return events;
     };
 
+    api.tools.patch = function(patchee, patch) {
+        patch(patchee);
+    };
 
     api.tools.xhr_watcher = function () {
         if (api.tracker.xhr_init) {
@@ -1067,61 +1070,57 @@ var Gmail_ = function(localJQuery) {
 
         const win = api.helper.get_xhr_window();
 
-        if (!win.gjs_XMLHttpRequest_open) {
-            win.gjs_XMLHttpRequest_open = win.XMLHttpRequest.prototype.open;
-        }
-
-        win.XMLHttpRequest.prototype.open = function (method, url, async, user, password) {
-            var out = win.gjs_XMLHttpRequest_open.apply(this, arguments);
-            this.xhrParams = {
-                method: method.toString(),
-                url: url.toString()
-            };
-            return out;
-        };
-
-        if (!win.gjs_XMLHttpRequest_send) {
-            win.gjs_XMLHttpRequest_send = win.XMLHttpRequest.prototype.send;
-        }
-
-        win.XMLHttpRequest.prototype.send = function (body) {
-            // parse the xhr request to determine if any events should be triggered
-            var events = false;
-            if (this.xhrParams) {
-                this.xhrParams.body = body;
-                events = api.tools.parse_requests(this.xhrParams, this);
-            }
-
-            // fire before events
-            if(api.observe.trigger("before", events, this)) {
-
-                // if before events were fired, rebuild arguments[0]/body strings
-                // TODO: recreate the url if we want to support manipulating url args (is there a use case where this would be needed?)
-                body = arguments[0] = this.xhrParams.body_is_object ? this.xhrParams.body_params : $.param(this.xhrParams.body_params,true).replace(/\+/g, "%20");
-            }
-
-            // if any matching after events, bind onreadystatechange callback
-            if(api.observe.bound(events,"after")) {
-                var curr_onreadystatechange = this.onreadystatechange;
-                var xhr = this;
-                this.onreadystatechange = function(progress) {
-                    if (this.readyState === this.DONE) {
-                        xhr.xhrResponse = api.tools.parse_response(progress.target.responseText);
-                        api.observe.trigger("after", events, xhr);
-                    }
-                    if (curr_onreadystatechange) {
-                        curr_onreadystatechange.apply(this, arguments);
-                    }
+        api.tools.patch(win.XMLHttpRequest.prototype.open, (orig) => {
+            win.XMLHttpRequest.prototype.open = function (method, url, async, user, password) {
+                var out = orig.apply(this, arguments);
+                this.xhrParams = {
+                    method: method.toString(),
+                    url: url.toString()
                 };
-            }
+                return out;
+            };
+        });
 
-            // send the original request
-            var out = win.gjs_XMLHttpRequest_send.apply(this, arguments);
+        api.tools.patch(win.XMLHttpRequest.prototype.send, (orig) => {
+            win.XMLHttpRequest.prototype.send = function (body) {
+                // parse the xhr request to determine if any events should be triggered
+                var events = false;
+                if (this.xhrParams) {
+                    this.xhrParams.body = body;
+                    events = api.tools.parse_requests(this.xhrParams, this);
+                }
 
-            // fire on events
-            api.observe.trigger("on", events, this);
-            return out;
-        };
+                // fire before events
+                if(api.observe.trigger("before", events, this)) {
+
+                    // if before events were fired, rebuild arguments[0]/body strings
+                    // TODO: recreate the url if we want to support manipulating url args (is there a use case where this would be needed?)
+                    body = arguments[0] = this.xhrParams.body_is_object ? this.xhrParams.body_params : $.param(this.xhrParams.body_params,true).replace(/\+/g, "%20");
+                }
+
+                // if any matching after events, bind onreadystatechange callback
+                if(api.observe.bound(events,"after")) {
+                    var curr_onreadystatechange = this.onreadystatechange;
+                    var xhr = this;
+                    this.onreadystatechange = function(progress) {
+                        if (this.readyState === this.DONE) {
+                            xhr.xhrResponse = api.tools.parse_response(progress.target.responseText);
+                            api.observe.trigger("after", events, xhr);
+                        }
+                        if (curr_onreadystatechange) {
+                            curr_onreadystatechange.apply(this, arguments);
+                        }
+                    };
+                }
+
+                // send the original request
+                var out = orig.apply(this, arguments);
+
+                // fire on events
+                api.observe.trigger("on", events, this);
+                return out;
+            };
+        });
     };
 
     api.helper.get_xhr_window = function() {
@@ -1178,7 +1177,7 @@ var Gmail_ = function(localJQuery) {
         }
 
         // ensure we are watching xhr requests
-        if(type !== "dom" && !api.tracker.xhr_init) {
+        if(type !== "dom") {
             api.tools.xhr_watcher();
         }
 
