@@ -282,6 +282,14 @@ interface GmailGet {
 
 interface GmailCheck {
     /**
+       Returns True if the user is running Gmail with the new 2018 data-layer
+     */
+    is_new_data_layer(): boolean;
+    /**
+       Returns True if the user is running Gmail with the new 2018 GUI
+     */
+    is_new_gui(): boolean;
+    /**
        Returns True if the conversation is threaded False otherwise
      */
     is_thread(): boolean;

@@ -663,6 +663,14 @@ Although hand picked, this method returns the checks on beta features and deploy
 
 Returns the Gmail localization, e.g. 'US'.
 
+#### gmail.check.is_new_data_layer()
+
+Returns `True` if the user is running Gmail with the new 2018 data-layer `False` otherwise
+
+#### gmail.check.is_new_gui()
+
+Returns `True` if the user is running Gmail with the new 2018 GUI `False` otherwise
+
 #### gmail.check.is_thread()
 
 Returns `True` if the conversation is threaded `False` otherwise
