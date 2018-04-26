@@ -1,6 +1,11 @@
 
 # Changelog
 
+## Version 0.7.1
+
+- Add detection-code for new Gmail.
+- Fix locale-detection in new Gmail.
+
 ## Version 0.7.0
 
 - Dramatically improve compatiblity situation: Now supports
