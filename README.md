@@ -93,6 +93,7 @@ const gmail = new GmailFactory.Gmail() as Gmail;
 - [gmail.get**.visible_emails_async(callback)**](#gmailgetvisible_emailscallback)
 - [gmail.get**.selected_emails_data()**](#gmailgetselected_emails_data)
 - [gmail.get**.current_page()**](#gmailgetcurrent_page)
+- [gmail.get**.thread_id()**](#gmailgetthread_id)
 - [gmail.get**.email_id()**](#gmailgetemail_id)
 - [gmail.get**.email_ids()**](#gmailgetemail_ids)
 - [gmail.get**.email_subject()**](#gmailgetemail_subject)
@@ -123,6 +124,8 @@ const gmail = new GmailFactory.Gmail() as Gmail;
 #### CHECK
 
 
+- [gmail.check**.is_new_data_layer()**](#gmailcheckis_new_data_layer)
+- [gmail.check**.is_new_gui()**](#gmailcheckis_new_gui)
 - [gmail.check**.is_thread()**](#gmailcheckis_thread)
 - [gmail.check**.is_inside_email()**](#gmailcheckis_inside_email)
 - [gmail.check**.is_plain_text()**](#gmailcheckis_plain_text)
