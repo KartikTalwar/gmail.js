@@ -51,6 +51,8 @@ describe("Locale URL-parsing", () => {
         testCase("https://account.google.com/user/stats?hl=en", "en");
         testCase("https://account.google.com/user/stats?firstParam=value&hl=en", "en");
         testCase("https://account.google.com/user/stats?foo=bar&hl=no&someMoreStuff", "no");
+        testCase("http://www.google.com/support/a/cedpta.com/bin/topic.py?topic=10100&hl=en", "en");
+        testCase("http://support.google.com/?ctx=%67mail&hl=no", "no");
     });
 });
 
