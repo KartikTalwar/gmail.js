@@ -30,7 +30,7 @@ var Gmail = function(localJQuery) {
     var api = {
         get : {},
         observe : {},
-        check : {},
+        check : { data: {}},
         tools : {},
         tracker : {},
         dom : {},
@@ -245,11 +245,11 @@ var Gmail = function(localJQuery) {
     };
 
     api.check.is_new_data_layer = function () {
-        return GM_SPT_ENABLED === "true";
+        return window["GM_SPT_ENABLED"] === "true";
     };
 
     api.check.is_new_gui = function () {
-        return GM_RFT_ENABLED === "true";
+        return window.GM_RFT_ENABLED === "true";
     };
 
     api.check.is_thread = function() {
@@ -780,6 +780,12 @@ var Gmail = function(localJQuery) {
         return obj;
     };
 
+    api.tools.get_pathname_from_url = function(url) {
+        const a = document.createElement("a");
+        a.href = url;
+        return a.pathname;
+    };
+
     api.tools.parse_actions = function(params, xhr) {
 
         // upload_attachment event - if found, don"t check other observers. See issue #22
@@ -949,7 +955,126 @@ var Gmail = function(localJQuery) {
             triggered.http_event = [params]; // send every event and all data
         }
 
+        // handle new data-format introduced with new gmail 2018.
+        if (api.check.is_new_data_layer()) {
+            const pathname = api.tools.get_pathname_from_url(params.url_raw);
+            if (pathname && (pathname.endsWith("/i/s") || pathname.endsWith("/i/fd"))) {
+                api.tools.parse_request_payload(params, triggered);
+            }
+        }
+
         return triggered;
+    };
+
+    api.check.data.is_thread_id = function(id) {
+        return id
+            && typeof id === "string"
+            && /^thread-a:/.test(id);
+    };
+
+    api.check.data.is_thread = function(obj) {
+        return obj
+            && typeof obj === "object"
+            && obj["1"]
+            && api.check.data.is_thread_id(obj["1"]);
+    };
+
+    api.check.data.is_email_id = function(id) {
+        return id
+            && typeof id === "string"
+            && /^msg-a:/.test(id);
+    };
+
+    api.check.data.is_email = function(obj) {
+        return obj
+            && typeof obj === "object"
+            && obj["1"]
+            && api.check.data.is_email_id(obj["1"]);
+    };
+
+    api.check.data.is_smartlabels_array = function(obj) {
+        const isNotArray = !obj || !Array.isArray(obj) ||obj.length === 0;
+        if (isNotArray) {
+            return false;
+        }
+
+        for (let item of obj) {
+            if (typeof item !== "string") {
+                return false;
+            }
+
+            if (!/^\^[a-z]+/.test(item)) {
+                return false;
+            }
+        }
+
+        return true;
+    };
+
+
+    api.tools.extract_from_graph = function(obj, predicate) {
+        const result = [];
+
+        const safePredicate = function(item) {
+            try {
+                return predicate(item);
+            }
+            catch (err) {
+                return false;
+            }
+        };
+
+        const forEachGraph = function(obj) {
+            // check root-node too!
+            if (safePredicate(obj)) {
+                result.push(obj);
+                return;
+            }
+
+            for (let key in obj) {
+                let item = obj[key];
+
+                if (safePredicate(item)) {
+                    result.push(item);
+                    continue;
+                }
+
+                // special-case digging for arrays!
+                if (Array.isArray(item)) {
+                    for (let listItem of item) {
+                        forEachGraph(listItem, obj);
+                    }
+                } else if (typeof item === "object") {
+                    // keep on digging.
+                    forEachGraph(item);
+                }
+            }
+        };
+
+        forEachGraph(obj);
+        return result;
+    };
+
+    api.tools.parse_request_payload = function(params, events) {
+        const threads = api.tools.extract_from_graph(params, api.check.data.is_thread);
+        // console.log("Threads:");
+        // console.log(threads);
+        const emails = api.tools.extract_from_graph(params, api.check.data.is_email);
+        // console.log("Emails:");
+        // console.log(emails);
+
+        for (let email of emails) {
+            // console.log("Email:");
+            // console.log(email);
+            for (let key in email) {
+                let prop = email[key];
+                if (api.check.data.is_smartlabels_array(prop)) {
+                    if (prop.indexOf("^pfg") !== -1) {
+                        events.send_message = email;
+                    }
+                }
+            }
+        }
     };
 
     api.tools.parse_response = function(response) {
