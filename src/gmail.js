@@ -244,6 +244,14 @@ var Gmail = function(localJQuery) {
         return null;
     };
 
+    api.check.is_new_data_layer = function () {
+        return GM_SPT_ENABLED === "true";
+    };
+
+    api.check.is_new_gui = function () {
+        return GM_RFT_ENABLED === "true";
+    };
+
     api.check.is_thread = function() {
         var check_1 = $(".nH .if").children(":eq(1)").children().children(":eq(1)").children();
         var check_2 = api.get.email_ids();
