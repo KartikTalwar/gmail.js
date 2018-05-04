@@ -1082,7 +1082,9 @@ var Gmail = function(localJQuery) {
                 let prop = email[key];
                 if (api.check.data.is_smartlabels_array(prop)) {
                     if (prop.indexOf("^pfg") !== -1) {
-                        events.send_message = email;
+                        // TODO: parse `email` for contents, and provide a better strucutred
+                        // object
+                        events.send_message = [params.url, params.body, email];
                     }
                 }
             }
