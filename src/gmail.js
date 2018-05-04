@@ -1011,6 +1011,18 @@ var Gmail = function(localJQuery) {
         return true;
     };
 
+    /**
+       A lightweight check to see if a object (most likely) is a JSON-string.
+    */
+    api.check.data.is_json_string = function(obj) {
+        if (!obj || typeof obj !== "string") {
+            return false;
+        }
+
+        let str = obj.trim();
+        return ((str.startsWith("{") && str.endsWith("}"))
+                || (str.startsWith("[") && str.endsWith("]")));
+    };
 
     api.tools.extract_from_graph = function(obj, predicate) {
         const result = [];
@@ -1079,7 +1091,7 @@ var Gmail = function(localJQuery) {
 
     api.tools.parse_response = function(response) {
         // first try parse as pure json!
-        if (response && typeof response === "string" && (response.startsWith("{") || response.startsWith("["))) {
+        if (api.check.data.is_json_string(response)) {
             try {
                 let json = JSON.parse(response);
                 return json;
@@ -1165,8 +1177,7 @@ var Gmail = function(localJQuery) {
         if(typeof params.body === "object") {
             params.body_params = params.body;
             params.body_is_object = true;
-        } else if (typeof params.body === "string" && (
-            params.body.indexOf("{") === 0 || params.body.indexOf("[") === 0)) {
+        } else if (api.check.data.is_json_string(params.body)) {
             params.body_params = JSON.parse(params.body);
         } else if (params.body !== undefined) {
             params.body_params = api.tools.deparam(params.body);

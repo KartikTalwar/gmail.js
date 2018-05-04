@@ -242,6 +242,21 @@ describe("New Gmail data-format", () => {
         assert.ok(!testee(["a", "pfg", "woo"]));
         assert.ok(!testee([1, 2, 3, 4]));
     });
+
+    it ("Detects JSON-strings", () => {
+        const testee = gmail.check.data.is_json_string;
+        assert.ok(testee("{\"a\": 1}"));
+        assert.ok(testee("[1, 2, 3]"));
+
+        assert.ok(!testee("{abc"));
+        assert.ok(!testee("[1, 2, 3"));
+        assert.ok(!testee("{1, 2, 3"));
+        assert.ok(!testee("[1, 2, 3}"));
+        assert.ok(!testee("{1, 2, 3]"));
+
+        assert.ok(testee("{\"a\": 1}\n"));
+        assert.ok(testee("[1, 2, 3]\n"));
+    });
 });
 
 describe("Graph-traversal", () => {
