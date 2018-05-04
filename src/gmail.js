@@ -1078,11 +1078,19 @@ var Gmail = function(localJQuery) {
     };
 
     api.tools.parse_response = function(response) {
-        var parsedResponse = [],
-            data, dataLength, endIndex, realData;
+        // first try parse as pure json!
+        if (response && typeof response === "string" && (response.startsWith("{") || response.startsWith("["))) {
+            try {
+                let json = JSON.parse(response);
+                return json;
+            } catch(err) {
+                // ignore, and fallback to old implementation!
+            }
+        }
 
+        let parsedResponse = [];
+        let originalResponse = response;
         try {
-
             // gmail post response structure
             // )}]"\n<datalength><rawData>\n<dataLength><rawData>...
 
@@ -1093,13 +1101,13 @@ var Gmail = function(localJQuery) {
             while(response.replace(/\s/g, "").length > 1) {
 
                 // how long is the data to get
-                dataLength = response.substring(0, response.indexOf("[")).replace(/\s/g, "");
+                let dataLength = response.substring(0, response.indexOf("[")).replace(/\s/g, "");
                 if (!dataLength) {dataLength = response.length;}
 
-                endIndex = (parseInt(dataLength, 10) - 2) + response.indexOf("[");
-                data = response.substring(response.indexOf("["), endIndex);
+                let endIndex = (parseInt(dataLength, 10) - 2) + response.indexOf("[");
+                let data = response.substring(response.indexOf("["), endIndex);
 
-                var json = JSON.parse(data);
+                let json = JSON.parse(data);
                 parsedResponse.push(json);
 
                 // prepare response for next loop
@@ -1107,7 +1115,7 @@ var Gmail = function(localJQuery) {
                 response = response.substring(data.length, response.length);
             }
         } catch (e) {
-            console.log("Gmail post response parsing failed.", e);
+            console.log("GmailJS post response-parsing failed.", e, originalResponse);
         }
 
         return parsedResponse;
