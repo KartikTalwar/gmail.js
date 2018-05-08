@@ -1,10 +1,15 @@
 
 # Changelog
 
+## Version 0.7.2
+
+- Fix look of `api.tools.add_compose_button()` in new Gmail.
+
 ## Version 0.7.1
 
 - Add detection-code for new Gmail.
 - Fix locale-detection in new Gmail.
+- Preliminary work on supporting events in new Gmail.
 
 ## Version 0.7.0
 

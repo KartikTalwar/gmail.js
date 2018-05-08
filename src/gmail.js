@@ -2562,11 +2562,12 @@ var Gmail = function(localJQuery) {
 
     api.tools.add_compose_button =  function(composeWindow, content_html, onClickFunction, styleClass) {
         var button = $(document.createElement("div"));
-        var buttonClasses = "T-I J-J5-Ji aoO L3 ";
+        var buttonClasses = "T-I J-J5-Ji aoO T-I-atl L3 ";
         if(styleClass !== undefined){
             buttonClasses += styleClass;
         }
         button.attr("class", buttonClasses);
+        button.attr("style", "margin-left: 8px; max-width: 500px;");
         button.html(content_html);
         button.click(onClickFunction);
 
