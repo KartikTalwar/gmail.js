@@ -215,7 +215,7 @@ interface GmailGet {
     /**
        Does the same as visible_emails, but with a callback instead.
      */
-    visible_emails_async(callback: (emails: string[]) => void);
+    visible_emails_async(callback: (emails: string[]) => void): void;
     /**
        Returns a list of object representation from emails that are
        currently selected in the inbox view.  The data does not come
@@ -255,7 +255,7 @@ interface GmailGet {
        string or binary format depending on the value of the
        `preferBinary`-parameter.
     */
-    email_source_async(email_id: string, callback: (email_source: string | Uint8Array) => void, error_callback?: (jqxhr, textStatus: string, errorThrown: string) => void, preferBinary?: boolean): void;
+    email_source_async(email_id: string, callback: (email_source: string | Uint8Array) => void, error_callback?: (jqxhr: JQueryXHR, textStatus: string, errorThrown: string) => void, preferBinary?: boolean): void;
     /**
        Does the same as email_source_async, but uses ES6 promises.
     */
@@ -616,10 +616,10 @@ interface GmailTools {
        observes every element inserted into the DOM by Gmail and looks at the classes on those elements,
        checking for any configured observers related to those classes
     */
-    insertion_observer(target: HTMLElement | string, dom_observers: any, dom_observer_map: any, sub: any);
+    insertion_observer(target: HTMLElement | string, dom_observers: any, dom_observer_map: any, sub: any): void;
 
     make_request(link: string, method: GmailHttpRequestMethod, disable_cache: boolean): string;
-    make_request_async(link: string, method: GmailHttpRequestMethod, callback: (data: string) => void, disable_cache: boolean);
+    make_request_async(link: string, method: GmailHttpRequestMethod, callback: (data: string) => void, disable_cache: boolean): void;
 
     /**
        Creates a request to download user-content from Gmail.
@@ -672,7 +672,7 @@ interface GmailTools {
 
        return-value is jQuery-instance representing the created button.
     */
-    add_attachment_button(attachment: GmailDomAttachment, contentHtml: string | null, customCssClas: string | null, tooltip: string, onClickFunction: Function);
+    add_attachment_button(attachment: GmailDomAttachment, contentHtml: string | null, customCssClas: string | null, tooltip: string, onClickFunction: Function): JQuery;
 
     remove_modal_window(): void;
     add_modal_window(title: string, content_html: string, onClickOk: Function, onClickCancel?: Function, onClickClose?: Function): void;
@@ -729,13 +729,13 @@ interface GmailObserve {
     on(action: "view_thread", callback: (obj: GmailDomThread) => void): void;
     on(action: "view_email", callback: (obj: GmailDomEmail) => void): void;
     on(action: "load_email_menu", callback: (obj: JQuery) => void): void;
-    on(action: "compose", callback: (GmailDomCompose, type: GmailComposeType) => void): void;
+    on(action: "compose", callback: (obj: GmailDomCompose, type: GmailComposeType) => void): void;
     on(action: "load", callback: () => void): void;
     /**
        This is the key feature of gmail.js. This method allows you to
        add triggers to all of these actions so you can build your
        custom extension/tool with this library.
-       
+
        You simply specify the action name and your function that the
        method will return data to when the actions are triggered and
        it does the rest. You can have multiple triggers
@@ -775,7 +775,7 @@ interface GmailObserve {
     /**
       Trigger any specified DOM events passing a specified element & optional handler
      */
-    trigger_dom(observer: any, element: HTMLElement, handler?: Function);
+    trigger_dom(observer: any, element: HTMLElement, handler?: Function): void;
 
     initialize_dom_observers(): void;
 
