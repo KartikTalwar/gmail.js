@@ -961,6 +961,26 @@ var Gmail = function(localJQuery) {
             if (pathname && (pathname.endsWith("/i/s") || pathname.endsWith("/i/fd"))) {
                 api.tools.parse_request_payload(params, triggered);
             }
+            if (pathname && (pathname.endsWith("/i/s"))) {
+                if (params.body_params && params.body_params[2] && params.body_params[2][1] && params.body_params[2][1][0][2][2][7]) {
+                    // check params length  and get thread ids
+                    // console.log('params.body_params: ', params.body_params);
+                    if (params.body_params[2][1][0][2][2][7][2].length > 3) {
+                        const newThreadIds = params.body_params[2][1].map(obj => obj[2][1]);
+                        const newMessageIds = params.body_params[2][1].map(obj => obj[2][2][7][3]);
+                        // console.log(newMessageIds);
+                        // console.log('newThreadIds: ', newThreadIds);
+                        if (params.body_params[2][1][0][2][2][7][1][0] === "^k") {
+                            // console.log("delete_new");
+                            triggered["delete_new"] = [newThreadIds, newMessageIds];
+                        }
+                        if (params.body_params[2][1][0][2][2][7][1][0] === "^a") {
+                            // console.log("archive_new");
+                            triggered["archive_new"] = [newThreadIds, newMessageIds];
+                        }
+                    }
+                }
+            }
         }
 
         return triggered;
@@ -1255,7 +1275,7 @@ var Gmail = function(localJQuery) {
                 }
 
                 // if any matching after events, bind onreadystatechange callback
-                if(api.observe.bound(events,"after")) {
+                if(api.observe.bound(events, "after")) {
                     var curr_onreadystatechange = this.onreadystatechange;
                     var xhr = this;
                     this.onreadystatechange = function(progress) {
