@@ -998,7 +998,7 @@ var Gmail = function(localJQuery) {
             && obj.length === 1
             && typeof obj["0"] === 'string'
             && !api.check.data.is_email_id(obj["0"]);
-    }
+    };
 
     api.check.data.is_smartlabels_array = function(obj) {
         const isNotArray = !obj || !Array.isArray(obj) ||obj.length === 0;
@@ -1117,7 +1117,7 @@ var Gmail = function(localJQuery) {
         } else {
             return action_map[action];
         }
-    }
+    };
 
     api.tools.parse_request_payload = function(params, events) {
         let actionType;
