@@ -961,26 +961,6 @@ var Gmail = function(localJQuery) {
             if (pathname && (pathname.endsWith("/i/s") || pathname.endsWith("/i/fd"))) {
                 api.tools.parse_request_payload(params, triggered);
             }
-            if (pathname && (pathname.endsWith("/i/s"))) {
-                if (params.body_params && params.body_params[2] && params.body_params[2][1] && params.body_params[2][1][0][2][2][7]) {
-                    // check params length  and get thread ids
-                    // console.log('params.body_params: ', params.body_params);
-                    if (params.body_params[2][1][0][2][2][7][2].length > 3) {
-                        const newThreadIds = params.body_params[2][1].map(obj => obj[2][1]);
-                        const newMessageIds = params.body_params[2][1].map(obj => obj[2][2][7][3]);
-                        // console.log(newMessageIds);
-                        // console.log('newThreadIds: ', newThreadIds);
-                        if (params.body_params[2][1][0][2][2][7][1][0] === "^k") {
-                            // console.log("delete_new");
-                            triggered["delete_new"] = [newThreadIds, newMessageIds];
-                        }
-                        if (params.body_params[2][1][0][2][2][7][1][0] === "^a") {
-                            // console.log("archive_new");
-                            triggered["archive_new"] = [newThreadIds, newMessageIds];
-                        }
-                    }
-                }
-            }
         }
 
         return triggered;
@@ -989,7 +969,7 @@ var Gmail = function(localJQuery) {
     api.check.data.is_thread_id = function(id) {
         return id
             && typeof id === "string"
-            && /^thread-a:/.test(id);
+            && /^thread-[a|f]:/.test(id);
     };
 
     api.check.data.is_thread = function(obj) {
@@ -1002,7 +982,7 @@ var Gmail = function(localJQuery) {
     api.check.data.is_email_id = function(id) {
         return id
             && typeof id === "string"
-            && /^msg-a:/.test(id);
+            && /^msg-[a|f]:/.test(id);
     };
 
     api.check.data.is_email = function(obj) {
@@ -1011,6 +991,14 @@ var Gmail = function(localJQuery) {
             && obj["1"]
             && api.check.data.is_email_id(obj["1"]);
     };
+
+    api.check.data.is_action = function(obj) {
+        return obj
+            && Array.isArray(obj)
+            && obj.length === 1
+            && typeof obj["0"] === 'string'
+            && !api.check.data.is_email_id(obj["0"]);
+    }
 
     api.check.data.is_smartlabels_array = function(obj) {
         const isNotArray = !obj || !Array.isArray(obj) ||obj.length === 0;
@@ -1087,7 +1075,52 @@ var Gmail = function(localJQuery) {
         return result;
     };
 
+    api.tools.check_event_type = function(threadObj) {
+        const action_map = {
+            ""            : "add_to_tasks",
+            "^a"          : "archive",
+            "^k"          : "delete",
+            ""            : "delete_message_in_thread",
+            ""            : "delete_forever",
+            ""            : "delete_label",
+            ""            : "discard_draft",
+            ""            : "expand_categories",
+            ""            : "filter_messages_like_these",
+            ""            : "label",
+            ""            : "mark_as_important",
+            ""            : "mark_as_not_important",
+            ""            : "mark_as_not_spam",
+            ""            : "mark_as_spam",
+            ""            : "move_label",
+            ""            : "move_to_inbox",
+            ""            : "mute",
+            ""            : "read",
+            ""            : "save_draft",
+            ""            : "send_message",
+            ""            : "show_newly_arrived_message",
+            ""            : "star",
+            ""            : "undo_send",
+            ""            : "unmute",
+            ""            : "unread",
+            ""            : "unstar",
+            ""            : "new_email",
+            ""            : "poll",
+            ""            : "refresh",
+            ""            : "restore_message_in_thread",
+            ""            : "open_email",
+            ""            : "toggle_threads"
+        };
+
+        const action = api.tools.extract_from_graph(threadObj, api.check.data.is_action)[0];
+        if (!action_map[action]) {
+            return;
+        } else {
+            return action_map[action];
+        }
+    }
+
     api.tools.parse_request_payload = function(params, events) {
+        let actionType;
         const threads = api.tools.extract_from_graph(params, api.check.data.is_thread);
         // console.log("Threads:");
         // console.log(threads);
@@ -1108,6 +1141,16 @@ var Gmail = function(localJQuery) {
                     }
                 }
             }
+        }
+
+        if (threads[0]) {
+            actionType = api.tools.check_event_type(threads[0]);
+        }
+
+        if (actionType) {
+            const threadIds = threads.map(thread => thread[1]);
+            const messageIds = threads.map(thread => thread[2][7][3]).reduce((a, b) => a.concat(b), []);
+            events[actionType] = [messageIds, params.url, params.body, threadIds];
         }
     };
 
