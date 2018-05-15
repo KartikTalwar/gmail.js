@@ -1148,9 +1148,9 @@ var Gmail = function(localJQuery) {
         }
 
         if (actionType) {
-            const threadIds = threads.map(thread => thread[1]);
-            const messageIds = threads.map(thread => thread[2][7][3]).reduce((a, b) => a.concat(b), []);
-            events[actionType] = [messageIds, params.url, params.body, threadIds];
+            const new_thread_ids = threads.map(thread => thread[1]);
+            const new_email_ids = threads.map(thread => thread[2][7][3]).reduce((a, b) => a.concat(b), []);
+            events[actionType] = [null, params.url, params.body, new_email_ids, new_thread_ids];
         }
     };
 
