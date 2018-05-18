@@ -853,50 +853,50 @@ var Gmail = function(localJQuery) {
         var response    = null;
 
         switch(action) {
-            case "cs":
-            case "ur":
-            case "rd":
-            case "tr":
-            case "sp":
-            case "us":
-            case "ib":
-            case "dl":
-            case "st":
-            case "xst":
-            case "mai":
-            case "mani":
-            case "ig":
-            case "ug":
-            case "dr":
-            case "mt":
-            case "cffm":
-            case "rc_^i":
-                response = [email_ids, params.url, params.body];
-                break;
+        case "cs":
+        case "ur":
+        case "rd":
+        case "tr":
+        case "sp":
+        case "us":
+        case "ib":
+        case "dl":
+        case "st":
+        case "xst":
+        case "mai":
+        case "mani":
+        case "ig":
+        case "ug":
+        case "dr":
+        case "mt":
+        case "cffm":
+        case "rc_^i":
+            response = [email_ids, params.url, params.body];
+            break;
 
-            case "arl":
-            case "dc_":
-                response = [email_ids, params.url, params.body, params.url.acn];
-                break;
+        case "arl":
+        case "dc_":
+            response = [email_ids, params.url, params.body, params.url.acn];
+            break;
 
-            case "sd":
-                response = [email_ids, params.url, sent_params];
-                break;
+        case "sd":
+            response = [email_ids, params.url, sent_params];
+            break;
 
-            case "tae":
-            case "sm":
-                response = [params.url, params.body, sent_params];
-                break;
+        case "tae":
+        case "sm":
+            response = [params.url, params.body, sent_params];
+            break;
 
-            case "el":
-                response = [params.url, params.body, sent_params.ex === "1"];
-                break;
+        case "el":
+            response = [params.url, params.body, sent_params.ex === "1"];
+            break;
 
-            case "dm":
-            case "rtr":
-            case "mo":
-                response = [sent_params.m, params.url, params.body];
-                break;
+        case "dm":
+        case "rtr":
+        case "mo":
+            response = [sent_params.m, params.url, params.body];
+            break;
 
         }
 
@@ -1035,7 +1035,7 @@ var Gmail = function(localJQuery) {
     api.tools.get_thread = function(obj) {
         return api.check.data.is_thread(obj)
             && obj["1"];
-    }
+    };
 
     api.tools.get_thread_data = function(obj) {
         return obj
@@ -1044,18 +1044,18 @@ var Gmail = function(localJQuery) {
             && obj["2"]["7"]
             && typeof obj["2"]["7"] === "object"
             && obj["2"]["7"];
-    }
+    };
 
     api.tools.get_action = function(obj) {
         return obj[1][0];
-    }
+    };
 
     api.tools.get_message_ids = function(obj) {
         return obj
             && obj["3"]
             && Array.isArray(obj["3"])
             && obj["3"];
-    }
+    };
 
     api.tools.extract_from_graph = function(obj, predicate) {
         const result = [];
@@ -2581,42 +2581,42 @@ var Gmail = function(localJQuery) {
         var dictionary;
 
         switch (locale) {
-            case "fr":
-                dictionary = {
-                    "inbox": "Boîte de réception",
-                    "drafts": "Brouillons",
-                    "spam": "Spam",
-                    "forums": "Forums",
-                    "updates": "Mises à jour",
-                    "promotions": "Promotions",
-                    "social_updates": "Réseaux sociaux"
-                };
-                break;
+        case "fr":
+            dictionary = {
+                "inbox": "Boîte de réception",
+                "drafts": "Brouillons",
+                "spam": "Spam",
+                "forums": "Forums",
+                "updates": "Mises à jour",
+                "promotions": "Promotions",
+                "social_updates": "Réseaux sociaux"
+            };
+            break;
 
-            case "nl":
-                dictionary = {
-                    "inbox": "Postvak IN",
-                    "drafts": "Concepten",
-                    "spam": "Spam",
-                    "forums": "Forums",
-                    "updates": "Updates",
-                    "promotions": "Reclame",
-                    "social_updates": "Sociaal"
-                };
-                break;
+        case "nl":
+            dictionary = {
+                "inbox": "Postvak IN",
+                "drafts": "Concepten",
+                "spam": "Spam",
+                "forums": "Forums",
+                "updates": "Updates",
+                "promotions": "Reclame",
+                "social_updates": "Sociaal"
+            };
+            break;
 
-            case "en":
-            default:
-                dictionary = {
-                    "inbox": "Inbox",
-                    "drafts": "Drafts",
-                    "spam": "Spam",
-                    "forums": "Forums",
-                    "updates": "Updates",
-                    "promotions": "Promotions",
-                    "social_updates": "Social Updates"
-                };
-                break;
+        case "en":
+        default:
+            dictionary = {
+                "inbox": "Inbox",
+                "drafts": "Drafts",
+                "spam": "Spam",
+                "forums": "Forums",
+                "updates": "Updates",
+                "promotions": "Promotions",
+                "social_updates": "Social Updates"
+            };
+            break;
         }
 
         return dictionary[label];
@@ -2681,15 +2681,15 @@ var Gmail = function(localJQuery) {
     };
 
     /**
-     adds a button to an email attachment.
+      adds a button to an email attachment.
 
-     'attachment'-parameter must be the object returned from api.dom.email().attachments().
-     'contentHtml' should represent a 21x21 image of some kind. optional.
-     'customCssClass' styling used on the buttons central area. optional.
-     'tooltip' will be shown on hover.
+      'attachment'-parameter must be the object returned from api.dom.email().attachments().
+      'contentHtml' should represent a 21x21 image of some kind. optional.
+      'customCssClass' styling used on the buttons central area. optional.
+      'tooltip' will be shown on hover.
 
-     return-value is jQuery-instance representing the created button.
-     */
+      return-value is jQuery-instance representing the created button.
+      */
     api.tools.add_attachment_button = function(attachment, contentHtml, customCssClass, tooltip, onClickFunction) {
         var button = $(document.createElement("div"));
         button.attr("class", "T-I J-J5-Ji aQv T-I-ax7 L3");
@@ -2867,9 +2867,9 @@ var Gmail = function(localJQuery) {
     };
 
     /**
-     A compose object. Represents a compose window in the DOM and provides a bunch of methods and properties to access & interact with the window
-     Expects a jQuery DOM element for the compose div
-     */
+       A compose object. Represents a compose window in the DOM and provides a bunch of methods and properties to access & interact with the window
+       Expects a jQuery DOM element for the compose div
+    */
     api.dom.compose = function(element) {
         if (this.constructor !== api.dom.compose) {
             // if not invoked through new(), nothing works as expected!
@@ -2884,32 +2884,32 @@ var Gmail = function(localJQuery) {
 
     extend(api.dom.compose.prototype, {
         /**
-         Retrieve the compose id
-         */
+           Retrieve the compose id
+        */
         id: function() {
             return this.dom("id").val();
         },
 
         /**
-         Retrieve the draft email id
-         */
+           Retrieve the draft email id
+        */
         email_id: function() {
             return this.dom("draft").val();
         },
 
         /**
-         Is this compose instance inline (as with reply & forwards) or a popup (as with a new compose)
-         */
+           Is this compose instance inline (as with reply & forwards) or a popup (as with a new compose)
+        */
         is_inline: function() {
             return this.$el.closest("td.Bu").length > 0;
         },
 
         /**
-         Retrieves to, cc, bcc and returns them in a hash of arrays
-         Parameters:
-         options.type  string  to, cc, or bcc to check a specific one
-         options.flat  boolean if true will just return an array of all recipients instead of splitting out into to, cc, and bcc
-         */
+           Retrieves to, cc, bcc and returns them in a hash of arrays
+           Parameters:
+           options.type  string  to, cc, or bcc to check a specific one
+           options.flat  boolean if true will just return an array of all recipients instead of splitting out into to, cc, and bcc
+        */
         recipients: function(options) {
             if( typeof options !== "object" ) options = {};
             var name_selector = options.type ? "[name=" + options.type + "]" : "";
@@ -2928,31 +2928,31 @@ var Gmail = function(localJQuery) {
         },
 
         /**
-         Retrieve the current "to" recipients
-         */
+           Retrieve the current "to" recipients
+        */
         to: function(to) {
             return this.dom("to").val(to);
         },
 
         /**
-         Retrieve the current "cc" recipients
-         */
+           Retrieve the current "cc" recipients
+        */
         cc: function(cc) {
             return this.dom("cc").val(cc);
         },
 
         /**
-         Retrieve the current "bcc" recipients
-         */
+           Retrieve the current "bcc" recipients
+        */
         bcc: function(bcc) {
             return this.dom("bcc").val(bcc);
         },
 
         /**
-         Get/Set the current subject
-         Parameters:
-         subject   string  set as new subject
-         */
+           Get/Set the current subject
+           Parameters:
+           subject   string  set as new subject
+        */
         subject: function(subject) {
             if(subject) this.dom("all_subjects").val(subject);
             subject = this.dom("subjectbox").val();
@@ -2960,9 +2960,9 @@ var Gmail = function(localJQuery) {
         },
 
         /**
-         Get the from email
-         if user only has one email account they can send from, returns that email address
-         */
+           Get the from email
+           if user only has one email account they can send from, returns that email address
+        */
         from: function() {
             var el = this.dom("from");
             if (el.length) {
@@ -2975,8 +2975,8 @@ var Gmail = function(localJQuery) {
         },
 
         /**
-         Get/Set the email body
-         */
+           Get/Set the email body
+        */
         body: function(body) {
             var el = this.dom("body");
             if(body) el.html(body);
@@ -2984,22 +2984,22 @@ var Gmail = function(localJQuery) {
         },
 
         /**
-         Triggers the same action as clicking the "send" button would do.
-         */
+           Triggers the same action as clicking the "send" button would do.
+        */
         send: function() {
             return this.dom("send_button").click();
         },
 
         /**
-         Map find through to jquery element
-         */
+           Map find through to jquery element
+        */
         find: function(selector) {
             return this.$el.find(selector);
         },
 
         /**
-         Retrieve preconfigured dom elements for this compose window
-         */
+           Retrieve preconfigured dom elements for this compose window
+        */
         dom: function(lookup) {
             if (!lookup) return this.$el;
             var config = {
@@ -3024,10 +3024,10 @@ var Gmail = function(localJQuery) {
     });
 
     /**
-     An object for interacting with an email currently present in the DOM. Represents an individual email message within a thread
-     Provides a number of methods and properties to access & interact with it
-     Expects a jQuery DOM element for the email div (div.adn as returned by the "view_email" observer), or an email_id
-     */
+       An object for interacting with an email currently present in the DOM. Represents an individual email message within a thread
+       Provides a number of methods and properties to access & interact with it
+       Expects a jQuery DOM element for the email div (div.adn as returned by the "view_email" observer), or an email_id
+    */
     api.dom.email = function(element) {
         if (this.constructor !== api.dom.email) {
             // if not invoked through new(), nothing works as expected!
@@ -3054,10 +3054,10 @@ var Gmail = function(localJQuery) {
     extend(api.dom.email.prototype, {
 
         /**
-         Get/Set the full email body as it sits in the DOM
-         If you want the actual DOM element use .dom("body");
-         Note: This gets & sets the body html after it has been parsed & marked up by GMAIL. To retrieve it as it exists in the email message source, use a call to .data();
-         */
+           Get/Set the full email body as it sits in the DOM
+           If you want the actual DOM element use .dom("body");
+           Note: This gets & sets the body html after it has been parsed & marked up by GMAIL. To retrieve it as it exists in the email message source, use a call to .data();
+        */
         body: function(body) {
             var el = this.dom("body");
             if (body) {
@@ -3067,10 +3067,10 @@ var Gmail = function(localJQuery) {
         },
 
         /**
-         Get/Set the sender
-         Optionally receives email and name properties. If received updates the values in the DOM
-         Returns an object containing email & name of the sender and dom element
-         */
+           Get/Set the sender
+           Optionally receives email and name properties. If received updates the values in the DOM
+           Returns an object containing email & name of the sender and dom element
+        */
         from: function(email, name) {
             var el = this.dom("from");
             if (email) {
@@ -3088,11 +3088,11 @@ var Gmail = function(localJQuery) {
         },
 
         /**
-         Get/Set who the email is showing as To
-         Optionally receives an object containing email and/or name properties. If received updates the values in the DOM.
-         Optionally receives an array of these objects if multiple recipients
-         Returns an array of objects containing email & name of who is showing in the DOM as the email is to
-         */
+           Get/Set who the email is showing as To
+           Optionally receives an object containing email and/or name properties. If received updates the values in the DOM.
+           Optionally receives an array of these objects if multiple recipients
+           Returns an array of objects containing email & name of who is showing in the DOM as the email is to
+        */
         to: function(to_array) {
 
             // if update data has been passeed, loop through & create a new to_wrapper contents
@@ -3127,9 +3127,9 @@ var Gmail = function(localJQuery) {
         },
 
         /**
-         Retries the DOM elements which represents the emails attachments.
-         Returns undefined if UI-elements are not yet ready for parsing.
-         */
+           Retries the DOM elements which represents the emails attachments.
+           Returns undefined if UI-elements are not yet ready for parsing.
+        */
         attachments: function() {
             var out = [];
             var failed = false;
@@ -3162,10 +3162,10 @@ var Gmail = function(localJQuery) {
         },
 
         /**
-         Retrieve relevant email from the Gmail servers for this email
-         Makes use of the gmail.get.email_data() method
-         Returns an object
-         */
+           Retrieve relevant email from the Gmail servers for this email
+           Makes use of the gmail.get.email_data() method
+           Returns an object
+        */
         data: function() {
             if (typeof api.dom.email_cache !== "object") {
                 api.dom.email_cache = {};
@@ -3182,17 +3182,17 @@ var Gmail = function(localJQuery) {
         },
 
         /**
-         Retrieve email source for this email from the Gmail servers
-         Makes use of the gmail.get.email_source() method
-         Returns string of email raw source
-         */
+           Retrieve email source for this email from the Gmail servers
+           Makes use of the gmail.get.email_source() method
+           Returns string of email raw source
+        */
         source: function() {
             return api.get.email_source(this.id);
         },
 
         /**
-         Retrieve preconfigured dom elements for this email
-         */
+           Retrieve preconfigured dom elements for this email
+        */
         dom: function(lookup) {
             if (!lookup) return this.$el;
             var config = {
@@ -3216,10 +3216,10 @@ var Gmail = function(localJQuery) {
     });
 
     /**
-     An object for interacting with an email currently present in the DOM. Represents a conversation thread
-     Provides a number of methods and properties to access & interact with it
-     Expects a jQuery DOM element for the thread wrapper div (div.if as returned by the "view_thread" observer)
-     */
+       An object for interacting with an email currently present in the DOM. Represents a conversation thread
+       Provides a number of methods and properties to access & interact with it
+       Expects a jQuery DOM element for the thread wrapper div (div.if as returned by the "view_thread" observer)
+    */
     api.dom.thread = function(element) {
         if (this.constructor !== api.dom.thread) {
             // if not invoked through new(), nothing works as expected!
@@ -3234,8 +3234,8 @@ var Gmail = function(localJQuery) {
     extend(api.dom.thread.prototype, {
 
         /**
-         Retrieve preconfigured dom elements for this email
-         */
+           Retrieve preconfigured dom elements for this email
+        */
         dom: function(lookup) {
             if (!lookup) return this.$el;
             var config = {
