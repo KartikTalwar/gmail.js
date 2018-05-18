@@ -2631,9 +2631,9 @@ var Gmail = function(localJQuery) {
         if(styleClass !== undefined &&
             styleClass !== null &&
             styleClass !== ""){
-             buttonClasses += basicStyle+styleClass;
+            buttonClasses += basicStyle+styleClass;
         }else{
-             buttonClasses += basicStyle+defaultStyle;
+            buttonClasses += basicStyle+defaultStyle;
         }
         button.attr("class", buttonClasses);
 
