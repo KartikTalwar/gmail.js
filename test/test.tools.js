@@ -55,7 +55,7 @@ describe("Test tools for parsing new gmail body_params", () => {
     const mockThreadData = data[2][7];
 
     it("get thread id", () => {
-        const thread = gmail.tools.get_thread(data);
+        const thread = gmail.tools.get_thread_id(data);
 
         assert.equal(thread, 'thread-f:1600724307680265309');
     });
@@ -65,7 +65,6 @@ describe("Test tools for parsing new gmail body_params", () => {
         assert.deepEqual(threadData, mockThreadData);
     });
     it("get messages ids", () => {
-        const thread = gmail.tools.get_message_ids(data);
         const threadData = gmail.tools.get_thread_data(data);
         const messagesIds = gmail.tools.get_message_ids(threadData);
 
@@ -74,7 +73,7 @@ describe("Test tools for parsing new gmail body_params", () => {
     });
     it("get action type", () => {
         const threadData = gmail.tools.get_thread_data(data);
-        const action = gmail.tools.get_action(threadData);
+        const action = gmail.tools.get_action_type(threadData);
 
         assert.equal(action, "^a");
     });

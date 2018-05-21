@@ -1032,7 +1032,7 @@ var Gmail = function(localJQuery) {
             || (str.startsWith("[") && str.endsWith("]")));
     };
 
-    api.tools.get_thread = function(obj) {
+    api.tools.get_thread_id = function(obj) {
         return api.check.data.is_thread(obj)
             && obj["1"];
     };
@@ -1046,7 +1046,7 @@ var Gmail = function(localJQuery) {
             && obj["2"]["7"];
     };
 
-    api.tools.get_action = function(obj) {
+    api.tools.get_action_type = function(obj) {
         return obj[1][0];
     };
 
@@ -1138,7 +1138,7 @@ var Gmail = function(localJQuery) {
         const threadData = api.tools.get_thread_data(threadObj);
 
         if (threadData && api.check.data.is_action(threadData)) {
-            const action = api.tools.get_action(threadData);
+            const action = api.tools.get_action_type(threadData);
             if (!action_map[action]) {
                 return;
             } else {
@@ -1181,7 +1181,7 @@ var Gmail = function(localJQuery) {
                     // console.log(threads[0]);
                     const threadsData = threads.map(thread => api.tools.get_thread_data(thread));
 
-                    const new_thread_ids = threads.map(thread => api.tools.get_thread(thread));
+                    const new_thread_ids = threads.map(thread => api.tools.get_thread_id(thread));
                     const new_email_ids = threadsData.map(threadData => api.tools.get_message_ids(threadData)).reduce((a, b) => a.concat(b), []);
                     events[actionType] = [null, params.url, params.body, new_email_ids, new_thread_ids];
                 }
