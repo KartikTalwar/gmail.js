@@ -1136,21 +1136,20 @@ var Gmail = function(localJQuery) {
             // ""            : "toggle_threads"
         };
         const threadData = api.tools.get_thread_data(threadObj);
+        const check = (threadData) => {
+            const action = api.tools.get_action_type(threadData);
+            return
+        };
 
         if (threadData && api.check.data.is_action(threadData)) {
             const action = api.tools.get_action_type(threadData);
-            if (!action_map[action]) {
-                return;
-            } else {
-                return action_map[action];
-            }
+            return action_map[action];
+        } else {
+            return null;
         }
-
-        return;
     };
 
     api.tools.parse_request_payload = function(params, events) {
-        let actionType;
         const threads = api.tools.extract_from_graph(params, api.check.data.is_thread);
         // console.log("Threads:");
         // console.log(threads);
@@ -1175,7 +1174,7 @@ var Gmail = function(localJQuery) {
 
         try {
             if (Array.isArray(threads) && api.check.data.is_thread(threads[0])) {
-                actionType = api.tools.check_event_type(threads[0]);
+                const actionType = api.tools.check_event_type(threads[0]);
 
                 if (actionType) {
                     // console.log(threads[0]);

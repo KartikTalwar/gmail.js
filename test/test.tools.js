@@ -51,8 +51,6 @@ describe("Monkeypatching", () => {
 describe("Test tools for parsing new gmail body_params", () => {
     const gmail = new Gmail();
     const data =  JSON.parse(testData.new_gmail_archive_action_body_params);
-    const mockMessageIds = ['msg-f:1600724307680265309', 'msg-f:1600724938213937205', 'msg-f:1600725174437456906', 'msg-f:1600725319255992336', 'msg-f:1600725448529658711'];
-    const mockThreadData = data[2][7];
 
     it("get thread id", () => {
         const thread = gmail.tools.get_thread_id(data);
@@ -60,11 +58,13 @@ describe("Test tools for parsing new gmail body_params", () => {
         assert.equal(thread, 'thread-f:1600724307680265309');
     });
     it("get thread data", () => {
+        const mockThreadData = data[2][7];
         const threadData = gmail.tools.get_thread_data(data);
 
         assert.deepEqual(threadData, mockThreadData);
     });
     it("get messages ids", () => {
+        const mockMessageIds = ['msg-f:1600724307680265309', 'msg-f:1600724938213937205', 'msg-f:1600725174437456906', 'msg-f:1600725319255992336', 'msg-f:1600725448529658711'];
         const threadData = gmail.tools.get_thread_data(data);
         const messagesIds = gmail.tools.get_message_ids(threadData);
 
