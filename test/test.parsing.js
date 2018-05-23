@@ -398,6 +398,11 @@ describe("New Gmail event-parsing", () => {
             assert.ok(events.send_message);
         });
     });
+    it("Triggers for archive", () => {
+        testCase(testData.new_gmail_archive_action_body_params, (events) => {
+            assert.ok(events.archive);
+        });
+    });
 
     // it("Extracts compose-id", () => {
 
