@@ -1136,13 +1136,10 @@ var Gmail = function(localJQuery) {
             // ""            : "toggle_threads"
         };
         const threadData = api.tools.get_thread_data(threadObj);
-        const check = (threadData) => {
-            const action = api.tools.get_action_type(threadData);
-            return
-        };
 
         if (threadData && api.check.data.is_action(threadData)) {
             const action = api.tools.get_action_type(threadData);
+
             return action_map[action];
         } else {
             return null;
