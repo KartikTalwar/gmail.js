@@ -1,6 +1,10 @@
 
 # Changelog
 
+## Version 0.7.3
+
+- Fix error with `api.dom.compose.send()` introduced in 0.7.2.
+
 ## Version 0.7.2
 
 - Fix look of `api.tools.add_compose_button()` in new Gmail.
