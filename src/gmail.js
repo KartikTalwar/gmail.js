@@ -2077,11 +2077,13 @@ var Gmail = function(localJQuery) {
                 url += "&cat=^smartlabel_" + cat_label + "&search=category";
             } else {
                 // tentative fix for https://github.com/KartikTalwar/gmail.js/issues/417
+                /* This fix is broken the selected emails
                 if (api.check.is_google_apps_user()) {
                     url += "&search=" + "inbox";
                 } else {
                     url += "&search=" + "mbox";
-                }
+                }*/
+                url += "&search=" + "mbox";
             }
         }else {
             url += "&search=" + page;
