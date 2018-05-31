@@ -2032,7 +2032,7 @@ var Gmail = function(localJQuery) {
     };
 
 
-    api.helper.get.visible_emails_pre = function() {
+    api.helper.get.visible_emails_pre = function(customInboxQuery) {
         var page = api.get.current_page();
         var url = window.location.origin + window.location.pathname + "?ui=2&ik=" + api.tracker.ik+"&rid=" + api.tracker.rid + "&view=tl&num=120&rt=1";
         var start = $(".aqK:visible .Dj").find("span:first").text().replace(",", "").replace(".", "").split('–')[0];
@@ -2076,14 +2076,16 @@ var Gmail = function(localJQuery) {
                 cat_label = "group";
                 url += "&cat=^smartlabel_" + cat_label + "&search=category";
             } else {
+                // control the behaviour with a given parameter
+                if (!!customInboxQuery) {
+                    url += "&search=" + customInboxQuery;
+                }
                 // tentative fix for https://github.com/KartikTalwar/gmail.js/issues/417
-                /* This fix is broken the selected emails
-                if (api.check.is_google_apps_user()) {
+                else if (api.check.is_google_apps_user()) {
                     url += "&search=" + "inbox";
                 } else {
                     url += "&search=" + "mbox";
-                }*/
-                url += "&search=" + "mbox";
+                }
             }
         }else {
             url += "&search=" + page;
@@ -2134,8 +2136,8 @@ var Gmail = function(localJQuery) {
         return false;
     };
 
-    api.get.visible_emails = function() {
-        var url = api.helper.get.visible_emails_pre();
+    api.get.visible_emails = function(customInboxQuery) {
+        var url = api.helper.get.visible_emails_pre(customInboxQuery);
         var get_data = api.tools.make_request(url);
         var emails = api.helper.get.visible_emails_post(get_data);
 
@@ -2143,8 +2145,8 @@ var Gmail = function(localJQuery) {
     };
 
 
-    api.get.visible_emails_async = function(callback) {
-        var url = api.helper.get.visible_emails_pre();
+    api.get.visible_emails_async = function(callback, customInboxQuery) {
+        var url = api.helper.get.visible_emails_pre(customInboxQuery);
         api.tools.make_request_async(url, "GET", function(get_data) {
             var emails = api.helper.get.visible_emails_post(get_data);
             callback(emails);
@@ -2152,12 +2154,12 @@ var Gmail = function(localJQuery) {
     };
 
 
-    api.get.selected_emails_data = function(){
+    api.get.selected_emails_data = function(customInboxQuery) {
         var selected_emails = [];
         if(!api.check.is_inside_email()){
             if($("[gh='tl'] div[role='checkbox'][aria-checked='true']").length){
                 var email = null;
-                var emails = api.get.visible_emails();
+                var emails = api.get.visible_emails(customInboxQuery);
                 $("[gh='tl'] div[role='checkbox']").each(function(index){
                     if($(this).attr("aria-checked") === "true"){
                         email = api.get.email_data(emails[index].id);
