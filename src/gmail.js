@@ -2077,7 +2077,7 @@ var Gmail = function(localJQuery) {
                 url += "&cat=^smartlabel_" + cat_label + "&search=category";
             } else {
                 // control the behaviour with a given parameter
-                if (!!customInboxQuery) {
+                if (customInboxQuery) {
                     url += "&search=" + customInboxQuery;
                 }
                 // tentative fix for https://github.com/KartikTalwar/gmail.js/issues/417
