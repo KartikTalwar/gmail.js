@@ -992,13 +992,21 @@ var Gmail = function(localJQuery) {
             && api.check.data.is_email_id(obj["1"]);
     };
 
-    api.check.data.is_action = function(obj) {
+    api.check.data.is_first_type_action = function(obj) {
         return obj
             && obj["1"]
             && Array.isArray(obj["1"])
             && obj["1"].length === 1
             && typeof obj["1"]["0"] === 'string';
     };
+
+    api.check.data.is_second_type_action = function(obj) {
+        return obj
+            && obj["2"]
+            && Array.isArray(obj["2"])
+            && obj["2"].length
+            && typeof obj["2"]["0"] === 'string';
+    }
 
     api.check.data.is_smartlabels_array = function(obj) {
         const isNotArray = !obj || !Array.isArray(obj) ||obj.length === 0;
@@ -1046,8 +1054,12 @@ var Gmail = function(localJQuery) {
             && obj["2"]["7"];
     };
 
-    api.tools.get_action_type = function(obj) {
+    api.tools.get_first_type_action = function(obj) {
         return obj[1][0];
+    };
+
+    api.tools.get_second_type_action = function(obj) {
+        return obj[2].join('');
     };
 
     api.tools.get_message_ids = function(obj) {
@@ -1119,7 +1131,7 @@ var Gmail = function(localJQuery) {
             // ""            : "move_label",
             // ""            : "move_to_inbox",
             // ""            : "mute",
-            // ""            : "read",
+            "^u^us"            : "read",
             // ""            : "save_draft",
             // ""            : "send_message",
             // ""            : "show_newly_arrived_message",
@@ -1137,11 +1149,16 @@ var Gmail = function(localJQuery) {
         };
         const threadData = api.tools.get_thread_data(threadObj);
 
-        if (threadData && api.check.data.is_action(threadData)) {
-            const action = api.tools.get_action_type(threadData);
+        if (threadData && api.check.data.is_first_type_action(threadData)) {
+            const action = api.tools.get_first_type_action(threadData);
 
             return action_map[action];
-        } else {
+        } else if (threadData && api.check.data.is_second_type_action(threadData)) {
+            const action = api.tools.get_second_type_action(threadData);
+
+            return action_map[action];
+        }
+        else {
             return null;
         }
     };
