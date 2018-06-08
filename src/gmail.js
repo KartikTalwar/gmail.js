@@ -1006,7 +1006,7 @@ var Gmail = function(localJQuery) {
             && Array.isArray(obj["2"])
             && obj["2"].length
             && typeof obj["2"]["0"] === 'string';
-    }
+    };
 
     api.check.data.is_smartlabels_array = function(obj) {
         const isNotArray = !obj || !Array.isArray(obj) ||obj.length === 0;

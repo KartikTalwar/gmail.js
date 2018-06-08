@@ -71,15 +71,15 @@ describe("Test tools for parsing new gmail body_params", () => {
         assert.equal(messagesIds.length, 5);
         assert.deepEqual(messagesIds, mockMessageIds);
     });
-    it("get action type", () => {
+    it("get get first action type", () => {
         const threadData = gmail.tools.get_thread_data(data);
-        const action = gmail.tools.get_action_type(threadData);
+        const action = gmail.tools.get_first_type_action(threadData);
 
         assert.equal(action, "^a");
     });
-    it("is action type isset in thread object", () => {
+    it("is first action type isset in thread object", () => {
         const threadData = gmail.tools.get_thread_data(data);
-        const issetAction = gmail.check.data.is_action(threadData);
+        const issetAction = gmail.check.data.is_first_type_action(threadData);
 
         assert.equal(issetAction, true);
     });
