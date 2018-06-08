@@ -1126,13 +1126,13 @@ var Gmail = function(localJQuery) {
             // ""            : "star",
             // ""            : "undo_send",
             // ""            : "unmute",
-            // ""            : "unread",
+            "^u"            : "unread",
             // ""            : "unstar",
             // ""            : "new_email",
             // ""            : "poll",
             // ""            : "refresh",
             // ""            : "restore_message_in_thread",
-            // ""            : "open_email",
+            "^o"            : "open_email",
             // ""            : "toggle_threads"
         };
         const threadData = api.tools.get_thread_data(threadObj);
