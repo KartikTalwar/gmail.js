@@ -993,11 +993,24 @@ var Gmail = function(localJQuery) {
     };
 
     api.check.data.is_action = function(obj) {
+        return api.check.data.is_first_type_action(obj)
+            || api.check.data.is_second_type_action(obj);
+    };
+
+    api.check.data.is_first_type_action = function(obj) {
         return obj
             && obj["1"]
             && Array.isArray(obj["1"])
             && obj["1"].length === 1
             && typeof obj["1"]["0"] === 'string';
+    };
+
+    api.check.data.is_second_type_action = function(obj) {
+        return obj
+            && obj["2"]
+            && Array.isArray(obj["2"])
+            && obj["2"].length
+            && typeof obj["2"]["0"] === 'string';
     };
 
     api.check.data.is_smartlabels_array = function(obj) {
@@ -1046,8 +1059,21 @@ var Gmail = function(localJQuery) {
             && obj["2"]["7"];
     };
 
-    api.tools.get_action_type = function(obj) {
-        return obj[1][0];
+    api.tools.get_action = function(obj) {
+        return api.tools.get_first_type_action(obj)
+            || api.tools.get_second_type_action(obj);
+    };
+
+    api.tools.get_first_type_action = function(obj) {
+        return obj
+            && obj[1]
+            && obj[1].join('');
+    };
+
+    api.tools.get_second_type_action = function(obj) {
+        return obj
+            && obj[2]
+            && obj[2].join('');
     };
 
     api.tools.get_message_ids = function(obj) {
@@ -1103,8 +1129,8 @@ var Gmail = function(localJQuery) {
     api.tools.check_event_type = function(threadObj) {
         const action_map = {
             // ""            : "add_to_tasks",
-            "^a"          : "archive",
-            "^k"          : "delete",
+            "^a": "archive",
+            "^k": "delete",
             // ""            : "delete_message_in_thread",
             // ""            : "delete_forever",
             // ""            : "delete_label",
@@ -1112,33 +1138,33 @@ var Gmail = function(localJQuery) {
             // ""            : "expand_categories",
             // ""            : "filter_messages_like_these",
             // ""            : "label",
-            // ""            : "mark_as_important",
-            // ""            : "mark_as_not_important",
+            // "^io_im^imi": "mark_as_important",
+            // "^imn": "mark_as_not_important",
             // ""            : "mark_as_not_spam",
             // ""            : "mark_as_spam",
             // ""            : "move_label",
             // ""            : "move_to_inbox",
             // ""            : "mute",
-            // ""            : "read",
+            "^u^us": "read",
             // ""            : "save_draft",
             // ""            : "send_message",
             // ""            : "show_newly_arrived_message",
-            // ""            : "star",
+            // "^t^ss_sy": "star",
             // ""            : "undo_send",
             // ""            : "unmute",
             "^u"            : "unread",
-            // ""            : "unstar",
+            // "^t^ss_sy^ss_so^ss_sr^ss_sp^ss_sb^ss_sg^ss_cr^ss_co^ss_cy^ss_cg^ss_cb^ss_cp": "unstar",
             // ""            : "new_email",
             // ""            : "poll",
             // ""            : "refresh",
             // ""            : "restore_message_in_thread",
-            "^o"            : "open_email",
+            "^o": "open_email",
             // ""            : "toggle_threads"
         };
         const threadData = api.tools.get_thread_data(threadObj);
 
         if (threadData && api.check.data.is_action(threadData)) {
-            const action = api.tools.get_action_type(threadData);
+            const action = api.tools.get_action(threadData);
 
             return action_map[action];
         } else {
