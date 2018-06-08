@@ -50,36 +50,55 @@ describe("Monkeypatching", () => {
 
 describe("Test tools for parsing new gmail body_params", () => {
     const gmail = new Gmail();
-    const data =  JSON.parse(testData.new_gmail_archive_action_body_params);
+    const dataFirstTypeAction =  JSON.parse(testData.new_gmail_archive_action_body_params);
+    const dataSecondTypeAction = JSON.parse(testData.new_gmail_read_action_body_params);
 
     it("get thread id", () => {
-        const thread = gmail.tools.get_thread_id(data);
+        const thread = gmail.tools.get_thread_id(dataFirstTypeAction);
 
         assert.equal(thread, 'thread-f:1600724307680265309');
     });
     it("get thread data", () => {
-        const mockThreadData = data[2][7];
-        const threadData = gmail.tools.get_thread_data(data);
+        const mockThreadData = dataFirstTypeAction[2][7];
+        const threadData = gmail.tools.get_thread_data(dataFirstTypeAction);
 
         assert.deepEqual(threadData, mockThreadData);
     });
     it("get messages ids", () => {
         const mockMessageIds = ['msg-f:1600724307680265309', 'msg-f:1600724938213937205', 'msg-f:1600725174437456906', 'msg-f:1600725319255992336', 'msg-f:1600725448529658711'];
-        const threadData = gmail.tools.get_thread_data(data);
+        const threadData = gmail.tools.get_thread_data(dataFirstTypeAction);
         const messagesIds = gmail.tools.get_message_ids(threadData);
 
         assert.equal(messagesIds.length, 5);
         assert.deepEqual(messagesIds, mockMessageIds);
     });
-    it("get get first action type", () => {
-        const threadData = gmail.tools.get_thread_data(data);
-        const action = gmail.tools.get_first_type_action(threadData);
+    it("check is action", () => {
+        const threadData = gmail.tools.get_thread_data(dataFirstTypeAction);
+        const isAction = gmail.check.data.is_action(threadData)
+
+        assert.equal(isAction, true);
+    });
+    it("get first action type, should be return true", () => {
+        const threadData = gmail.tools.get_thread_data(dataFirstTypeAction);
+        const action = gmail.tools.get_action(threadData);
 
         assert.equal(action, "^a");
     });
+    it("get second action type, should be return true", () => {
+        const threadData = gmail.tools.get_thread_data(dataSecondTypeAction);
+        const action = gmail.tools.get_action(threadData);
+
+        assert.equal(action, "^u^us");
+    });
     it("is first action type isset in thread object", () => {
-        const threadData = gmail.tools.get_thread_data(data);
-        const issetAction = gmail.check.data.is_first_type_action(threadData);
+        const threadData = gmail.tools.get_thread_data(dataFirstTypeAction);
+        const issetAction = gmail.check.data.is_action(threadData);
+
+        assert.equal(issetAction, true);
+    });
+    it("is second action type isset in thread object", () => {
+        const threadData = gmail.tools.get_thread_data(dataSecondTypeAction);
+        const issetAction = gmail.check.data.is_action(threadData);
 
         assert.equal(issetAction, true);
     });

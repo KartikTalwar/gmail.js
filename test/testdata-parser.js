@@ -21,10 +21,13 @@ var new_gmail_send_email_data = "{\"1\":{\"1\":[{\"1\":\"3\",\"2\":0,\"4\":\"362
 
 var new_gmail_archive_action_body_params = "{\"1\":\"thread-f:1600724307680265309\",\"2\":{\"7\":{\"1\":[\"^a\"],\"2\":[\"^ri_hl\",\"^i\",\"^iim\",\"^t_p\",\"^t_rd\",\"^us\",\"^k\",\"^s\",\"^t_cz\",\"^t_z\"],\"3\":[\"msg-f:1600724307680265309\",\"msg-f:1600724938213937205\",\"msg-f:1600725174437456906\",\"msg-f:1600725319255992336\",\"msg-f:1600725448529658711\"],\"4\":\"1526643914301\",\"9\":{\"1\":\"1526643914286\",\"4\":1}}}}";
 
+var new_gmail_read_action_body_params = "{\"1\":\"thread-f:1602352922661388388\",\"2\":{\"7\":{\"2\":[\"^u\",\"^us\"],\"3\":[\"msg-f:1602352922661388388\",\"msg-f:1602362239485924753\",\"msg-f:1602603911840382414\"]}}}";
+
 module.exports = {
     visible_emails_post_data: visible_emails_post_data,
     parse_response_json_data: parse_response_json_data,
     email_data_post_data: email_data_post_data,
     new_gmail_send_email_data: new_gmail_send_email_data,
-    new_gmail_archive_action_body_params: new_gmail_archive_action_body_params
+    new_gmail_archive_action_body_params: new_gmail_archive_action_body_params,
+    new_gmail_read_action_body_params: new_gmail_read_action_body_params
 };
