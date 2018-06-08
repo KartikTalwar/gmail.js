@@ -1119,7 +1119,7 @@ var Gmail = function(localJQuery) {
             // ""            : "move_label",
             // ""            : "move_to_inbox",
             // ""            : "mute",
-            "^o"            : "read",
+            // ""            : "read",
             // ""            : "save_draft",
             // ""            : "send_message",
             // ""            : "show_newly_arrived_message",
@@ -1132,7 +1132,7 @@ var Gmail = function(localJQuery) {
             // ""            : "poll",
             // ""            : "refresh",
             // ""            : "restore_message_in_thread",
-            // ""            : "open_email",
+            "^o"            : "open_email",
             // ""            : "toggle_threads"
         };
         const threadData = api.tools.get_thread_data(threadObj);
