@@ -5,6 +5,16 @@ let gmail = new Gmail();
 
 const testData = require("./testdata-parser.js");
 
+function testXhrEventParsing(jsonXhrData, eventName) {
+    const api = new Gmail();
+    const xhrData = JSON.parse(jsonXhrData);
+
+    const threads = api.tools.extract_from_graph(xhrData, api.check.data.is_thread);
+    const actionType = api.tools.check_event_type(threads[0]);
+
+    assert.equal(eventName, actionType);
+};
+
 describe("Monkeypatching", () => {
     it("patching functions works", () => {
         var ns = {};
@@ -50,56 +60,29 @@ describe("Monkeypatching", () => {
 
 describe("Test tools for parsing new gmail body_params", () => {
     const gmail = new Gmail();
-    const dataFirstTypeAction =  JSON.parse(testData.new_gmail_archive_action_body_params);
-    const dataSecondTypeAction = JSON.parse(testData.new_gmail_read_action_body_params);
 
-    it("get thread id", () => {
-        const thread = gmail.tools.get_thread_id(dataFirstTypeAction);
-
-        assert.equal(thread, 'thread-f:1600724307680265309');
+    it("parses archived messages", () => {
+        const xhrData = testData.new_gmail_archive_action_body_params;
+        testXhrEventParsing(xhrData, "archive");
     });
-    it("get thread data", () => {
-        const mockThreadData = dataFirstTypeAction[2][7];
-        const threadData = gmail.tools.get_thread_data(dataFirstTypeAction);
 
-        assert.deepEqual(threadData, mockThreadData);
+    it("parses deleted messages", () => {
+        const xhrData = testData.new_gmail_delete_action_body_params;
+        testXhrEventParsing(xhrData, "delete");
     });
-    it("get messages ids", () => {
-        const mockMessageIds = ['msg-f:1600724307680265309', 'msg-f:1600724938213937205', 'msg-f:1600725174437456906', 'msg-f:1600725319255992336', 'msg-f:1600725448529658711'];
-        const threadData = gmail.tools.get_thread_data(dataFirstTypeAction);
-        const messagesIds = gmail.tools.get_message_ids(threadData);
 
-        assert.equal(messagesIds.length, 5);
-        assert.deepEqual(messagesIds, mockMessageIds);
+    it("parses read messages", () => {
+        const xhrData = testData.new_gmail_read_action_body_params;
+        testXhrEventParsing(xhrData, "read");
     });
-    it("check is action", () => {
-        const threadData = gmail.tools.get_thread_data(dataFirstTypeAction);
-        const isAction = gmail.check.data.is_action(threadData)
 
-        assert.equal(isAction, true);
+    it("parses unread messages", () => {
+        const xhrData = testData.new_gmail_unread_action_body_params;
+        testXhrEventParsing(xhrData, "unread");
     });
-    it("get first action type, should be return true", () => {
-        const threadData = gmail.tools.get_thread_data(dataFirstTypeAction);
-        const action = gmail.tools.get_action(threadData);
 
-        assert.equal(action, "^a");
-    });
-    it("get second action type, should be return true", () => {
-        const threadData = gmail.tools.get_thread_data(dataSecondTypeAction);
-        const action = gmail.tools.get_action(threadData);
-
-        assert.equal(action, "^u^us");
-    });
-    it("is first action type isset in thread object", () => {
-        const threadData = gmail.tools.get_thread_data(dataFirstTypeAction);
-        const issetAction = gmail.check.data.is_action(threadData);
-
-        assert.equal(issetAction, true);
-    });
-    it("is second action type isset in thread object", () => {
-        const threadData = gmail.tools.get_thread_data(dataSecondTypeAction);
-        const issetAction = gmail.check.data.is_action(threadData);
-
-        assert.equal(issetAction, true);
+    it("parses open_email messages", () => {
+        const xhrData = testData.new_gmail_open_email_action_body_params;
+        testXhrEventParsing(xhrData, "open_email");
     });
 });
