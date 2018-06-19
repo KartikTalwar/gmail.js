@@ -382,7 +382,7 @@ describe("Graph-traversal", () => {
     });
 });
 
-describe("New Gmail event-parsing", () => {
+describe("New Gmail event-triggering", () => {
     const gmail = new Gmail();
     const testCase = (data, asserts) => {
         const events = {};
@@ -393,6 +393,7 @@ describe("New Gmail event-parsing", () => {
         asserts(events);
     };
 
+    // TODO: refactor these tests into the same form as those below.
     it("Triggers for send_email", () => {
         testCase(testData.new_gmail_send_email_data, (events) => {
             assert.ok(events.send_message);
@@ -407,4 +408,46 @@ describe("New Gmail event-parsing", () => {
     // it("Extracts compose-id", () => {
 
     // });
+});
+
+describe("New Gmail event-parsing", () => {
+    const gmail = new Gmail();
+    const data = JSON.parse(testData.new_gmail_archive_action_body_params);
+    const threads = gmail.tools.extract_from_graph(data, gmail.check.data.is_thread);
+    const threadData = threads.map(thread => gmail.tools.get_thread_data(thread))[0];
+
+    let testXhrEventParsing = function (jsonXhrData, eventName) {
+        const api = new Gmail();
+        const xhrData = JSON.parse(jsonXhrData);
+
+        const threads = api.tools.extract_from_graph(xhrData, api.check.data.is_thread);
+        const actionType = api.tools.check_event_type(threads[0]);
+
+        assert.equal(eventName, actionType);
+    };
+
+    it("parses archived messages", () => {
+        const xhrData = testData.new_gmail_archive_action_body_params;
+        testXhrEventParsing(xhrData, "archive");
+    });
+
+    it("parses deleted messages", () => {
+        const xhrData = testData.new_gmail_delete_action_body_params;
+        testXhrEventParsing(xhrData, "delete");
+    });
+
+    it("parses read messages", () => {
+        const xhrData = testData.new_gmail_read_action_body_params;
+        testXhrEventParsing(xhrData, "read");
+    });
+
+    it("parses unread messages", () => {
+        const xhrData = testData.new_gmail_unread_action_body_params;
+        testXhrEventParsing(xhrData, "unread");
+    });
+
+    it("parses open_email messages", () => {
+        const xhrData = testData.new_gmail_open_email_action_body_params;
+        testXhrEventParsing(xhrData, "open_email");
+    });
 });
