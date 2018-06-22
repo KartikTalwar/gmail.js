@@ -2186,7 +2186,15 @@ var Gmail = function(localJQuery) {
             if($("[gh='tl'] div[role='checkbox'][aria-checked='true']").length){
                 var email = null;
                 var emails = api.get.visible_emails(customInboxQuery);
-                $("[gh='tl'] div[role='checkbox']").each(function(index){
+
+                // Select the open tab if "Primary", "Social",
+                // and "Promotions" tabs are present
+                var emailPanel = $("[gh='tl']");
+                if (emailPanel.find("div div[role='tabpanel']").length) {
+                    emailPanel = emailPanel.find("div div[role='tabpanel']:visible");
+                }
+
+                emailPanel.find("div[role='checkbox']").each(function(index){
                     if($(this).attr("aria-checked") === "true"){
                         email = api.get.email_data(emails[index].id);
                         selected_emails.push(email);
