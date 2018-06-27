@@ -2567,22 +2567,29 @@ var Gmail = function(localJQuery) {
 
 
     api.check.is_conversation_view = function() {
-        var flag_name = "bx_vmb";
-        var flag_value = undefined;
-
-        var array_with_flag = api.tracker.globals[17][4][1];
-
-        for (var i = 0; i < array_with_flag.length; i++) {
-            var current = array_with_flag[i];
-
-            if (current[0] === flag_name) {
-                flag_value = current[1];
-
-                break;
-            }
-        }
-
-        return flag_value === "0" || flag_value === undefined;
+    	//To handle new gmail UI
+		if( window.gmail.check.is_new_gui() ) {
+	       var conversation_flag = undefined;
+	       conversation_flag = api.tracker.globals[69];
+	       return conversation_flag === 1 || conversation_flag === undefined;
+		} else {	//To handle classic gmail UI           	
+	        var flag_name = "bx_vmb";
+	        var flag_value = undefined;
+	
+	        var array_with_flag = api.tracker.globals[17][4][1];
+	
+	        for (var i = 0; i < array_with_flag.length; i++) {
+	            var current = array_with_flag[i];
+	
+	            if (current[0] === flag_name) {
+	                flag_value = current[1];
+	
+	                break;
+	            }
+	        }
+	
+	        return flag_value === "0" || flag_value === undefined;
+		}
     };
 
 
