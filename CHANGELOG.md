@@ -1,6 +1,10 @@
 
 # Changelog
 
+## Version 0.7.5
+
+- Fix minor error in new `api.check.is_conversation_view()`.
+
 ## Version 0.7.4
 
 - Fix error with `api.check.is_conversation_view()` in new Gmail.
