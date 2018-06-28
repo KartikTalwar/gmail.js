@@ -1,6 +1,12 @@
 
 # Changelog
 
+## Version 0.7.4
+
+- Fix error with `api.check.is_conversation_view()` in new Gmail.
+- Add support for additional events in new Gmail: read, unread,
+  open_email, archive & delete.
+
 ## Version 0.7.3
 
 - Fix error with `api.dom.compose.send()` introduced in 0.7.2.
