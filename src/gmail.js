@@ -2567,7 +2567,7 @@ var Gmail = function(localJQuery) {
 
 
     api.check.is_conversation_view = function() {
-        if( api.check.is_new_gui() ) {
+        if( api.check.is_new_data_layer() ) {
             var conversation_flag = undefined;
             conversation_flag = api.tracker.globals[69];
             return conversation_flag === 1 || conversation_flag === undefined;
