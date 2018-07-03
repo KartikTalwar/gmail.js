@@ -1,6 +1,11 @@
 
 # Changelog
 
+## Version 0.7.6
+
+- Fix major error in new `api.check.is_conversation_view()`,
+  introduced in 0.7.5.
+
 ## Version 0.7.5
 
 - Fix minor error in new `api.check.is_conversation_view()`.
