@@ -1127,6 +1127,7 @@ var Gmail = function(localJQuery) {
     };
 
     api.tools.check_event_type = function(threadObj) {
+        const label = "^x_";
         const action_map = {
             // ""            : "add_to_tasks",
             "^a": "archive",
@@ -1137,7 +1138,7 @@ var Gmail = function(localJQuery) {
             // ""            : "discard_draft",
             // ""            : "expand_categories",
             // ""            : "filter_messages_like_these",
-            // ""            : "label",
+            "^x_"            : "label",
             // "^io_im^imi": "mark_as_important",
             // "^imn": "mark_as_not_important",
             // ""            : "mark_as_not_spam",
@@ -1166,7 +1167,12 @@ var Gmail = function(localJQuery) {
         if (threadData && api.check.data.is_action(threadData)) {
             const action = api.tools.get_action(threadData);
 
-            return action_map[action];
+            //Check if label is applied to email / existing email is moved to an label
+            if(action.startsWith(label) && api.check.data.is_first_type_action(threadData)) {
+                return action_map[label];
+            } else {
+                return action_map[action];
+            }
         } else {
             return null;
         }
