@@ -2529,8 +2529,7 @@ var Gmail = function(localJQuery) {
     var get_displayed_email_data_for_single_email = function(email_data) {
         var displayed_email_data = {};
         for (var id in email_data.threads) {
-            var message_class_id = id;
-            var displayed_email_element = document.querySelector("div[data-legacy-message-id='" + message_class_id + "']");
+            var displayed_email_element = document.querySelector("div[data-legacy-message-id='" + id + "']");
 
             if (displayed_email_element) {
                 var email = email_data.threads[id];
