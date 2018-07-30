@@ -1737,7 +1737,10 @@ var Gmail = function(localJQuery) {
         $.each(api.tracker.dom_observers, function(act,config){
             if(!$.isArray(config.class)) config.class = [config.class];
             $.each(config.class, function(idx, className) {
-                api.tracker.dom_observer_map[className] = act;
+                if (!api.tracker.dom_observer_map[className]) {
+                    api.tracker.dom_observer_map[className] = [];
+                }
+                api.tracker.dom_observer_map[className].push(act);
             });
         });
         //console.log( "observer_config", api.tracker.dom_observers, "dom_observer_map", api.tracker.dom_observer_map);
@@ -1813,7 +1816,7 @@ var Gmail = function(localJQuery) {
                 // this listener will check every element inserted into the DOM
                 // for specified classes (as defined in api.tracker.dom_observers above) which indicate
                 // related actions which need triggering
-                $(window.document).bind("DOMNodeInserted", function(e) {
+                $(window.document).on("DOMNodeInserted", function(e) {
                     api.tools.insertion_observer(e.target, api.tracker.dom_observers, api.tracker.dom_observer_map);
                 });
 
@@ -1880,46 +1883,52 @@ var Gmail = function(localJQuery) {
         var classes = cn.trim ? cn.trim().split(/\s+/) : [];
         if(!classes.length) classes.push(""); // if no class, then check for anything observing nodes with no class
         $.each(classes, function(idx, className) {
-            var observer = dom_observer_map[className];
+            var observers = dom_observer_map[className];
+            if (!observers) {
+                return;
+            }
 
-            // check if this is a defined observer, and callbacks are bound to that observer
-            if(observer && api.tracker.watchdog.dom[observer]) {
-                var element = $(target);
-                var config = dom_observers[observer];
+            for (var observer of observers) {
 
-                // if a config id specified for this observer, ensure it matches for this element
-                if(config.selector && !element.is(config.selector)) {
-                    return;
-                }
+                // check if this is a defined observer, and callbacks are bound to that observer
+                if(observer && api.tracker.watchdog.dom[observer]) {
+                    var element = $(target);
+                    var config = dom_observers[observer];
 
-                // check for any defined sub_selector match - if not found, then this is not a match for this observer
-                // if found, then set the matching element to be the one that matches the sub_selector
-                if(config.sub_selector) {
-                    element = element.find(config.sub_selector);
-                    // console.log("checking for subselector", config.sub_selector, element);
-                }
+                    // if a config id specified for this observer, ensure it matches for this element
+                    if(config.selector && !element.is(config.selector)) {
+                        return;
+                    }
 
-                // if an element has been found, execute the observer handler (or if none defined, execute the callback)
-                if(element.length) {
+                    // check for any defined sub_selector match - if not found, then this is not a match for this observer
+                    // if found, then set the matching element to be the one that matches the sub_selector
+                    if(config.sub_selector) {
+                        element = element.find(config.sub_selector);
+                        // console.log("checking for subselector", config.sub_selector, element);
+                    }
 
-                    var handler = config.handler ? config.handler : function(match, callback) { callback(match); };
-                    // console.log( "inserted DOM: class match in watchdog",observer,api.tracker.watchdog.dom[observer] );
-                    api.observe.trigger_dom(observer, element, handler);
+                    // if an element has been found, execute the observer handler (or if none defined, execute the callback)
+                    if(element.length) {
 
-                    // if sub_observers are configured for this observer, bind a DOMNodeInsertion listener to this element & to check for specific elements being added to this particular element
-                    if(config.sub_observers) {
+                        var handler = config.handler ? config.handler : function(match, callback) { callback(match); };
+                        // console.log( "inserted DOM: class match in watchdog",observer,api.tracker.watchdog.dom[observer] );
+                        api.observe.trigger_dom(observer, element, handler);
 
-                        // create observer_map for the sub_observers
-                        var observer_map = {};
-                        $.each(config.sub_observers, function(act,cfg){
-                            observer_map[cfg.class] = act;
-                        });
+                        // if sub_observers are configured for this observer, bind a DOMNodeInsertion listener to this element & to check for specific elements being added to this particular element
+                        if(config.sub_observers) {
 
-                        // this listener will check every element inserted into the DOM below the current element
-                        // and repeat this method, but specifically below the current element rather than the global DOM
-                        element.bind("DOMNodeInserted", function(e) {
-                            api.tools.insertion_observer(e.target, config.sub_observers, observer_map, "SUB ");
-                        });
+                            // create observer_map for the sub_observers
+                            var observer_map = {};
+                            $.each(config.sub_observers, function(act,cfg){
+                                observer_map[cfg.class] = act;
+                            });
+
+                            // this listener will check every element inserted into the DOM below the current element
+                            // and repeat this method, but specifically below the current element rather than the global DOM
+                            element.on("DOMNodeInserted", function(e) {
+                                api.tools.insertion_observer(e.target, config.sub_observers, observer_map, "SUB ");
+                            });
+                        }
                     }
                 }
             }
@@ -2833,7 +2842,7 @@ var Gmail = function(localJQuery) {
 
         center();
 
-        container.bind("DOMSubtreeModified", center);
+        container.on("DOMSubtreeModified", center);
         $(window).resize(center);
     };
 
