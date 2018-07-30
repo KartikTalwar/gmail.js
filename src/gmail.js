@@ -1633,35 +1633,28 @@ var Gmail = function(localJQuery) {
                 handler: function(match, callback) {
                     match = new api.dom.thread(match);
                     callback(match);
+                }
+            },
 
-                    // look for any email elements in this thread that are currently displaying
-                    // and fire off any view_email sub_observers for each of them
-                    var email = match.dom("opened_email");
-                    if (email.length) {
-                        api.observe.trigger_dom("view_email", email, api.tracker.dom_observers.view_thread.sub_observers.view_email.handler);
-                    }
-                },
-                sub_observers: {
+            // when an individual email is loaded within a thread (also fires when thread loads displaying the latest email)
+            "view_email": {
+                // class depends if is_preview_pane - Bu for preview pane, nH for standard view,
+                // the empty class ("") is for emails opened after thread is rendered.
+                class: ["Bu", "nH", ""],
+                sub_selector: "div.adn",
+                handler: function(match, callback) {
+                    match = new api.dom.email(match);
+                    callback(match);
+                }
+            },
 
-                    // when an individual email is loaded within a thread (also fires when thread loads displaying the latest email)
-                    "view_email": {
-                        class: "",
-                        sub_selector: "div.adn",
-                        handler: function(match, callback) {
-                            match = new api.dom.email(match);
-                            callback(match);
-                        }
-                    },
-
-                    // when the dropdown menu next to the reply button is inserted into the DOM when viewing an email
-                    "load_email_menu": {
-                        class: "J-N",
-                        selector: "div[role=menu] div[role=menuitem]:first-child", // use the first menu item in the popoup as the indicator to trigger this observer
-                        handler: function(match, callback) {
-                            match = match.closest("div[role=menu]");
-                            callback(match);
-                        }
-                    }
+            // when the dropdown menu next to the reply button is inserted into the DOM when viewing an email
+            "load_email_menu": {
+                class: "J-N",
+                selector: "div[role=menu] div[role=menuitem]:first-child", // use the first menu item in the popoup as the indicator to trigger this observer
+                handler: function(match, callback) {
+                    match = match.closest("div[role=menu]");
+                    callback(match);
                 }
             },
 
