@@ -1608,13 +1608,12 @@ var Gmail = function(localJQuery) {
     // map observers to DOM class names
     // as elements are inserted into the DOM, these classes will be checked for and mapped events triggered,
     // receiving "e" event object, and a jquery bound inserted DOM element
-    // NOTE: supported observers and sub_observers must be registered in the supported_observers array as well as the dom_observers config
+    // NOTE: supported observers must be registered in the supported_observers array as well as the dom_observers config
     // Config example: event_name: {
     //                   class: "className", // required - check for this className in the inserted DOM element
     //                   selector: "div.className#myId", // if you need to match more than just the className of a specific element to indicate a match, you can use this selector for further checking (uses element.is(selector) on matched element). E.g. if there are multiple elements with a class indicating an observer should fire, but you only want it to fire on a specific id, then you would use this
     //                   sub_selector: "div.className", // if specified, we do a jquery element.find for the passed selector on the inserted element and ensure we can find a match
-    //                   handler: function( matchElement, callback ) {}, // if specified this handler is called if a match is found. Otherwise default calls the callback & passes the jQuery matchElement
-    //                   sub_observers: { }, // hash of event_name: config_hash"s - config hash supports all properties of this config hash. Observer will be bound as DOMNodeInserted to the matching class+sub_selector element.
+    //                   handler: function( matchElement, callback ) {} // if specified this handler is called if a match is found. Otherwise default calls the callback & passes the jQuery matchElement
     //                 },
     // TODO: current limitation allows only 1 action per watched className (i.e. each watched class must be
     //       unique). If this functionality is needed this can be worked around by pushing actions to an array
@@ -1747,9 +1746,8 @@ var Gmail = function(localJQuery) {
        action - the name of the new DOM observer
        className / args - for a simple observer, this arg can simply be the class on an inserted DOM element that identifies this event should be
        triggered. For a more complicated observer, this can be an object containing properties for each of the supported DOM observer config arguments
-       parent - optional - if specified, this observer will be registered as a sub_observer for the specified parent
     */
-    api.observe.register = function(action, args, parent) {
+    api.observe.register = function(action, args) {
 
         // check observers configured
         if (api.tracker.dom_observer_init) {
@@ -1774,14 +1772,7 @@ var Gmail = function(localJQuery) {
             config["class"] = args;
         }
         api.tracker.custom_supported_observers.push(action);
-        if (parent) {
-            if (!api.tracker.custom_dom_observers[parent]) {
-                api.tracker.custom_dom_observers[parent] = {sub_observers: {}};
-            }
-            api.tracker.custom_dom_observers[parent].sub_observers[action] = config;
-        } else {
-            api.tracker.custom_dom_observers[action] = config;
-        }
+        api.tracker.custom_dom_observers[action] = config;
     };
 
     /**
@@ -1906,22 +1897,6 @@ var Gmail = function(localJQuery) {
                         var handler = config.handler ? config.handler : function(match, callback) { callback(match); };
                         // console.log( "inserted DOM: class match in watchdog",observer,api.tracker.watchdog.dom[observer] );
                         api.observe.trigger_dom(observer, element, handler);
-
-                        // if sub_observers are configured for this observer, bind a DOMNodeInsertion listener to this element & to check for specific elements being added to this particular element
-                        if(config.sub_observers) {
-
-                            // create observer_map for the sub_observers
-                            var observer_map = {};
-                            $.each(config.sub_observers, function(act,cfg){
-                                observer_map[cfg.class] = act;
-                            });
-
-                            // this listener will check every element inserted into the DOM below the current element
-                            // and repeat this method, but specifically below the current element rather than the global DOM
-                            element.on("DOMNodeInserted", function(e) {
-                                api.tools.insertion_observer(e.target, config.sub_observers, observer_map, "SUB ");
-                            });
-                        }
                     }
                 }
             }

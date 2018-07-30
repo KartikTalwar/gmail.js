@@ -1090,7 +1090,7 @@ gmail.observe.off(null,'before'); // disables all before observers
 gmail.observe.off();  // disables all
 ```
 
-#### gmail.observe.register(action, class/args, parent=null)
+#### gmail.observe.register(action, class/args)
 
 Allow an application to register a custom DOM observer specific to their application.
 Adds it to the configured DOM observers that will then be supported by the dom insertion observer.
@@ -1102,7 +1102,6 @@ This method can be called two different ways:
 Simple:
   - action - the name of the new DOM observer
   - class - the class of an inserted DOM element that identifies that this action should be triggered
-  - parent - optional - if specified, this observer will be registered as a sub_observer for the specified parent (meaning it will only be checked for if the parent observer has something bound to it, and has been triggered).
 
 Complex:
   - action - the name of the new DOM observer
@@ -1111,7 +1110,6 @@ Complex:
     - selector - if you need to match more than just the className of a specific element to indicate a match, you can use this selector for further checking (uses element.is(selector) on matched element). E.g. if there are multiple elements with a class indicating an observer should fire, but you only want it to fire on a specific id, then you would use this
     - sub_selector - if specified, we do a jquery element.find for the passed selector on the inserted element and ensure we can find a match
     - handler - if specified this handler is called if a match is found. Otherwise default calls the callback & passes the jQuery matchElement
-  - parent - optional - as above with simple
 
 ```js
 
