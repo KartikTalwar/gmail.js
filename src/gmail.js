@@ -2630,6 +2630,18 @@ var Gmail = function(localJQuery) {
             };
             break;
 
+        case "it":
+            dictionary = {
+                "inbox": "Posta in arrivo",
+                "drafts": "Bozza",
+                "spam": "Spam",
+                "forums": "Forum",
+                "updates": "Aggiornamenti",
+                "promotions": "Promozioni",
+                "social_updates": "Social"
+            };
+            break;                
+
         case "en":
         default:
             dictionary = {
