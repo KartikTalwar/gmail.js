@@ -3,6 +3,7 @@
 
 ## Version 0.7.7
 
+- Fix error in `api.get.displayed_email_data()` when conversation mode is off.
 - Fix error in `view_email` sub-observer after Gmail-changes.
 - Promote `view_email` and `load_email_menu` to own, independent observers.
 - Obsolete concept with "sub-observers" completely (since none remain).
