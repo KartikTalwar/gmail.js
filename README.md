@@ -211,9 +211,9 @@ gmail.observe.on("load", function(){
   - **`compose`** - When a new compose window is opened, or a message is replied to or forwarded
   - **`recipient_change`** - When an email being written (either new compose, reply or forward) has its to, cc or bcc recipients updated
   - **`view_thread`** - When a conversation thread is opened to read
-    - **`view_email`** - Sub-observer to `view_thread`. When an individual email is loaded within a conversation thread.
+  - **`view_email`* - When an individual email is loaded within a conversation thread.
       It's worth noting this event is only triggered when the email is actually rendered in the DOM. Gmail tends to cache the rendered emails, so it should not be expected to fire reliably for every viewing of the same email. It will most likely fire once, for the initial and possibly only rendering.
-    - **`load_email_menu`** - Sub-observer to `view_thread`. When the dropdown menu next to the reply button is clicked
+  - **`load_email_menu`** - When the dropdown menu next to the reply button is clicked
 - [gmail.observe**.before(action, callback)**](#gmailobservebeforeaction-callback)
 - [gmail.observe**.after(action, callback)**](#gmailobserveafteraction-callback)
 - gmail.observe**.bind(type, action, callback)** - implements the on, after, before callbacks
@@ -854,32 +854,15 @@ Your callback will be fired directly after Gmail's XMLHttpRequest has been sent 
 
 The on method also supports observering specific DOM events in the Gmail Interface (for example when a new compose window is opened). These are only available via the `on` method (not the `before` or `after` methods).
 
-Some actions/observers also have defined 'sub-observers' which only (!) become available if you have an action bound to the parent observer. Sub-observers are defined as such because they only make sense once the parent has been triggered. I.e. for an individual email (or several emails) to display as part of a conversation thread, the thread must first be opened/loaded in the interface.
-
-Example usage:
-
-```js
-gmail.observe.on('view_thread', function(obj) {
-  console.log('view_thread', obj);
-});
-
-// now we have access to the sub observers
-and load_email_menu
-gmail.observe.on('view_email', function(obj) {
-  console.log('view_email', obj);
-});
-```
-
-**Available DOM Actions/Observers & Sub-observers**
+**Available DOM Actions/Observers**
 
  - **load** - When the gmail interface has completed loading
  - **compose** - When a new compose window opens, or a message is replied to or forwarded
  - **compose_cancelled** - When an existing compose window is closed.
  - **recipient_change** - When the recipient (to, cc or bcc) is changed when composing a new email or replying/forwarding an email
  - **view_thread** - When a new coversation thread is opened
-  - **view_thread Sub-observers**
-  - **view_email** - When an individual email is loaded within a thread (also fires when thread loads displaying the latest email)
-  - **load_email_menu** - When the dropdown menu next to the reply button is clicked
+ - **view_email** - When an individual email is loaded within a thread (also fires when thread loads displaying the latest email)
+ - **load_email_menu** - When the dropdown menu next to the reply button is clicked
 
 ```js
 gmail.observe.on("http_event", function(params) {
@@ -1107,7 +1090,7 @@ gmail.observe.off(null,'before'); // disables all before observers
 gmail.observe.off();  // disables all
 ```
 
-#### gmail.observe.register(action, class/args, parent=null)
+#### gmail.observe.register(action, class/args)
 
 Allow an application to register a custom DOM observer specific to their application.
 Adds it to the configured DOM observers that will then be supported by the dom insertion observer.
@@ -1119,7 +1102,6 @@ This method can be called two different ways:
 Simple:
   - action - the name of the new DOM observer
   - class - the class of an inserted DOM element that identifies that this action should be triggered
-  - parent - optional - if specified, this observer will be registered as a sub_observer for the specified parent (meaning it will only be checked for if the parent observer has something bound to it, and has been triggered).
 
 Complex:
   - action - the name of the new DOM observer
@@ -1128,7 +1110,6 @@ Complex:
     - selector - if you need to match more than just the className of a specific element to indicate a match, you can use this selector for further checking (uses element.is(selector) on matched element). E.g. if there are multiple elements with a class indicating an observer should fire, but you only want it to fire on a specific id, then you would use this
     - sub_selector - if specified, we do a jquery element.find for the passed selector on the inserted element and ensure we can find a match
     - handler - if specified this handler is called if a match is found. Otherwise default calls the callback & passes the jQuery matchElement
-  - parent - optional - as above with simple
 
 ```js
 
