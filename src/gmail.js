@@ -334,7 +334,11 @@ var Gmail = function(localJQuery) {
         var div = $(".md.mj").find("div")[0];
         var used = $(div).find("span")[0].text;
         var total = $(div).find("span")[1].text;
-        var percent = parseFloat(used.replace(/[^0-9\.]/g, "")) * 100 / parseFloat(total.replace(/[^0-9\.]/g, ""));
+        if (used != undefined){
+            var percent = parseFloat(used.replace(/[^0-9\.]/g, "")) * 100 / parseFloat(total.replace(/[^0-9\.]/g, ""));
+        } else {
+            var percent = 0;
+        }
 
         return {used : used, total : total, percent : Math.floor(percent)};
     };
