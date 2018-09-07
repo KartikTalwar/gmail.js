@@ -787,9 +787,8 @@ interface GmailObserve {
         action - the name of the new DOM observer
         className / args - for a simple observer, this arg can simply be the class on an inserted DOM element that identifies this event should be
           triggered. For a more complicated observer, this can be an object containing properties for each of the supported DOM observer config arguments
-        parent - optional - if specified, this observer will be registered as a sub_observer for the specified parent
      */
-    register(action: string, args: string | StringDict, parent?: any): void;
+    register(action: string, args: string | StringDict): void;
     /**
       Observe DOM nodes being inserted. When a node with a class defined in api.tracker.dom_observers is inserted,
       trigger the related event and fire off any relevant bound callbacks
