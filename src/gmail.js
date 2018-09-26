@@ -561,8 +561,8 @@ var Gmail = function(localJQuery) {
         var dom = $("div[role=navigation]").find("[title*='" + api.tools.i18n("inbox") + "']");
 
         if(dom.length > 0) {
-            if(dom[0].text.indexOf("(") !== -1) {
-                return parseInt(dom[0].text.split(":")[0].replace(/[^0-9]/g, ""));
+            if(dom[0].title.indexOf("(") !== -1) {
+                return parseInt(dom[0].title.split(":")[0].replace(/[^0-9]/g, ""));
             }
         }
 
@@ -574,8 +574,8 @@ var Gmail = function(localJQuery) {
         var dom = $("div[role=navigation]").find("[title*='" + api.tools.i18n("drafts") + "']");
 
         if(dom.length > 0) {
-            if(dom[0].text.indexOf("(") !== -1) {
-                return parseInt(dom[0].text.replace(/[^0-9]/g, ""));
+            if(dom[0].title.indexOf("(") !== -1) {
+                return parseInt(dom[0].title.replace(/[^0-9]/g, ""));
             }
         }
 
@@ -587,8 +587,8 @@ var Gmail = function(localJQuery) {
         var dom = $("div[role=navigation]").find("[title*='" + api.tools.i18n("spam") + "']");
 
         if(dom.length > 0) {
-            if(dom[0].text.indexOf("(") !== -1) {
-                return parseInt(dom[0].text.replace(/[^0-9]/g, ""));
+            if(dom[0].title.indexOf("(") !== -1) {
+                return parseInt(dom[0].title.replace(/[^0-9]/g, ""));
             }
         }
 
@@ -600,8 +600,8 @@ var Gmail = function(localJQuery) {
         var dom = $("div[role=navigation]").find("[title*='" + api.tools.i18n("forums") + "']");
 
         if(dom.length > 0) {
-            if(dom[0].text.indexOf("(") !== -1) {
-                return parseInt(dom[0].text.replace(/[^0-9]/g, ""));
+            if(dom[0].title.indexOf("(") !== -1) {
+                return parseInt(dom[0].title.replace(/[^0-9]/g, ""));
             }
         }
 
@@ -613,8 +613,8 @@ var Gmail = function(localJQuery) {
         var dom = $("div[role=navigation]").find("[title*='" + api.tools.i18n("updates") + "']");
 
         if(dom.length > 0) {
-            if(dom[0].text.indexOf("(") !== -1) {
-                return parseInt(dom[0].text.replace(/[^0-9]/g, ""));
+            if(dom[0].title.indexOf("(") !== -1) {
+                return parseInt(dom[0].title.replace(/[^0-9]/g, ""));
             }
         }
 
@@ -626,8 +626,8 @@ var Gmail = function(localJQuery) {
         var dom = $("div[role=navigation]").find("[title*='" + api.tools.i18n("promotions") + "']");
 
         if(dom.length > 0) {
-            if(dom[0].text.indexOf("(") !== -1) {
-                return parseInt(dom[0].text.replace(/[^0-9]/g, ""));
+            if(dom[0].title.indexOf("(") !== -1) {
+                return parseInt(dom[0].title.replace(/[^0-9]/g, ""));
             }
         }
 
@@ -639,8 +639,8 @@ var Gmail = function(localJQuery) {
         var dom = $("div[role=navigation]").find("[title*='" + api.tools.i18n("social_updates") + "']");
 
         if(dom.length > 0) {
-            if(dom[0].text.indexOf("(") !== -1) {
-                return parseInt(dom[0].text.replace(/[^0-9]/g, ""));
+            if(dom[0].title.indexOf("(") !== -1) {
+                return parseInt(dom[0].title.replace(/[^0-9]/g, ""));
             }
         }
 
@@ -1614,13 +1614,12 @@ var Gmail = function(localJQuery) {
     // map observers to DOM class names
     // as elements are inserted into the DOM, these classes will be checked for and mapped events triggered,
     // receiving "e" event object, and a jquery bound inserted DOM element
-    // NOTE: supported observers and sub_observers must be registered in the supported_observers array as well as the dom_observers config
+    // NOTE: supported observers must be registered in the supported_observers array as well as the dom_observers config
     // Config example: event_name: {
     //                   class: "className", // required - check for this className in the inserted DOM element
     //                   selector: "div.className#myId", // if you need to match more than just the className of a specific element to indicate a match, you can use this selector for further checking (uses element.is(selector) on matched element). E.g. if there are multiple elements with a class indicating an observer should fire, but you only want it to fire on a specific id, then you would use this
     //                   sub_selector: "div.className", // if specified, we do a jquery element.find for the passed selector on the inserted element and ensure we can find a match
-    //                   handler: function( matchElement, callback ) {}, // if specified this handler is called if a match is found. Otherwise default calls the callback & passes the jQuery matchElement
-    //                   sub_observers: { }, // hash of event_name: config_hash"s - config hash supports all properties of this config hash. Observer will be bound as DOMNodeInserted to the matching class+sub_selector element.
+    //                   handler: function( matchElement, callback ) {} // if specified this handler is called if a match is found. Otherwise default calls the callback & passes the jQuery matchElement
     //                 },
     // TODO: current limitation allows only 1 action per watched className (i.e. each watched class must be
     //       unique). If this functionality is needed this can be worked around by pushing actions to an array
@@ -1639,35 +1638,28 @@ var Gmail = function(localJQuery) {
                 handler: function(match, callback) {
                     match = new api.dom.thread(match);
                     callback(match);
+                }
+            },
 
-                    // look for any email elements in this thread that are currently displaying
-                    // and fire off any view_email sub_observers for each of them
-                    var email = match.dom("opened_email");
-                    if (email.length) {
-                        api.observe.trigger_dom("view_email", email, api.tracker.dom_observers.view_thread.sub_observers.view_email.handler);
-                    }
-                },
-                sub_observers: {
+            // when an individual email is loaded within a thread (also fires when thread loads displaying the latest email)
+            "view_email": {
+                // class depends if is_preview_pane - Bu for preview pane, nH for standard view,
+                // the empty class ("") is for emails opened after thread is rendered.
+                class: ["Bu", "nH", ""],
+                sub_selector: "div.adn",
+                handler: function(match, callback) {
+                    match = new api.dom.email(match);
+                    callback(match);
+                }
+            },
 
-                    // when an individual email is loaded within a thread (also fires when thread loads displaying the latest email)
-                    "view_email": {
-                        class: "",
-                        sub_selector: "div.adn",
-                        handler: function(match, callback) {
-                            match = new api.dom.email(match);
-                            callback(match);
-                        }
-                    },
-
-                    // when the dropdown menu next to the reply button is inserted into the DOM when viewing an email
-                    "load_email_menu": {
-                        class: "J-N",
-                        selector: "div[role=menu] div[role=menuitem]:first-child", // use the first menu item in the popoup as the indicator to trigger this observer
-                        handler: function(match, callback) {
-                            match = match.closest("div[role=menu]");
-                            callback(match);
-                        }
-                    }
+            // when the dropdown menu next to the reply button is inserted into the DOM when viewing an email
+            "load_email_menu": {
+                class: "J-N",
+                selector: "div[role=menu] div[role=menuitem]:first-child", // use the first menu item in the popoup as the indicator to trigger this observer
+                handler: function(match, callback) {
+                    match = match.closest("div[role=menu]");
+                    callback(match);
                 }
             },
 
@@ -1743,7 +1735,10 @@ var Gmail = function(localJQuery) {
         $.each(api.tracker.dom_observers, function(act,config){
             if(!$.isArray(config.class)) config.class = [config.class];
             $.each(config.class, function(idx, className) {
-                api.tracker.dom_observer_map[className] = act;
+                if (!api.tracker.dom_observer_map[className]) {
+                    api.tracker.dom_observer_map[className] = [];
+                }
+                api.tracker.dom_observer_map[className].push(act);
             });
         });
         //console.log( "observer_config", api.tracker.dom_observers, "dom_observer_map", api.tracker.dom_observer_map);
@@ -1757,9 +1752,8 @@ var Gmail = function(localJQuery) {
        action - the name of the new DOM observer
        className / args - for a simple observer, this arg can simply be the class on an inserted DOM element that identifies this event should be
        triggered. For a more complicated observer, this can be an object containing properties for each of the supported DOM observer config arguments
-       parent - optional - if specified, this observer will be registered as a sub_observer for the specified parent
     */
-    api.observe.register = function(action, args, parent) {
+    api.observe.register = function(action, args) {
 
         // check observers configured
         if (api.tracker.dom_observer_init) {
@@ -1784,14 +1778,7 @@ var Gmail = function(localJQuery) {
             config["class"] = args;
         }
         api.tracker.custom_supported_observers.push(action);
-        if (parent) {
-            if (!api.tracker.custom_dom_observers[parent]) {
-                api.tracker.custom_dom_observers[parent] = {sub_observers: {}};
-            }
-            api.tracker.custom_dom_observers[parent].sub_observers[action] = config;
-        } else {
-            api.tracker.custom_dom_observers[action] = config;
-        }
+        api.tracker.custom_dom_observers[action] = config;
     };
 
     /**
@@ -1819,7 +1806,7 @@ var Gmail = function(localJQuery) {
                 // this listener will check every element inserted into the DOM
                 // for specified classes (as defined in api.tracker.dom_observers above) which indicate
                 // related actions which need triggering
-                $(window.document).bind("DOMNodeInserted", function(e) {
+                $(window.document).on("DOMNodeInserted", function(e) {
                     api.tools.insertion_observer(e.target, api.tracker.dom_observers, api.tracker.dom_observer_map);
                 });
 
@@ -1886,46 +1873,36 @@ var Gmail = function(localJQuery) {
         var classes = cn.trim ? cn.trim().split(/\s+/) : [];
         if(!classes.length) classes.push(""); // if no class, then check for anything observing nodes with no class
         $.each(classes, function(idx, className) {
-            var observer = dom_observer_map[className];
+            var observers = dom_observer_map[className];
+            if (!observers) {
+                return;
+            }
 
-            // check if this is a defined observer, and callbacks are bound to that observer
-            if(observer && api.tracker.watchdog.dom[observer]) {
-                var element = $(target);
-                var config = dom_observers[observer];
+            for (var observer of observers) {
 
-                // if a config id specified for this observer, ensure it matches for this element
-                if(config.selector && !element.is(config.selector)) {
-                    return;
-                }
+                // check if this is a defined observer, and callbacks are bound to that observer
+                if(observer && api.tracker.watchdog.dom[observer]) {
+                    var element = $(target);
+                    var config = dom_observers[observer];
 
-                // check for any defined sub_selector match - if not found, then this is not a match for this observer
-                // if found, then set the matching element to be the one that matches the sub_selector
-                if(config.sub_selector) {
-                    element = element.find(config.sub_selector);
-                    // console.log("checking for subselector", config.sub_selector, element);
-                }
+                    // if a config id specified for this observer, ensure it matches for this element
+                    if(config.selector && !element.is(config.selector)) {
+                        return;
+                    }
 
-                // if an element has been found, execute the observer handler (or if none defined, execute the callback)
-                if(element.length) {
+                    // check for any defined sub_selector match - if not found, then this is not a match for this observer
+                    // if found, then set the matching element to be the one that matches the sub_selector
+                    if(config.sub_selector) {
+                        element = element.find(config.sub_selector);
+                        // console.log("checking for subselector", config.sub_selector, element);
+                    }
 
-                    var handler = config.handler ? config.handler : function(match, callback) { callback(match); };
-                    // console.log( "inserted DOM: class match in watchdog",observer,api.tracker.watchdog.dom[observer] );
-                    api.observe.trigger_dom(observer, element, handler);
+                    // if an element has been found, execute the observer handler (or if none defined, execute the callback)
+                    if(element.length) {
 
-                    // if sub_observers are configured for this observer, bind a DOMNodeInsertion listener to this element & to check for specific elements being added to this particular element
-                    if(config.sub_observers) {
-
-                        // create observer_map for the sub_observers
-                        var observer_map = {};
-                        $.each(config.sub_observers, function(act,cfg){
-                            observer_map[cfg.class] = act;
-                        });
-
-                        // this listener will check every element inserted into the DOM below the current element
-                        // and repeat this method, but specifically below the current element rather than the global DOM
-                        element.bind("DOMNodeInserted", function(e) {
-                            api.tools.insertion_observer(e.target, config.sub_observers, observer_map, "SUB ");
-                        });
+                        var handler = config.handler ? config.handler : function(match, callback) { callback(match); };
+                        // console.log( "inserted DOM: class match in watchdog",observer,api.tracker.watchdog.dom[observer] );
+                        api.observe.trigger_dom(observer, element, handler);
                     }
                 }
             }
@@ -2535,8 +2512,7 @@ var Gmail = function(localJQuery) {
     var get_displayed_email_data_for_single_email = function(email_data) {
         var displayed_email_data = {};
         for (var id in email_data.threads) {
-            var message_class_id = id;
-            var displayed_email_element = document.querySelector("div[data-legacy-message-id='" + message_class_id + "']");
+            var displayed_email_element = document.querySelector("div[data-legacy-message-id='" + id + "']");
 
             if (displayed_email_element) {
                 var email = email_data.threads[id];
@@ -2636,6 +2612,18 @@ var Gmail = function(localJQuery) {
                 "social_updates": "Sociaal"
             };
             break;
+
+        case "it":
+            dictionary = {
+                "inbox": "Posta in arrivo",
+                "drafts": "Bozza",
+                "spam": "Spam",
+                "forums": "Forum",
+                "updates": "Aggiornamenti",
+                "promotions": "Promozioni",
+                "social_updates": "Social"
+            };
+            break;                
 
         case "en":
         default:
@@ -2839,7 +2827,7 @@ var Gmail = function(localJQuery) {
 
         center();
 
-        container.bind("DOMSubtreeModified", center);
+        container.on("DOMSubtreeModified", center);
         $(window).resize(center);
     };
 
