@@ -2567,6 +2567,31 @@ var Gmail = function(localJQuery) {
             return flag_value === "0" || flag_value === undefined;
         }
     };
+    
+	//To know button labels setting is set to text (or icon)
+    api.check.is_buttensLabel_text = function() {
+        if( api.check.is_new_data_layer() ) {
+            var flag = 0;
+            
+            if(document.querySelector("div[gh='tm'] div[class='Bn']") !== null) {
+                flag = 1;
+            }
+            
+            return flag;
+        } else {	//To handle classic gmail UI           	
+            var flag_name = "bx_sabi";
+            var flag_value = undefined;
+            var array_with_flag = api.tracker.globals[17][4][1];
+            for (var i = 0; i < array_with_flag.length; i++) {
+                var current = array_with_flag[i];
+                if (current[0] === flag_name) {
+                    flag_value = current[1];
+                    break;
+                }
+            }
+            return flag_value === "0" || flag_value === undefined;
+        }
+    };    
 
     api.tools.extract_email_address = function(str) {
         var regex = /[\+a-z0-9._-]+@[a-z0-9._-]+\.[a-z0-9._-]+/gi;

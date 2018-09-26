@@ -146,6 +146,7 @@ const gmail = new GmailFactory.Gmail() as Gmail;
 - [gmail.check**.is_boomerang_installed()**](#gmailcheckis_boomerang_installed)
 - [gmail.check**.is_xobni_installed()**](#gmailcheckis_xobni_installed)
 - [gmail.check**.is_signal_installed()**](#gmailcheckis_signal_installed)
+- [gmail.check**.is_buttensLabel_text()**](#gmailcheckis_buttensLabel_text)
 
 
 #### CHAT
@@ -754,6 +755,9 @@ Returns `True` if [xobni](https://www.xobni.com) chrome extension is installed `
 
 Returns `True` if [Signal](https://trysignal.com) chrome extension is installed `False` otherwise
 
+#### gmail.check.is_buttensLabel_text()
+
+Returns `True` if Button labels setting is set to Text and `False` if it is set to Icons
 
 #### gmail.chat.is_hangouts()
 
