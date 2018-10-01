@@ -982,8 +982,8 @@ var Gmail = function(localJQuery) {
     api.check.data.is_email_id = function(id) {
         return id
             && typeof id === "string"
-            && /^msg-[a|f]:/.test(id)
-            && id.indexOf('bump-') === -1;
+            && id.indexOf('bump-') === -1
+            && /^msg-[a|f]:/.test(id);
     };
 
     api.check.data.is_email = function(obj) {
