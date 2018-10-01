@@ -220,6 +220,9 @@ describe("New Gmail data-format", () => {
         assert.ok(gmail.check.data.is_email({
             "1": "msg-a:r6431891629648253702"
         }));
+        assert.ok(gmail.check.data.is_email({
+            "1": "msg-f:6431891629648253702"
+        }));
         assert.ok(!gmail.check.data.is_email({
             "1": "thread-a:r266633262821436756"
         }));
