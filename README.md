@@ -231,6 +231,7 @@ These methods return the DOM data itself
 - gmail.dom**.email_body()**
 - gmail.dom**.email_contents()**
 - gmail.dom**.get_left_sidebar_links()**
+- gmail.dom**.header()**
 - gmail.dom**.search_bar()**
 - gmail.dom**.toolbar()**
 - gmail.dom**.right_toolbar()**
