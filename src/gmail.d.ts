@@ -567,7 +567,11 @@ interface GmailDom {
       */
     get_left_sidebar_links(): JQuery;
     /**
-      * Gets a jQuery object representing the left sidebar links.
+      * Gets a jQuery object representing the main header.
+      */
+    header(): JQuery;
+    /**
+      * Gets a jQuery object representing the Search input from main header.
       */
     search_bar(): JQuery;
     /**

@@ -545,6 +545,9 @@ var Gmail = function(localJQuery) {
         return $("div[role=navigation] [title]");
     };
 
+    api.dom.header = function() {
+        return $("#gb");
+    };
 
     api.dom.search_bar = function() {
         return $("[gh=sb]");
