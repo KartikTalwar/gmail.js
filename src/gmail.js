@@ -1157,7 +1157,7 @@ var Gmail = function(localJQuery) {
             // ""            : "unmute",
             "^u"            : "unread",
             // "^t^ss_sy^ss_so^ss_sr^ss_sp^ss_sb^ss_sg^ss_cr^ss_co^ss_cy^ss_cg^ss_cb^ss_cp": "unstar",
-            // ""            : "new_email",
+            "^us"            : "new_email",
             // ""            : "poll",
             // ""            : "refresh",
             // ""            : "restore_message_in_thread",

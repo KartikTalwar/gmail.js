@@ -404,6 +404,11 @@ describe("New Gmail event-triggering", () => {
             assert.ok(events.archive);
         });
     });
+    it("Triggers for new_email", () => {
+        testCase(testData.new_gmail_new_email_body_params, (events) => {
+            assert.ok(events.new_email);
+        });
+    });
 
     // it("Extracts compose-id", () => {
 
@@ -449,5 +454,10 @@ describe("New Gmail event-parsing", () => {
     it("parses open_email messages", () => {
         const xhrData = testData.new_gmail_open_email_action_body_params;
         testXhrEventParsing(xhrData, "open_email");
+    });
+
+    it("parses new_email message", () => {
+        const xhrData = testData.new_gmail_new_email_body_params;
+        testXhrEventParsing(xhrData, "new_email");
     });
 });

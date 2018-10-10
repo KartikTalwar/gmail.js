@@ -29,6 +29,8 @@ var new_gmail_read_action_body_params = "{\"2\":{\"1\":[{\"1\":\"3\",\"2\":{\"1\
 
 var new_gmail_open_email_action_body_params = "{\"2\":{\"1\":[{\"1\":\"5\",\"2\":{\"1\":\"thread-f:1603354799829277414\",\"2\":{\"7\":{\"1\":[\"^o\"],\"2\":[\"^u\",\"^us\"],\"3\":[\"msg-f:1603354799829277414\"],\"4\":\"1529237398326\",\"9\":{\"1\":\"1529237398321\",\"4\":\"2\"}}}}}]},\"3\":{\"1\":\"1\",\"2\":\"1153936\",\"5\":{\"2\":\"0\"},\"7\":\"1\"},\"4\":{\"2\":\"1\",\"3\":\"1529237398399\",\"4\":\"0\"},\"5\":\"2\"}";
 
+var new_gmail_new_email_body_params = "{\"1\":\"thread-f:1613947906803228078\",\"2\":{\"7\":{\"2\":[\"^us\"],\"3\":[\"msg-f:1613947906803228078\"]}}}";
+
 module.exports = {
     visible_emails_post_data: visible_emails_post_data,
     parse_response_json_data: parse_response_json_data,
@@ -38,5 +40,6 @@ module.exports = {
     new_gmail_unread_action_body_params: new_gmail_unread_action_body_params,
     new_gmail_read_action_body_params: new_gmail_read_action_body_params,
     new_gmail_delete_action_body_params: new_gmail_delete_action_body_params,
-    new_gmail_open_email_action_body_params: new_gmail_open_email_action_body_params
+    new_gmail_open_email_action_body_params: new_gmail_open_email_action_body_params,
+    new_gmail_new_email_body_params: new_gmail_new_email_body_params
 };
