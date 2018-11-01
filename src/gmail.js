@@ -57,6 +57,11 @@ var Gmail = function(localJQuery) {
     api.tracker.ik        = api.tracker.globals[9] || "";
     api.tracker.hangouts  = undefined;
 
+    // cache-store for passively pre-fetched/intercepted email-data from load_email_data.
+    api.cache = {};
+    api.cache.emailIdCache = {};
+    api.cache.emailLegacyIdCache = {};
+    api.cache.threadCache = {};
 
     api.get.last_active = function() {
         var data = api.tracker.globals[17][15];
@@ -1321,6 +1326,14 @@ var Gmail = function(localJQuery) {
             }
         }
 
+        // early XHR interception also means we intercept HTML, CSS, JS payloads. etc
+        // dont crash on those.
+        if (response.startsWith("<!DOCTYPE html")
+            || response.indexOf("display:inline-block") !== -1
+           ) {
+            return [];
+        }
+
         let parsedResponse = [];
         let originalResponse = response;
         try {
@@ -1348,7 +1361,7 @@ var Gmail = function(localJQuery) {
                 response = response.substring(data.length, response.length);
             }
         } catch (e) {
-            console.log("GmailJS post response-parsing failed.", e, originalResponse);
+            // console.log("GmailJS post response-parsing failed.", e, originalResponse);
         }
 
         return parsedResponse;
@@ -1432,6 +1445,50 @@ var Gmail = function(localJQuery) {
         patch(patchee);
     };
 
+
+    api.tools.cache_email_data = function(email_data) {
+        if (email_data === null) {
+            return;
+        }
+
+        const c = api.cache;
+
+        for (let email of email_data) {
+            c.emailIdCache[email.email_id] = email;
+            c.emailLegacyIdCache[email.legacy_email_id] = email;
+        }
+
+        const threadIds = [];
+        for (let email of email_data) {
+            if (threadIds.indexOf(email.thread_id) === -1) {
+                threadIds.push(email.thread_id);
+            }
+        }
+
+        for (let threadId of threadIds) {
+            let emails = email_data.filter(i => i.thread_id === threadId);
+            let firstEmail = emails[0];
+
+            if (firstEmail) {
+                let thread_id = firstEmail.thread_id;
+                let thread = c.threadCache[thread_id];
+                if (!thread) {
+                    thread = {
+                        thread_id: thread_id,
+                        emails: []
+                    };
+                    c.threadCache[thread_id] = thread;
+                }
+
+                for (let email of emails) {
+                    if (thread.emails.filter(i => i.email_id === email.email_id).length === 0) {
+                        thread.emails.push(email);
+                    }
+                }
+            }
+        }
+    };
+
     api.tools.xhr_watcher = function () {
         if (api.tracker.xhr_init) {
             return;
@@ -1474,7 +1531,8 @@ var Gmail = function(localJQuery) {
                 }
 
                 // if any matching after events, bind onreadystatechange callback
-                if(api.observe.bound(events, "after")) {
+                // also: on new gmail we want to intercept email-data from /i/fd-request responses.
+                if(api.observe.bound(events, "after") || api.check.is_new_data_layer()) {
                     var curr_onreadystatechange = this.onreadystatechange;
                     var xhr = this;
                     this.onreadystatechange = function(progress) {
@@ -1486,6 +1544,7 @@ var Gmail = function(localJQuery) {
                             if (api.check.is_new_data_layer()) {
                                 if (api.tools.get_pathname_from_url(xhr.xhrParams.url_raw).endsWith("/i/fd")) {
                                     let parsed_emails = api.tools.parse_fd_request_payload(xhr.xhrResponse);
+                                    api.tools.cache_email_data(parsed_emails);
                                     events.load_email_data = [parsed_emails];
                                 }
                             }
@@ -3386,6 +3445,8 @@ var Gmail = function(localJQuery) {
         return false;
     };
 
+    // setup XHR interception as early as possible, to ensure we get all relevant email-data!
+    api.tools.xhr_watcher();
     return api;
 };
 
