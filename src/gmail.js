@@ -1199,6 +1199,26 @@ var Gmail = function(localJQuery) {
         return res;
     };
 
+    api.tools.parse_fd_attachments = function(json) {
+        let res = [];
+
+        if (Array.isArray(json)) {
+            for (let item of json) {
+                let data = item["1"]["4"] || "";
+
+                res.push({
+                    id: item["1"]["2"],
+                    name: data["3"],
+                    contentType: data["4"],
+                    url: data["2"],
+                    size: Number.parseInt(data["5"])
+                });
+            }
+        }
+
+        return res;
+    };
+
     api.tools.parse_fd_request_payload = function(json) {
         // ensure JSON-format is known and understood?
         let thread_root = json["2"];
@@ -1229,6 +1249,8 @@ var Gmail = function(localJQuery) {
                     const fd_email_timestamp = Number.parseInt(fd_email["2"]["17"]);
                     const fd_email_date = new Date(fd_email_timestamp);
 
+                    const fd_attachments = api.tools.parse_fd_attachments(fd_email["2"]["14"]);
+
                     const fd_email_sender_address = fd_email["2"]["11"]["17"];
 
                     const fd_to = api.tools.parse_fd_email(fd_email["2"]["1"]);
@@ -1247,6 +1269,7 @@ var Gmail = function(localJQuery) {
                         email_to: fd_to,
                         email_cc: fd_cc,
                         email_bcc: fd_bcc,
+                        email_attachments: fd_attachments,
                         $data_node: fd_email
                     };
                     //console.log(email);
