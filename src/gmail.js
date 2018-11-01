@@ -789,9 +789,13 @@ var Gmail = function(localJQuery) {
     };
 
     api.tools.get_pathname_from_url = function(url) {
-        const a = document.createElement("a");
-        a.href = url;
-        return a.pathname;
+        if (typeof(document) !== "undefined") {
+            const a = document.createElement("a");
+            a.href = url;
+            return a.pathname;
+        } else {
+            return url;
+        }
     };
 
     api.tools.parse_actions = function(params, xhr) {
@@ -1258,15 +1262,15 @@ var Gmail = function(localJQuery) {
         }
     };
 
-    api.tools.parse_request_payload = function(params, events) {
+    api.tools.parse_request_payload = function(params, events, force) {
         const pathname = api.tools.get_pathname_from_url(params.url_raw);
-        if (!pathname) {
+        if (!force && !pathname) {
             return;
         }
 
-        const isSynch = pathname.endsWith("/i/s");
-        const isFetch = pathname.endsWith("/i/fd");
-        if (!isFetch && !isSynch) {
+        const isSynch = (pathname || "").endsWith("/i/s");
+        const isFetch = (pathname || "").endsWith("/i/fd");
+        if (!force && !isFetch && !isSynch) {
             return;
         }
 
@@ -3446,7 +3450,9 @@ var Gmail = function(localJQuery) {
     };
 
     // setup XHR interception as early as possible, to ensure we get all relevant email-data!
-    api.tools.xhr_watcher();
+    if (typeof(document) !== "undefined") {
+        api.tools.xhr_watcher();
+    }
     return api;
 };
 
