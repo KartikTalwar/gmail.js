@@ -960,10 +960,7 @@ var Gmail = function(localJQuery) {
 
         // handle new data-format introduced with new gmail 2018.
         if (api.check.is_new_data_layer()) {
-            const pathname = api.tools.get_pathname_from_url(params.url_raw);
-            if (pathname && (pathname.endsWith("/i/s") || pathname.endsWith("/i/fd"))) {
-                api.tools.parse_request_payload(params, triggered);
-            }
+            api.tools.parse_request_payload(params, triggered);
         }
 
         return triggered;
@@ -1176,7 +1173,103 @@ var Gmail = function(localJQuery) {
         }
     };
 
+    api.tools.parse_fd_email = function(json) {
+        if (!json || !Array.isArray(json)) {
+            return [];
+        }
+
+        const res = [];
+
+        for (let item of json) {
+            res.push({
+                name: item[3],
+                address: item[2]
+            });
+        }
+
+        return res;
+    };
+
+    api.tools.parse_fd_request_payload = function(json) {
+        // ensure JSON-format is known and understood?
+        let thread_root = json["2"];
+        if (!thread_root || !Array.isArray(thread_root)) {
+            return null;
+        }
+
+        try
+        {
+            const res = [];
+
+            const fd_threads = thread_root; // array
+            for (let fd_thread_container of fd_threads) {
+                const fd_thread_id = fd_thread_container["1"];
+
+                // lots of thread and email-info ... sometimes! in fd_thread_container["2"]
+                // but if we 1. don't need it, and 2. can't guarantee it,
+                // don't put in any effort to create false expectations for library users.
+
+                let fd_emails = fd_thread_container["3"]; // array
+                for (let fd_email of fd_emails) {
+                    //console.log(fd_email)
+                    const fd_email_id = fd_email["1"];
+                    const fd_legacy_email_id = fd_email["2"]["35"];
+                    const fd_email_smtp_id = fd_email["2"]["8"];
+
+                    const fd_email_subject = fd_email["2"]["5"];
+                    const fd_email_timestamp = Number.parseInt(fd_email["2"]["17"]);
+                    const fd_email_date = new Date(fd_email_timestamp);
+
+                    const fd_email_sender_address = fd_email["2"]["11"]["17"];
+
+                    const fd_to = api.tools.parse_fd_email(fd_email["2"]["1"]);
+                    const fd_cc = api.tools.parse_fd_email(fd_email["2"]["2"]);
+                    const fd_bcc = api.tools.parse_fd_email(fd_email["2"]["3"]);
+
+                    const email = {
+                        thread_id: fd_thread_id,
+                        email_id: fd_email_id,
+                        legacy_email_id: fd_legacy_email_id,
+                        email_smtp_id: fd_email_smtp_id,
+                        email_subject: fd_email_subject,
+                        email_timestamp: fd_email_timestamp,
+                        email_date: fd_email_date,
+                        email_sender_address: fd_email_sender_address,
+                        email_to: fd_to,
+                        email_cc: fd_cc,
+                        email_bcc: fd_bcc,
+                        $data_node: fd_email
+                    };
+                    //console.log(email);
+                    res.push(email);
+                }
+            }
+
+            return res;
+        }
+        catch (error) {
+            console.warn("Gmail.js encountered an error trying to parse email-data!", error);
+            return null;
+        }
+    };
+
     api.tools.parse_request_payload = function(params, events) {
+        const pathname = api.tools.get_pathname_from_url(params.url_raw);
+        if (!pathname) {
+            return;
+        }
+
+        const isSynch = pathname.endsWith("/i/s");
+        const isFetch = pathname.endsWith("/i/fd");
+        if (!isFetch && !isSynch) {
+            return;
+        }
+
+        if (isFetch) {
+            // register event, so that after triggers (where we parse response-data) gets triggered.
+            events.load_email_data = [null];
+        }
+
         const threads = api.tools.extract_from_graph(params, api.check.data.is_thread);
         // console.log("Threads:");
         // console.log(threads);
@@ -1387,6 +1480,15 @@ var Gmail = function(localJQuery) {
                     this.onreadystatechange = function(progress) {
                         if (this.readyState === this.DONE) {
                             xhr.xhrResponse = api.tools.parse_response(progress.target.responseText);
+
+                            // intercept email-data passively, instead of actively trying to fetch it later!
+                            // (which we won't be able to do once 2019 hits anyway...)
+                            if (api.check.is_new_data_layer()) {
+                                if (api.tools.get_pathname_from_url(xhr.xhrParams.url_raw).endsWith("/i/fd")) {
+                                    let parsed_emails = api.tools.parse_fd_request_payload(xhr.xhrResponse);
+                                    events.load_email_data = [parsed_emails];
+                                }
+                            }
                             api.observe.trigger("after", events, xhr);
                         }
                         if (curr_onreadystatechange) {
@@ -2551,7 +2653,7 @@ var Gmail = function(localJQuery) {
             var conversation_flag = undefined;
             conversation_flag = api.tracker.globals[69];
             return conversation_flag === 1 || conversation_flag === undefined;
-        } else {	//To handle classic gmail UI           	
+        } else {	//To handle classic gmail UI
             var flag_name = "bx_vmb";
             var flag_value = undefined;
             var array_with_flag = api.tracker.globals[17][4][1];
@@ -2621,7 +2723,7 @@ var Gmail = function(localJQuery) {
                 "promotions": "Promozioni",
                 "social_updates": "Social"
             };
-            break;                
+            break;
 
         case "en":
         default:
