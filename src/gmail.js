@@ -39,7 +39,7 @@ var Gmail = function(localJQuery) {
         helper : {get: {}}
     };
 
-    api.version           = "0.6.4";
+    api.version           = "0.8.0";
     api.tracker.globals   = typeof GLOBALS !== "undefined"
         ? GLOBALS
         : (
@@ -3447,6 +3447,62 @@ var Gmail = function(localJQuery) {
             return true;
         }
         return false;
+    };
+
+    /**
+     * API commands specifically made to interact with new gmail.
+     */
+    api.new = {};
+    api.new.get = {};
+
+    /**
+     * Returns the new-style email_id of the latest email visible in the DOM.
+     */
+    api.new.get.email_id = function() {
+        const emailElems = document.querySelectorAll(".adn[data-message-id]");
+        if (!emailElems || emailElems.length === 0) {
+            return null;
+        }
+
+        const emailElem = emailElems[emailElems.length - 1];
+        let declaredId = emailElem.dataset["messageId"];
+        if (declaredId && declaredId.startsWith("#")) {
+            return declaredId.substring(1);
+        } else {
+            return declaredId;
+        }
+    };
+
+    /**
+     * Returns the new-style thread_id of the current thread visible in the DOM.
+     */
+    api.new.get.thread_id = function() {
+        const threadElem = document.querySelector("[data-thread-perm-id]");
+        if (!threadElem) {
+            return null;
+        }
+
+        return threadElem.dataset["threadPermId"];
+    };
+
+    /**
+     * Returns available information about a specific email.
+     *
+     * @param email_id: new style email id. Legacy IDs not supported. If empty, default to latest in view.
+     */
+    api.new.get.email_data = function(email_id) {
+        email_id = email_id || api.new.get.email_id();
+        return api.cache.emailIdCache[email_id];
+    };
+
+    /**
+     * Returns available information about a specific thread.
+     *
+     * @param thread_id: new style thread id. Legacy IDs not supported. If empty, default to current.
+     */
+    api.new.get.thread_data = function(thread_id) {
+        thread_id = thread_id || api.new.get.thread_id();
+        return api.cache.threadCache[thread_id];
     };
 
     // setup XHR interception as early as possible, to ensure we get all relevant email-data!
