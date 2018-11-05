@@ -1564,7 +1564,11 @@ var Gmail = function(localJQuery) {
                     var xhr = this;
                     this.onreadystatechange = function(progress) {
                         if (this.readyState === this.DONE) {
-                            xhr.xhrResponse = api.tools.parse_response(progress.target.responseText);
+                            if (progress.target.responseType === "json") {
+                                xhr.xhrResponse = progress.target.response;
+                            } else {
+                                xhr.xhrResponse = api.tools.parse_response(progress.target.responseText);
+                            }
 
                             // intercept email-data passively, instead of actively trying to fetch it later!
                             // (which we won't be able to do once 2019 hits anyway...)
