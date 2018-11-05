@@ -3104,7 +3104,13 @@ var Gmail = function(localJQuery) {
            Retrieve the draft email id
         */
         email_id: function() {
-            return this.dom("draft").val();
+            let email_id = this.dom("draft").val();
+            // handle new gmail style email-ids
+            if (email_id && email_id.startsWith("#")) {
+                return email_id.substring(1);
+            } else {
+                return email_id;
+            }
         },
 
         /**
