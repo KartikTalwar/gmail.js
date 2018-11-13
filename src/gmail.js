@@ -39,7 +39,7 @@ var Gmail = function(localJQuery) {
         helper : {get: {}}
     };
 
-    api.version           = "0.6.4";
+    api.version           = "0.8.0";
     api.tracker.globals   = typeof GLOBALS !== "undefined"
         ? GLOBALS
         : (
@@ -57,6 +57,11 @@ var Gmail = function(localJQuery) {
     api.tracker.ik        = api.tracker.globals[9] || "";
     api.tracker.hangouts  = undefined;
 
+    // cache-store for passively pre-fetched/intercepted email-data from load_email_data.
+    api.cache = {};
+    api.cache.emailIdCache = {};
+    api.cache.emailLegacyIdCache = {};
+    api.cache.threadCache = {};
 
     api.get.last_active = function() {
         var data = api.tracker.globals[17][15];
@@ -784,9 +789,13 @@ var Gmail = function(localJQuery) {
     };
 
     api.tools.get_pathname_from_url = function(url) {
-        const a = document.createElement("a");
-        a.href = url;
-        return a.pathname;
+        if (typeof(document) !== "undefined") {
+            const a = document.createElement("a");
+            a.href = url;
+            return a.pathname;
+        } else {
+            return url;
+        }
     };
 
     api.tools.parse_actions = function(params, xhr) {
@@ -960,10 +969,7 @@ var Gmail = function(localJQuery) {
 
         // handle new data-format introduced with new gmail 2018.
         if (api.check.is_new_data_layer()) {
-            const pathname = api.tools.get_pathname_from_url(params.url_raw);
-            if (pathname && (pathname.endsWith("/i/s") || pathname.endsWith("/i/fd"))) {
-                api.tools.parse_request_payload(params, triggered);
-            }
+            api.tools.parse_request_payload(params, triggered);
         }
 
         return triggered;
@@ -1176,7 +1182,126 @@ var Gmail = function(localJQuery) {
         }
     };
 
-    api.tools.parse_request_payload = function(params, events) {
+    api.tools.parse_fd_email = function(json) {
+        if (!json || !Array.isArray(json)) {
+            return [];
+        }
+
+        const res = [];
+
+        for (let item of json) {
+            res.push({
+                name: item[3],
+                address: item[2]
+            });
+        }
+
+        return res;
+    };
+
+    api.tools.parse_fd_attachments = function(json) {
+        let res = [];
+
+        if (Array.isArray(json)) {
+            for (let item of json) {
+                let data = item["1"]["4"] || "";
+
+                res.push({
+                    id: item["1"]["2"],
+                    name: data["3"],
+                    contentType: data["4"],
+                    url: data["2"],
+                    size: Number.parseInt(data["5"])
+                });
+            }
+        }
+
+        return res;
+    };
+
+    api.tools.parse_fd_request_payload = function(json) {
+        // ensure JSON-format is known and understood?
+        let thread_root = json["2"];
+        if (!thread_root || !Array.isArray(thread_root)) {
+            return null;
+        }
+
+        try
+        {
+            const res = [];
+
+            const fd_threads = thread_root; // array
+            for (let fd_thread_container of fd_threads) {
+                const fd_thread_id = fd_thread_container["1"];
+
+                // lots of thread and email-info ... sometimes! in fd_thread_container["2"]
+                // but if we 1. don't need it, and 2. can't guarantee it,
+                // don't put in any effort to create false expectations for library users.
+
+                let fd_emails = fd_thread_container["3"]; // array
+                for (let fd_email of fd_emails) {
+                    //console.log(fd_email)
+                    const fd_email_id = fd_email["1"];
+                    const fd_legacy_email_id = fd_email["2"]["35"];
+                    const fd_email_smtp_id = fd_email["2"]["8"];
+
+                    const fd_email_subject = fd_email["2"]["5"];
+                    const fd_email_timestamp = Number.parseInt(fd_email["2"]["17"]);
+                    const fd_email_date = new Date(fd_email_timestamp);
+
+                    const fd_attachments = api.tools.parse_fd_attachments(fd_email["2"]["14"]);
+
+                    const fd_email_sender_address = fd_email["2"]["11"]["17"];
+
+                    const fd_to = api.tools.parse_fd_email(fd_email["2"]["1"]);
+                    const fd_cc = api.tools.parse_fd_email(fd_email["2"]["2"]);
+                    const fd_bcc = api.tools.parse_fd_email(fd_email["2"]["3"]);
+
+                    const email = {
+                        thread_id: fd_thread_id,
+                        email_id: fd_email_id,
+                        legacy_email_id: fd_legacy_email_id,
+                        email_smtp_id: fd_email_smtp_id,
+                        email_subject: fd_email_subject,
+                        email_timestamp: fd_email_timestamp,
+                        email_date: fd_email_date,
+                        email_sender_address: fd_email_sender_address,
+                        email_to: fd_to,
+                        email_cc: fd_cc,
+                        email_bcc: fd_bcc,
+                        email_attachments: fd_attachments,
+                        $data_node: fd_email
+                    };
+                    //console.log(email);
+                    res.push(email);
+                }
+            }
+
+            return res;
+        }
+        catch (error) {
+            console.warn("Gmail.js encountered an error trying to parse email-data!", error);
+            return null;
+        }
+    };
+
+    api.tools.parse_request_payload = function(params, events, force) {
+        const pathname = api.tools.get_pathname_from_url(params.url_raw);
+        if (!force && !pathname) {
+            return;
+        }
+
+        const isSynch = (pathname || "").endsWith("/i/s");
+        const isFetch = (pathname || "").endsWith("/i/fd");
+        if (!force && !isFetch && !isSynch) {
+            return;
+        }
+
+        if (isFetch) {
+            // register event, so that after triggers (where we parse response-data) gets triggered.
+            events.load_email_data = [null];
+        }
+
         const threads = api.tools.extract_from_graph(params, api.check.data.is_thread);
         // console.log("Threads:");
         // console.log(threads);
@@ -1228,6 +1353,14 @@ var Gmail = function(localJQuery) {
             }
         }
 
+        // early XHR interception also means we intercept HTML, CSS, JS payloads. etc
+        // dont crash on those.
+        if (response.startsWith("<!DOCTYPE html")
+            || response.indexOf("display:inline-block") !== -1
+           ) {
+            return [];
+        }
+
         let parsedResponse = [];
         let originalResponse = response;
         try {
@@ -1255,7 +1388,7 @@ var Gmail = function(localJQuery) {
                 response = response.substring(data.length, response.length);
             }
         } catch (e) {
-            console.log("GmailJS post response-parsing failed.", e, originalResponse);
+            // console.log("GmailJS post response-parsing failed.", e, originalResponse);
         }
 
         return parsedResponse;
@@ -1339,6 +1472,50 @@ var Gmail = function(localJQuery) {
         patch(patchee);
     };
 
+
+    api.tools.cache_email_data = function(email_data) {
+        if (email_data === null) {
+            return;
+        }
+
+        const c = api.cache;
+
+        for (let email of email_data) {
+            c.emailIdCache[email.email_id] = email;
+            c.emailLegacyIdCache[email.legacy_email_id] = email;
+        }
+
+        const threadIds = [];
+        for (let email of email_data) {
+            if (threadIds.indexOf(email.thread_id) === -1) {
+                threadIds.push(email.thread_id);
+            }
+        }
+
+        for (let threadId of threadIds) {
+            let emails = email_data.filter(i => i.thread_id === threadId);
+            let firstEmail = emails[0];
+
+            if (firstEmail) {
+                let thread_id = firstEmail.thread_id;
+                let thread = c.threadCache[thread_id];
+                if (!thread) {
+                    thread = {
+                        thread_id: thread_id,
+                        emails: []
+                    };
+                    c.threadCache[thread_id] = thread;
+                }
+
+                for (let email of emails) {
+                    if (thread.emails.filter(i => i.email_id === email.email_id).length === 0) {
+                        thread.emails.push(email);
+                    }
+                }
+            }
+        }
+    };
+
     api.tools.xhr_watcher = function () {
         if (api.tracker.xhr_init) {
             return;
@@ -1381,12 +1558,27 @@ var Gmail = function(localJQuery) {
                 }
 
                 // if any matching after events, bind onreadystatechange callback
-                if(api.observe.bound(events, "after")) {
+                // also: on new gmail we want to intercept email-data from /i/fd-request responses.
+                if(api.observe.bound(events, "after") || api.check.is_new_data_layer()) {
                     var curr_onreadystatechange = this.onreadystatechange;
                     var xhr = this;
                     this.onreadystatechange = function(progress) {
                         if (this.readyState === this.DONE) {
-                            xhr.xhrResponse = api.tools.parse_response(progress.target.responseText);
+                            if (progress.target.responseType === "" || progress.target.responseType === "text") {
+                                xhr.xhrResponse = api.tools.parse_response(progress.target.responseText);
+                            } else {
+                                xhr.xhrResponse = progress.target.response;
+                            }
+
+                            // intercept email-data passively, instead of actively trying to fetch it later!
+                            // (which we won't be able to do once 2019 hits anyway...)
+                            if (api.check.is_new_data_layer()) {
+                                if (api.tools.get_pathname_from_url(xhr.xhrParams.url_raw).endsWith("/i/fd")) {
+                                    let parsed_emails = api.tools.parse_fd_request_payload(xhr.xhrResponse);
+                                    api.tools.cache_email_data(parsed_emails);
+                                    events.load_email_data = [parsed_emails];
+                                }
+                            }
                             api.observe.trigger("after", events, xhr);
                         }
                         if (curr_onreadystatechange) {
@@ -2551,7 +2743,7 @@ var Gmail = function(localJQuery) {
             var conversation_flag = undefined;
             conversation_flag = api.tracker.globals[69];
             return conversation_flag === 1 || conversation_flag === undefined;
-        } else {	//To handle classic gmail UI           	
+        } else {	//To handle classic gmail UI
             var flag_name = "bx_vmb";
             var flag_value = undefined;
             var array_with_flag = api.tracker.globals[17][4][1];
@@ -2621,7 +2813,7 @@ var Gmail = function(localJQuery) {
                 "promotions": "Promozioni",
                 "social_updates": "Social"
             };
-            break;                
+            break;
 
         case "en":
         default:
@@ -2912,7 +3104,13 @@ var Gmail = function(localJQuery) {
            Retrieve the draft email id
         */
         email_id: function() {
-            return this.dom("draft").val();
+            let email_id = this.dom("draft").val();
+            // handle new gmail style email-ids
+            if (email_id && email_id.startsWith("#")) {
+                return email_id.substring(1);
+            } else {
+                return email_id;
+            }
         },
 
         /**
@@ -3284,6 +3482,75 @@ var Gmail = function(localJQuery) {
         return false;
     };
 
+    /**
+     * Shadow API commands specifically made to interact with old gmail.
+     * (And in the future we can either remove "regular"  api.get or replace it with something else)
+     */
+
+    api.old = {};
+    api.old.get = api.get;
+
+
+    /**
+     * API commands specifically made to interact with new gmail.
+     */
+    api.new = {};
+    api.new.get = {};
+
+    /**
+     * Returns the new-style email_id of the latest email visible in the DOM.
+     */
+    api.new.get.email_id = function() {
+        const emailElems = document.querySelectorAll(".adn[data-message-id]");
+        if (!emailElems || emailElems.length === 0) {
+            return null;
+        }
+
+        const emailElem = emailElems[emailElems.length - 1];
+        let declaredId = emailElem.dataset["messageId"];
+        if (declaredId && declaredId.startsWith("#")) {
+            return declaredId.substring(1);
+        } else {
+            return declaredId;
+        }
+    };
+
+    /**
+     * Returns the new-style thread_id of the current thread visible in the DOM.
+     */
+    api.new.get.thread_id = function() {
+        const threadElem = document.querySelector("[data-thread-perm-id]");
+        if (!threadElem) {
+            return null;
+        }
+
+        return threadElem.dataset["threadPermId"];
+    };
+
+    /**
+     * Returns available information about a specific email.
+     *
+     * @param email_id: new style email id. Legacy IDs not supported. If empty, default to latest in view.
+     */
+    api.new.get.email_data = function(email_id) {
+        email_id = email_id || api.new.get.email_id();
+        return api.cache.emailIdCache[email_id];
+    };
+
+    /**
+     * Returns available information about a specific thread.
+     *
+     * @param thread_id: new style thread id. Legacy IDs not supported. If empty, default to current.
+     */
+    api.new.get.thread_data = function(thread_id) {
+        thread_id = thread_id || api.new.get.thread_id();
+        return api.cache.threadCache[thread_id];
+    };
+
+    // setup XHR interception as early as possible, to ensure we get all relevant email-data!
+    if (typeof(document) !== "undefined") {
+        api.tools.xhr_watcher();
+    }
     return api;
 };
 

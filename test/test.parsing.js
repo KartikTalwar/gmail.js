@@ -400,7 +400,8 @@ describe("New Gmail event-triggering", () => {
         const params = {
             body_params: JSON.parse(data)
         };
-        gmail.tools.parse_request_payload(params, events);
+        // we must force, because requset_payload tries to do URL detection
+        gmail.tools.parse_request_payload(params, events, true);
         asserts(events);
     };
 

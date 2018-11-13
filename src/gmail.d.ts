@@ -854,6 +854,72 @@ interface GmailCompose {
     start_compose(): boolean;
 }
 
+////////////////////////////////////////////////////////////////////////////////
+//
+// gmail.new.* - new gmail only!
+//
+////////////////////////////////////////////////////////////////////////////////
+
+interface GmailNewEmailAddress {
+    name: string;
+    address: string;
+}
+
+interface GmailNewEmailAttachment {
+    id: string;
+    name: string;
+    contentType: string;
+    url: string;
+    size: Number;
+}
+
+interface GmailNewEmailData {
+    thread_id: string;
+    email_id: string;
+    legacy_email_id: string;
+    email_smtp_id: string;
+    email_subject: string;
+    email_timestamp: Number;
+    email_date: Date;
+    email_sender_address: string;
+    email_to: GmailNewEmailAddress[];
+    email_cc: GmailNewEmailAddress[];
+    email_bcc: GmailNewEmailAddress[];
+    email_attachments: GmailNewEmailAttachment[];
+    $data_node: object
+}
+
+interface GmailNewThreadData {
+    thread_id: string;
+    emails: GmailNewEmailData[];
+}
+
+interface GmailNewGet {
+    /**
+     * Returns the new-style email_id of the latest email visible in the DOM.
+     */
+    email_id(): string;
+    /**
+     * Returns the new-style thread_id of the current thread visible in the DOM.
+     */
+    thread_id(): string;
+    /**
+     * Returns available information about a specific email.
+     *
+     * @param email_id: new style email id. Legacy IDs not supported. If empty, default to latest in view.
+     */
+    email_data(email_id?: string): GmailNewEmailData;
+    /**
+     * Returns available information about a specific thread.
+     *
+     * @param thread_id: new style thread id. Legacy IDs not supported. If empty, default to current.
+     */
+    thread_data(thread_id?: string): GmailNewThreadData;
+}
+
+interface GmailNew {
+    get: GmailNewGet;
+}
 
 ////////////////////////////////////////////////////////////////////////////////
 //
@@ -885,4 +951,10 @@ declare class Gmail {
     helper: GmailHelper;
     chat: GmailChat;
     compose: GmailCompose;
+
+    /** Methods for new gmail only! */
+    new: GmailNew;
+    old: {
+        get: GmailGet;
+    };
 }
