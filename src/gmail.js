@@ -1564,10 +1564,10 @@ var Gmail = function(localJQuery) {
                     var xhr = this;
                     this.onreadystatechange = function(progress) {
                         if (this.readyState === this.DONE) {
-                            if (progress.target.responseType === "json") {
-                                xhr.xhrResponse = progress.target.response;
-                            } else {
+                            if (progress.target.responseType === "" || progress.target.responseType === "text") {
                                 xhr.xhrResponse = api.tools.parse_response(progress.target.responseText);
+                            } else {
+                                xhr.xhrResponse = progress.target.response;
                             }
 
                             // intercept email-data passively, instead of actively trying to fetch it later!
