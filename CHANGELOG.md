@@ -1,6 +1,12 @@
 
 # Changelog
 
+## Version 0.8.0
+
+- Introduce new `api.new.get.*` API for new Gmail only.
+- Enhanced XHR monitoring to provide email-data, based entirely on new data-layer.
+  (Provide 2019+ compatibility)
+
 ## Version 0.7.7
 
 - Fix error in `api.get.displayed_email_data()` when conversation mode is off.
