@@ -954,4 +954,7 @@ declare class Gmail {
 
     /** Methods for new gmail only! */
     new: GmailNew;
+    old: {
+        get: GmailGet;
+    };
 }

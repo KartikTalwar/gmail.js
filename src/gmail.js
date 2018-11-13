@@ -3483,6 +3483,15 @@ var Gmail = function(localJQuery) {
     };
 
     /**
+     * Shadow API commands specifically made to interact with old gmail.
+     * (And in the future we can either remove "regular"  api.get or replace it with something else)
+     */
+
+    api.old = {};
+    api.old.get = api.get;
+
+
+    /**
      * API commands specifically made to interact with new gmail.
      */
     api.new = {};
