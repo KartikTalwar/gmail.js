@@ -664,7 +664,7 @@ interface GmailTools {
     extract_name(str: string): string;
     i18n(label: string): string;
     add_toolbar_button(content_html: string, onClickFunction: Function, styleClass: string): JQuery;
-	add_right_toolbar_button(content_html: string, onClickFunction: Function, styleClass: string): JQuery;
+    add_right_toolbar_button(content_html: string, onClickFunction: Function, styleClass: string): JQuery;
     add_compose_button(composeWindow: GmailDomCompose, content_html: string, onClickFunction: Function, styleClass: string): JQuery;
     /**
        adds a button to an email attachment.
@@ -679,7 +679,7 @@ interface GmailTools {
     add_attachment_button(attachment: GmailDomAttachment, contentHtml: string | null, customCssClas: string | null, tooltip: string, onClickFunction: Function): JQuery;
 
     remove_modal_window(): void;
-    add_modal_window(title: string, content_html: string, onClickOk: Function, onClickCancel?: Function, onClickClose?: Function): void;
+    add_modal_window(title: string, content_html: string, onClickOk: Function, onClickCancel?: Function, onClickClose?: Function, okText?: string, cancelText?: string): void;
     /**
      * Show/Hide compose window
      */

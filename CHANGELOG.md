@@ -1,6 +1,10 @@
 
 # Changelog
 
+## Version 0.8.1
+
+- Add optional parameters to control button-text in `api.tools.add_modal_window()`.
+
 ## Version 0.8.0
 
 - Introduce new `api.new.get.*` API for new Gmail only.
