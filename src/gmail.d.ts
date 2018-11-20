@@ -865,14 +865,6 @@ interface GmailNewEmailAddress {
     address: string;
 }
 
-interface GmailNewEmailAttachment {
-    id: string;
-    name: string;
-    contentType: string;
-    url: string;
-    size: number;
-}
-
 interface GmailNewEmailData {
     id: string;
     legacy_email_id: string;
@@ -885,7 +877,7 @@ interface GmailNewEmailData {
     to: GmailNewEmailAddress[];
     cc: GmailNewEmailAddress[];
     bcc: GmailNewEmailAddress[];
-    attachments: GmailNewEmailAttachment[];
+    attachments: GmailAttachmentDetails[];
     content_html: string;
     $email_node?: any;
     $thread_node?: any;

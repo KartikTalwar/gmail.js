@@ -1,6 +1,11 @@
 
 # Changelog
 
+## Version 0.8.3
+
+- Don't make attachment-detail compatibility harder than it needs to
+  be. Reuse old types.
+
 ## Version 0.8.2
 
 - Fix wrong and missing type-annotations.

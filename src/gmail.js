@@ -1208,9 +1208,9 @@ var Gmail = function(localJQuery) {
                 let data = item["1"]["4"] || "";
 
                 res.push({
-                    id: item["1"]["2"],
+                    attachment_id: item["1"]["2"],
                     name: data["3"],
-                    contentType: data["4"],
+                    type: data["4"],
                     url: data["2"],
                     size: Number.parseInt(data["5"])
                 });
