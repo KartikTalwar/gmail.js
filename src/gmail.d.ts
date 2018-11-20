@@ -870,7 +870,7 @@ interface GmailNewEmailAttachment {
     name: string;
     contentType: string;
     url: string;
-    size: Number;
+    size: number;
 }
 
 interface GmailNewEmailData {
@@ -879,14 +879,14 @@ interface GmailNewEmailData {
     legacy_email_id: string;
     email_smtp_id: string;
     email_subject: string;
-    email_timestamp: Number;
+    email_timestamp: number;
     email_date: Date;
     email_sender_address: string;
     email_to: GmailNewEmailAddress[];
     email_cc: GmailNewEmailAddress[];
     email_bcc: GmailNewEmailAddress[];
     email_attachments: GmailNewEmailAttachment[];
-    $data_node: object
+    $data_node: any;
 }
 
 interface GmailNewThreadData {
