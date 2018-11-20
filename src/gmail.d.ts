@@ -921,6 +921,12 @@ interface GmailNew {
     get: GmailNewGet;
 }
 
+interface GmailCache {
+    emailIdCache: { (emailId: string): GmailNewEmailData };
+    emailLegacyIdCache: { (legacyEmailId: string): GmailNewEmailData };
+    emailThreadIdCache: { (threadId: string): GmailNewThreadData };
+}
+
 ////////////////////////////////////////////////////////////////////////////////
 //
 // actual gmail-class
@@ -957,4 +963,6 @@ declare class Gmail {
     old: {
         get: GmailGet;
     };
+
+    cache: GmailCache;
 }
