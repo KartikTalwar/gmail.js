@@ -1220,6 +1220,24 @@ var Gmail = function(localJQuery) {
         return res;
     };
 
+    api.tools.parse_fd_request_html_payload = function(fd_thread_container, fd_email_id) {
+        let fd_email_content_html = null;
+        try {
+            const fd_emails2 = fd_thread_container["3"] || [];
+            const fd_email2 = fd_emails2.filter(i => i["1"] === fd_email_id)[0];
+            const fd_html_containers = fd_email2["2"]["6"]["2"];
+
+            for (let fd_html_container of fd_html_containers) {
+                fd_email_content_html = (fd_email_content_html || "") + fd_html_container["3"]["2"];
+            }
+        }
+        catch(e) {
+            // don't crash gmail when we cant parse email-contents
+        }
+
+        return fd_email_content_html;
+    };
+
     api.tools.parse_fd_request_payload = function(json) {
         // ensure JSON-format is known and understood?
         let thread_root = json["2"];
@@ -1250,6 +1268,9 @@ var Gmail = function(localJQuery) {
                     const fd_email_timestamp = Number.parseInt(fd_email["2"]["17"]);
                     const fd_email_date = new Date(fd_email_timestamp);
 
+                    // to get content, we need to address -secondary- email object!
+                    const fd_email_content_html = api.tools.parse_fd_request_html_payload(fd_thread_container, fd_email_id);
+
                     const fd_attachments = api.tools.parse_fd_attachments(fd_email["2"]["14"]);
 
                     const fd_email_sender_address = fd_email["2"]["11"]["17"];
@@ -1265,6 +1286,7 @@ var Gmail = function(localJQuery) {
                         smtp_id: fd_email_smtp_id,
                         subject: fd_email_subject,
                         timestamp: fd_email_timestamp,
+                        content_html: fd_email_content_html,
                         date: fd_email_date,
                         sender_address: fd_email_sender_address,
                         to: fd_to,
@@ -1273,7 +1295,8 @@ var Gmail = function(localJQuery) {
                         attachments: fd_attachments
                     };
                     if (api.cache.debug_xhr_fetch) {
-                        email["$data_node"] = fd_email;
+                        email["$email_node"] = fd_email;
+                        email["$thread_node"] = fd_thread_container;
                     }
                     //console.log(email);
                     res.push(email);

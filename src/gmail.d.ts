@@ -886,7 +886,9 @@ interface GmailNewEmailData {
     cc: GmailNewEmailAddress[];
     bcc: GmailNewEmailAddress[];
     attachments: GmailNewEmailAttachment[];
-    $data_node?: any;
+    content_html: string;
+    $email_node?: any;
+    $thread_node?: any;
 }
 
 interface GmailNewThreadData {
