@@ -59,6 +59,7 @@ var Gmail = function(localJQuery) {
 
     // cache-store for passively pre-fetched/intercepted email-data from load_email_data.
     api.cache = {};
+    api.cache.debug_xhr_fetch = false;
     api.cache.emailIdCache = {};
     api.cache.emailLegacyIdCache = {};
     api.cache.threadCache = {};
@@ -1258,20 +1259,22 @@ var Gmail = function(localJQuery) {
                     const fd_bcc = api.tools.parse_fd_email(fd_email["2"]["3"]);
 
                     const email = {
-                        thread_id: fd_thread_id,
-                        email_id: fd_email_id,
+                        id: fd_email_id,
                         legacy_email_id: fd_legacy_email_id,
-                        email_smtp_id: fd_email_smtp_id,
-                        email_subject: fd_email_subject,
-                        email_timestamp: fd_email_timestamp,
-                        email_date: fd_email_date,
-                        email_sender_address: fd_email_sender_address,
-                        email_to: fd_to,
-                        email_cc: fd_cc,
-                        email_bcc: fd_bcc,
-                        email_attachments: fd_attachments,
-                        $data_node: fd_email
+                        thread_id: fd_thread_id,
+                        smtp_id: fd_email_smtp_id,
+                        subject: fd_email_subject,
+                        timestamp: fd_email_timestamp,
+                        date: fd_email_date,
+                        sender_address: fd_email_sender_address,
+                        to: fd_to,
+                        cc: fd_cc,
+                        bcc: fd_bcc,
+                        attachments: fd_attachments
                     };
+                    if (api.cache.debug_xhr_fetch) {
+                        email["$data_node"] = fd_email;
+                    }
                     //console.log(email);
                     res.push(email);
                 }
@@ -1481,7 +1484,7 @@ var Gmail = function(localJQuery) {
         const c = api.cache;
 
         for (let email of email_data) {
-            c.emailIdCache[email.email_id] = email;
+            c.emailIdCache[email.id] = email;
             c.emailLegacyIdCache[email.legacy_email_id] = email;
         }
 

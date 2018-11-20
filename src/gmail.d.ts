@@ -874,19 +874,19 @@ interface GmailNewEmailAttachment {
 }
 
 interface GmailNewEmailData {
-    thread_id: string;
-    email_id: string;
+    id: string;
     legacy_email_id: string;
-    email_smtp_id: string;
-    email_subject: string;
-    email_timestamp: number;
-    email_date: Date;
-    email_sender_address: string;
-    email_to: GmailNewEmailAddress[];
-    email_cc: GmailNewEmailAddress[];
-    email_bcc: GmailNewEmailAddress[];
-    email_attachments: GmailNewEmailAttachment[];
-    $data_node: any;
+    thread_id: string;
+    smtp_id: string;
+    subject: string;
+    timestamp: number;
+    date: Date;
+    sender_address: string;
+    to: GmailNewEmailAddress[];
+    cc: GmailNewEmailAddress[];
+    bcc: GmailNewEmailAddress[];
+    attachments: GmailNewEmailAttachment[];
+    $data_node?: any;
 }
 
 interface GmailNewThreadData {
@@ -922,6 +922,7 @@ interface GmailNew {
 }
 
 interface GmailCache {
+    debug_xhr_fetch: boolean;
     emailIdCache: { (emailId: string): GmailNewEmailData };
     emailLegacyIdCache: { (legacyEmailId: string): GmailNewEmailData };
     emailThreadIdCache: { (threadId: string): GmailNewThreadData };
