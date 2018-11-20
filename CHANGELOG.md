@@ -1,6 +1,11 @@
 
 # Changelog
 
+## Version 0.8.2
+
+- Fix wrong and missing type-annotations.
+- Add `content_html` property to `api.new.get.email_data()`.
+
 ## Version 0.8.1
 
 - Add optional parameters to control button-text in `api.tools.add_modal_window()`.
