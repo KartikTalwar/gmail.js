@@ -1191,13 +1191,23 @@ var Gmail = function(localJQuery) {
         const res = [];
 
         for (let item of json) {
-            res.push({
-                name: item[3],
-                address: item[2]
-            });
+            res.push(api.tools.parse_fd_email2(item));
         }
 
         return res;
+    };
+
+    api.tools.parse_fd_email2 = function(item) {
+        try
+        {
+            return {
+                name: item["3"],
+                address: item["2"]
+            };
+        }
+        catch (e) {
+            return null;
+        }
     };
 
     api.tools.parse_fd_attachments = function(json) {
@@ -1220,12 +1230,10 @@ var Gmail = function(localJQuery) {
         return res;
     };
 
-    api.tools.parse_fd_request_html_payload = function(fd_thread_container, fd_email_id) {
+    api.tools.parse_fd_request_html_payload = function(fd_email) {
         let fd_email_content_html = null;
         try {
-            const fd_emails2 = fd_thread_container["3"] || [];
-            const fd_email2 = fd_emails2.filter(i => i["1"] === fd_email_id)[0];
-            const fd_html_containers = fd_email2["2"]["6"]["2"];
+            const fd_html_containers = fd_email["2"]["6"]["2"];
 
             for (let fd_html_container of fd_html_containers) {
                 fd_email_content_html = (fd_email_content_html || "") + fd_html_container["3"]["2"];
@@ -1236,6 +1244,17 @@ var Gmail = function(localJQuery) {
         }
 
         return fd_email_content_html;
+    };
+
+    api.tools.parse_fd_request_payload_get_email2 = function(fd_thread_container, fd_email_id) {
+        try {
+            const fd_emails2 = fd_thread_container["2"]["2"];
+            const fd_email2 = fd_emails2.filter(i => i["1"] === fd_email_id);
+            return fd_email2[0];
+        }
+        catch (e) {
+            return {};
+        }
     };
 
     api.tools.parse_fd_request_payload = function(json) {
@@ -1253,14 +1272,14 @@ var Gmail = function(localJQuery) {
             for (let fd_thread_container of fd_threads) {
                 const fd_thread_id = fd_thread_container["1"];
 
-                // lots of thread and email-info ... sometimes! in fd_thread_container["2"]
-                // but if we 1. don't need it, and 2. can't guarantee it,
-                // don't put in any effort to create false expectations for library users.
-
                 let fd_emails = fd_thread_container["3"]; // array
                 for (let fd_email of fd_emails) {
                     //console.log(fd_email)
                     const fd_email_id = fd_email["1"];
+
+                    // detailed to/from-fields must be obtained through the -other- email message node.
+                    const fd_email2 = api.tools.parse_fd_request_payload_get_email2(fd_thread_container, fd_email_id);
+
                     const fd_legacy_email_id = fd_email["2"]["35"];
                     const fd_email_smtp_id = fd_email["2"]["8"];
 
@@ -1268,12 +1287,16 @@ var Gmail = function(localJQuery) {
                     const fd_email_timestamp = Number.parseInt(fd_email["2"]["17"]);
                     const fd_email_date = new Date(fd_email_timestamp);
 
-                    // to get content, we need to address -secondary- email object!
-                    const fd_email_content_html = api.tools.parse_fd_request_html_payload(fd_thread_container, fd_email_id);
+                    const fd_email_content_html = api.tools.parse_fd_request_html_payload(fd_email);
 
                     const fd_attachments = api.tools.parse_fd_attachments(fd_email["2"]["14"]);
 
                     const fd_email_sender_address = fd_email["2"]["11"]["17"];
+
+                    let fd_from = api.tools.parse_fd_email2(fd_email2["2"]);
+                    if (!fd_from) {
+                        fd_from = { address: fd_email_sender_address, name: "" };
+                    }
 
                     const fd_to = api.tools.parse_fd_email(fd_email["2"]["1"]);
                     const fd_cc = api.tools.parse_fd_email(fd_email["2"]["2"]);
@@ -1288,7 +1311,7 @@ var Gmail = function(localJQuery) {
                         timestamp: fd_email_timestamp,
                         content_html: fd_email_content_html,
                         date: fd_email_date,
-                        sender_address: fd_email_sender_address,
+                        from: fd_from,
                         to: fd_to,
                         cc: fd_cc,
                         bcc: fd_bcc,

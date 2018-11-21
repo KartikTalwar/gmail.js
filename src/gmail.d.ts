@@ -873,7 +873,7 @@ interface GmailNewEmailData {
     subject: string;
     timestamp: number;
     date: Date;
-    sender_address: string;
+    from: GmailNewEmailAddress;
     to: GmailNewEmailAddress[];
     cc: GmailNewEmailAddress[];
     bcc: GmailNewEmailAddress[];

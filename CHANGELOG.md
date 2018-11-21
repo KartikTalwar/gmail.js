@@ -5,6 +5,8 @@
 
 - Don't make attachment-detail compatibility harder than it needs to
   be. Reuse old types.
+- Replace sender_address string with detailed from-field in new Gmail
+  EmailData-object.
 
 ## Version 0.8.2
 
