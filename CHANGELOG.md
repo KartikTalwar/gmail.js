@@ -1,7 +1,7 @@
 
 # Changelog
 
-## Version 0.8.3
+## Version 0.9.0
 
 - Don't make attachment-detail compatibility harder than it needs to
   be. Reuse old types.
