@@ -3550,15 +3550,20 @@ var Gmail = function(localJQuery) {
     api.new.get = {};
 
     /**
-     * Returns the new-style email_id of the latest email visible in the DOM.
+     * Returns the new-style email_id of the latest email visible in the DOM,
+     * or for the provided email-node if provided.
+     *
+     * @param emailElem: Node to extract email-id from. Optional.
      */
-    api.new.get.email_id = function() {
-        const emailElems = document.querySelectorAll(".adn[data-message-id]");
-        if (!emailElems || emailElems.length === 0) {
-            return null;
+    api.new.get.email_id = function(emailElem) {
+        if (!emailElem) {
+            const emailElems = document.querySelectorAll(".adn[data-message-id]");
+            if (!emailElems || emailElems.length === 0) {
+                return null;
+            }
+            emailElem = emailElems[emailElems.length - 1];
         }
 
-        const emailElem = emailElems[emailElems.length - 1];
         let declaredId = emailElem.dataset["messageId"];
         if (declaredId && declaredId.startsWith("#")) {
             return declaredId.substring(1);

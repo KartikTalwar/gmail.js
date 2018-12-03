@@ -1,6 +1,11 @@
 
 # Changelog
 
+## Version 0.9.1
+
+- Add ability to get new-style email-id directly from DOM element in
+  `api.new.get.email_id()`.
+
 ## Version 0.9.0
 
 - Don't make attachment-detail compatibility harder than it needs to

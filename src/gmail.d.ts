@@ -890,9 +890,12 @@ interface GmailNewThreadData {
 
 interface GmailNewGet {
     /**
-     * Returns the new-style email_id of the latest email visible in the DOM.
+     * Returns the new-style email_id of the latest email visible in the DOM,
+     * or for the provided email-node if provided.
+     *
+     * @param emailElem: Node to extract email-id from. Optional.
      */
-    email_id(): string;
+    email_id(emailElem?: HTMLElement): string;
     /**
      * Returns the new-style thread_id of the current thread visible in the DOM.
      */
