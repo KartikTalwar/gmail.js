@@ -27,6 +27,21 @@ var Gmail = function(localJQuery) {
         }
     }
 
+    var window_opener = typeof (window) !== "undefined" ? window.opener : null;
+    if (window_opener) {
+        try {
+            // access to window.opener domain will fail in case of cross-origin access
+            var opener_domain = window_opener.document.domain;
+            if (opener_domain !== window.document.domain) {
+                console.warn("GmailJS: window.opener domain differs from window domain.");
+                window_opener = null;
+            }
+        } catch (error) {
+            console.warn("GmailJS: Unable to access window.opener!", error);
+            window_opener = null;
+        }
+    }
+
     var api = {
         get : {},
         observe : {},
@@ -43,12 +58,12 @@ var Gmail = function(localJQuery) {
     api.tracker.globals   = typeof GLOBALS !== "undefined"
         ? GLOBALS
         : (
-            typeof(window) !== "undefined" && window.opener && window.opener.GLOBALS || []
+            window_opener && window_opener.GLOBALS || []
         );
     api.tracker.view_data = typeof VIEW_DATA !== "undefined"
         ? VIEW_DATA
         : (
-            typeof(window) !== "undefined" && window.opener && window.opener.VIEW_DATA || []
+            window_opener && window_opener.VIEW_DATA || []
         );
     api.tracker.ik        = api.tracker.globals[9] || "";
     api.tracker.hangouts  = undefined;
@@ -1655,12 +1670,12 @@ var Gmail = function(localJQuery) {
 
         if (top.document.getElementById("js_frame")){
             js_frame = top.document.getElementById("js_frame");
-        } else if (window.opener) {
-            js_frame = window.opener.top.document.getElementById("js_frame");
+        } else if (window_opener) {
+            js_frame = window_opener.top.document.getElementById("js_frame");
         }
         if (!js_frame){
-            if (window.opener) {
-                js_frame = window.opener.top;
+            if (window_opener) {
+                js_frame = window_opener.top;
             } else {
                 js_frame = top;
             }
