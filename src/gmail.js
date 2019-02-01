@@ -2613,6 +2613,7 @@ var Gmail = function(localJQuery) {
 
 
     api.helper.get.email_data_pre = function(thread_id) {
+        console.warn("Gmail.js: Usage of legacy email-data APIs have been deprecated by Google and will most likely fail. Migrate code to use gmail.new.get.email_data() to fix this problem.");
         if(api.check.is_inside_email() && thread_id === undefined) {
             thread_id = api.get.thread_id();
         }
