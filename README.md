@@ -372,6 +372,8 @@ The data does not come from the DOM
 
 #### gmail.get.email_data(thread_id=undefined)
 
+**DEPRECATED! This function relies on XHR-invocation against a deprecated Gmail API and is is very likely to fail. Use `gmail.new.get.email_data()` and `gmail.new.get.thread_data()` instead!**
+
 Returns an object representation of the opened email contents and metadata. It takes the optional thread_id parameter where
 the data for the specified thread is returned instead of the email-thread currently visible in the dom.
 
@@ -427,6 +429,8 @@ Does the same as above but accepts a callback function
 
 
 #### gmail.get.displayed_email_data()
+
+**DEPRECATED! This function relies on XHR-invocation against a deprecated Gmail API and is is very likely to fail. Use `gmail.new.get.email_data()` and `gmail.new.get.thread_data()` instead!**
 
 Returns an object representation of the emails that are being displayed.
 
