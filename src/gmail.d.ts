@@ -54,6 +54,12 @@ declare type GmailPageType =
    */
 declare type GmailEmailAddress = string[];
 
+declare type GmailDomComposeRecipients = {
+   to: string[];
+   cc: string[];
+   bcc: string[];
+}
+
 declare type GmailAttachmentDetails = {
     attachment_id: string,
     name: string,
@@ -495,19 +501,19 @@ declare type GmailDomCompose = {
        options.type  string  to, cc, or bcc to check a specific one
        options.flat  boolean if true will just return an array of all recipients instead of splitting out into to, cc, and bcc
     */
-    recipients(options?: { type: string, flat: boolean }): GmailEmailAddress[];
+    recipients(options?: { type: 'to' | 'cc' | 'bcc', flat: boolean }): GmailDomComposeRecipients | string[];
     /**
       Retrieve the current 'to' recipients
      */
-    to(): string;
+    to(): string[];
     /**
       Retrieve the current 'cc' recipients
      */
-    cc(): string;
+    cc(): string[];
     /**
       Retrieve the current 'bcc' recipients
      */
-    bcc(): string;
+    bcc(): string[];
     /**
        Get/Set the current subject
        Parameters:
