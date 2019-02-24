@@ -3184,7 +3184,7 @@ var Gmail = function(localJQuery) {
             var name_selector = options.type ? "[name=" + options.type + "]" : "";
 
             // determine an array of all emails specified for To, CC and BCC and extract addresses into an object for the callback
-            var recipients = options.flat ? [] : {};
+            var recipients = options.flat ? [] : { to: [], cc: [], bcc: [] };
             this.$el.find(".GS input[type=hidden]"+name_selector).each(function(idx, recipient ){
                 if(options.flat) {
                     recipients.push(recipient.value);
