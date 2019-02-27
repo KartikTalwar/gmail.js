@@ -3199,22 +3199,22 @@ var Gmail = function(localJQuery) {
         /**
            Retrieve the current "to" recipients
         */
-        to: function() {
-            return this.dom("to").siblings('.vR').find('input').map((i, el) => el.value).get();
+        to: function(to) {
+            return this.dom("to").val(to);
         },
 
         /**
            Retrieve the current "cc" recipients
         */
-        cc: function() {
-            return this.dom("cc").siblings('.vR').find('input').map((i, el) => el.value).get();
+        cc: function(cc) {
+            return this.dom("cc").val(cc);
         },
 
         /**
            Retrieve the current "bcc" recipients
         */
-        bcc: function() {
-            return this.dom("bcc").siblings('.vR').find('input').map((i, el) => el.value).get();
+        bcc: function(bcc) {
+            return this.dom("bcc").val(bcc);
         },
 
         /**

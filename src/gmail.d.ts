@@ -505,15 +505,15 @@ declare type GmailDomCompose = {
     /**
       Retrieve the current 'to' recipients
      */
-    to(): string[];
+    to(): JQuery;
     /**
       Retrieve the current 'cc' recipients
      */
-    cc(): string[];
+    cc(): JQuery;
     /**
       Retrieve the current 'bcc' recipients
      */
-    bcc(): string[];
+    bcc(): JQuery;
     /**
        Get/Set the current subject
        Parameters:
