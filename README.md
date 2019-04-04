@@ -483,6 +483,114 @@ Returns an object representation of the emails that are being displayed.
 Does the same as above but accepts a callback function.
 
 
+#### gmail.new.get.email_id()
+
+Obtains the new-style email-ID from the email currently on screen.
+Extracted via DOM.
+
+This ID can only be used by `gmail.new.get.*`-functions.
+
+#### gmail.new.get.thread_id()
+
+Obtains the new-style thread-ID from the email currently on screen.
+Extracted via DOM.
+
+This ID can only be used by `gmail.new.get.*`-functions.
+
+#### gmail.new.get.email_data(email_id)
+
+Returns a data-object for the requested email, if found in the
+email-cache. `email_id` must be new-style email-id.
+
+If no email-data can be found in Gmail.JS email-cache,
+`null` or `undefined` is returned instead.
+
+This method returns immediately, uses no XHR, and has no
+async-equivalent.
+
+Please note: Email-data is intercepted and stored in the cache
+only when Gmail itself has requested or used and email.
+
+This typically happens when loading a label (pre-loading all emails in
+view) or when navigating to view a full thread.
+
+That means that calling the same method later may return data even if
+the first invocation returned `null`.
+
+
+```json
+{
+  "thread_id": "thread-f:1581064946762017791",
+  "emails": [
+    {
+      "id": "msg-f:1581064946762017791",
+      "legacy_email_id": "15f1123136926bff",
+      "thread_id": "thread-f:1581064946762017791",
+      "smtp_id": "<87zi8wmmhw.fsf@gmail.com>",
+      "subject": "[PATCH] Flymake support for C/C++",
+      "timestamp": 1507821032297,
+      "content_html": "Hi,<br>\n<br>\nHere&#39;s a proposal for supporting Flymake in C/C++. This patch...",
+      "date": "2017-10-12T15:10:32.297Z",
+      "from": {
+        "address": "joaotavora@gmail.com",
+        "name": ""
+      },
+      "to": [
+        {
+          "address": "emacs-devel@gnu.org"
+        }
+      ],
+      "cc": [
+        {
+          "address": "acm@muc.de"
+        },
+        {
+          "address": "eliz@gnu.org"
+        }
+      ],
+      "bcc": [],
+      "attachments": [
+        {
+          "attachment_id": "0.1",
+          "name": "0001-Add-a-Flymake-backend-for-C.patch",
+          "type": "application/x-patch",
+          "url": "https://mail.google.com/mail/?ui=2&ik=94da28fb67&attid=0.1&permmsgid=msg-f:1581064946762017791&th=15f1123136926bff&view=att&zw",
+          "size": 11225
+        }
+      ]
+    }
+  ]
+}
+```
+
+#### gmail.new.get.thread_data(thread_id)
+
+Returns a data-object for the requested email-thread, if found in the
+email-cache. `thread_id` must be new-style thread-id.
+
+If no thread-data can be found in Gmail.JS email-cache,
+`null` or `undefined` is returned instead.
+
+This method returns immediately, uses no XHR, and has no
+async-equivalent.
+
+Please note: Email-data is intercepted and stored in the cache
+only when Gmail itself has requested or used and email.
+
+This typically happens when loading a label (pre-loading all emails in
+view) or when navigating to view a full thread.
+
+That means that calling the same method later may return data even if
+the first invocation returned `null`.
+
+
+```json
+{
+    "thread_id": "thread-f:1581064946762017791",
+    "emails": [...email_data elements...]
+}
+```
+
 #### gmail.get.email_source(email_id=undefined)
 
 Deprecated function. Will be removed. Migrate to
@@ -492,7 +600,11 @@ instead.
 #### gmail.get.email_source_async(email_id=undefined, callback, error_callback, preferBinary=false)
 
 Retrieves raw MIME message source from the gmail server for the specified email id. It takes the optional email_id parameter where
-the data for the specified id is returned instead of the email currently visible in the dom
+the data for the specified id is returned instead of the email
+currently visible in the dom
+
+**NOTE:** email_id must be legacy-style email-id. Using new-style ID
+*will* fail!
 
 By default, once retrieved the resulting data will be passed to
 `callback` in text-format. **This may corrupt the actual email
