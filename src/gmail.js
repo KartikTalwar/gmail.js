@@ -3587,6 +3587,9 @@ var Gmail = function(localJQuery) {
      * @param email_id: new style email id. Legacy IDs not supported. If empty, default to latest in view.
      */
     api.new.get.email_data = function(email_id) {
+        if (!email_id.statsWith("msg")) {
+            throw new Error("Legacy email-ID used in new API!");
+        }
         email_id = email_id || api.new.get.email_id();
         return api.cache.emailIdCache[email_id];
     };
@@ -3597,6 +3600,10 @@ var Gmail = function(localJQuery) {
      * @param thread_id: new style thread id. Legacy IDs not supported. If empty, default to current.
      */
     api.new.get.thread_data = function(thread_id) {
+        if (!thread_id.statsWith("thread")) {
+            throw new Error("Legacy email-ID used where new-type thread-id expected!");
+        }
+
         thread_id = thread_id || api.new.get.thread_id();
         return api.cache.threadCache[thread_id];
     };
