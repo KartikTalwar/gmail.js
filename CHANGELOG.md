@@ -1,6 +1,11 @@
 
 # Changelog
 
+## Version 0.9.2
+
+- Make `api.new.get.email_data()` handle legacy-style IDs when
+  present to improve compatibility. Creates console-warning when detected.
+
 ## Version 0.9.1
 
 - Add ability to get new-style email-id directly from DOM element in
