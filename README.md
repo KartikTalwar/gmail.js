@@ -120,8 +120,8 @@ const gmail = new GmailFactory.Gmail() as Gmail;
 - [gmail.get**.thread_id()**](#gmailgetthread_id)
 - [gmail.get**.email_id()**](#gmailgetemail_id)
 - [gmail.get**.email_ids()**](#gmailgetemail_ids)
-- [gmail.get**.email_data(email_id=undefined)**](#gmailgetemail_dataemail_idundefined)
-- [gmail.get**.email_data_async(email_id=undefined, callback)**](#gmailgetemail_dataemail_idundefined-callback)
+- [gmail.get**.email_data(email_id=undefined)**](#gmailgetemail_datathread_idundefined)
+- [gmail.get**.email_data_async(email_id=undefined, callback)**](#gmailgetemail_data_asyncemail_idundefined-callback)
 - [gmail.get**.displayed_email_data()**](#gmailgetdisplayed_email_data)
 - [gmail.get**.displayed_email_data_async(callback)**](#gmailgetdisplayed_email_data_asynccallback)
 - [gmail.get**.selected_emails_data()**](#gmailgetselected_emails_data)
@@ -298,6 +298,8 @@ These are some of the variables that are tracked and kept in memory while the re
 
 #### gmail.get.visible_emails()
 
+**DEPRECATED! This function relies on XHR-invocation against a deprecated Gmail API and is is very likely to fail. Migrate to `gmail.new.get.*`-API instead.**
+
 Returns a list of emails from the server that are currently visible in the inbox view. The data does not come from the DOM
 
 ```json
@@ -312,9 +314,13 @@ Returns a list of emails from the server that are currently visible in the inbox
 
 #### gmail.get.visible_emails(async)
 
+**DEPRECATED! This function relies on XHR-invocation against a deprecated Gmail API and is is very likely to fail. Migrate to `gmail.new.get.*`-API instead.**
+
 Does the same as above but accepts a callback function
 
 #### gmail.get.selected_emails_data()
+
+**DEPRECATED! This function relies on XHR-invocation against a deprecated Gmail API and is is very likely to fail. Migrate to `gmail.new.get.*`-API instead.**
 
 Returns a list of object representation from emails that are currently **selected** in the inbox view.
 The data does not come from the DOM
@@ -433,13 +439,14 @@ the data for the specified thread is returned instead of the email-thread curren
 
 #### gmail.get.email_data_async(email_id=undefined, callback)
 
+**DEPRECATED! This function relies on XHR-invocation against a deprecated Gmail API and is is very likely to fail. Use `gmail.new.get.email_data()` and `gmail.new.get.thread_data()` instead!**
 
-Does the same as above but accepts a callback function
+Does the same as above but accepts a callback function.
 
 
 #### gmail.get.displayed_email_data()
 
-**DEPRECATED! This function relies on XHR-invocation against a deprecated Gmail API and is is very likely to fail. Use `gmail.new.get.email_data()` and `gmail.new.get.thread_data()` instead!**
+**DEPRECATED! This function relies on XHR-invocation against a deprecated Gmail API and is is very likely to fail. Migrate to `gmail.new.get.*`-API instead.**
 
 Returns an object representation of the emails that are being displayed.
 
@@ -489,8 +496,9 @@ Returns an object representation of the emails that are being displayed.
 
 #### gmail.get.displayed_email_data_async(callback)
 
-Does the same as above but accepts a callback function.
+**DEPRECATED! This function relies on XHR-invocation against a deprecated Gmail API and is is very likely to fail. Migrate to `gmail.new.get.*`-API instead.**
 
+Does the same as above but accepts a callback function.
 
 #### gmail.new.get.email_id()
 
@@ -692,6 +700,9 @@ Returns the opened email's subject from the DOM
 
 #### gmail.get.thread_id()
 
+**Note: This method can only be used with other deprecated methods,
+and is itself deprecated. Use `gmail.new.get.thread_id()` instead.**
+
 Gets current email-thread's ID.
 
 This can be used together with `gmail.get.email_data()` to obtain
@@ -699,6 +710,9 @@ individual email IDs.
 
 
 #### gmail.get.email_id()
+
+**Note: This method can only be used with other deprecated methods,
+and is itself deprecated. Use `gmail.new.get.email_id()` instead.**
 
 Same as `gmail.get.thread_id()`, but kept for compatibilty.
 Using this method generates a warning!
@@ -708,6 +722,10 @@ Using this method generates a warning!
 ```
 
 #### gmail.get.email_ids()
+
+**Note: This method can only be used with other deprecated methods,
+and is itself deprecated. Use `gmail.new.get.thread_id()` and
+`gmail.new.get.thread_data()` instead.**
 
 Returns a list of email IDs for each thread in the conversation
 
