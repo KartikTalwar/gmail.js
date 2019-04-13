@@ -1,6 +1,11 @@
 
 # Changelog
 
+## Version 0.9.3
+
+- Fix bug introduced in `api.new.get.email_data()` in version 0.9.2
+  when not providing email-id.
+
 ## Version 0.9.2
 
 - Make `api.new.get.email_data()` handle legacy-style IDs when
