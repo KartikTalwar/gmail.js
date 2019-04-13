@@ -34,6 +34,17 @@ describe("gmail.new.get", () => {
         assert.equal(res, null);
     });
 
+    it("email_data() returns looks up current email_id when provided null-value", () => {
+        let origFunc = gmail.new.get.email_id;
+
+        gmail.new.get.email_id = () => { return validEmailNewId; };
+
+        let res = gmail.new.get.email_data();
+        assert.equal(res, email);
+
+        gmail.new.get.email_id = origFunc;
+    });
+
     it("thread_data() rejects legacy-style IDs", () => {
         let failed = false;
         try {

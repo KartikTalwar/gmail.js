@@ -3587,11 +3587,12 @@ var Gmail = function(localJQuery) {
      * @param email_id: new style email id. Legacy IDs not supported. If empty, default to latest in view.
      */
     api.new.get.email_data = function(email_id) {
+        email_id = email_id || api.new.get.email_id();
+
         if (!api.check.data.is_email_id(email_id)) {
             console.warn("GmailJS: Warning! Using legacy-style ID in new Gmail API! There's no guarantee this will work!");
             return api.cache.emailLegacyIdCache[email_id];
         } else {
-            email_id = email_id || api.new.get.email_id();
             return api.cache.emailIdCache[email_id];
         }
     };
