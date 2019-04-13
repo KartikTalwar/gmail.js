@@ -126,7 +126,7 @@ const gmail = new GmailFactory.Gmail() as Gmail;
 - [gmail.get**.displayed_email_data_async(callback)**](#gmailgetdisplayed_email_data_asynccallback)
 - [gmail.get**.selected_emails_data()**](#gmailgetselected_emails_data)
 - [gmail.get**.visible_emails()**](#gmailgetvisible_emails)
-- [gmail.get**.visible_emails_async(callback)**](#gmailgetvisible_emailscallback)
+- [gmail.get**.visible_emails_async(callback)**](#gmailgetvisible_emails_asynccallback)
 
 
 
@@ -312,7 +312,7 @@ Returns a list of emails from the server that are currently visible in the inbox
   "labels": ["^all", "^i", "^smartlabel_social", "^unsub"]}]
 ```
 
-#### gmail.get.visible_emails(async)
+#### gmail.get.visible_emails_async(callback)
 
 **DEPRECATED! This function relies on XHR-invocation against a deprecated Gmail API and is is very likely to fail. Migrate to `gmail.new.get.*`-API instead.**
 
