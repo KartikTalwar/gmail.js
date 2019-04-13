@@ -3603,11 +3603,12 @@ var Gmail = function(localJQuery) {
      * @param thread_id: new style thread id. Legacy IDs not supported. If empty, default to current.
      */
     api.new.get.thread_data = function(thread_id) {
-        if (!thread_id.statsWith("thread")) {
+        thread_id = thread_id || api.new.get.thread_id();
+
+        if (!api.check.data.is_thread_id(thread_id)) {
             throw new Error("Legacy email-ID used where new-type thread-id expected!");
         }
 
-        thread_id = thread_id || api.new.get.thread_id();
         return api.cache.threadCache[thread_id];
     };
 

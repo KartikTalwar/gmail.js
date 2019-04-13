@@ -12,6 +12,10 @@ let invalidEmailNewId = "msg-a:12346";
 gmail.cache.emailIdCache[validEmailNewId] = email;
 gmail.cache.emailLegacyIdCache[validEmailLegacyId] = email;
 
+let thread = { bar: "foo" };
+let validThreadId = "thread-a:12345";
+gmail.cache.threadCache[validThreadId] = thread;
+
 
 describe("gmail.new.get", () => {
     it("email_data() can look up based on legacy-style IDs", () => {
@@ -55,4 +59,16 @@ describe("gmail.new.get", () => {
 
         assert.equal(true, failed);
     });
+
+    it("thread_data() returns looks up current thread_id when provided null-value", () => {
+        let origFunc = gmail.new.get.thread_id;
+
+        gmail.new.get.thread_id = () => { return validThreadId; };
+
+        let res = gmail.new.get.thread_data();
+        assert.equal(res, thread);
+
+        gmail.new.get.thread_id = origFunc;
+    });
+
 });
