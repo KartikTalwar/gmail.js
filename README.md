@@ -89,19 +89,15 @@ const gmail = new GmailFactory.Gmail() as Gmail;
 
 - [gmail.get**.user_email()**](#gmailgetuser_email)
 - [gmail.get**.manager_email()**](#gmailgetmanager_email)
-- [gmail.get**.visible_emails()**](#gmailgetvisible_emails)
-- [gmail.get**.visible_emails_async(callback)**](#gmailgetvisible_emailscallback)
-- [gmail.get**.selected_emails_data()**](#gmailgetselected_emails_data)
 - [gmail.get**.current_page()**](#gmailgetcurrent_page)
-- [gmail.get**.thread_id()**](#gmailgetthread_id)
-- [gmail.get**.email_id()**](#gmailgetemail_id)
-- [gmail.get**.email_ids()**](#gmailgetemail_ids)
+
+- [gmail.get**.new.email_id()**](#gmailnewgetemail_id)
+- [gmail.get**.new.email_data()**](#gmailnewgetemail_data)
+- [gmail.get**.new.thread_id()**](#gmailnewgetthread_id)
+- [gmail.get**.new.thread_data()**](#gmailnewgetthread_data)
+
 - [gmail.get**.email_subject()**](#gmailgetemail_subject)
 - [gmail.get**.compose_ids()**](#gmailgetcompose_ids)
-- [gmail.get**.email_data(email_id=undefined)**](#gmailgetemail_dataemail_idundefined)
-- [gmail.get**.email_data_async(email_id=undefined, callback)**](#gmailgetemail_dataemail_idundefined-callback)
-- [gmail.get**.displayed_email_data()**](#gmailgetdisplayed_email_data)
-- [gmail.get**.displayed_email_data_async(callback)**](#gmailgetdisplayed_email_data_asynccallback)
 - [gmail.get**.email_source_async(email_id=undefined, callback, error_callback, preferBinary)**](#gmailgetemail_source_asyncemail_idundefined-callback-error_callback-preferBinaryfalse)
 - [gmail.get**.email_source_promise(email_id=undefined, preferBinary)**](#gmailgetemail_source_promiseemail_idundefined-preferBinaryfalse)
 - [gmail.get**.search_query()**](#gmailgetsearch_query)
@@ -118,6 +114,19 @@ const gmail = new GmailFactory.Gmail() as Gmail;
 - [gmail.get**.loggedin_accounts()**](#gmailgetloggedin_accounts)
 - [gmail.get**.beta()**](#gmailgetbeta)
 - [gmail.get**.localization()**](#gmailgetlocalization)
+
+#### GET (deprecated methods)
+
+- [gmail.get**.thread_id()**](#gmailgetthread_id)
+- [gmail.get**.email_id()**](#gmailgetemail_id)
+- [gmail.get**.email_ids()**](#gmailgetemail_ids)
+- [gmail.get**.email_data(email_id=undefined)**](#gmailgetemail_dataemail_idundefined)
+- [gmail.get**.email_data_async(email_id=undefined, callback)**](#gmailgetemail_dataemail_idundefined-callback)
+- [gmail.get**.displayed_email_data()**](#gmailgetdisplayed_email_data)
+- [gmail.get**.displayed_email_data_async(callback)**](#gmailgetdisplayed_email_data_asynccallback)
+- [gmail.get**.selected_emails_data()**](#gmailgetselected_emails_data)
+- [gmail.get**.visible_emails()**](#gmailgetvisible_emails)
+- [gmail.get**.visible_emails_async(callback)**](#gmailgetvisible_emailscallback)
 
 
 
