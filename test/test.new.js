@@ -6,9 +6,9 @@ let gmail = new Gmail();
 // prep cache for tests
 let email = { foo: "bar" };
 let validEmailLegacyId = "16a0d1f820d515e2";
-let validEmailNewId = "msg-12345";
+let validEmailNewId = "msg-a:12345";
 let invalidEmailLegacyid = "16a0d1f820d515e3";
-let invalidEmailNewId = "msg-12346";
+let invalidEmailNewId = "msg-a:12346";
 gmail.cache.emailIdCache[validEmailNewId] = email;
 gmail.cache.emailLegacyIdCache[validEmailLegacyId] = email;
 
