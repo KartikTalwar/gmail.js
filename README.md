@@ -92,9 +92,9 @@ const gmail = new GmailFactory.Gmail() as Gmail;
 - [gmail.get**.current_page()**](#gmailgetcurrent_page)
 
 - [gmail.get**.new.email_id()**](#gmailnewgetemail_id)
-- [gmail.get**.new.email_data()**](#gmailnewgetemail_data)
+- [gmail.get**.new.email_data()**](#gmailnewgetemail_dataemail_id)
 - [gmail.get**.new.thread_id()**](#gmailnewgetthread_id)
-- [gmail.get**.new.thread_data()**](#gmailnewgetthread_data)
+- [gmail.get**.new.thread_data()**](#gmailnewgetthread_datathread_id)
 
 - [gmail.get**.email_subject()**](#gmailgetemail_subject)
 - [gmail.get**.compose_ids()**](#gmailgetcompose_ids)
