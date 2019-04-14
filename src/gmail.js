@@ -3589,6 +3589,10 @@ var Gmail = function(localJQuery) {
     api.new.get.email_data = function(email_id) {
         email_id = email_id || api.new.get.email_id();
 
+        if (!email_id) {
+            return null;
+        }
+
         if (!api.check.data.is_email_id(email_id)) {
             console.warn("GmailJS: Warning! Using legacy-style ID in new Gmail API! There's no guarantee this will work!");
             return api.cache.emailLegacyIdCache[email_id];
@@ -3605,7 +3609,11 @@ var Gmail = function(localJQuery) {
     api.new.get.thread_data = function(thread_id) {
         thread_id = thread_id || api.new.get.thread_id();
 
-        if (!api.check.data.is_thread_id(thread_id)) {
+        if (!thread_id) {
+            return null;
+        }
+
+       if (!api.check.data.is_thread_id(thread_id)) {
             throw new Error("Legacy email-ID used where new-type thread-id expected!");
         }
 

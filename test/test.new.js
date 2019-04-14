@@ -49,6 +49,25 @@ describe("gmail.new.get", () => {
         gmail.new.get.email_id = origFunc;
     });
 
+    it("email_data() returns null without warning when email_id not resolved", () => {
+        let warnInvoked = false;
+        let origWarnFunc = console.warn;
+        console.warn = () => {
+            warnInvoked = true;
+        };
+
+        let origIdFunc = gmail.new.get.email_id;
+        gmail.new.get.email_id = () => { return null; };
+
+        let res = gmail.new.get.email_data();
+
+        gmail.new.get.email_id = origIdFunc;
+        console.warn = origWarnFunc;
+
+        assert.equal(false, warnInvoked);
+        assert.equal(null, res);
+    });
+
     it("thread_data() rejects legacy-style IDs", () => {
         let failed = false;
         try {
@@ -71,4 +90,22 @@ describe("gmail.new.get", () => {
         gmail.new.get.thread_id = origFunc;
     });
 
+    it("thread_data() returns null without warning when thread_id not resolved", () => {
+        let warnInvoked = false;
+        let origWarnFunc = console.warn;
+        console.warn = () => {
+            warnInvoked = true;
+        };
+
+        let origIdFunc = gmail.new.get.thread_id;
+        gmail.new.get.thread_id = () => { return null; };
+
+        let res = gmail.new.get.thread_data();
+
+        gmail.new.get.thread_id = origIdFunc;
+        console.warn = origWarnFunc;
+
+        assert.equal(false, warnInvoked);
+        assert.equal(null, res);
+    });
 });
