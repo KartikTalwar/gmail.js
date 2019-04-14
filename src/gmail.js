@@ -1402,7 +1402,7 @@ var Gmail = function(localJQuery) {
         // dont crash on those.
         if (response.startsWith("<!DOCTYPE html")
             || response.indexOf("display:inline-block") !== -1
-           ) {
+        ) {
             return [];
         }
 
@@ -3613,7 +3613,7 @@ var Gmail = function(localJQuery) {
             return null;
         }
 
-       if (!api.check.data.is_thread_id(thread_id)) {
+        if (!api.check.data.is_thread_id(thread_id)) {
             throw new Error("Legacy email-ID used where new-type thread-id expected!");
         }
 
