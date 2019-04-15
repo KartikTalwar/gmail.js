@@ -559,4 +559,17 @@ describe("ID-compatibility (old->new)", () => {
         const res = gmail.helper.get.new_email_id("jgkldfjgdfkljgdfkl");
         assert.equal(null, res);
     });
+
+    it("Shows warning when provided old but expecting new", () => {
+        let warnInvoked = false;
+        let origWarnFunc = console.warn;
+        console.warn = () => {
+            warnInvoked = true;
+        };
+
+        let res = gmail.helper.get.new_email_id(validEmailLegacyId);
+
+        console.warn = origWarnFunc;
+        assert.equal(true, warnInvoked);
+    });
 });
