@@ -2666,6 +2666,36 @@ var Gmail = function(localJQuery) {
     };
 
 
+    api.helper.get.legacy_email_id = function(email_id) {
+        if (!email_id) {
+            return null;
+        } else if (api.check.data.is_legacy_email_id(email_id)) {
+            return email_id;
+        } else if (email_id.legacy_email_id) {
+            return email_id.legacy_email_id;
+        } else if (api.check.data.is_email_id(email_id)) {
+            const emailData = api.new.get.email_data(email_id);
+            return emailData && emailData.legacy_email_id;
+        } else {
+            return null;
+        }
+    };
+
+    api.helper.get.new_email_id = function(email_id) {
+        if (!email_id) {
+            return null;
+        } else if (api.check.data.is_email_id(email_id)) {
+            return email_id;
+        } else if (email_id.id) {
+            return email_id.id;
+        } else if (api.check.data.is_legacy_email_id(email_id)) {
+            const emailData = api.new.get.email_data(email_id);
+            return emailData && emailData.id;
+        } else {
+            return null;
+        }
+    };
+
     api.helper.get.email_source_pre = function(email_id) {
         if(!email_id && api.check.is_inside_email()) {
             email_id = api.get.email_id();

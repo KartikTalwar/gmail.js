@@ -479,3 +479,84 @@ describe("New Gmail event-parsing", () => {
         testXhrEventParsing(xhrData, "new_email");
     });
 });
+
+describe("ID-compatibility (new->old)", () => {
+    const gmail = new Gmail();
+    const validEmailLegacyId = "16a0d1f820d515e2";
+    const validEmailNewId = "msg-a:12345";
+    const invalidEmailNewId = "msg-a:12346";
+    const email = { foo: "bar" };
+    email.id = validEmailNewId;
+    email.legacy_email_id = validEmailLegacyId;
+
+    gmail.cache.emailIdCache[validEmailNewId] = email;
+    gmail.cache.emailLegacyIdCache[validEmailLegacyId] = email;
+
+    it("Provides null from null-valued legacy ID", () => {
+        const res = gmail.helper.get.legacy_email_id(null);
+        assert.equal(null, res);
+    });
+
+    it("Provides legacy ID from legacy ID", () => {
+        const res = gmail.helper.get.legacy_email_id(validEmailLegacyId);
+        assert.equal(res, validEmailLegacyId);
+    });
+
+    it("Provides legacy ID from emailData object", () => {
+        const res = gmail.helper.get.legacy_email_id(email);
+        assert.equal(res, validEmailLegacyId);
+    });
+
+    it("Provides legacy ID from valid new-style ID", () => {
+        const res = gmail.helper.get.legacy_email_id(validEmailNewId);
+        assert.equal(res, validEmailLegacyId);
+    });
+
+    it("Returns null from invalid new-style ID (doesn't crash!)", () => {
+        const res = gmail.helper.get.legacy_email_id(invalidEmailNewId);
+        assert.equal(res, null);
+    });
+});
+
+describe("ID-compatibility (old->new)", () => {
+    const gmail = new Gmail();
+    const validEmailLegacyId = "16a0d1f820d515e2";
+    const validEmailNewId = "msg-a:12345";
+    const invalidEmailLegacyid = "16a0d1f820d515e3";
+    const email = { foo: "bar" };
+    email.id = validEmailNewId;
+    email.legacy_email_id = validEmailLegacyId;
+
+    gmail.cache.emailIdCache[validEmailNewId] = email;
+    gmail.cache.emailLegacyIdCache[validEmailLegacyId] = email;
+
+    it("Provides null from null-valued ID", () => {
+        const res = gmail.helper.get.new_email_id(null);
+        assert.equal(null, res);
+    });
+
+    it("Provides new ID from new ID", () => {
+        const res = gmail.helper.get.new_email_id(validEmailNewId);
+        assert.equal(res, validEmailNewId);
+    });
+
+    it("Provides new ID from emailData object", () => {
+        const res = gmail.helper.get.new_email_id(email);
+        assert.equal(res, validEmailNewId);
+    });
+
+    it("Provides new ID from valid legacy-style ID", () => {
+        const res = gmail.helper.get.new_email_id(validEmailLegacyId);
+        assert.equal(res, validEmailNewId);
+    });
+
+    it("Returns null from invalid legacy-style ID (doesn't crash!)", () => {
+        const res = gmail.helper.get.new_email_id(invalidEmailLegacyid);
+        assert.equal(res, null);
+    });
+
+    it("Returns null on unrecognized input", () => {
+        const res = gmail.helper.get.new_email_id("jgkldfjgdfkljgdfkl");
+        assert.equal(null, res);
+    });
+});
