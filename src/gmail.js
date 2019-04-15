@@ -999,6 +999,12 @@ var Gmail = function(localJQuery) {
             && api.check.data.is_email_id(obj["1"]);
     };
 
+    api.check.data.is_legacy_email_id = function(id) {
+        return id
+            && typeof id === "string"
+            && /^[0-9a-f]{16,}$/.test(id);
+    };
+
     api.check.data.is_action = function(obj) {
         return api.check.data.is_first_type_action(obj)
             || api.check.data.is_second_type_action(obj);

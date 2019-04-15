@@ -388,6 +388,12 @@ interface GmailCheck {
        otherwise (i.e. displayed individually)
      */
     is_conversation_view(): boolean;
+
+    data: {
+        is_email_id(email_id: string): boolean;
+        is_thread_id(email_id: string): boolean;
+        is_legacy_email_id(email_id: string): boolean;
+    }
 }
 
 

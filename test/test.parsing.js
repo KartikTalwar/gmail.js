@@ -209,11 +209,17 @@ describe("New Gmail data-format", () => {
         }));
     });
 
-    it("Detects email-id", () => {
+    it("Detects new-style email-id", () => {
         assert.ok(gmail.check.data.is_email_id("msg-a:r6431891629648253702"));
         assert.ok(!gmail.check.data.is_email_id("^smartlabel_notification"));
         assert.ok(!gmail.check.data.is_email_id("something with msg-a:r64318916296482537026"));
         assert.ok(!gmail.check.data.is_email_id("thread-a:r266633262821436756"));
+        assert.ok(!gmail.check.data.is_email_id("16a0d1f820d515e3"));
+    });
+
+    it("Detects legacy-style email-id", () => {
+        assert.ok(gmail.check.data.is_legacy_email_id("16a0d1f820d515e3"));
+        assert.ok(!gmail.check.data.is_legacy_email_id("msg-a:r6431891629648253702"));
     });
 
     it("Detects email-objects", () => {
