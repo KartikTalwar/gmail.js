@@ -3553,12 +3553,18 @@ var Gmail = function(localJQuery) {
      * @param emailElem: Node to extract email-id from. Optional.
      */
     api.new.get.email_id = function(emailElem) {
+        // ensure we have an email-element to work with
         if (!emailElem) {
             const emailElems = document.querySelectorAll(".adn[data-message-id]");
             if (!emailElems || emailElems.length === 0) {
                 return null;
             }
             emailElem = emailElems[emailElems.length - 1];
+        }
+
+        // handle case when provided argument is DomEmail.
+        if (emailElem.$el && emailElem.$el[0]) {
+            emailElem = emailElem.$el[0];
         }
 
         let declaredId = emailElem.dataset["messageId"];

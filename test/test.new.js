@@ -4,11 +4,14 @@ let Gmail = require('../src/gmail').Gmail;
 let gmail = new Gmail();
 
 // prep cache for tests
-let email = { foo: "bar" };
-let validEmailLegacyId = "16a0d1f820d515e2";
-let validEmailNewId = "msg-a:12345";
-let invalidEmailLegacyid = "16a0d1f820d515e3";
-let invalidEmailNewId = "msg-a:12346";
+const validEmailLegacyId = "16a0d1f820d515e2";
+const validEmailNewId = "msg-a:12345";
+const invalidEmailLegacyid = "16a0d1f820d515e3";
+const invalidEmailNewId = "msg-a:12346";
+const email = { foo: "bar" };
+email.id = validEmailNewId;
+email.legacy_email_id = validEmailLegacyId;
+
 gmail.cache.emailIdCache[validEmailNewId] = email;
 gmail.cache.emailLegacyIdCache[validEmailLegacyId] = email;
 
@@ -18,7 +21,26 @@ gmail.cache.threadCache[validThreadId] = thread;
 
 
 describe("gmail.new.get", () => {
-    it("email_data() can look up based on legacy-style IDs", () => {
+    const elem = {
+        dataset: {
+            "messageId": validEmailNewId
+        }
+    };
+
+    it("email_id() can look up based on HTML elements", () => {
+        let id = gmail.new.get.email_id(elem);
+        assert.equal(id, validEmailNewId);
+    });
+
+    it("email_id() can look up based on DOmEmail instance", () => {
+        let domEmail = {
+            $el: [elem]
+        };
+        let id = gmail.new.get.email_id(domEmail);
+        assert.equal(id, validEmailNewId);
+    });
+
+    it("email_data() can look up based on legacy-style IDs, with warning", () => {
         let res = gmail.new.get.email_data(validEmailLegacyId);
         assert.equal(res, email);
     });
@@ -26,6 +48,19 @@ describe("gmail.new.get", () => {
     it("email_data() returns null when looking up invalid legacy-style IDs", () => {
         let res = gmail.new.get.email_data(invalidEmailLegacyid);
         assert.equal(res, null);
+    });
+
+    it("email_data() creates warning when looking up legacy-style IDs", () => {
+        let warnInvoked = false;
+        let origWarnFunc = console.warn;
+        console.warn = () => {
+            warnInvoked = true;
+        };
+
+        let res = gmail.new.get.email_data(validEmailLegacyId);
+
+        console.warn = origWarnFunc;
+        assert.equal(true, warnInvoked);
     });
 
     it("email_data() can look up based on new-style IDs", () => {

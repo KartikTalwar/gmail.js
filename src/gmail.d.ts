@@ -899,9 +899,9 @@ interface GmailNewGet {
      * Returns the new-style email_id of the latest email visible in the DOM,
      * or for the provided email-node if provided.
      *
-     * @param emailElem: Node to extract email-id from. Optional.
+     * @param emailElem: Node to extract email-id from or DomEmail. Optional.
      */
-    email_id(emailElem?: HTMLElement): string;
+    email_id(emailElem?: HTMLElement | GmailDomEmail): string;
     /**
      * Returns the new-style thread_id of the current thread visible in the DOM.
      */

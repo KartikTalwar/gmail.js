@@ -304,6 +304,9 @@ Extracted via DOM.
 
 This ID can only be used by `gmail.new.get.*`-functions.
 
+Can be provided email-element from HTML DOM, or Gmail DOMEmail object
+to look up specific email ID.
+
 #### gmail.new.get.thread_id()
 
 Obtains the new-style thread-ID from the email currently on screen.

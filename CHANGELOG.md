@@ -1,6 +1,10 @@
 
 # Changelog
 
+## Version 0.9.4
+
+- Make `api.new.get.email_id()` able to work with DOMEmail directly.
+
 ## Version 0.9.3
 
 - Fix bug introduced in `api.new.get.email_data()` in version 0.9.2
