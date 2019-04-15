@@ -334,44 +334,39 @@ the first invocation returned `null`.
 
 ```json
 {
+  "id": "msg-f:1581064946762017791",
+  "legacy_email_id": "15f1123136926bff",
   "thread_id": "thread-f:1581064946762017791",
-  "emails": [
+  "smtp_id": "<87zi8wmmhw.fsf@gmail.com>",
+  "subject": "[PATCH] Flymake support for C/C++",
+  "timestamp": 1507821032297,
+  "content_html": "Hi,<br>\n<br>\nHere&#39;s a proposal for supporting Flymake in C/C++. This patch...",
+  "date": "2017-10-12T15:10:32.297Z",
+  "from": {
+    "address": "joaotavora@gmail.com",
+    "name": ""
+  },
+  "to": [
     {
-      "id": "msg-f:1581064946762017791",
-      "legacy_email_id": "15f1123136926bff",
-      "thread_id": "thread-f:1581064946762017791",
-      "smtp_id": "<87zi8wmmhw.fsf@gmail.com>",
-      "subject": "[PATCH] Flymake support for C/C++",
-      "timestamp": 1507821032297,
-      "content_html": "Hi,<br>\n<br>\nHere&#39;s a proposal for supporting Flymake in C/C++. This patch...",
-      "date": "2017-10-12T15:10:32.297Z",
-      "from": {
-        "address": "joaotavora@gmail.com",
-        "name": ""
-      },
-      "to": [
-        {
-          "address": "emacs-devel@gnu.org"
-        }
-      ],
-      "cc": [
-        {
-          "address": "acm@muc.de"
-        },
-        {
-          "address": "eliz@gnu.org"
-        }
-      ],
-      "bcc": [],
-      "attachments": [
-        {
-          "attachment_id": "0.1",
-          "name": "0001-Add-a-Flymake-backend-for-C.patch",
-          "type": "application/x-patch",
-          "url": "https://mail.google.com/mail/?ui=2&ik=94da28fb67&attid=0.1&permmsgid=msg-f:1581064946762017791&th=15f1123136926bff&view=att&zw",
-          "size": 11225
-        }
-      ]
+      "address": "emacs-devel@gnu.org"
+    }
+  ],
+  "cc": [
+    {
+      "address": "acm@muc.de"
+    },
+    {
+      "address": "eliz@gnu.org"
+    }
+  ],
+  "bcc": [],
+  "attachments": [
+    {
+      "attachment_id": "0.1",
+      "name": "0001-Add-a-Flymake-backend-for-C.patch",
+      "type": "application/x-patch",
+      "url": "https://mail.google.com/mail/?ui=2&ik=94da28fb67&attid=0.1&permmsgid=msg-f:1581064946762017791&th=15f1123136926bff&view=att&zw",
+      "size": 11225
     }
   ]
 }
