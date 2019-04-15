@@ -2674,7 +2674,8 @@ var Gmail = function(localJQuery) {
         } else if (email_id.legacy_email_id) {
             return email_id.legacy_email_id;
         } else if (api.check.data.is_email_id(email_id)) {
-            const emailData = api.new.get.email_data(email_id);
+            console.warn("GmailJS: Warning! Using new-style ID in method expecting legacy-style IDs! Attempting to resolve via cache, but there's no guarantee this will work!");
+            const emailData = api.cache.emailIdCache[email_id];
             return emailData && emailData.legacy_email_id;
         } else {
             return null;
@@ -2686,10 +2687,11 @@ var Gmail = function(localJQuery) {
             return null;
         } else if (api.check.data.is_email_id(email_id)) {
             return email_id;
-        } else if (email_id.id) {
+        } else if (email_id.id && !email_id.$el) { // ensure to only email_data, not DomEmail!
             return email_id.id;
         } else if (api.check.data.is_legacy_email_id(email_id)) {
-            const emailData = api.new.get.email_data(email_id);
+            console.warn("GmailJS: Warning! Using legacy-style ID in method expecting new-style IDs! Attempting to resolve via cache, but there's no guarantee this will work!");
+            const emailData = api.cache.emailLegacyIdCache[email_id];
             return emailData && emailData.id;
         } else {
             return null;
