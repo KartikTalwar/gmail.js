@@ -2677,9 +2677,19 @@ var Gmail = function(localJQuery) {
             console.warn("GmailJS: Warning! Using new-style ID in method expecting legacy-style IDs! Attempting to resolve via cache, but there's no guarantee this will work!");
             const emailData = api.cache.emailIdCache[email_id];
             return emailData && emailData.legacy_email_id;
-        } else {
-            return null;
         }
+
+        // DOMEmail
+        if (email_id.$el && email_id.$el[0]) {
+            email_id = email_id.$el[0]; // fallback to element-lookup.
+        }
+
+        // HTML Element
+        if (email_id.dataset && email_id.dataset.legacyMessageId) {
+            return email_id.dataset.legacyMessageId;
+        }
+
+        return null;
     };
 
     api.helper.get.new_email_id = function(email_id) {
@@ -2693,9 +2703,20 @@ var Gmail = function(localJQuery) {
             console.warn("GmailJS: Warning! Using legacy-style ID in method expecting new-style IDs! Attempting to resolve via cache, but there's no guarantee this will work!");
             const emailData = api.cache.emailLegacyIdCache[email_id];
             return emailData && emailData.id;
-        } else {
-            return null;
         }
+
+        // DOMEmail
+        if (email_id.$el && email_id.$el[0]) {
+            email_id = email_id.$el[0]; // fallback to element-lookup.
+        }
+
+        // HTML Element
+        if (email_id.dataset && email_id.dataset.messageId) {
+            console.log("Found messageId!");
+            return email_id.dataset.messageId;
+        }
+
+        return null;
     };
 
     api.helper.get.email_source_pre = function(email_id) {

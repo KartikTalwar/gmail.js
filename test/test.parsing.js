@@ -485,12 +485,24 @@ describe("ID-compatibility (new->old)", () => {
     const validEmailLegacyId = "16a0d1f820d515e2";
     const validEmailNewId = "msg-a:12345";
     const invalidEmailNewId = "msg-a:12346";
+
     const email = { foo: "bar" };
     email.id = validEmailNewId;
     email.legacy_email_id = validEmailLegacyId;
-
     gmail.cache.emailIdCache[validEmailNewId] = email;
     gmail.cache.emailLegacyIdCache[validEmailLegacyId] = email;
+
+    const elem = {
+        dataset: {
+            messageId: validEmailNewId,
+            legacyMessageId: validEmailLegacyId
+        }
+    };
+    const domEmail = {
+        id: validEmailLegacyId,
+        $el: [ elem ]
+    };
+
 
     it("Provides null from null-valued legacy ID", () => {
         const res = gmail.helper.get.legacy_email_id(null);
@@ -504,6 +516,16 @@ describe("ID-compatibility (new->old)", () => {
 
     it("Provides legacy ID from emailData object", () => {
         const res = gmail.helper.get.legacy_email_id(email);
+        assert.equal(res, validEmailLegacyId);
+    });
+
+    it("Provides legacy ID from HTML element", () => {
+        const res = gmail.helper.get.legacy_email_id(elem);
+        assert.equal(res, validEmailLegacyId);
+    });
+
+    it("Provides legacy ID from DomEmail object", () => {
+        const res = gmail.helper.get.legacy_email_id(domEmail);
         assert.equal(res, validEmailLegacyId);
     });
 
@@ -536,12 +558,23 @@ describe("ID-compatibility (old->new)", () => {
     const validEmailLegacyId = "16a0d1f820d515e2";
     const validEmailNewId = "msg-a:12345";
     const invalidEmailLegacyid = "16a0d1f820d515e3";
+
     const email = { foo: "bar" };
     email.id = validEmailNewId;
     email.legacy_email_id = validEmailLegacyId;
-
     gmail.cache.emailIdCache[validEmailNewId] = email;
     gmail.cache.emailLegacyIdCache[validEmailLegacyId] = email;
+
+    const elem = {
+        dataset: {
+            "messageId": validEmailNewId,
+            "legacyMessageId": validEmailLegacyId
+        }
+    };
+    const domEmail = {
+        id: validEmailLegacyId,
+        $el: [ elem ]
+    };
 
     it("Provides null from null-valued ID", () => {
         const res = gmail.helper.get.new_email_id(null);
@@ -555,6 +588,16 @@ describe("ID-compatibility (old->new)", () => {
 
     it("Provides new ID from emailData object", () => {
         const res = gmail.helper.get.new_email_id(email);
+        assert.equal(res, validEmailNewId);
+    });
+
+    it("Provides new ID from HTML element", () => {
+        const res = gmail.helper.get.new_email_id(elem);
+        assert.equal(res, validEmailNewId);
+    });
+
+    it("Provides new ID from DomEmail object", () => {
+        const res = gmail.helper.get.new_email_id(domEmail);
         assert.equal(res, validEmailNewId);
     });
 
