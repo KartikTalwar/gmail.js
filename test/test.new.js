@@ -114,7 +114,7 @@ describe("gmail.new.get", () => {
         assert.equal(true, failed);
     });
 
-    it("thread_data() returns looks up current thread_id when provided null-value", () => {
+    it("thread_data() looks up current thread_id when provided null-value", () => {
         let origFunc = gmail.new.get.thread_id;
 
         gmail.new.get.thread_id = () => { return validThreadId; };
