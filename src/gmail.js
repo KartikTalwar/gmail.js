@@ -2723,16 +2723,17 @@ var Gmail = function(localJQuery) {
         return null;
     };
 
-    api.helper.get.email_source_pre = function(email_id) {
-        if(!email_id && api.check.is_inside_email()) {
-            email_id = api.get.email_id();
+    api.helper.get.email_source_pre = function(identifier) {
+        if(!identifier && api.check.is_inside_email()) {
+            identifier = api.get.email_id();
         }
 
+        const email_id = api.helper.get.legacy_email_id(identifier);
         if(!email_id) {
             return null;
+        } else {
+            return window.location.origin + window.location.pathname + "?view=att&th=" + email_id + "&attid=0&disp=comp&safe=1&zw";
         }
-
-        return window.location.origin + window.location.pathname + "?view=att&th=" + email_id + "&attid=0&disp=comp&safe=1&zw";
     };
 
 
@@ -3655,16 +3656,12 @@ var Gmail = function(localJQuery) {
      *
      * @param email_id: new style email id. Legacy IDs not supported. If empty, default to latest in view.
      */
-    api.new.get.email_data = function(email_id) {
-        email_id = email_id || api.new.get.email_id();
+    api.new.get.email_data = function(identifier) {
+        identifier = identifier || api.new.get.email_id();
+        const email_id = api.helper.get.new_email_id(identifier);
 
         if (!email_id) {
             return null;
-        }
-
-        if (!api.check.data.is_email_id(email_id)) {
-            console.warn("GmailJS: Warning! Using legacy-style ID in new Gmail API! There's no guarantee this will work!");
-            return api.cache.emailLegacyIdCache[email_id];
         } else {
             return api.cache.emailIdCache[email_id];
         }
