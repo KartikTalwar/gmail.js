@@ -494,7 +494,7 @@ describe("ID-compatibility (new->old)", () => {
 
     const elem = {
         dataset: {
-            messageId: validEmailNewId,
+            "messageId": "#" + validEmailNewId,
             legacyMessageId: validEmailLegacyId
         }
     };
@@ -567,7 +567,7 @@ describe("ID-compatibility (old->new)", () => {
 
     const elem = {
         dataset: {
-            "messageId": validEmailNewId,
+            "messageId": "#" + validEmailNewId,
             "legacyMessageId": validEmailLegacyId
         }
     };

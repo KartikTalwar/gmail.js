@@ -2712,8 +2712,12 @@ var Gmail = function(localJQuery) {
 
         // HTML Element
         if (email_id.dataset && email_id.dataset.messageId) {
-            console.log("Found messageId!");
-            return email_id.dataset.messageId;
+            let id = email_id.dataset.messageId;
+            if (id.indexOf("#") === 0) {
+                id = id.substring(1);
+            }
+
+            return id;
         }
 
         return null;
