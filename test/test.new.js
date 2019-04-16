@@ -32,7 +32,7 @@ describe("gmail.new.get", () => {
         assert.equal(id, validEmailNewId);
     });
 
-    it("email_id() can look up based on DOmEmail instance", () => {
+    it("email_id() can look up based on DomEmail instance", () => {
         let domEmail = {
             $el: [elem]
         };

@@ -3626,17 +3626,7 @@ var Gmail = function(localJQuery) {
             emailElem = emailElems[emailElems.length - 1];
         }
 
-        // handle case when provided argument is DomEmail.
-        if (emailElem.$el && emailElem.$el[0]) {
-            emailElem = emailElem.$el[0];
-        }
-
-        let declaredId = emailElem.dataset["messageId"];
-        if (declaredId && declaredId.startsWith("#")) {
-            return declaredId.substring(1);
-        } else {
-            return declaredId;
-        }
+        return api.helper.get.new_email_id(emailElem);
     };
 
     /**
