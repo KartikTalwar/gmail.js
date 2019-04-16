@@ -2666,53 +2666,53 @@ var Gmail = function(localJQuery) {
     };
 
 
-    api.helper.get.legacy_email_id = function(email_id) {
-        if (!email_id) {
+    api.helper.get.legacy_email_id = function(identifier) {
+        if (!identifier) {
             return null;
-        } else if (api.check.data.is_legacy_email_id(email_id)) {
-            return email_id;
-        } else if (email_id.legacy_email_id) {
-            return email_id.legacy_email_id;
-        } else if (api.check.data.is_email_id(email_id)) {
+        } else if (api.check.data.is_legacy_email_id(identifier)) {
+            return identifier;
+        } else if (identifier.legacy_email_id) {
+            return identifier.legacy_email_id;
+        } else if (api.check.data.is_email_id(identifier)) {
             console.warn("GmailJS: Warning! Using new-style ID in method expecting legacy-style IDs! Attempting to resolve via cache, but there's no guarantee this will work!");
-            const emailData = api.cache.emailIdCache[email_id];
+            const emailData = api.cache.emailIdCache[identifier];
             return emailData && emailData.legacy_email_id;
         }
 
         // DOMEmail
-        if (email_id.$el && email_id.$el[0]) {
-            email_id = email_id.$el[0]; // fallback to element-lookup.
+        if (identifier.$el && identifier.$el[0]) {
+            identifier = identifier.$el[0]; // fallback to element-lookup.
         }
 
         // HTML Element
-        if (email_id.dataset && email_id.dataset.legacyMessageId) {
-            return email_id.dataset.legacyMessageId;
+        if (identifier.dataset && identifier.dataset.legacyMessageId) {
+            return identifier.dataset.legacyMessageId;
         }
 
         return null;
     };
 
-    api.helper.get.new_email_id = function(email_id) {
-        if (!email_id) {
+    api.helper.get.new_email_id = function(identifier) {
+        if (!identifier) {
             return null;
-        } else if (api.check.data.is_email_id(email_id)) {
-            return email_id;
-        } else if (email_id.id && !email_id.$el) { // ensure to only email_data, not DomEmail!
-            return email_id.id;
-        } else if (api.check.data.is_legacy_email_id(email_id)) {
+        } else if (api.check.data.is_email_id(identifier)) {
+            return identifier;
+        } else if (identifier.id && !identifier.$el) { // ensure to only email_data, not DomEmail!
+            return identifier.id;
+        } else if (api.check.data.is_legacy_email_id(identifier)) {
             console.warn("GmailJS: Warning! Using legacy-style ID in method expecting new-style IDs! Attempting to resolve via cache, but there's no guarantee this will work!");
-            const emailData = api.cache.emailLegacyIdCache[email_id];
+            const emailData = api.cache.emailLegacyIdCache[identifier];
             return emailData && emailData.id;
         }
 
         // DOMEmail
-        if (email_id.$el && email_id.$el[0]) {
-            email_id = email_id.$el[0]; // fallback to element-lookup.
+        if (identifier.$el && identifier.$el[0]) {
+            identifier = identifier.$el[0]; // fallback to element-lookup.
         }
 
         // HTML Element
-        if (email_id.dataset && email_id.dataset.messageId) {
-            let id = email_id.dataset.messageId;
+        if (identifier.dataset && identifier.dataset.messageId) {
+            let id = identifier.dataset.messageId;
             if (id.indexOf("#") === 0) {
                 id = id.substring(1);
             }
