@@ -820,6 +820,8 @@ interface GmailObserve {
 //
 ////////////////////////////////////////////////////////////////////////////////
 
+type GmailEmailIdentifier = string | GmailNewEmailData | GmailDomEmail | HTMLElement;
+
 interface GmailHelper {
     /**
      * Dispatch mousedown and mouseup event on passed element
@@ -833,8 +835,8 @@ interface GmailHelper {
         email_data_pre(email_id?: string): string;
         email_data_post(get_data: string): GmailEmailData;
         email_source_pre(email_id?: string): string;
-        email_legacy_id(email_id?: string | GmailNewEmailData): string;
-        emali_new_id(email_id?: string | GmailNewEmailData): string;
+        email_legacy_id(email_id?: GmailEmailIdentifier): string | null;
+        emali_new_id(email_id?: GmailEmailIdentifier): string | null;
     }
 }
 
