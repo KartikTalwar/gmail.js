@@ -821,6 +821,7 @@ interface GmailObserve {
 ////////////////////////////////////////////////////////////////////////////////
 
 type GmailEmailIdentifier = string | GmailNewEmailData | GmailDomEmail | HTMLElement;
+type GmailThreadIdentifier = string | GmailNewEmailData | GmailDomEmail | GmailDomThread;
 
 interface GmailHelper {
     /**
@@ -835,8 +836,9 @@ interface GmailHelper {
         email_data_pre(email_id?: string): string;
         email_data_post(get_data: string): GmailEmailData;
         email_source_pre(email_id?: string): string;
-        email_legacy_id(email_id?: GmailEmailIdentifier): string | null;
-        emali_new_id(email_id?: GmailEmailIdentifier): string | null;
+        email_legacy_id(identifier: GmailEmailIdentifier): string | null;
+        email_new_id(identifier: GmailEmailIdentifier): string | null;
+        thread_id(identifier: GmailThreadIdentifier): string | null;
     }
 }
 
@@ -921,13 +923,13 @@ interface GmailNewGet {
      *
      * @param email_id: new style email id. Legacy IDs not supported. If empty, default to latest in view.
      */
-    email_data(email_id?: string): GmailNewEmailData;
+    email_data(identifier: GmailEmailIdentifier): GmailNewEmailData | null;
     /**
      * Returns available information about a specific thread.
      *
      * @param thread_id: new style thread id. Legacy IDs not supported. If empty, default to current.
      */
-    thread_data(thread_id?: string | GmailNewEmailData): GmailNewThreadData;
+    thread_data(identifier?: GmailThreadIdentifier): GmailNewThreadData | null;
 }
 
 interface GmailNew {

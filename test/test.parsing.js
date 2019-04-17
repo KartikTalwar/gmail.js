@@ -644,6 +644,26 @@ describe("ID-compatibility (old->thread)", () => {
     gmail.cache.emailIdCache[validEmailNewId] = email;
     gmail.cache.emailLegacyIdCache[validEmailLegacyId] = email;
 
+    const emailElem = {
+        dataset: {
+            "messageId": "#" + validEmailNewId,
+            "legacyMessageId": validEmailLegacyId
+        }
+    };
+    const domEmail = {
+        id: validEmailLegacyId,
+        $el: [ emailElem ]
+    };
+
+    const threadElem = {
+        dataset: {
+            threadPermId: "#" + validThreadId
+        }
+    };
+    const domThread = {
+        $el: [ threadElem ]
+    };
+
     it("Provides null from null-valued ID", () => {
         const res = gmail.helper.get.thread_id(null);
         assert.equal(null, res);
@@ -666,6 +686,16 @@ describe("ID-compatibility (old->thread)", () => {
 
     it("Provides thread ID from legacy email ID", () => {
         const res = gmail.helper.get.thread_id(validEmailLegacyId);
+        assert.equal(res, validThreadId);
+    });
+
+    it("Provides thread ID from DomThread object", () => {
+        const res = gmail.helper.get.thread_id(domThread);
+        assert.equal(res, validThreadId);
+    });
+
+    it("Provides thread ID from DomEmail object", () => {
+        const res = gmail.helper.get.thread_id(domEmail);
         assert.equal(res, validThreadId);
     });
 

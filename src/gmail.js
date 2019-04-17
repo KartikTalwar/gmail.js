@@ -2740,8 +2740,33 @@ var Gmail = function(localJQuery) {
             return emailData && emailData.thread_id;
         }
 
-        // TODO: DomThread? Must if so probe  $el[0].dataset and see of is match.
-        // Will fail for DomEmail? Is that OK?
+        // DOMEmail or DOMThread
+        if (identifier.$el && identifier.$el[0]) {
+            identifier = identifier.$el[0]; // fallback to element-lookup.
+        }
+
+        // HTML Element - Thread
+        if (identifier.dataset && identifier.dataset.threadPermId) {
+            let id = identifier.dataset.threadPermId;
+            if (id.indexOf("#") === 0) {
+                id = id.substring(1);
+            }
+
+            return id;
+        }
+
+        // HTML Element - Email
+        if (identifier.dataset && identifier.dataset.messageId) {
+            let id = identifier.dataset.messageId;
+            if (id.indexOf("#") === 0) {
+                id = id.substring(1);
+            }
+
+            console.warn("GmailJS: Warning! Using DomEmail instance to lookup thread-ID. Attempting to resolve via cache, but there's no guarantee this will work!");
+            const emailData = api.cache.emailIdCache[id];
+            return emailData && emailData.thread_id;
+        }
+
         return null;
     };
 
