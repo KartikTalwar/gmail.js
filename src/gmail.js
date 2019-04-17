@@ -2735,7 +2735,7 @@ var Gmail = function(localJQuery) {
             const emailData = api.cache.emailIdCache[identifier];
             return emailData && emailData.thread_id;
         } else if (api.check.data.is_legacy_email_id(identifier)) {
-            console.warn("GmailJS: Warning! Using legacy-style ID in method expecting new-style IDs! Attempting to resolve via cache, but there's no guarantee this will work!");
+            console.warn("GmailJS: Warning! Using legacy-style ID in method expecting thread-ID! Attempting to resolve via cache, but there's no guarantee this will work!");
             const emailData = api.cache.emailLegacyIdCache[identifier];
             return emailData && emailData.thread_id;
         }
