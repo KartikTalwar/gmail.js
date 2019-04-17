@@ -629,3 +629,74 @@ describe("ID-compatibility (old->new)", () => {
         assert.equal(true, warnInvoked);
     });
 });
+
+describe("ID-compatibility (old->thread)", () => {
+    const gmail = new Gmail();
+    const validThreadId = "thread-a:r266633262821436756";
+    const validEmailNewId = "msg-a:12345";
+    const validEmailLegacyId = "16a0d1f820d515e2";
+
+    const email = {
+        thread_id: validThreadId,
+        id: validEmailNewId,
+        legacy_email_id: validEmailLegacyId
+    };
+    gmail.cache.emailIdCache[validEmailNewId] = email;
+    gmail.cache.emailLegacyIdCache[validEmailLegacyId] = email;
+
+    it("Provides null from null-valued ID", () => {
+        const res = gmail.helper.get.thread_id(null);
+        assert.equal(null, res);
+    });
+
+    it("Provides thread ID from thread ID", () => {
+        const res = gmail.helper.get.thread_id(validThreadId);
+        assert.equal(res, validThreadId);
+    });
+
+    it("Provides thread ID from emailData", () => {
+        const res = gmail.helper.get.thread_id(email);
+        assert.equal(res, validThreadId);
+    });
+
+    it("Provides thread ID from new email ID", () => {
+        const res = gmail.helper.get.thread_id(validEmailNewId);
+        assert.equal(res, validThreadId);
+    });
+
+    it("Provides thread ID from legacy email ID", () => {
+        const res = gmail.helper.get.thread_id(validEmailLegacyId);
+        assert.equal(res, validThreadId);
+    });
+
+    it("Returns null on unrecognized input", () => {
+        const res = gmail.helper.get.thread_id("u8gjkldejgkldfjklgdfjkl");
+        assert.equal(res, null);
+    });
+
+    it("Shows warning when provided email-id instead of thread-id", () => {
+        let warnInvoked = false;
+        let origWarnFunc = console.warn;
+        console.warn = () => {
+            warnInvoked = true;
+        };
+
+        let res = gmail.helper.get.thread_id(validEmailNewId);
+
+        console.warn = origWarnFunc;
+        assert.equal(true, warnInvoked);
+    });
+
+    it("Shows warning when provided legacy email-id instead of thread-id", () => {
+        let warnInvoked = false;
+        let origWarnFunc = console.warn;
+        console.warn = () => {
+            warnInvoked = true;
+        };
+
+        let res = gmail.helper.get.thread_id(validEmailLegacyId);
+
+        console.warn = origWarnFunc;
+        assert.equal(true, warnInvoked);
+    });
+});

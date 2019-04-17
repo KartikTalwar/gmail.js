@@ -2723,6 +2723,28 @@ var Gmail = function(localJQuery) {
         return null;
     };
 
+    api.helper.get.thread_id = function(identifier) {
+        if (!identifier) {
+            return null;
+        } else if (api.check.data.is_thread_id(identifier)) {
+            return identifier;
+        } else if (identifier.thread_id) { // NewEmailData
+            return identifier.thread_id;
+        } else if (api.check.data.is_email_id(identifier)) {
+            console.warn("GmailJS: Warning! Using email-ID in method expecting thread-ID! Attempting to resolve via cache, but there's no guarantee this will work!");
+            const emailData = api.cache.emailIdCache[identifier];
+            return emailData && emailData.thread_id;
+        } else if (api.check.data.is_legacy_email_id(identifier)) {
+            console.warn("GmailJS: Warning! Using legacy-style ID in method expecting new-style IDs! Attempting to resolve via cache, but there's no guarantee this will work!");
+            const emailData = api.cache.emailLegacyIdCache[identifier];
+            return emailData && emailData.thread_id;
+        }
+
+        // TODO: DomThread? Must if so probe  $el[0].dataset and see of is match.
+        // Will fail for DomEmail? Is that OK?
+        return null;
+    };
+
     api.helper.get.email_source_pre = function(identifier) {
         if(!identifier && api.check.is_inside_email()) {
             identifier = api.get.email_id();
