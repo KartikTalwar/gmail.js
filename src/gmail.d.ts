@@ -927,7 +927,7 @@ interface GmailNewGet {
      *
      * @param thread_id: new style thread id. Legacy IDs not supported. If empty, default to current.
      */
-    thread_data(thread_id?: string): GmailNewThreadData;
+    thread_data(thread_id?: string | GmailNewEmailData): GmailNewThreadData;
 }
 
 interface GmailNew {
