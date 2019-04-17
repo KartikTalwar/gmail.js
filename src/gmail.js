@@ -3684,18 +3684,15 @@ var Gmail = function(localJQuery) {
      *
      * @param thread_id: new style thread id. Legacy IDs not supported. If empty, default to current.
      */
-    api.new.get.thread_data = function(thread_id) {
-        thread_id = thread_id || api.new.get.thread_id();
+    api.new.get.thread_data = function(identifier) {
+        identifier = identifier || api.new.get.thread_id();
+        const thread_id = api.helper.get.thread_id(identifier);
 
         if (!thread_id) {
             return null;
+        } else {
+            return api.cache.threadCache[thread_id];
         }
-
-        if (!api.check.data.is_thread_id(thread_id)) {
-            throw new Error("Legacy email-ID used where new-type thread-id expected!");
-        }
-
-        return api.cache.threadCache[thread_id];
     };
 
     // setup XHR interception as early as possible, to ensure we get all relevant email-data!

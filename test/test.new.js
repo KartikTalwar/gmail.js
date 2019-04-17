@@ -103,15 +103,9 @@ describe("gmail.new.get", () => {
         assert.equal(null, res);
     });
 
-    it("thread_data() rejects legacy-style IDs", () => {
-        let failed = false;
-        try {
-            let res = gmail.new.get.thread_data("16a0d1f820d515e2");
-        } catch (err) {
-            failed = true;
-        }
-
-        assert.equal(true, failed);
+    it("thread_data() resolves thread", () => {
+        let res = gmail.new.get.thread_data(validThreadId);
+        assert.equal(res, thread);
     });
 
     it("thread_data() looks up current thread_id when provided null-value", () => {
