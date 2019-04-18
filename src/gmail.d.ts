@@ -265,8 +265,8 @@ interface GmailGet {
     /**
        Does the same as email_source_async, but uses ES6 promises.
     */
-    email_source_promise(email_id: string): Promise<string>;
-    email_source_promise(email_id: string, preferBinary: boolean): Promise<Uint8Array>;
+    email_source_promise(identifier: GmailEmailIdentifier): Promise<string>;
+    email_source_promise(identifier: GmailEmailIdentifier, preferBinary: boolean): Promise<Uint8Array>;
     /**
      Retrieves the a email/thread data from the server that is currently
      visible.  The data does not come from the DOM.
