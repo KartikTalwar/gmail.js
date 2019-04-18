@@ -92,14 +92,14 @@ const gmail = new GmailFactory.Gmail() as Gmail;
 - [gmail.get**.current_page()**](#gmailgetcurrent_page)
 
 - [gmail.get**.new.email_id()**](#gmailnewgetemail_id)
-- [gmail.get**.new.email_data()**](#gmailnewgetemail_dataemail_id)
+- [gmail.get**.new.email_data()**](#gmailnewgetemail_dataidentifier)
 - [gmail.get**.new.thread_id()**](#gmailnewgetthread_id)
-- [gmail.get**.new.thread_data()**](#gmailnewgetthread_datathread_id)
+- [gmail.get**.new.thread_data()**](#gmailnewgetthread_dataidentifier)
 
 - [gmail.get**.email_subject()**](#gmailgetemail_subject)
 - [gmail.get**.compose_ids()**](#gmailgetcompose_ids)
-- [gmail.get**.email_source_async(email_id=undefined, callback, error_callback, preferBinary)**](#gmailgetemail_source_asyncemail_idundefined-callback-error_callback-preferBinaryfalse)
-- [gmail.get**.email_source_promise(email_id=undefined, preferBinary)**](#gmailgetemail_source_promiseemail_idundefined-preferBinaryfalse)
+- [gmail.get**.email_source_async(identifier=undefined, callback, error_callback, preferBinary)**](#gmailgetemail_source_asyncidentifierundefined-callback-error_callback-preferBinaryfalse)
+- [gmail.get**.email_source_promise(identifier=undefined, preferBinary)**](#gmailgetemail_source_promiseidentifierundefined-preferBinaryfalse)
 - [gmail.get**.search_query()**](#gmailgetsearch_query)
 - [gmail.get**.unread_emails()**](#gmailgetunread_emails)
  - [gmail.get**.unread_inbox_emails()**](#gmailgetunread_emails)
@@ -314,10 +314,18 @@ Extracted via DOM.
 
 This ID can only be used by `gmail.new.get.*`-functions.
 
-#### gmail.new.get.email_data(email_id)
+#### gmail.new.get.email_data(identifier)
 
 Returns a data-object for the requested email, if found in the
-email-cache. `email_id` must be new-style email-id.
+email-cache.
+
+`identifier` must be an object or string which uniquely identifies
+an email:
+
+- new-style email-id
+- legacy-style email-id (will cause warning)
+- DomEmail instance
+- EmailData instance
 
 If no email-data can be found in Gmail.JS email-cache,
 `null` or `undefined` is returned instead.
@@ -375,10 +383,20 @@ the first invocation returned `null`.
 }
 ```
 
-#### gmail.new.get.thread_data(thread_id)
+#### gmail.new.get.thread_data(identifier)
 
 Returns a data-object for the requested email-thread, if found in the
-email-cache. `thread_id` must be new-style thread-id.
+email-cache.
+
+`identifier` must be an object or string which uniquely identifies
+a thread:
+
+- a new-style thread-id
+- new-style email-id
+- legacy-style email-id (will cause warning)
+- DomEmail instance
+- DomThread instance
+- EmailData instance
 
 If no thread-data can be found in Gmail.JS email-cache,
 `null` or `undefined` is returned instead.
@@ -403,20 +421,26 @@ the first invocation returned `null`.
 }
 ```
 
-#### gmail.get.email_source(email_id=undefined)
+#### gmail.get.email_source(identifier=undefined)
 
 Deprecated function. Will be removed. Migrate to
 `gmail.get.email_source_async` or `gmail.get.email_source_promise`
 instead.
 
-#### gmail.get.email_source_async(email_id=undefined, callback, error_callback, preferBinary=false)
+#### gmail.get.email_source_async(identifier=undefined, callback, error_callback, preferBinary=false)
 
-Retrieves raw MIME message source from the gmail server for the specified email id. It takes the optional email_id parameter where
-the data for the specified id is returned instead of the email
-currently visible in the dom
+Retrieves raw MIME message source from the gmail server for the
+specified email identifier.
 
-**NOTE:** email_id must be legacy-style email-id. Using new-style ID
-*will* fail!
+`identifier` must be an object or string which uniquely identifies
+an email:
+
+- new-style email-id
+- legacy-style email-id (will cause warning)
+- DomEmail instance
+- EmailData instance
+
+If not specified, current email will be resolved automatically.
 
 By default, once retrieved the resulting data will be passed to
 `callback` in text-format. **This may corrupt the actual email
@@ -430,7 +454,7 @@ format and do your own decoding inside your own MIME-parser.
 To get the email-source in binary form, you must set the
 `preferBinary`-parameter to `true`.
 
-#### gmail.get.email_source_promise(email_id=undefined, preferBinary=false)
+#### gmail.get.email_source_promise(identifier=undefined, preferBinary=false)
 
 Does the same as above but implements it using ES6 promises.
 
