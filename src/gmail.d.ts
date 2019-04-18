@@ -250,7 +250,7 @@ interface GmailGet {
     /**
        Deprecated function. Migrate to `email_source_async` or `email_source_promise`!
     */
-    email_source(email_id: string): string;
+    email_source(identifier: GmailEmailIdentifier): string;
     /**
        Retrieves raw MIME message source from the gmail server for the
        specified email id. It takes the optional email_id parameter
@@ -261,7 +261,7 @@ interface GmailGet {
        string or binary format depending on the value of the
        `preferBinary`-parameter.
     */
-    email_source_async(email_id: string, callback: (email_source: string | Uint8Array) => void, error_callback?: (jqxhr: JQueryXHR, textStatus: string, errorThrown: string) => void, preferBinary?: boolean): void;
+    email_source_async(identifier: GmailEmailIdentifier, callback: (email_source: string | Uint8Array) => void, error_callback?: (jqxhr: JQueryXHR, textStatus: string, errorThrown: string) => void, preferBinary?: boolean): void;
     /**
        Does the same as email_source_async, but uses ES6 promises.
     */

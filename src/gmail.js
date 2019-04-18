@@ -2784,9 +2784,9 @@ var Gmail = function(localJQuery) {
     };
 
 
-    api.get.email_source = function(email_id) {
+    api.get.email_source = function(identifier) {
         console.warn("Gmail.js: This function has been deprecated and will be removed in an upcoming release! Please migrate to email_source_async!");
-        var url = api.helper.get.email_source_pre(email_id);
+        var url = api.helper.get.email_source_pre(identifier);
         if (url !== null) {
             return api.tools.make_request(url, "GET", true);
         }
@@ -2794,14 +2794,14 @@ var Gmail = function(localJQuery) {
     };
 
 
-    api.get.email_source_async = function(email_id, callback, error_callback, preferBinary) {
-        api.get.email_source_promise(email_id, preferBinary)
+    api.get.email_source_async = function(identifier, callback, error_callback, preferBinary) {
+        api.get.email_source_promise(identifier, preferBinary)
             .then(callback)
             .catch(error_callback);
     };
 
-    api.get.email_source_promise = function(email_id, preferBinary) {
-        const url = api.helper.get.email_source_pre(email_id);
+    api.get.email_source_promise = function(identifier, preferBinary) {
+        const url = api.helper.get.email_source_pre(identifier);
         if (url !== null) {
             return api.tools.make_request_download_promise(url, preferBinary);
         } else {
