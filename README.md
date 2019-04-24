@@ -244,7 +244,7 @@ These methods return the DOM data itself
 - gmail.dom**.search_bar()**
 - gmail.dom**.toolbar()**
 - gmail.dom**.right_toolbar()**
-- gmail.dom**.compose()** - compose dom object - receives the DOM element for the compose window and provides methods to interact
+- [gmail.dom**.compose()**](#gmaildomcomposecompose_el) - compose dom object - receives the DOM element for the compose window and provides methods to interact
 - gmail.dom**.composes()** - retrives an array of `gmail.dom.compose` objects representing any open compose windows
 - [gmail.dom**.email()**](#gmaildomemailemail_el-or-email_id) - email dom object - receives an email DOM element or email id for an email currently being viewed. Abstracts interaction with that email.
 - [gmail.dom**.thread()**](#gmaildomthreadthread_el) - thread dom object - receives a conversation thread DOM element currently being viewed. Abstracts interaction with that thread.
