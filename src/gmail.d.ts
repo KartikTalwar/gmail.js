@@ -250,7 +250,7 @@ interface GmailGet {
     /**
        Deprecated function. Migrate to `email_source_async` or `email_source_promise`!
     */
-    email_source(email_id: string): string;
+    email_source(identifier: GmailEmailIdentifier): string;
     /**
        Retrieves raw MIME message source from the gmail server for the
        specified email id. It takes the optional email_id parameter
@@ -261,12 +261,12 @@ interface GmailGet {
        string or binary format depending on the value of the
        `preferBinary`-parameter.
     */
-    email_source_async(email_id: string, callback: (email_source: string | Uint8Array) => void, error_callback?: (jqxhr: JQueryXHR, textStatus: string, errorThrown: string) => void, preferBinary?: boolean): void;
+    email_source_async(identifier: GmailEmailIdentifier, callback: (email_source: string | Uint8Array) => void, error_callback?: (jqxhr: JQueryXHR, textStatus: string, errorThrown: string) => void, preferBinary?: boolean): void;
     /**
        Does the same as email_source_async, but uses ES6 promises.
     */
-    email_source_promise(email_id: string): Promise<string>;
-    email_source_promise(email_id: string, preferBinary: boolean): Promise<Uint8Array>;
+    email_source_promise(identifier: GmailEmailIdentifier): Promise<string>;
+    email_source_promise(identifier: GmailEmailIdentifier, preferBinary: boolean): Promise<Uint8Array>;
     /**
      Retrieves the a email/thread data from the server that is currently
      visible.  The data does not come from the DOM.
@@ -388,6 +388,12 @@ interface GmailCheck {
        otherwise (i.e. displayed individually)
      */
     is_conversation_view(): boolean;
+
+    data: {
+        is_email_id(email_id: string): boolean;
+        is_thread_id(email_id: string): boolean;
+        is_legacy_email_id(email_id: string): boolean;
+    }
 }
 
 
@@ -814,6 +820,9 @@ interface GmailObserve {
 //
 ////////////////////////////////////////////////////////////////////////////////
 
+type GmailEmailIdentifier = string | GmailNewEmailData | GmailDomEmail | HTMLElement;
+type GmailThreadIdentifier = string | GmailNewEmailData | GmailDomEmail | GmailDomThread;
+
 interface GmailHelper {
     /**
      * Dispatch mousedown and mouseup event on passed element
@@ -827,6 +836,9 @@ interface GmailHelper {
         email_data_pre(email_id?: string): string;
         email_data_post(get_data: string): GmailEmailData;
         email_source_pre(email_id?: string): string;
+        email_legacy_id(identifier: GmailEmailIdentifier): string | null;
+        email_new_id(identifier: GmailEmailIdentifier): string | null;
+        thread_id(identifier: GmailThreadIdentifier): string | null;
     }
 }
 
@@ -899,9 +911,9 @@ interface GmailNewGet {
      * Returns the new-style email_id of the latest email visible in the DOM,
      * or for the provided email-node if provided.
      *
-     * @param emailElem: Node to extract email-id from. Optional.
+     * @param emailElem: Node to extract email-id from or DomEmail. Optional.
      */
-    email_id(emailElem?: HTMLElement): string;
+    email_id(emailElem?: HTMLElement | GmailDomEmail): string;
     /**
      * Returns the new-style thread_id of the current thread visible in the DOM.
      */
@@ -911,13 +923,13 @@ interface GmailNewGet {
      *
      * @param email_id: new style email id. Legacy IDs not supported. If empty, default to latest in view.
      */
-    email_data(email_id?: string): GmailNewEmailData;
+    email_data(identifier: GmailEmailIdentifier): GmailNewEmailData | null;
     /**
      * Returns available information about a specific thread.
      *
      * @param thread_id: new style thread id. Legacy IDs not supported. If empty, default to current.
      */
-    thread_data(thread_id?: string): GmailNewThreadData;
+    thread_data(identifier?: GmailThreadIdentifier): GmailNewThreadData | null;
 }
 
 interface GmailNew {

@@ -63,7 +63,6 @@ describe("Test tools for parsing new gmail body_params", () => {
     it("get thread data", () => {
         const mockThreadData = threads[0][2][7];
         const threadData = gmail.tools.get_thread_data(threads[0]);
-        console.log(threadData);
 
         assert.deepEqual(threadData, mockThreadData);
     });

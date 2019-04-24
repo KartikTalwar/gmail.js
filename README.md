@@ -89,21 +89,17 @@ const gmail = new GmailFactory.Gmail() as Gmail;
 
 - [gmail.get**.user_email()**](#gmailgetuser_email)
 - [gmail.get**.manager_email()**](#gmailgetmanager_email)
-- [gmail.get**.visible_emails()**](#gmailgetvisible_emails)
-- [gmail.get**.visible_emails_async(callback)**](#gmailgetvisible_emailscallback)
-- [gmail.get**.selected_emails_data()**](#gmailgetselected_emails_data)
 - [gmail.get**.current_page()**](#gmailgetcurrent_page)
-- [gmail.get**.thread_id()**](#gmailgetthread_id)
-- [gmail.get**.email_id()**](#gmailgetemail_id)
-- [gmail.get**.email_ids()**](#gmailgetemail_ids)
+
+- [gmail.get**.new.email_id()**](#gmailnewgetemail_id)
+- [gmail.get**.new.email_data()**](#gmailnewgetemail_dataidentifier)
+- [gmail.get**.new.thread_id()**](#gmailnewgetthread_id)
+- [gmail.get**.new.thread_data()**](#gmailnewgetthread_dataidentifier)
+
 - [gmail.get**.email_subject()**](#gmailgetemail_subject)
 - [gmail.get**.compose_ids()**](#gmailgetcompose_ids)
-- [gmail.get**.email_data(email_id=undefined)**](#gmailgetemail_dataemail_idundefined)
-- [gmail.get**.email_data_async(email_id=undefined, callback)**](#gmailgetemail_dataemail_idundefined-callback)
-- [gmail.get**.displayed_email_data()**](#gmailgetdisplayed_email_data)
-- [gmail.get**.displayed_email_data_async(callback)**](#gmailgetdisplayed_email_data_asynccallback)
-- [gmail.get**.email_source_async(email_id=undefined, callback, error_callback, preferBinary)**](#gmailgetemail_source_asyncemail_idundefined-callback-error_callback-preferBinaryfalse)
-- [gmail.get**.email_source_promise(email_id=undefined, preferBinary)**](#gmailgetemail_source_promiseemail_idundefined-preferBinaryfalse)
+- [gmail.get**.email_source_async(identifier=undefined, callback, error_callback, preferBinary)**](#gmailgetemail_source_asyncidentifierundefined-callback-error_callback-preferBinaryfalse)
+- [gmail.get**.email_source_promise(identifier=undefined, preferBinary)**](#gmailgetemail_source_promiseidentifierundefined-preferBinaryfalse)
 - [gmail.get**.search_query()**](#gmailgetsearch_query)
 - [gmail.get**.unread_emails()**](#gmailgetunread_emails)
  - [gmail.get**.unread_inbox_emails()**](#gmailgetunread_emails)
@@ -118,6 +114,19 @@ const gmail = new GmailFactory.Gmail() as Gmail;
 - [gmail.get**.loggedin_accounts()**](#gmailgetloggedin_accounts)
 - [gmail.get**.beta()**](#gmailgetbeta)
 - [gmail.get**.localization()**](#gmailgetlocalization)
+
+#### GET (deprecated methods)
+
+- [gmail.get**.thread_id()**](#gmailgetthread_id)
+- [gmail.get**.email_id()**](#gmailgetemail_id)
+- [gmail.get**.email_ids()**](#gmailgetemail_ids)
+- [gmail.get**.email_data(email_id=undefined)**](#gmailgetemail_datathread_idundefined)
+- [gmail.get**.email_data_async(email_id=undefined, callback)**](#gmailgetemail_data_asyncemail_idundefined-callback)
+- [gmail.get**.displayed_email_data()**](#gmailgetdisplayed_email_data)
+- [gmail.get**.displayed_email_data_async(callback)**](#gmailgetdisplayed_email_data_asynccallback)
+- [gmail.get**.selected_emails_data()**](#gmailgetselected_emails_data)
+- [gmail.get**.visible_emails()**](#gmailgetvisible_emails)
+- [gmail.get**.visible_emails_async(callback)**](#gmailgetvisible_emails_asynccallback)
 
 
 
@@ -287,212 +296,151 @@ These are some of the variables that are tracked and kept in memory while the re
 
 ### Details
 
-#### gmail.get.visible_emails()
 
-Returns a list of emails from the server that are currently visible in the inbox view. The data does not come from the DOM
+#### gmail.new.get.email_id()
 
-```json
-[{"id": "1425a3693a4c45d0",
-  "title": "<b>What if video games were real? On YouTube</b>",
-  "excerpt": "View email in a web browser Header Super Mario Brothers Parkour by Warialasky Super Mario Brothers",
-  "time": "Fri, Nov 15, 2013 at 12:23 AM",
-  "sender": "noreply@youtube.com",
-  "attachment": "",
-  "labels": ["^all", "^i", "^smartlabel_social", "^unsub"]}]
-```
+Obtains the new-style email-ID from the email currently on screen.
+Extracted via DOM.
 
-#### gmail.get.visible_emails(async)
+This ID can only be used by `gmail.new.get.*`-functions.
 
-Does the same as above but accepts a callback function
+Can be provided email-element from HTML DOM, or Gmail DOMEmail object
+to look up specific email ID.
 
-#### gmail.get.selected_emails_data()
+#### gmail.new.get.thread_id()
 
-Returns a list of object representation from emails that are currently **selected** in the inbox view.
-The data does not come from the DOM
+Obtains the new-style thread-ID from the email currently on screen.
+Extracted via DOM.
 
-```json
-[{
-  "thread_id":"141d44da39d6caf8",
-  "first_email": "141d44da39d6caf9",
-  "last_email": "141d44da39d6caf9",
-  "total_emails": 1,
-  "total_threads": ["141d44da39d6caf8"],
-  "people_involved": [
-    ["Kartik Talwar", "hi@kartikt.com"],
-    ["California", "california@gmail.com"]
-  ],
-  "subject": "test",
-  "threads": {
-    "141d44da39d6caf8": {
-      "reply_to_id": "",
-      "reply_to": "replytome@gmail.com",
-      "is_deleted" : false,
-      "from": "California",
-      "to" : ["hi@kartikt.com"],
-      "cc" : [],
-      "bcc" : [],
-      "from_email": "california@gmail.com",
-      "timestamp": 1382246359000,
-      "datetime": "Sun, Nov 20, 2013 at 1:19 AM",
-      "content_plain": "another test",
-      "subject": "test",
-      "content_html": "<div dir=\"ltr\">another test</div>\n"
-    }
-  }
-},{
-  "thread_id":"141d44da39d6caf8",
-  "first_email": "141d44da39d6caf8",
-  "last_email": "141d44da39d6caf8",
-  "total_emails": 1,
-  "total_threads": ["141d44da39d6caf8"],
-  "people_involved": [
-    ["Kartik Talwar", "hi@kartikt.com"],
-    ["California", "california@gmail.com"]
-  ],
-  "subject": "test",
-  "threads": {
-    "141d44da39d6caf8": {
-      "reply_to_id": "",
-      "reply_to": null,
-      "is_deleted" : false,
-      "from": "California",
-      "to" : ["hi@kartikt.com"],
-      "cc" : [],
-      "bcc" : [],
-      "from_email": "california@gmail.com",
-      "timestamp": 1382246359000,
-      "datetime": "Sun, Nov 20, 2013 at 1:19 AM",
-      "content_plain": "another test",
-      "subject": "test",
-      "content_html": "<div dir=\"ltr\">another test</div>\n"
-    }
-  }
-}]
-```
+This ID can only be used by `gmail.new.get.*`-functions.
 
-#### gmail.get.email_data(thread_id=undefined)
+#### gmail.new.get.email_data(identifier)
 
-**DEPRECATED! This function relies on XHR-invocation against a deprecated Gmail API and is is very likely to fail. Use `gmail.new.get.email_data()` and `gmail.new.get.thread_data()` instead!**
+Returns a data-object for the requested email, if found in the
+email-cache.
 
-Returns an object representation of the opened email contents and metadata. It takes the optional thread_id parameter where
-the data for the specified thread is returned instead of the email-thread currently visible in the dom.
+`identifier` must be an object or string which uniquely identifies
+an email:
 
-`thread_id` is added for updated gmail thread behaviour which adds support for emails created in [inbox](https://inbox.google.com). first_email remains as the first message in the thread.
+- new-style email-id
+- legacy-style email-id (will cause warning)
+- DomEmail instance
+- EmailData instance
+
+If no email-data can be found in Gmail.JS email-cache,
+`null` or `undefined` is returned instead.
+
+This method returns immediately, uses no XHR, and has no
+async-equivalent.
+
+Please note: Email-data is intercepted and stored in the cache
+only when Gmail itself has requested or used and email.
+
+This typically happens when loading a label (pre-loading all emails in
+view) or when navigating to view a full thread.
+
+That means that calling the same method later may return data even if
+the first invocation returned `null`.
+
 
 ```json
 {
-  "thread_id":"141d44da39d6caf8",
-  "first_email": "141d44da39d6caf8",
-  "last_email": "141d44da39d6caf8",
-  "total_emails": 1,
-  "total_threads": ["141d44da39d6caf8"],
-  "people_involved": [
-    ["Kartik Talwar", "hi@kartikt.com"],
-    ["California", "california@gmail.com"]
-  ],
-  "subject": "test",
-  "threads": {
-    "141d44da39d6caf8": {
-      "reply_to_id": "",
-      "reply_to": "replytome@gmail.com",
-      "is_deleted" : false,
-      "from": "California",
-      "to" : ["hi@kartikt.com"],
-      "cc" : [],
-      "bcc" : [],
-      "from_email": "california@gmail.com",
-      "timestamp": 1382246359000,
-      "datetime": "Sun, Nov 20, 2013 at 1:19 AM",
-      "content_plain": "another test",
-      "subject": "test",
-      "content_html": "<div dir=\"ltr\">another test</div>\n",
-      "attachments": [
-          "some_file.pdf"
-      ],
-      "attachments_details": [
-      {
-          "attachment_id": "0.1",
-          "name": "some_file.pdf",
-          "size": 11235,
-          "type": "application/pdf",
-          "url": "https://mail.google.com/u/0/?ui=......"
-      }]
+  "id": "msg-f:1581064946762017791",
+  "legacy_email_id": "15f1123136926bff",
+  "thread_id": "thread-f:1581064946762017791",
+  "smtp_id": "<87zi8wmmhw.fsf@gmail.com>",
+  "subject": "[PATCH] Flymake support for C/C++",
+  "timestamp": 1507821032297,
+  "content_html": "Hi,<br>\n<br>\nHere&#39;s a proposal for supporting Flymake in C/C++. This patch...",
+  "date": "2017-10-12T15:10:32.297Z",
+  "from": {
+    "address": "joaotavora@gmail.com",
+    "name": ""
+  },
+  "to": [
+    {
+      "address": "emacs-devel@gnu.org"
     }
-  }
+  ],
+  "cc": [
+    {
+      "address": "acm@muc.de"
+    },
+    {
+      "address": "eliz@gnu.org"
+    }
+  ],
+  "bcc": [],
+  "attachments": [
+    {
+      "attachment_id": "0.1",
+      "name": "0001-Add-a-Flymake-backend-for-C.patch",
+      "type": "application/x-patch",
+      "url": "https://mail.google.com/mail/?ui=2&ik=94da28fb67&attid=0.1&permmsgid=msg-f:1581064946762017791&th=15f1123136926bff&view=att&zw",
+      "size": 11225
+    }
+  ]
 }
 ```
 
-#### gmail.get.email_data_async(email_id=undefined, callback)
+#### gmail.new.get.thread_data(identifier)
 
+Returns a data-object for the requested email-thread, if found in the
+email-cache.
 
-Does the same as above but accepts a callback function
+`identifier` must be an object or string which uniquely identifies
+a thread:
 
+- a new-style thread-id
+- new-style email-id
+- legacy-style email-id (will cause warning)
+- DomEmail instance
+- DomThread instance
+- EmailData instance
 
-#### gmail.get.displayed_email_data()
+If no thread-data can be found in Gmail.JS email-cache,
+`null` or `undefined` is returned instead.
 
-**DEPRECATED! This function relies on XHR-invocation against a deprecated Gmail API and is is very likely to fail. Use `gmail.new.get.email_data()` and `gmail.new.get.thread_data()` instead!**
+This method returns immediately, uses no XHR, and has no
+async-equivalent.
 
-Returns an object representation of the emails that are being displayed.
+Please note: Email-data is intercepted and stored in the cache
+only when Gmail itself has requested or used and email.
+
+This typically happens when loading a label (pre-loading all emails in
+view) or when navigating to view a full thread.
+
+That means that calling the same method later may return data even if
+the first invocation returned `null`.
+
 
 ```json
 {
-  "thread_id":"141d44da39d6caf8",
-  "first_email": "145881e7a8befff6",
-  "last_email": "145881e7a8befff6",
-  "total_emails": 1,
-  "total_threads": ["145881e7a8befff6"],
-  "people_involved": [
-    ["Kartik Talwar", "hi@kartikt.com"],
-    ["California", "california@gmail.com"]
-  ],
-  "subject": "test",
-  "threads": {
-    "145881e7a8befff6": {
-      "reply_to_id": "",
-      "reply_to": "replytome@gmail.com",
-      "is_deleted" : false,
-      "from": "California",
-      "to" : ["hi@kartikt.com"],
-      "cc" : [],
-      "bcc" : [],
-      "from_email": "california@gmail.com",
-      "timestamp": 1382246359000,
-      "datetime": "Sun, Nov 20, 2013 at 1:19 AM",
-      "content_plain": "another test",
-      "subject": "test",
-      "content_html": "<div dir=\"ltr\">another test</div>\n",
-      "attachments": [
-          "some_file.pdf"
-      ],
-      "attachments_details": [
-      {
-          "attachment_id": "0.1",
-          "name": "some_file.pdf",
-          "size": 11235,
-          "type": "application/pdf",
-          "url": "https://mail.google.com/u/0/?ui=......"
-      }]
-    }
-  }
+    "thread_id": "thread-f:1581064946762017791",
+    "emails": [...email_data elements...]
 }
-
 ```
 
-#### gmail.get.displayed_email_data_async(callback)
-
-Does the same as above but accepts a callback function.
-
-
-#### gmail.get.email_source(email_id=undefined)
+#### gmail.get.email_source(identifier=undefined)
 
 Deprecated function. Will be removed. Migrate to
 `gmail.get.email_source_async` or `gmail.get.email_source_promise`
 instead.
 
-#### gmail.get.email_source_async(email_id=undefined, callback, error_callback, preferBinary=false)
+#### gmail.get.email_source_async(identifier=undefined, callback, error_callback, preferBinary=false)
 
-Retrieves raw MIME message source from the gmail server for the specified email id. It takes the optional email_id parameter where
-the data for the specified id is returned instead of the email currently visible in the dom
+Retrieves raw MIME message source from the gmail server for the
+specified email identifier.
+
+`identifier` must be an object or string which uniquely identifies
+an email:
+
+- new-style email-id
+- legacy-style email-id (will cause warning)
+- DomEmail instance
+- EmailData instance
+
+If not specified, current email will be resolved automatically.
 
 By default, once retrieved the resulting data will be passed to
 `callback` in text-format. **This may corrupt the actual email
@@ -506,7 +454,7 @@ format and do your own decoding inside your own MIME-parser.
 To get the email-source in binary form, you must set the
 `preferBinary`-parameter to `true`.
 
-#### gmail.get.email_source_promise(email_id=undefined, preferBinary=false)
+#### gmail.get.email_source_promise(identifier=undefined, preferBinary=false)
 
 Does the same as above but implements it using ES6 promises.
 
@@ -568,31 +516,6 @@ Returns the opened email's subject from the DOM
 "test"
 ```
 
-
-#### gmail.get.thread_id()
-
-Gets current email-thread's ID.
-
-This can be used together with `gmail.get.email_data()` to obtain
-individual email IDs.
-
-
-#### gmail.get.email_id()
-
-Same as `gmail.get.thread_id()`, but kept for compatibilty.
-Using this method generates a warning!
-
-```js
-"141de25dc0b48e4f"
-```
-
-#### gmail.get.email_ids()
-
-Returns a list of email IDs for each thread in the conversation
-
-```js
-["141de25dc0b48e4f"]
-```
 
 ### gmail.get.compose_ids()
 
@@ -1370,6 +1293,247 @@ Show/Hide compose window ```gmail.tools.toggle_minimize```.
 ```js
 gmail.tools.toggle_minimize
 ```
+
+### Details - Deprecated methods
+
+#### gmail.get.thread_id()
+
+**Note: This method can only be used with other deprecated methods,
+and is itself deprecated. Use `gmail.new.get.thread_id()` instead.**
+
+Gets current email-thread's ID.
+
+This can be used together with `gmail.get.email_data()` to obtain
+individual email IDs.
+
+
+#### gmail.get.email_id()
+
+**Note: This method can only be used with other deprecated methods,
+and is itself deprecated. Use `gmail.new.get.email_id()` instead.**
+
+Same as `gmail.get.thread_id()`, but kept for compatibilty.
+Using this method generates a warning!
+
+```js
+"141de25dc0b48e4f"
+```
+
+#### gmail.get.email_ids()
+
+**Note: This method can only be used with other deprecated methods,
+and is itself deprecated. Use `gmail.new.get.thread_id()` and
+`gmail.new.get.thread_data()` instead.**
+
+Returns a list of email IDs for each thread in the conversation
+
+```js
+["141de25dc0b48e4f"]
+```
+
+#### gmail.get.visible_emails()
+
+**DEPRECATED! This function relies on XHR-invocation against a deprecated Gmail API and is is very likely to fail. Migrate to `gmail.new.get.*`-API instead.**
+
+Returns a list of emails from the server that are currently visible in the inbox view. The data does not come from the DOM
+
+```json
+[{"id": "1425a3693a4c45d0",
+  "title": "<b>What if video games were real? On YouTube</b>",
+  "excerpt": "View email in a web browser Header Super Mario Brothers Parkour by Warialasky Super Mario Brothers",
+  "time": "Fri, Nov 15, 2013 at 12:23 AM",
+  "sender": "noreply@youtube.com",
+  "attachment": "",
+  "labels": ["^all", "^i", "^smartlabel_social", "^unsub"]}]
+```
+
+#### gmail.get.visible_emails_async(callback)
+
+**DEPRECATED! This function relies on XHR-invocation against a deprecated Gmail API and is is very likely to fail. Migrate to `gmail.new.get.*`-API instead.**
+
+Does the same as above but accepts a callback function
+
+#### gmail.get.selected_emails_data()
+
+**DEPRECATED! This function relies on XHR-invocation against a deprecated Gmail API and is is very likely to fail. Migrate to `gmail.new.get.*`-API instead.**
+
+Returns a list of object representation from emails that are currently **selected** in the inbox view.
+The data does not come from the DOM
+
+```json
+[{
+  "thread_id":"141d44da39d6caf8",
+  "first_email": "141d44da39d6caf9",
+  "last_email": "141d44da39d6caf9",
+  "total_emails": 1,
+  "total_threads": ["141d44da39d6caf8"],
+  "people_involved": [
+    ["Kartik Talwar", "hi@kartikt.com"],
+    ["California", "california@gmail.com"]
+  ],
+  "subject": "test",
+  "threads": {
+    "141d44da39d6caf8": {
+      "reply_to_id": "",
+      "reply_to": "replytome@gmail.com",
+      "is_deleted" : false,
+      "from": "California",
+      "to" : ["hi@kartikt.com"],
+      "cc" : [],
+      "bcc" : [],
+      "from_email": "california@gmail.com",
+      "timestamp": 1382246359000,
+      "datetime": "Sun, Nov 20, 2013 at 1:19 AM",
+      "content_plain": "another test",
+      "subject": "test",
+      "content_html": "<div dir=\"ltr\">another test</div>\n"
+    }
+  }
+},{
+  "thread_id":"141d44da39d6caf8",
+  "first_email": "141d44da39d6caf8",
+  "last_email": "141d44da39d6caf8",
+  "total_emails": 1,
+  "total_threads": ["141d44da39d6caf8"],
+  "people_involved": [
+    ["Kartik Talwar", "hi@kartikt.com"],
+    ["California", "california@gmail.com"]
+  ],
+  "subject": "test",
+  "threads": {
+    "141d44da39d6caf8": {
+      "reply_to_id": "",
+      "reply_to": null,
+      "is_deleted" : false,
+      "from": "California",
+      "to" : ["hi@kartikt.com"],
+      "cc" : [],
+      "bcc" : [],
+      "from_email": "california@gmail.com",
+      "timestamp": 1382246359000,
+      "datetime": "Sun, Nov 20, 2013 at 1:19 AM",
+      "content_plain": "another test",
+      "subject": "test",
+      "content_html": "<div dir=\"ltr\">another test</div>\n"
+    }
+  }
+}]
+```
+
+#### gmail.get.email_data(thread_id=undefined)
+
+**DEPRECATED! This function relies on XHR-invocation against a deprecated Gmail API and is is very likely to fail. Use `gmail.new.get.email_data()` and `gmail.new.get.thread_data()` instead!**
+
+Returns an object representation of the opened email contents and metadata. It takes the optional thread_id parameter where
+the data for the specified thread is returned instead of the email-thread currently visible in the dom.
+
+`thread_id` is added for updated gmail thread behaviour which adds support for emails created in [inbox](https://inbox.google.com). first_email remains as the first message in the thread.
+
+```json
+{
+  "thread_id":"141d44da39d6caf8",
+  "first_email": "141d44da39d6caf8",
+  "last_email": "141d44da39d6caf8",
+  "total_emails": 1,
+  "total_threads": ["141d44da39d6caf8"],
+  "people_involved": [
+    ["Kartik Talwar", "hi@kartikt.com"],
+    ["California", "california@gmail.com"]
+  ],
+  "subject": "test",
+  "threads": {
+    "141d44da39d6caf8": {
+      "reply_to_id": "",
+      "reply_to": "replytome@gmail.com",
+      "is_deleted" : false,
+      "from": "California",
+      "to" : ["hi@kartikt.com"],
+      "cc" : [],
+      "bcc" : [],
+      "from_email": "california@gmail.com",
+      "timestamp": 1382246359000,
+      "datetime": "Sun, Nov 20, 2013 at 1:19 AM",
+      "content_plain": "another test",
+      "subject": "test",
+      "content_html": "<div dir=\"ltr\">another test</div>\n",
+      "attachments": [
+          "some_file.pdf"
+      ],
+      "attachments_details": [
+      {
+          "attachment_id": "0.1",
+          "name": "some_file.pdf",
+          "size": 11235,
+          "type": "application/pdf",
+          "url": "https://mail.google.com/u/0/?ui=......"
+      }]
+    }
+  }
+}
+```
+
+#### gmail.get.email_data_async(email_id=undefined, callback)
+
+**DEPRECATED! This function relies on XHR-invocation against a deprecated Gmail API and is is very likely to fail. Use `gmail.new.get.email_data()` and `gmail.new.get.thread_data()` instead!**
+
+Does the same as above but accepts a callback function.
+
+
+#### gmail.get.displayed_email_data()
+
+**DEPRECATED! This function relies on XHR-invocation against a deprecated Gmail API and is is very likely to fail. Migrate to `gmail.new.get.*`-API instead.**
+
+Returns an object representation of the emails that are being displayed.
+
+```json
+{
+  "thread_id":"141d44da39d6caf8",
+  "first_email": "145881e7a8befff6",
+  "last_email": "145881e7a8befff6",
+  "total_emails": 1,
+  "total_threads": ["145881e7a8befff6"],
+  "people_involved": [
+    ["Kartik Talwar", "hi@kartikt.com"],
+    ["California", "california@gmail.com"]
+  ],
+  "subject": "test",
+  "threads": {
+    "145881e7a8befff6": {
+      "reply_to_id": "",
+      "reply_to": "replytome@gmail.com",
+      "is_deleted" : false,
+      "from": "California",
+      "to" : ["hi@kartikt.com"],
+      "cc" : [],
+      "bcc" : [],
+      "from_email": "california@gmail.com",
+      "timestamp": 1382246359000,
+      "datetime": "Sun, Nov 20, 2013 at 1:19 AM",
+      "content_plain": "another test",
+      "subject": "test",
+      "content_html": "<div dir=\"ltr\">another test</div>\n",
+      "attachments": [
+          "some_file.pdf"
+      ],
+      "attachments_details": [
+      {
+          "attachment_id": "0.1",
+          "name": "some_file.pdf",
+          "size": 11235,
+          "type": "application/pdf",
+          "url": "https://mail.google.com/u/0/?ui=......"
+      }]
+    }
+  }
+}
+
+```
+
+#### gmail.get.displayed_email_data_async(callback)
+
+**DEPRECATED! This function relies on XHR-invocation against a deprecated Gmail API and is is very likely to fail. Migrate to `gmail.new.get.*`-API instead.**
+
+Does the same as above but accepts a callback function.
 
 
 ## Author and Licensing

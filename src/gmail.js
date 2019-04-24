@@ -43,16 +43,12 @@ var Gmail = function(localJQuery) {
     api.tracker.globals   = typeof GLOBALS !== "undefined"
         ? GLOBALS
         : (
-            typeof(window) !== "undefined" && window.opener !== null && typeof window.opener.GLOBALS !== "undefined"
-                ? window.opener.GLOBALS
-                : []
+            typeof(window) !== "undefined" && window.opener && window.opener.GLOBALS || []
         );
     api.tracker.view_data = typeof VIEW_DATA !== "undefined"
         ? VIEW_DATA
         : (
-            typeof(window) !== "undefined" && window.opener !== null && typeof window.opener.VIEW_DATA !== "undefined"
-                ? window.opener.VIEW_DATA
-                : []
+            typeof(window) !== "undefined" && window.opener && window.opener.VIEW_DATA || []
         );
     api.tracker.ik        = api.tracker.globals[9] || "";
     api.tracker.hangouts  = undefined;
@@ -1003,6 +999,12 @@ var Gmail = function(localJQuery) {
             && api.check.data.is_email_id(obj["1"]);
     };
 
+    api.check.data.is_legacy_email_id = function(id) {
+        return id
+            && typeof id === "string"
+            && /^[0-9a-f]{16,}$/.test(id);
+    };
+
     api.check.data.is_action = function(obj) {
         return api.check.data.is_first_type_action(obj)
             || api.check.data.is_second_type_action(obj);
@@ -1406,7 +1408,7 @@ var Gmail = function(localJQuery) {
         // dont crash on those.
         if (response.startsWith("<!DOCTYPE html")
             || response.indexOf("display:inline-block") !== -1
-           ) {
+        ) {
             return [];
         }
 
@@ -2664,22 +2666,127 @@ var Gmail = function(localJQuery) {
     };
 
 
-    api.helper.get.email_source_pre = function(email_id) {
-        if(!email_id && api.check.is_inside_email()) {
-            email_id = api.get.email_id();
+    api.helper.get.legacy_email_id = function(identifier) {
+        if (!identifier) {
+            return null;
+        } else if (api.check.data.is_legacy_email_id(identifier)) {
+            return identifier;
+        } else if (identifier.legacy_email_id) {
+            return identifier.legacy_email_id;
+        } else if (api.check.data.is_email_id(identifier)) {
+            console.warn("GmailJS: Warning! Using new-style ID in method expecting legacy-style IDs! Attempting to resolve via cache, but there's no guarantee this will work!");
+            const emailData = api.cache.emailIdCache[identifier];
+            return emailData && emailData.legacy_email_id;
         }
 
+        // DOMEmail
+        if (identifier.$el && identifier.$el[0]) {
+            identifier = identifier.$el[0]; // fallback to element-lookup.
+        }
+
+        // HTML Element
+        if (identifier.dataset && identifier.dataset.legacyMessageId) {
+            return identifier.dataset.legacyMessageId;
+        }
+
+        return null;
+    };
+
+    api.helper.get.new_email_id = function(identifier) {
+        if (!identifier) {
+            return null;
+        } else if (api.check.data.is_email_id(identifier)) {
+            return identifier;
+        } else if (identifier.id && !identifier.$el) { // ensure to only email_data, not DomEmail!
+            return identifier.id;
+        } else if (api.check.data.is_legacy_email_id(identifier)) {
+            console.warn("GmailJS: Warning! Using legacy-style ID in method expecting new-style IDs! Attempting to resolve via cache, but there's no guarantee this will work!");
+            const emailData = api.cache.emailLegacyIdCache[identifier];
+            return emailData && emailData.id;
+        }
+
+        // DOMEmail
+        if (identifier.$el && identifier.$el[0]) {
+            identifier = identifier.$el[0]; // fallback to element-lookup.
+        }
+
+        // HTML Element
+        if (identifier.dataset && identifier.dataset.messageId) {
+            let id = identifier.dataset.messageId;
+            if (id.indexOf("#") === 0) {
+                id = id.substring(1);
+            }
+
+            return id;
+        }
+
+        return null;
+    };
+
+    api.helper.get.thread_id = function(identifier) {
+        if (!identifier) {
+            return null;
+        } else if (api.check.data.is_thread_id(identifier)) {
+            return identifier;
+        } else if (identifier.thread_id) { // NewEmailData
+            return identifier.thread_id;
+        } else if (api.check.data.is_email_id(identifier)) {
+            console.warn("GmailJS: Warning! Using email-ID in method expecting thread-ID! Attempting to resolve via cache, but there's no guarantee this will work!");
+            const emailData = api.cache.emailIdCache[identifier];
+            return emailData && emailData.thread_id;
+        } else if (api.check.data.is_legacy_email_id(identifier)) {
+            console.warn("GmailJS: Warning! Using legacy-style ID in method expecting thread-ID! Attempting to resolve via cache, but there's no guarantee this will work!");
+            const emailData = api.cache.emailLegacyIdCache[identifier];
+            return emailData && emailData.thread_id;
+        }
+
+        // DOMEmail or DOMThread
+        if (identifier.$el && identifier.$el[0]) {
+            identifier = identifier.$el[0]; // fallback to element-lookup.
+        }
+
+        // HTML Element - Thread
+        if (identifier.dataset && identifier.dataset.threadPermId) {
+            let id = identifier.dataset.threadPermId;
+            if (id.indexOf("#") === 0) {
+                id = id.substring(1);
+            }
+
+            return id;
+        }
+
+        // HTML Element - Email
+        if (identifier.dataset && identifier.dataset.messageId) {
+            let id = identifier.dataset.messageId;
+            if (id.indexOf("#") === 0) {
+                id = id.substring(1);
+            }
+
+            console.warn("GmailJS: Warning! Using DomEmail instance to lookup thread-ID. Attempting to resolve via cache, but there's no guarantee this will work!");
+            const emailData = api.cache.emailIdCache[id];
+            return emailData && emailData.thread_id;
+        }
+
+        return null;
+    };
+
+    api.helper.get.email_source_pre = function(identifier) {
+        if(!identifier && api.check.is_inside_email()) {
+            identifier = api.get.email_id();
+        }
+
+        const email_id = api.helper.get.legacy_email_id(identifier);
         if(!email_id) {
             return null;
+        } else {
+            return window.location.origin + window.location.pathname + "?view=att&th=" + email_id + "&attid=0&disp=comp&safe=1&zw";
         }
-
-        return window.location.origin + window.location.pathname + "?view=att&th=" + email_id + "&attid=0&disp=comp&safe=1&zw";
     };
 
 
-    api.get.email_source = function(email_id) {
+    api.get.email_source = function(identifier) {
         console.warn("Gmail.js: This function has been deprecated and will be removed in an upcoming release! Please migrate to email_source_async!");
-        var url = api.helper.get.email_source_pre(email_id);
+        var url = api.helper.get.email_source_pre(identifier);
         if (url !== null) {
             return api.tools.make_request(url, "GET", true);
         }
@@ -2687,14 +2794,14 @@ var Gmail = function(localJQuery) {
     };
 
 
-    api.get.email_source_async = function(email_id, callback, error_callback, preferBinary) {
-        api.get.email_source_promise(email_id, preferBinary)
+    api.get.email_source_async = function(identifier, callback, error_callback, preferBinary) {
+        api.get.email_source_promise(identifier, preferBinary)
             .then(callback)
             .catch(error_callback);
     };
 
-    api.get.email_source_promise = function(email_id, preferBinary) {
-        const url = api.helper.get.email_source_pre(email_id);
+    api.get.email_source_promise = function(identifier, preferBinary) {
+        const url = api.helper.get.email_source_pre(identifier);
         if (url !== null) {
             return api.tools.make_request_download_promise(url, preferBinary);
         } else {
@@ -3557,6 +3664,7 @@ var Gmail = function(localJQuery) {
      * @param emailElem: Node to extract email-id from. Optional.
      */
     api.new.get.email_id = function(emailElem) {
+        // ensure we have an email-element to work with
         if (!emailElem) {
             const emailElems = document.querySelectorAll(".adn[data-message-id]");
             if (!emailElems || emailElems.length === 0) {
@@ -3565,12 +3673,7 @@ var Gmail = function(localJQuery) {
             emailElem = emailElems[emailElems.length - 1];
         }
 
-        let declaredId = emailElem.dataset["messageId"];
-        if (declaredId && declaredId.startsWith("#")) {
-            return declaredId.substring(1);
-        } else {
-            return declaredId;
-        }
+        return api.helper.get.new_email_id(emailElem);
     };
 
     /**
@@ -3590,9 +3693,15 @@ var Gmail = function(localJQuery) {
      *
      * @param email_id: new style email id. Legacy IDs not supported. If empty, default to latest in view.
      */
-    api.new.get.email_data = function(email_id) {
-        email_id = email_id || api.new.get.email_id();
-        return api.cache.emailIdCache[email_id];
+    api.new.get.email_data = function(identifier) {
+        identifier = identifier || api.new.get.email_id();
+        const email_id = api.helper.get.new_email_id(identifier);
+
+        if (!email_id) {
+            return null;
+        } else {
+            return api.cache.emailIdCache[email_id];
+        }
     };
 
     /**
@@ -3600,9 +3709,15 @@ var Gmail = function(localJQuery) {
      *
      * @param thread_id: new style thread id. Legacy IDs not supported. If empty, default to current.
      */
-    api.new.get.thread_data = function(thread_id) {
-        thread_id = thread_id || api.new.get.thread_id();
-        return api.cache.threadCache[thread_id];
+    api.new.get.thread_data = function(identifier) {
+        identifier = identifier || api.new.get.thread_id();
+        const thread_id = api.helper.get.thread_id(identifier);
+
+        if (!thread_id) {
+            return null;
+        } else {
+            return api.cache.threadCache[thread_id];
+        }
     };
 
     // setup XHR interception as early as possible, to ensure we get all relevant email-data!
