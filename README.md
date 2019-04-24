@@ -1074,7 +1074,6 @@ Compose methods:
 - **.email_id()** - retrieve the draft email id
 - **.is_inline()** - is this compose instance inline (as with reply & forwards) or a popup (as with a new compose)
 - **.recipients(options)** - retrieves `to`, `cc`, `bcc` and returns them in a hash of arrays.
-  
   Options:
   - *.type* - string  `to`, `cc`, or `bcc` to check a specific one
   - *.flat* - boolean if `true` will just return an array of all recipients instead of splitting out into to, cc, and bcc
@@ -1088,7 +1087,6 @@ Compose methods:
 - **.find(selector)** - map find through to jquery element
 - **.close()** - close compose window
 - **.dom(lookup)** - retrieve preconfigured dom elements for this compose window.
-      
     Lookup can be one of `'to' | 'cc' | 'bcc' | 'id' | 'draft' | 'subject' | 'subjectbox'
   | 'all_subjects' | 'body' | 'reply' | 'forward' | 'from' | 'send_button'`
 
