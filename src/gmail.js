@@ -1366,10 +1366,12 @@ var Gmail = function(localJQuery) {
             for (let key in email) {
                 let prop = email[key];
                 if (api.check.data.is_smartlabels_array(prop)) {
+                    // TODO: parse `email` for contents, and provide a better strucutred
+                    // object
                     if (prop.indexOf("^pfg") !== -1) {
-                        // TODO: parse `email` for contents, and provide a better strucutred
-                        // object
                         events.send_message = [params.url, params.body, email];
+                    } else if (prop.indexOf("^scheduled") > -1) {
+                        events.send_scheduled_message = [params.url, params.body, email];
                     }
                 }
             }
