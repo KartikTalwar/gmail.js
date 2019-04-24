@@ -3382,7 +3382,7 @@ var Gmail = function(localJQuery) {
             e.which = 27;
             e.keyCode = 27;
             
-            var $body = this.dom('body')
+            var $body = this.dom('body');
             $body.focus();
             $body[0].dispatchEvent(e);
         },
