@@ -544,6 +544,10 @@ declare type GmailDomCompose = {
     */
     find(selector: string): JQuery;
     /**
+       Close compose window
+    */
+    close(): void;
+    /**
        Retrieve preconfigured dom elements for this compose window
     */
     dom(lookup: GmailDomComposeLookup): JQuery;
