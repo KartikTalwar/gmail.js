@@ -3374,6 +3374,20 @@ var Gmail = function(localJQuery) {
         },
 
         /**
+           Close compose window
+        */
+        close: function() {
+            const e = document.createEvent('Events');
+            e.initEvent('keydown', true, true);
+            e.which = 27;
+            e.keyCode = 27;
+            
+            var $body = this.dom('body');
+            $body.focus();
+            $body[0].dispatchEvent(e);
+        },
+
+        /**
            Retrieve preconfigured dom elements for this compose window
         */
         dom: function(lookup) {
