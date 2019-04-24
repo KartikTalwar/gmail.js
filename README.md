@@ -1069,27 +1069,28 @@ gmail.observe.on('compose', function(compose, composeType) {
 ```
 
 Compose methods:
-  - **.id()** - retrieve the compose id
-  - **.email_id()** - retrieve the draft email id
-  - **.is_inline()** - is this compose instance inline (as with reply & forwards) or a popup (as with a new compose)
-  - **.recipients(options)** - retrieves `to`, `cc`, `bcc` and returns them in a hash of arrays.
-    
-    Options:
-    - *.type* - string  `to`, `cc`, or `bcc` to check a specific one
-    - *.flat* - boolean if `true` will just return an array of all recipients instead of splitting out into to, cc, and bcc
-  - **.to()** - retrieve the current `to` recipients
-  - **.cc()** - retrieve the current `cc` recipients
-  - **.bcc()** - retrieve the current `bcc` recipients
-  - **.subject(subject)** - get/set the current subject
-  - **.from()** - get the from email, if user only has one email account they can send from, returns that email address
-  - **.body(body)** - get/set the email body
-  - **.send()** - triggers the same action as clicking the "send" button would do.
-  - **.find(selector)** - map find through to jquery element
-  - **.close()** - close compose window
-  - **.dom(lookup)** - retrieve preconfigured dom elements for this compose window.
-        
-      Lookup can be one of `'to' | 'cc' | 'bcc' | 'id' | 'draft' | 'subject' | 'subjectbox'
-    | 'all_subjects' | 'body' | 'reply' | 'forward' | 'from' | 'send_button'`
+
+- **.id()** - retrieve the compose id
+- **.email_id()** - retrieve the draft email id
+- **.is_inline()** - is this compose instance inline (as with reply & forwards) or a popup (as with a new compose)
+- **.recipients(options)** - retrieves `to`, `cc`, `bcc` and returns them in a hash of arrays.
+  
+  Options:
+  - *.type* - string  `to`, `cc`, or `bcc` to check a specific one
+  - *.flat* - boolean if `true` will just return an array of all recipients instead of splitting out into to, cc, and bcc
+- **.to()** - retrieve the current `to` recipients
+- **.cc()** - retrieve the current `cc` recipients
+- **.bcc()** - retrieve the current `bcc` recipients
+- **.subject(subject)** - get/set the current subject
+- **.from()** - get the from email, if user only has one email account they can send from, returns that email address
+- **.body(body)** - get/set the email body
+- **.send()** - triggers the same action as clicking the "send" button would do.
+- **.find(selector)** - map find through to jquery element
+- **.close()** - close compose window
+- **.dom(lookup)** - retrieve preconfigured dom elements for this compose window.
+      
+    Lookup can be one of `'to' | 'cc' | 'bcc' | 'id' | 'draft' | 'subject' | 'subjectbox'
+  | 'all_subjects' | 'body' | 'reply' | 'forward' | 'from' | 'send_button'`
 
 ### gmail.dom.email(email_el or email_id)
 
