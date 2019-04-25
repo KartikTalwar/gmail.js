@@ -210,8 +210,8 @@ gmail.observe.on("load", function(){
   - **`move_label`** - When a conversation(s) is moved to a label folder
   - **`save_draft`** - When a draft is saved
   - **`discard_draft`** - When a draft is dicarded
-  - **`send_message`** - When a message is sent
-  - **`send_scheduled_message`** - When a scheduled message is sent
+  - **`send_message`** - When a message is sent (except scheduled messages)
+  - **`send_scheduled_message`** - When a message is scheduled for sending (but not actually sent)
   - **`expand_categories`** - When a category is expanded from the left nav sidebar
   - **`restore_message_in_thread`** - When a deleted message is restored inside a thread
   - **`delete_label`** - When a label is deleted
@@ -775,8 +775,8 @@ Your callback will be fired directly after Gmail's XMLHttpRequest has been sent 
   - **move_label** - When a conversation(s) is moved to a label folder
   - **save_draft** - When a draft is saved
   - **discard_draft** - When a draft is dicarded
-  - **send_message** - When a message is sent
-  - **send_scheduled_message** - When a scheduled message is sent
+  - **send_message** - When a message is sent (except scheduled messages)
+  - **send_scheduled_message** - When a message is scheduled for sending (but not actually sent)
   - **expand_categories** - When a category is expanded from the left nav sidebar
   - **restore_message_in_thread** - When a deleted message is restored inside a thread
   - **delete_label** - When a label is deleted
