@@ -717,7 +717,7 @@ declare type GmailBindAction =
     | 'label' | 'archive' | 'move_to_inbox' | 'delete_forver' | 'delete_message_in_thread'
     | 'restore_message_in_thread' | 'star' | 'unstar' | 'mark_as_important' | "load"
     | 'mark_as_not_important' | 'filter_messages_like_these' | 'mute' | 'unmute'
-    | 'add_to_tasks' | 'move_label' | 'save_draft' | 'discard_draft' | 'send_message'
+    | 'add_to_tasks' | 'move_label' | 'save_draft' | 'discard_draft' | 'send_message' | 'send_scheduled_message'
     | 'expand_categories' | 'delete_label' | 'show_newly_arrived_message' | 'poll'
     | 'new_email' | 'refresh' | 'open_email' | 'upload_attachment' | 'compose'
     | 'compose_cancelled' | 'recipient_change' | 'view_thread' | 'view_email'
