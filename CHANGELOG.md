@@ -1,6 +1,11 @@
 
 # Changelog
 
+## Version 0.9.6
+
+- add support for closing compose-windows.
+- add event for `send_scheduled_message` event.
+
 ## Version 0.9.5
 
 - Further API compatibility and ergonomics improvements.
