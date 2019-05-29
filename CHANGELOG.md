@@ -1,15 +1,18 @@
 
 # Changelog
 
-## Version 0.9.7
+## Version 0.9.8
 
 - add support for parsing sent email data in new Gmail.
 - add norwegian localizations.
 - fix attachment URLs in non-primary gmail accounts.
 - fix emails-property in gmail.new.get.thread_data().
 - fix incorrect email counts in gmail.get.unread_emails() and related functions.
-- fix issues with window.opener for select configurations.
+- add thread_id() function to DOM compose instances.
 
+## Version 0.9.7
+
+- fix issues with crash when invoked in cross-origin context.
 
 ## Version 0.9.6
 
