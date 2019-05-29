@@ -1,6 +1,10 @@
 
 # Changelog
 
+## Version 0.9.7
+
+- fix issues with crash when invoked in cross-origin context.
+
 ## Version 0.9.6
 
 - add support for closing compose-windows.
