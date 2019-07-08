@@ -1351,6 +1351,86 @@ var Gmail = function(localJQuery) {
         }
     };
 
+    api.tools.parse_sent_message_html_payload = function(sent_email) {
+        let sent_email_content_html = null;
+        try {
+            const sent_html_containers = sent_email["9"]["2"];
+
+            for (let sent_html_container of sent_html_containers) {
+                sent_email_content_html = (sent_email_content_html || "") + sent_html_container["2"];
+            }
+        }
+        catch(e) {
+            // don't crash gmail when we cant parse email-contents
+        }
+
+        return sent_email_content_html;
+    };
+
+    api.tools.parse_sent_message_attachments = function(json) {
+        let res = [];
+
+        if (Array.isArray(json)) {
+            for (let item of json) {
+                
+                res.push({
+                    id: item["5"],
+                    name: item["2"],
+                    type: item["1"],
+                    url: item["6"],
+                    size: Number.parseInt(item["3"])
+                });
+            }
+        }
+
+        return res;
+    };
+
+    api.tools.parse_sent_message_payload = function(json) {
+        try
+        { 
+            let sent_email = json;
+            console.log(sent_email);
+
+            const sent_email_id = sent_email["1"];
+
+            const sent_email_subject = sent_email["8"];
+            const sent_email_timestamp = Number.parseInt(sent_email["7"]);
+            const sent_email_date = new Date(sent_email_timestamp);
+
+            const sent_email_content_html = api.tools.parse_sent_message_html_payload(sent_email);
+            const sent_email_ishtml = sent_email["9"]["7"];
+
+            const sent_attachments = api.tools.parse_sent_message_attachments(sent_email["12"]);
+
+            const sent_from = api.tools.parse_fd_email2(sent_email["2"])
+            const sent_to = api.tools.parse_fd_email(sent_email["3"]);
+            const sent_cc = api.tools.parse_fd_email(sent_email["4"]);
+            const sent_bcc = api.tools.parse_fd_email(sent_email["5"]);
+
+            const email = {
+                id: sent_email_id,
+                subject: sent_email_subject,
+                timestamp: sent_email_timestamp,
+                content_html: sent_email_content_html,
+                ishtml: sent_email_ishtml,
+                date: sent_email_date,
+                from: sent_from,
+                to: sent_to,
+                cc: sent_cc,
+                bcc: sent_bcc,
+                attachments: sent_attachments,
+                email_node: json
+            };                                     
+
+            return email;
+        }
+        catch (error) {
+            console.warn("Gmail.js encountered an error trying to parse sent message!", error);
+            return null;
+        }
+    }
+
     api.tools.parse_request_payload = function(params, events, force) {
         const pathname = api.tools.get_pathname_from_url(params.url_raw);
         if (!force && !pathname) {
@@ -1381,12 +1461,11 @@ var Gmail = function(localJQuery) {
             for (let key in email) {
                 let prop = email[key];
                 if (api.check.data.is_smartlabels_array(prop)) {
-                    // TODO: parse `email` for contents, and provide a better strucutred
-                    // object
+                    let sent_email = api.tools.parse_sent_message_payload(email);
                     if (prop.indexOf("^pfg") !== -1) {
-                        events.send_message = [params.url, params.body, email];
+                        events.send_message = [params.url, params.body, sent_email];
                     } else if (prop.indexOf("^scheduled") > -1) {
-                        events.send_scheduled_message = [params.url, params.body, email];
+                        events.send_scheduled_message = [params.url, params.body, sent_email];
                     }
                 }
             }
