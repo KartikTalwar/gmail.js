@@ -1238,13 +1238,20 @@ var Gmail = function(localJQuery) {
                     attachment_id: item["1"]["2"],
                     name: data["3"],
                     type: data["4"],
-                    url: data["2"],
+                    url: api.tools.check_fd_attachment_url(data["2"]),
                     size: Number.parseInt(data["5"])
                 });
             }
         }
 
         return res;
+    };
+
+    api.tools.check_fd_attachment_url = function(url) {
+        var userAccountUrlPart = api.tracker.globals[7];
+        if (url.indexOf(userAccountUrlPart) < 0) {
+            url = url.replace('/mail/?', userAccountUrlPart + '?');
+        }
     };
 
     api.tools.parse_fd_request_html_payload = function(fd_email) {
