@@ -1576,7 +1576,7 @@ var Gmail = function(localJQuery) {
                 }
 
                 for (let email of emails) {
-                    if (thread.emails.filter(i => i.email_id === email.email_id).length === 0) {
+                    if (thread.emails.filter(i => i.id === email.id).length === 0) {
                         thread.emails.push(email);
                     }
                 }
