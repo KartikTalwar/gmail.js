@@ -3442,17 +3442,28 @@ var Gmail = function(localJQuery) {
         }
 
         if (typeof element === "string") {
-            this.id = element;
-            element = $("div.adn[data-legacy-message-id='" + this.id + "']");
+            if (element.substring(0,3) == 'msg') {
+                this.id = element;
+                element = $("div.adn[data-message-id='#" + this.id + "']");
+            } else {
+                this.legacy_email_id = element;
+                element = $("div.adn[data-legacy-message-id='" + this.legacy_email_id + "']");
+            }   
         } else {
             element = $(element);
         }
 
         if (!element || (!element.hasClass("adn"))) api.tools.error("api.dom.email called with invalid element/id");
 
-        this.$el = element;
-        if (!this.id) {
-            this.id = this.$el.data("legacyMessageId");
+        this.$el = element;        
+        if (!this.legacy_email_id) {
+            this.legacy_email_id = this.$el.data("legacyMessageId");
+        }
+        if (!this.id) {            
+            let email_id = this.$el.data("messageId");
+            if (email_id) {
+                this.id = email_id.substring(1);   
+            }         
         }
 
         return this;
