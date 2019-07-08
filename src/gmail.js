@@ -3442,7 +3442,7 @@ var Gmail = function(localJQuery) {
         }
 
         if (typeof element === "string") {
-            if (element.substring(0,3) == 'msg') {
+            if (element.substring(0,3) === 'msg') {
                 this.id = element;
                 element = $("div.adn[data-message-id='#" + this.id + "']");
             } else {
