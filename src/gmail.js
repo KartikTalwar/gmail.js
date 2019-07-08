@@ -1403,7 +1403,7 @@ var Gmail = function(localJQuery) {
 
             const sent_attachments = api.tools.parse_sent_message_attachments(sent_email["12"]);
 
-            const sent_from = api.tools.parse_fd_email2(sent_email["2"])
+            const sent_from = api.tools.parse_fd_email2(sent_email["2"]);
             const sent_to = api.tools.parse_fd_email(sent_email["3"]);
             const sent_cc = api.tools.parse_fd_email(sent_email["4"]);
             const sent_bcc = api.tools.parse_fd_email(sent_email["5"]);
@@ -1429,7 +1429,7 @@ var Gmail = function(localJQuery) {
             console.warn("Gmail.js encountered an error trying to parse sent message!", error);
             return null;
         }
-    }
+    };
 
     api.tools.parse_request_payload = function(params, events, force) {
         const pathname = api.tools.get_pathname_from_url(params.url_raw);
