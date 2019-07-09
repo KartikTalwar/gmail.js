@@ -1549,37 +1549,23 @@ var Gmail = function(localJQuery) {
         const c = api.cache;
 
         for (let email of email_data) {
+            // cache email directly on IDs
             c.emailIdCache[email.id] = email;
             c.emailLegacyIdCache[email.legacy_email_id] = email;
-        }
 
-        const threadIds = [];
-        for (let email of email_data) {
-            if (threadIds.indexOf(email.thread_id) === -1) {
-                threadIds.push(email.thread_id);
+            // ensure we have a thread-object before appending emails to it!
+            let thread = c.threadCache[email.thread_id];
+            if (!thread) {
+                thread = {
+                    thread_id: email.thread_id,
+                    emails: []
+                };
+                c.threadCache[email.thread_id] = thread;
             }
-        }
 
-        for (let threadId of threadIds) {
-            let emails = email_data.filter(i => i.thread_id === threadId);
-            let firstEmail = emails[0];
-
-            if (firstEmail) {
-                let thread_id = firstEmail.thread_id;
-                let thread = c.threadCache[thread_id];
-                if (!thread) {
-                    thread = {
-                        thread_id: thread_id,
-                        emails: []
-                    };
-                    c.threadCache[thread_id] = thread;
-                }
-
-                for (let email of emails) {
-                    if (thread.emails.filter(i => i.id === email.id).length === 0) {
-                        thread.emails.push(email);
-                    }
-                }
+            // only append email to cache if not already there.
+            if (thread.emails.filter(i => i.id === email.id).length === 0) {
+                thread.emails.push(email);
             }
         }
     };
