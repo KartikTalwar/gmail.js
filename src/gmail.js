@@ -1249,7 +1249,7 @@ var Gmail = function(localJQuery) {
 
     api.tools.check_fd_attachment_url = function(url) {
         var userAccountUrlPart = api.tracker.globals[7];
-        if (url.indexOf(userAccountUrlPart) < 0) {
+        if (url && userAccountUrlPart && url.indexOf(userAccountUrlPart) < 0) {
             url = url.replace('/mail/?', userAccountUrlPart + '?');
         }
     };
