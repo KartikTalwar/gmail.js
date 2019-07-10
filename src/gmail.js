@@ -1252,6 +1252,8 @@ var Gmail = function(localJQuery) {
         if (url && userAccountUrlPart && url.indexOf(userAccountUrlPart) < 0) {
             url = url.replace('/mail/?', userAccountUrlPart + '?');
         }
+
+        return url;
     };
 
     api.tools.parse_fd_request_html_payload = function(fd_email) {
