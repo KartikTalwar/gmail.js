@@ -1390,7 +1390,7 @@ var Gmail = function(localJQuery) {
         try
         { 
             let sent_email = json;
-            console.log(sent_email);
+            //console.log(sent_email);
 
             const sent_email_id = sent_email["1"];
 
@@ -1409,6 +1409,7 @@ var Gmail = function(localJQuery) {
             const sent_bcc = api.tools.parse_fd_email(sent_email["5"]);
 
             const email = {
+                1: sent_email_id,                        
                 id: sent_email_id,
                 subject: sent_email_subject,
                 timestamp: sent_email_timestamp,
