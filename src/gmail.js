@@ -3290,14 +3290,23 @@ var Gmail = function(localJQuery) {
             }
         },
 
+        /**
+           Retrieve the draft thread id
+        */
         thread_id: function() {
-            let thread_id = this.dom("thread").val();
+            let thread_id = this.dom("thread").val() || "";
             // handle new gmail style email-ids
-            if (thread_id && thread_id.startsWith("#")) {
-                return thread_id.substring(1);
-            } else {
-                return thread_id;
+            if (thread_id.startsWith("#")) {
+                thread_id = thread_id.substring(1);
             }
+
+            // remove message id
+            let messageIdLocation = thread_id.indexOf("|msg");
+            if (messageIdLocation > 0) {
+                thread_id = thread_id.substring(0, messageIdLocation);
+            } 
+            
+            return thread_id;            
         },
 
         /**
