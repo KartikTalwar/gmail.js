@@ -917,7 +917,7 @@ interface GmailSentEmailData {
     bcc: GmailNewEmailAddress[];
     attachments: GmailAttachmentDetails[];
     content_html: string;
-    isHtml: boolean;
+    ishtml: boolean;
     $email_node?: any;   
 }
 
