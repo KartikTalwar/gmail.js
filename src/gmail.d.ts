@@ -905,6 +905,22 @@ interface GmailNewEmailData {
     $thread_node?: any;
 }
 
+interface GmailSentEmailData {
+    1: string;
+    id: string;
+    subject: string;
+    timestamp: number;
+    date: Date;
+    from: GmailNewEmailAddress;
+    to: GmailNewEmailAddress[];
+    cc: GmailNewEmailAddress[];
+    bcc: GmailNewEmailAddress[];
+    attachments: GmailAttachmentDetails[];
+    content_html: string;
+    ishtml: boolean;
+    $email_node?: any;   
+}
+
 interface GmailNewThreadData {
     thread_id: string;
     emails: GmailNewEmailData[];

@@ -68,6 +68,57 @@ describe("Attachment-parsing", () => {
 
 });
 
+describe("Sent-mail-parsing", () => {
+    it("Handles sent email JSON consistently", () => {
+        var gmail = new Gmail();
+        var data = JSON.parse(testData.new_gmail_sent_email_json);
+        var parsed = gmail.tools.parse_sent_message_payload(data);
+        
+        assert.equal(parsed["1"], "msg-a:r1280593055912233690");
+        assert.equal(parsed.id, "msg-a:r1280593055912233690");        
+        assert.equal(parsed.subject, "Test Parse Sent");        
+        assert.equal(parsed.timestamp, "1562634059674");        
+        assert.equal(parsed.content_html, "<div dir=\"ltr\">Test <a href=\"https://www.google.com\">Link </a>Test<br clear=\"all\"><div><br></div>-- <br><div dir=\"ltr\" class=\"gmail_signature\" data-smartmail=\"gmail_signature\"><div dir=\"ltr\"><div><div dir=\"ltr\"><div><div dir=\"ltr\">Thanks,<div><font size=\"4\" style=\"background-color:rgb(0,0,255)\" color=\"#3d85c6\"><br></font></div><div><font style=\"background-color:rgb(255,255,255)\" size=\"4\" color=\"#3d85c6\"><b>Eric Karlsson</b></font></div><div><font color=\"#cccccc\">Product Development</font></div><div><font color=\"#cccccc\">+1 240.688.9219&nbsp;<span></span><span></span></font></div><div><font color=\"#cccccc\"><br></font></div><div><br></div></div></div></div></div></div></div></div>");
+        assert.equal(parsed.ishtml, 1); 
+        assert.deepStrictEqual(parsed.date, new Date("2019-07-09T01:00:59.674Z")); 
+
+        assert.equal(parsed.from.name, "Eric Karlsson1"); 
+        assert.equal(parsed.from.address, "eric.karlsson1@gmail.com"); 
+       
+        assert.equal(parsed.to.length, 2); 
+        assert.equal(parsed.to[0].name, "Eric Karlsson2"); 
+        assert.equal(parsed.to[0].address, "eric.karlsson2@gmail.com"); 
+        assert.equal(parsed.to[1].name, undefined); 
+        assert.equal(parsed.to[1].address, "eric.karlsson3@gmail.com"); 
+
+        assert.equal(parsed.cc.length, 2); 
+        assert.equal(parsed.cc[0].name, undefined); 
+        assert.equal(parsed.cc[0].address, "eric.karlsson4@gmail.com"); 
+        assert.equal(parsed.cc[1].name, undefined); 
+        assert.equal(parsed.cc[1].address, "eric.karlsson5@gmail.com"); 
+
+        assert.equal(parsed.bcc.length, 2); 
+        assert.equal(parsed.bcc[0].name, "Eric Karlsson6"); 
+        assert.equal(parsed.bcc[0].address, "eric.karlsson6@gmail.com"); 
+        assert.equal(parsed.bcc[1].name, "Eric Karlsson7"); 
+        assert.equal(parsed.bcc[1].address, "eric.karlsson7@gmail.com"); 
+
+        assert.equal(parsed.attachments.length, 2); 
+        assert.equal(parsed.attachments[0].id, "f_jxv3xqgb1"); 
+        assert.equal(parsed.attachments[0].name, "Socket Error.PNG"); 
+        assert.equal(parsed.attachments[0].type, "image/png"); 
+        assert.equal(parsed.attachments[0].url, "https://mail.google.com/mail/?ui=2&ik=5a14ab333d&attid=0.1&permmsgid=msg-a:r1280593055912233690&view=att&realattid=f_jxv3xqgb1&zw"); 
+        assert.equal(parsed.attachments[0].size, 108256); 
+        assert.equal(parsed.attachments[1].id, "f_jxv3xqg00"); 
+        assert.equal(parsed.attachments[1].name, "8002291_3.jpg"); 
+        assert.equal(parsed.attachments[1].type, "image/jpeg"); 
+        assert.equal(parsed.attachments[1].url, "https://mail.google.com/mail/?ui=2&ik=5a14ab333d&attid=0.2&permmsgid=msg-a:r1280593055912233690&view=att&realattid=f_jxv3xqg00&zw"); 
+        assert.equal(parsed.attachments[1].size, 2312479); 
+
+        assert.ok(parsed.email_node); 
+    });
+});
+
 describe("Current-page parsing", () => {
     it("detects known pages", () => {
         const gmail = new Gmail();
