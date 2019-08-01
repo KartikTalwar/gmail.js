@@ -3040,6 +3040,18 @@ var Gmail = function(localJQuery) {
             };
             break;
 
+        case "no":
+            dictionary = {
+                "inbox": "Innboks",
+                "drafts": "Utkast",
+                "spam": "Søppelpost",
+                "forums": "Forumer",
+                "updates": "Oppdateringer",
+                "promotions": "Reklame",
+                "social_updates": "Sosialt"
+            };
+            break;
+
         case "nl":
             dictionary = {
                 "inbox": "Postvak IN",
