@@ -1,6 +1,16 @@
 
 # Changelog
 
+## Version 0.9.7
+
+- add support for parsing sent email data in new Gmail.
+- add norwegian localizations.
+- fix attachment URLs in non-primary gmail accounts.
+- fix emails-property in gmail.new.get.thread_data().
+- fix incorrect email counts in gmail.get.unread_emails() and related functions.
+- fix issues with window.opener for select configurations.
+
+
 ## Version 0.9.6
 
 - add support for closing compose-windows.
