@@ -578,89 +578,50 @@ var Gmail = function(localJQuery) {
 
 
     api.get.unread_inbox_emails = function() {
-        var dom = $("div[role=navigation]").find("[title*='" + api.tools.i18n("inbox") + "']");
-
-        if(dom.length > 0) {
-            if(dom[0].title.indexOf("(") !== -1) {
-                return parseInt(dom[0].title.split(":")[0].replace(/[^0-9]/g, ""));
-            }
-        }
-
-        return 0;
+        return api.helper.get.navigation_count("inbox");
     };
 
 
     api.get.unread_draft_emails = function() {
-        var dom = $("div[role=navigation]").find("[title*='" + api.tools.i18n("drafts") + "']");
-
-        if(dom.length > 0) {
-            if(dom[0].title.indexOf("(") !== -1) {
-                return parseInt(dom[0].title.replace(/[^0-9]/g, ""));
-            }
-        }
-
-        return 0;
+        return api.helper.get.navigation_count("drafts");
     };
 
 
     api.get.unread_spam_emails = function() {
-        var dom = $("div[role=navigation]").find("[title*='" + api.tools.i18n("spam") + "']");
-
-        if(dom.length > 0) {
-            if(dom[0].title.indexOf("(") !== -1) {
-                return parseInt(dom[0].title.replace(/[^0-9]/g, ""));
-            }
-        }
-
-        return 0;
+        return api.helper.get.navigation_count("spam");
     };
 
 
     api.get.unread_forum_emails = function() {
-        var dom = $("div[role=navigation]").find("[title*='" + api.tools.i18n("forums") + "']");
-
-        if(dom.length > 0) {
-            if(dom[0].title.indexOf("(") !== -1) {
-                return parseInt(dom[0].title.replace(/[^0-9]/g, ""));
-            }
-        }
-
-        return 0;
+        return api.helper.get.navigation_count("forums");
     };
 
 
     api.get.unread_update_emails = function() {
-        var dom = $("div[role=navigation]").find("[title*='" + api.tools.i18n("updates") + "']");
-
-        if(dom.length > 0) {
-            if(dom[0].title.indexOf("(") !== -1) {
-                return parseInt(dom[0].title.replace(/[^0-9]/g, ""));
-            }
-        }
-
-        return 0;
+        return api.helper.get.navigation_count("updates");
     };
 
 
     api.get.unread_promotion_emails = function() {
-        var dom = $("div[role=navigation]").find("[title*='" + api.tools.i18n("promotions") + "']");
-
-        if(dom.length > 0) {
-            if(dom[0].title.indexOf("(") !== -1) {
-                return parseInt(dom[0].title.replace(/[^0-9]/g, ""));
-            }
-        }
-
-        return 0;
+        return api.helper.get.navigation_count("promotions");
     };
 
 
     api.get.unread_social_emails = function() {
-        var dom = $("div[role=navigation]").find("[title*='" + api.tools.i18n("social_updates") + "']");
+        return api.helper.get.navigation_count("social_updates");
+    };
 
-        if(dom.length > 0) {
-            if(dom[0].title.indexOf("(") !== -1) {
-                return parseInt(dom[0].title.replace(/[^0-9]/g, ""));
+    api.helper.get.navigation_count = function(i18nName) {
+        const title = api.tools.i18n(i18nName);
+        const dom = $("div[role=navigation]").find("[title*='" + title + "']");
+
+        if (dom || dom.length > 0) {
+            // this check should implicitly always be true, but better safe than sorry?
+            if(dom[0].title.indexOf(title) !== -1) {
+                const value = parseInt(dom[0].attributes['aria-label'].value.replace(/[^0-9]/g, ""));
+                if (!isNaN(value)) {
+                    return value;
+                }
             }
         }
 
@@ -1238,13 +1199,22 @@ var Gmail = function(localJQuery) {
                     attachment_id: item["1"]["2"],
                     name: data["3"],
                     type: data["4"],
-                    url: data["2"],
+                    url: api.tools.check_fd_attachment_url(data["2"]),
                     size: Number.parseInt(data["5"])
                 });
             }
         }
 
         return res;
+    };
+
+    api.tools.check_fd_attachment_url = function(url) {
+        var userAccountUrlPart = api.tracker.globals[7];
+        if (url && userAccountUrlPart && url.indexOf(userAccountUrlPart) < 0) {
+            url = url.replace('/mail/?', userAccountUrlPart + '?');
+        }
+
+        return url;
     };
 
     api.tools.parse_fd_request_html_payload = function(fd_email) {
@@ -1351,6 +1321,87 @@ var Gmail = function(localJQuery) {
         }
     };
 
+    api.tools.parse_sent_message_html_payload = function(sent_email) {
+        let sent_email_content_html = null;
+        try {
+            const sent_html_containers = sent_email["9"]["2"];
+
+            for (let sent_html_container of sent_html_containers) {
+                sent_email_content_html = (sent_email_content_html || "") + sent_html_container["2"];
+            }
+        }
+        catch(e) {
+            // don't crash gmail when we cant parse email-contents
+        }
+
+        return sent_email_content_html;
+    };
+
+    api.tools.parse_sent_message_attachments = function(json) {
+        let res = [];
+
+        if (Array.isArray(json)) {
+            for (let item of json) {
+                
+                res.push({
+                    id: item["5"],
+                    name: item["2"],
+                    type: item["1"],
+                    url: item["6"],
+                    size: Number.parseInt(item["3"])
+                });
+            }
+        }
+
+        return res;
+    };
+
+    api.tools.parse_sent_message_payload = function(json) {
+        try
+        { 
+            let sent_email = json;
+            //console.log(sent_email);
+
+            const sent_email_id = sent_email["1"];
+
+            const sent_email_subject = sent_email["8"];
+            const sent_email_timestamp = Number.parseInt(sent_email["7"]);
+            const sent_email_date = new Date(sent_email_timestamp);
+
+            const sent_email_content_html = api.tools.parse_sent_message_html_payload(sent_email);
+            const sent_email_ishtml = sent_email["9"]["7"];
+
+            const sent_attachments = api.tools.parse_sent_message_attachments(sent_email["12"]);
+
+            const sent_from = api.tools.parse_fd_email2(sent_email["2"]);
+            const sent_to = api.tools.parse_fd_email(sent_email["3"]);
+            const sent_cc = api.tools.parse_fd_email(sent_email["4"]);
+            const sent_bcc = api.tools.parse_fd_email(sent_email["5"]);
+
+            const email = {
+                1: sent_email_id,                        
+                id: sent_email_id,
+                subject: sent_email_subject,
+                timestamp: sent_email_timestamp,
+                content_html: sent_email_content_html,
+                ishtml: sent_email_ishtml,
+                date: sent_email_date,
+                from: sent_from,
+                to: sent_to,
+                cc: sent_cc,
+                bcc: sent_bcc,
+                attachments: sent_attachments,
+                email_node: json
+            };                                     
+
+            return email;
+        }
+        catch (error) {
+            console.warn("Gmail.js encountered an error trying to parse sent message!", error);
+            return null;
+        }
+    };
+
     api.tools.parse_request_payload = function(params, events, force) {
         const pathname = api.tools.get_pathname_from_url(params.url_raw);
         if (!force && !pathname) {
@@ -1381,12 +1432,11 @@ var Gmail = function(localJQuery) {
             for (let key in email) {
                 let prop = email[key];
                 if (api.check.data.is_smartlabels_array(prop)) {
-                    // TODO: parse `email` for contents, and provide a better strucutred
-                    // object
+                    let sent_email = api.tools.parse_sent_message_payload(email);
                     if (prop.indexOf("^pfg") !== -1) {
-                        events.send_message = [params.url, params.body, email];
+                        events.send_message = [params.url, params.body, sent_email];
                     } else if (prop.indexOf("^scheduled") > -1) {
-                        events.send_scheduled_message = [params.url, params.body, email];
+                        events.send_scheduled_message = [params.url, params.body, sent_email];
                     }
                 }
             }
@@ -1549,37 +1599,23 @@ var Gmail = function(localJQuery) {
         const c = api.cache;
 
         for (let email of email_data) {
+            // cache email directly on IDs
             c.emailIdCache[email.id] = email;
             c.emailLegacyIdCache[email.legacy_email_id] = email;
-        }
 
-        const threadIds = [];
-        for (let email of email_data) {
-            if (threadIds.indexOf(email.thread_id) === -1) {
-                threadIds.push(email.thread_id);
+            // ensure we have a thread-object before appending emails to it!
+            let thread = c.threadCache[email.thread_id];
+            if (!thread) {
+                thread = {
+                    thread_id: email.thread_id,
+                    emails: []
+                };
+                c.threadCache[email.thread_id] = thread;
             }
-        }
 
-        for (let threadId of threadIds) {
-            let emails = email_data.filter(i => i.thread_id === threadId);
-            let firstEmail = emails[0];
-
-            if (firstEmail) {
-                let thread_id = firstEmail.thread_id;
-                let thread = c.threadCache[thread_id];
-                if (!thread) {
-                    thread = {
-                        thread_id: thread_id,
-                        emails: []
-                    };
-                    c.threadCache[thread_id] = thread;
-                }
-
-                for (let email of emails) {
-                    if (thread.emails.filter(i => i.email_id === email.email_id).length === 0) {
-                        thread.emails.push(email);
-                    }
-                }
+            // only append email to cache if not already there.
+            if (thread.emails.filter(i => i.id === email.id).length === 0) {
+                thread.emails.push(email);
             }
         }
     };
@@ -2962,6 +2998,18 @@ var Gmail = function(localJQuery) {
                 "updates": "Mises à jour",
                 "promotions": "Promotions",
                 "social_updates": "Réseaux sociaux"
+            };
+            break;
+
+        case "no":
+            dictionary = {
+                "inbox": "Innboks",
+                "drafts": "Utkast",
+                "spam": "Søppelpost",
+                "forums": "Forumer",
+                "updates": "Oppdateringer",
+                "promotions": "Reklame",
+                "social_updates": "Sosialt"
             };
             break;
 
