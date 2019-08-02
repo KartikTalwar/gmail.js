@@ -5,6 +5,9 @@ let Gmail = require("../src/gmail").Gmail;
 
 let testData = require("./testdata-parser.js");
 
+let jsdom = require('jsdom');
+let jquery = require('jquery')(new jsdom.JSDOM().window);
+
 describe("Response-parsing", () => {
 
     it("Handles JSON-responses consistently", () => {
@@ -728,5 +731,26 @@ describe("ID-compatibility (old->thread)", () => {
 
         console.warn = origWarnFunc;
         assert.equal(true, warnInvoked);
+    });
+});
+
+describe("Compose-email-parsing", () => {
+
+    it("Handles single thread id", () => {                
+        var gmail = new Gmail(jquery);
+
+        var element = jquery('<div><div class="M9 AD"><input name="rt" value="#thread-f:1610056787031797158"/></div></div>').find(".M9");                
+        var compose = new gmail.dom.compose(element);
+        
+        assert.equal(compose.thread_id(), "thread-f:1610056787031797158");           
+    });
+
+    it("Handles thread id joined with message id", () => {       
+        var gmail = new Gmail(jquery);
+         
+        var element = jquery('<div><div class="M9 AD"><input name="rt" value="thread-f:1610056787031797155|msg-f:1610056787031797158"/></div></div>').find(".M9");  
+        var compose = new gmail.dom.compose(element);
+
+        assert.equal(compose.thread_id(), "thread-f:1610056787031797155");            
     });
 });
