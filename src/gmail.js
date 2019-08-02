@@ -3339,6 +3339,25 @@ var Gmail = function(localJQuery) {
         },
 
         /**
+           Retrieve the draft thread id
+        */
+        thread_id: function() {
+            let thread_id = this.dom("thread").val() || "";
+            // handle new gmail style email-ids
+            if (thread_id.startsWith("#")) {
+                thread_id = thread_id.substring(1);
+            }
+
+            // remove message id
+            let messageIdLocation = thread_id.indexOf("|msg");
+            if (messageIdLocation > 0) {
+                thread_id = thread_id.substring(0, messageIdLocation);
+            } 
+            
+            return thread_id;            
+        },
+
+        /**
            Is this compose instance inline (as with reply & forwards) or a popup (as with a new compose)
         */
         is_inline: function() {
@@ -3463,6 +3482,7 @@ var Gmail = function(localJQuery) {
                 bcc:"textarea[name=bcc]",
                 id: "input[name=composeid]",
                 draft: "input[name=draft]",
+                thread: "input[name=rt]",
                 subject: "input[name=subject]",
                 subjectbox: "input[name=subjectbox]",
                 all_subjects: "input[name=subjectbox], input[name=subject]",

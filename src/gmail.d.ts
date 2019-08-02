@@ -498,6 +498,10 @@ declare type GmailDomCompose = {
     */
     email_id(): string,
     /**
+       Retrieve the draft email id
+    */
+    thread_id(): string
+    /**
        Is this compose instance inline (as with reply & forwards) or a popup (as with a new compose)
     */
     is_inline(): boolean,
