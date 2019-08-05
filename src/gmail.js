@@ -3291,6 +3291,11 @@ var Gmail = function(localJQuery) {
         return undefined;
     };
 
+    // The messages visible in the currently open folder
+    api.dom.visible_messages = function() {
+        return $('tbody>tr.zA[draggable="true"]:visible', api.dom.inbox_content());
+    };
+
     // retrieve queue of compose window dom objects
     // latest compose at the start of the queue (index 0)
     api.dom.composes = function() {

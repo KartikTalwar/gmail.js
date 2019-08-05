@@ -237,6 +237,7 @@ These methods return the DOM data itself
 
 - gmail.dom**.inboxes()**
 - gmail.dom**.inbox_content()**
+- gmail.dom**.visible_messages()**
 - gmail.dom**.email_subject()**
 - gmail.dom**.email_body()**
 - gmail.dom**.email_contents()**
