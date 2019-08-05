@@ -95,6 +95,7 @@ const gmail = new GmailFactory.Gmail() as Gmail;
 - [gmail.get**.new.email_data()**](#gmailnewgetemail_dataidentifier)
 - [gmail.get**.new.thread_id()**](#gmailnewgetthread_id)
 - [gmail.get**.new.thread_data()**](#gmailnewgetthread_dataidentifier)
+- [gmail.get**.new.message_data()**](#gmailnewgetmessage_dataidentifier)
 
 - [gmail.get**.email_subject()**](#gmailgetemail_subject)
 - [gmail.get**.compose_ids()**](#gmailgetcompose_ids)
@@ -423,6 +424,28 @@ the first invocation returned `null`.
 }
 ```
 
+#### gmail.new.get.message_data(identifier)
+
+Returns basic data for all the messages currently visible in the messages view. Taken from the DOM.
+
+```json
+[
+{
+    "summary": "Hey Bill",
+    "from": {
+        "email": "joe@gmail.com",
+        "name": "Joe",
+    },
+},
+{
+    "summary": "The best of Gmail, wherever you are",
+    "from": {
+        "name": "Gmail",
+        "email": "mail-noreply@google.com"
+    },
+},
+]
+```
 #### gmail.get.email_source(identifier=undefined)
 
 Deprecated function. Will be removed. Migrate to

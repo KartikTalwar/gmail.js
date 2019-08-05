@@ -3824,6 +3824,33 @@ var Gmail = function(localJQuery) {
         }
     };
 
+    /**
+     * Returns data about the currently visible messages available in the DOM:
+     * {
+     *    from: {
+     *      name: string,
+     *      email: string,
+     *    },
+     *    summary: string, // subject and email summary
+     * }
+     */
+    api.new.get.message_data = function() {
+        const msgEles = api.dom.visible_messages();
+        const ret = [];
+        for (const msgEle of msgEles) {
+            const nameAndEmail = $('*[email][name]', msgEle);
+            const linkAndSubject = $('*[role=link]', msgEle);
+            ret.push({
+                from: {
+                    name: nameAndEmail.attr('name'),
+                    email: nameAndEmail.attr('email'),
+                },
+                summary: linkAndSubject[0].innerText,
+            });
+        }
+        return ret;
+    };
+
     // setup XHR interception as early as possible, to ensure we get all relevant email-data!
     if (typeof(document) !== "undefined") {
         api.tools.xhr_watcher();
