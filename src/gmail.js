@@ -1342,7 +1342,7 @@ var Gmail = function(localJQuery) {
 
         if (Array.isArray(json)) {
             for (let item of json) {
-                
+
                 res.push({
                     id: item["5"],
                     name: item["2"],
@@ -1358,7 +1358,7 @@ var Gmail = function(localJQuery) {
 
     api.tools.parse_sent_message_payload = function(json) {
         try
-        { 
+        {
             let sent_email = json;
             //console.log(sent_email);
 
@@ -1379,7 +1379,7 @@ var Gmail = function(localJQuery) {
             const sent_bcc = api.tools.parse_fd_email(sent_email["5"]);
 
             const email = {
-                1: sent_email_id,                        
+                1: sent_email_id,
                 id: sent_email_id,
                 subject: sent_email_subject,
                 timestamp: sent_email_timestamp,
@@ -1392,7 +1392,7 @@ var Gmail = function(localJQuery) {
                 bcc: sent_bcc,
                 attachments: sent_attachments,
                 email_node: json
-            };                                     
+            };
 
             return email;
         }
@@ -3291,9 +3291,39 @@ var Gmail = function(localJQuery) {
         return undefined;
     };
 
-    // The messages visible in the currently open folder
+    /**
+     * Returns data about the currently visible messages available in the DOM:
+     * {
+     *    from: {
+     *      name: string,
+     *      email: string,
+     *    },
+     *    summary: string, // subject and email summary
+     *    thread_id: string,
+     *    $el: HTMLElement,
+     * }
+     */
     api.dom.visible_messages = function() {
-        return $('tbody>tr.zA[draggable="true"]:visible', api.dom.inbox_content());
+        const msgEles = $('tbody>tr.zA[draggable="true"]:visible', api.dom.inbox_content());
+        const ret = [];
+        for (const msgEle of msgEles) {
+            const nameAndEmail = $('*[email][name]', msgEle);
+            const linkAndSubject = $('*[role=link]', msgEle);
+            const idNode = msgEle.querySelector("span[data-thread-id]");
+            const threadId = idNode.dataset.threadId;
+            const legacyThreadId = idNode.dataset.legacyThreadId;
+            ret.push({
+                from: {
+                    name: nameAndEmail.attr('name'),
+                    email: nameAndEmail.attr('email'),
+                },
+                summary: linkAndSubject[0].innerText,
+                // legacy: #thread-f:1638756560099919527|msg-f:1638756560099919527"
+                thread_id: idNode.dataset.threadId || idNode.dataset.legacyMessageId,
+                $el: msgEle,
+            });
+        }
+        return ret;
     };
 
     // retrieve queue of compose window dom objects
@@ -3357,9 +3387,9 @@ var Gmail = function(localJQuery) {
             let messageIdLocation = thread_id.indexOf("|msg");
             if (messageIdLocation > 0) {
                 thread_id = thread_id.substring(0, messageIdLocation);
-            } 
-            
-            return thread_id;            
+            }
+
+            return thread_id;
         },
 
         /**
@@ -3470,7 +3500,7 @@ var Gmail = function(localJQuery) {
             e.initEvent('keydown', true, true);
             e.which = 27;
             e.keyCode = 27;
-            
+
             var $body = this.dom('body');
             $body.focus();
             $body[0].dispatchEvent(e);
@@ -3822,33 +3852,6 @@ var Gmail = function(localJQuery) {
         } else {
             return api.cache.threadCache[thread_id];
         }
-    };
-
-    /**
-     * Returns data about the currently visible messages available in the DOM:
-     * {
-     *    from: {
-     *      name: string,
-     *      email: string,
-     *    },
-     *    summary: string, // subject and email summary
-     * }
-     */
-    api.new.get.message_data = function() {
-        const msgEles = api.dom.visible_messages();
-        const ret = [];
-        for (const msgEle of msgEles) {
-            const nameAndEmail = $('*[email][name]', msgEle);
-            const linkAndSubject = $('*[role=link]', msgEle);
-            ret.push({
-                from: {
-                    name: nameAndEmail.attr('name'),
-                    email: nameAndEmail.attr('email'),
-                },
-                summary: linkAndSubject[0].innerText,
-            });
-        }
-        return ret;
     };
 
     // setup XHR interception as early as possible, to ensure we get all relevant email-data!
