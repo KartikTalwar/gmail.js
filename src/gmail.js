@@ -3304,25 +3304,23 @@ var Gmail = function(localJQuery) {
      * }
      */
     api.dom.visible_messages = function() {
-        const msgEles = $('tbody>tr.zA[draggable="true"]:visible', api.dom.inbox_content());
         const ret = [];
-        for (const msgEle of msgEles) {
-            const nameAndEmail = $('*[email][name]', msgEle);
-            const linkAndSubject = $('*[role=link]', msgEle);
-            const idNode = msgEle.querySelector("span[data-thread-id]");
-            const threadId = idNode.dataset.threadId;
-            const legacyThreadId = idNode.dataset.legacyThreadId;
-            ret.push({
-                from: {
-                    name: nameAndEmail.attr('name'),
-                    email: nameAndEmail.attr('email'),
-                },
-                summary: linkAndSubject[0].innerText,
-                // legacy: #thread-f:1638756560099919527|msg-f:1638756560099919527"
-                thread_id: idNode.dataset.threadId || idNode.dataset.legacyMessageId,
-                $el: msgEle,
+        $('tbody>tr.zA[draggable="true"]:visible', api.dom.inbox_content())
+            .each((index, msgEle) => {
+                const nameAndEmail = $('*[email][name]', msgEle);
+                const linkAndSubject = $('*[role=link]', msgEle);
+                const idNode = msgEle.querySelector("span[data-thread-id]");
+                ret.push({
+                    from: {
+                        name: nameAndEmail.attr('name'),
+                        email: nameAndEmail.attr('email'),
+                    },
+                    summary: linkAndSubject[0].innerText,
+                    // legacy: #thread-f:1638756560099919527|msg-f:1638756560099919527"
+                    thread_id: idNode.dataset.threadId || idNode.dataset.legacyMessageId,
+                    $el: $(msgEle),
+                });
             });
-        }
         return ret;
     };
 
