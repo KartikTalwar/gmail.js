@@ -237,6 +237,7 @@ These methods return the DOM data itself
 
 - gmail.dom**.inboxes()**
 - gmail.dom**.inbox_content()**
+- [gmail.dom**.visible_messages()**](#gmaildomvisiblemessages)
 - gmail.dom**.email_subject()**
 - gmail.dom**.email_body()**
 - gmail.dom**.email_contents()**
@@ -246,7 +247,7 @@ These methods return the DOM data itself
 - gmail.dom**.toolbar()**
 - gmail.dom**.right_toolbar()**
 - [gmail.dom**.compose()**](#gmaildomcomposecompose_el) - compose dom object - receives the DOM element for the compose window and provides methods to interact
-- gmail.dom**.composes()** - retrives an array of `gmail.dom.compose` objects representing any open compose windows
+- gmail.dom**.composes()** - retrieves an array of `gmail.dom.compose` objects representing any open compose windows
 - [gmail.dom**.email()**](#gmaildomemailemail_el-or-email_id) - email dom object - receives an email DOM element or email id for an email currently being viewed. Abstracts interaction with that email.
 - [gmail.dom**.thread()**](#gmaildomthreadthread_el) - thread dom object - receives a conversation thread DOM element currently being viewed. Abstracts interaction with that thread.
 
@@ -1058,6 +1059,35 @@ gmail.observe.on('compose_email_select', function(match) {
 });
 
 ```
+
+### gmail.dom.visible_messages()
+Returns basic data for all the messages currently visible in the messages view. Taken from the DOM.
+
+```json
+[
+{
+    "summary": "Hey Bill",
+    "from": {
+        "email": "joe@gmail.com",
+        "name": "Joe",
+    },
+    "$el": tr#:9b.zA.zE.inboxsdk__thread_row,
+    "thread_id": "thread-f:1628504557508152478",
+    "legacy_email_id": undefined,
+},
+{
+    "summary": "The best of Gmail, wherever you are",
+    "from": {
+        "name": "Gmail",
+        "email": "mail-noreply@google.com"
+    },
+    "$el": tr#:9b.zA.zE.inboxsdk__thread_row,
+    "thread_id": "#thread-f:1634069952006597946"
+    "legacy_email_id": undefined,
+},
+]
+```
+
 
 ### gmail.dom.compose(compose_el)
 

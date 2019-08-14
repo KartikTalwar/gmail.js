@@ -1342,7 +1342,7 @@ var Gmail = function(localJQuery) {
 
         if (Array.isArray(json)) {
             for (let item of json) {
-                
+
                 res.push({
                     id: item["5"],
                     name: item["2"],
@@ -1358,7 +1358,7 @@ var Gmail = function(localJQuery) {
 
     api.tools.parse_sent_message_payload = function(json) {
         try
-        { 
+        {
             let sent_email = json;
             //console.log(sent_email);
 
@@ -1379,7 +1379,7 @@ var Gmail = function(localJQuery) {
             const sent_bcc = api.tools.parse_fd_email(sent_email["5"]);
 
             const email = {
-                1: sent_email_id,                        
+                1: sent_email_id,
                 id: sent_email_id,
                 subject: sent_email_subject,
                 timestamp: sent_email_timestamp,
@@ -1392,7 +1392,7 @@ var Gmail = function(localJQuery) {
                 bcc: sent_bcc,
                 attachments: sent_attachments,
                 email_node: json
-            };                                     
+            };
 
             return email;
         }
@@ -2823,6 +2823,15 @@ var Gmail = function(localJQuery) {
         return null;
     };
 
+    api.helper.clean_thread_id = function(thread_id) {
+        // handle new gmail style email-ids
+        if (thread_id.startsWith("#")) {
+            thread_id = thread_id.substring(1);
+        }
+
+        return thread_id;        
+    };
+
     api.helper.get.email_source_pre = function(identifier) {
         if(!identifier && api.check.is_inside_email()) {
             identifier = api.get.email_id();
@@ -3291,6 +3300,41 @@ var Gmail = function(localJQuery) {
         return undefined;
     };
 
+    /**
+     * Returns data about the currently visible messages available in the DOM:
+     * {
+     *    from: {
+     *      name: string,
+     *      email: string,
+     *    },
+     *    summary: string, // subject and email summary
+     *    thread_id: string,
+     *    legacy_email_id: string,
+     *    $el: HTMLElement,
+     * }
+     */
+    api.dom.visible_messages = function() {
+        const ret = [];
+        $('tbody>tr.zA[draggable="true"]:visible', api.dom.inbox_content())
+            .each((index, msgEle) => {
+                const nameAndEmail = $('*[email][name]', msgEle);
+                const linkAndSubject = $('*[role=link]', msgEle);
+                // example value: #thread-f:1638756560099919527|msg-f:1638756560099919527"
+                const idNode = msgEle.querySelector("span[data-thread-id]");
+                ret.push({
+                    from: {
+                        name: nameAndEmail.attr('name'),
+                        email: nameAndEmail.attr('email'),
+                    },
+                    summary: linkAndSubject[0].innerText,
+                    thread_id: api.helper.clean_thread_id(idNode.dataset.threadId || ""),
+                    legacy_email_id: idNode.dataset.legacyMessageId,
+                    $el: $(msgEle),
+                });
+            });
+        return ret;
+    };
+
     // retrieve queue of compose window dom objects
     // latest compose at the start of the queue (index 0)
     api.dom.composes = function() {
@@ -3343,18 +3387,8 @@ var Gmail = function(localJQuery) {
         */
         thread_id: function() {
             let thread_id = this.dom("thread").val() || "";
-            // handle new gmail style email-ids
-            if (thread_id.startsWith("#")) {
-                thread_id = thread_id.substring(1);
-            }
 
-            // remove message id
-            let messageIdLocation = thread_id.indexOf("|msg");
-            if (messageIdLocation > 0) {
-                thread_id = thread_id.substring(0, messageIdLocation);
-            } 
-            
-            return thread_id;            
+            return api.helper.clean_thread_id(thread_id);
         },
 
         /**
@@ -3465,7 +3499,7 @@ var Gmail = function(localJQuery) {
             e.initEvent('keydown', true, true);
             e.which = 27;
             e.keyCode = 27;
-            
+
             var $body = this.dom('body');
             $body.focus();
             $body[0].dispatchEvent(e);

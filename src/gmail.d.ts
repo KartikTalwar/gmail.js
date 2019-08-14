@@ -194,7 +194,7 @@ interface GmailGet {
        Returns a count of total unread emails for the current account.
 
        You can also request the data individually using:
-       
+
        gmail.get.unread_inbox_emails()
        gmail.get.unread_draft_emails()
        gmail.get.unread_spam_emails()
@@ -487,6 +487,17 @@ declare type GmailDomComposeLookup =
     'to' | 'cc' | 'bcc' | 'id' | 'draft' | 'subject' | 'subjectbox'
     | 'all_subjects' | 'body' | 'reply' | 'forward' | 'from' | 'send_button';
 
+interface GmailMessageRow {
+    summary: string;
+    from: {
+        name: string,
+        email: string,
+    };
+    $el: JQuery;
+    thread_id: string;
+    legacy_email_id: string | undefined;
+}
+
 declare type GmailDomCompose = {
     $el: JQuery,
     /**
@@ -594,6 +605,10 @@ interface GmailDom {
       * Gets a jQuery object representing the Search input from main header.
       */
     search_bar(): JQuery;
+    /**
+      * Get's all the visible email threads in the current folder.
+      */
+    visible_messages(): GmailMessageRow[];
     /**
       * Returns all known compose DOM elements.
       */
@@ -836,6 +851,7 @@ interface GmailHelper {
      * Dispatch mousedown and mouseup event on passed element
      */
     trigger_mouse_click(element: HTMLElement): boolean;
+    clean_thread_id(thread_id: string): string;
 
     get: {
         is_delegated_inbox(): boolean;
@@ -922,7 +938,7 @@ interface GmailSentEmailData {
     attachments: GmailAttachmentDetails[];
     content_html: string;
     ishtml: boolean;
-    $email_node?: any;   
+    $email_node?: any;
 }
 
 interface GmailNewThreadData {
