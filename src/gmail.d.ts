@@ -850,6 +850,7 @@ interface GmailHelper {
      * Dispatch mousedown and mouseup event on passed element
      */
     trigger_mouse_click(element: HTMLElement): boolean;
+    clean_thread_id(thread_id: string): string;
 
     get: {
         is_delegated_inbox(): boolean;

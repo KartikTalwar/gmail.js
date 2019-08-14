@@ -2823,6 +2823,21 @@ var Gmail = function(localJQuery) {
         return null;
     };
 
+    api.helper.clean_thread_id = function(thread_id) {
+        // handle new gmail style email-ids
+        if (thread_id.startsWith("#")) {
+            thread_id = thread_id.substring(1);
+        }
+
+        // remove message id
+        let messageIdLocation = thread_id.indexOf("|msg");
+        if (messageIdLocation > 0) {
+            thread_id = thread_id.substring(0, messageIdLocation);
+        } 
+
+        return thread_id;        
+    };
+
     api.helper.get.email_source_pre = function(identifier) {
         if(!identifier && api.check.is_inside_email()) {
             identifier = api.get.email_id();
@@ -3309,6 +3324,7 @@ var Gmail = function(localJQuery) {
             .each((index, msgEle) => {
                 const nameAndEmail = $('*[email][name]', msgEle);
                 const linkAndSubject = $('*[role=link]', msgEle);
+                // example value: #thread-f:1638756560099919527|msg-f:1638756560099919527"
                 const idNode = msgEle.querySelector("span[data-thread-id]");
                 ret.push({
                     from: {
@@ -3316,8 +3332,8 @@ var Gmail = function(localJQuery) {
                         email: nameAndEmail.attr('email'),
                     },
                     summary: linkAndSubject[0].innerText,
-                    // legacy: #thread-f:1638756560099919527|msg-f:1638756560099919527"
-                    thread_id: idNode.dataset.threadId || idNode.dataset.legacyMessageId,
+                    thread_id: api.helper.clean_thread_id(idNode.dataset.threadId || ""),
+                    legacyMessageId:  idNode.dataset.legacyMessageId,
                     $el: $(msgEle),
                 });
             });
@@ -3376,18 +3392,8 @@ var Gmail = function(localJQuery) {
         */
         thread_id: function() {
             let thread_id = this.dom("thread").val() || "";
-            // handle new gmail style email-ids
-            if (thread_id.startsWith("#")) {
-                thread_id = thread_id.substring(1);
-            }
 
-            // remove message id
-            let messageIdLocation = thread_id.indexOf("|msg");
-            if (messageIdLocation > 0) {
-                thread_id = thread_id.substring(0, messageIdLocation);
-            }
-
-            return thread_id;
+            return api.helper.clean_thread_id(thread_id);
         },
 
         /**
