@@ -1,6 +1,11 @@
 
 # Changelog
 
+## Version 0.9.9
+
+- add support for getting visible emails through DOM
+  (replaces api.get.visible_emails())
+
 ## Version 0.9.8
 
 - add support for parsing sent email data in new Gmail.
