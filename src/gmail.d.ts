@@ -495,6 +495,7 @@ interface GmailMessageRow {
    };
    $el: JQuery;
    thread_id: string;
+   legacyThreadId: string|undefined;
 }
 
 declare type GmailDomCompose = {

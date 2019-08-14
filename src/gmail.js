@@ -3315,6 +3315,7 @@ var Gmail = function(localJQuery) {
      *    },
      *    summary: string, // subject and email summary
      *    thread_id: string,
+     *    legacyThreadId: string,
      *    $el: HTMLElement,
      * }
      */
@@ -3333,7 +3334,7 @@ var Gmail = function(localJQuery) {
                     },
                     summary: linkAndSubject[0].innerText,
                     thread_id: api.helper.clean_thread_id(idNode.dataset.threadId || ""),
-                    legacyMessageId:  idNode.dataset.legacyMessageId,
+                    legacyMessageId: idNode.dataset.legacyMessageId,
                     $el: $(msgEle),
                 });
             });

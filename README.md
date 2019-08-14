@@ -1072,7 +1072,8 @@ Returns basic data for all the messages currently visible in the messages view. 
         "name": "Joe",
     },
     "$el": tr#:9b.zA.zE.inboxsdk__thread_row,
-    "thread_id": "#thread-f:1634069952006597945"
+    "thread_id": "thread-f:1628504557508152478",
+    "legacyThreadId": undefined,
 },
 {
     "summary": "The best of Gmail, wherever you are",
@@ -1082,6 +1083,7 @@ Returns basic data for all the messages currently visible in the messages view. 
     },
     "$el": tr#:9b.zA.zE.inboxsdk__thread_row,
     "thread_id": "#thread-f:1634069952006597946"
+    "legacyThreadId": undefined,
 },
 ]
 ```
