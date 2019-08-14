@@ -2829,12 +2829,6 @@ var Gmail = function(localJQuery) {
             thread_id = thread_id.substring(1);
         }
 
-        // remove message id
-        let messageIdLocation = thread_id.indexOf("|msg");
-        if (messageIdLocation > 0) {
-            thread_id = thread_id.substring(0, messageIdLocation);
-        } 
-
         return thread_id;        
     };
 
