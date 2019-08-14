@@ -488,14 +488,14 @@ declare type GmailDomComposeLookup =
     | 'all_subjects' | 'body' | 'reply' | 'forward' | 'from' | 'send_button';
 
 interface GmailMessageRow {
-   summary: string;
-   from: {
-      name: string,
-      email: string,
-   };
-   $el: JQuery;
-   thread_id: string;
-   legacyThreadId: string|undefined;
+    summary: string;
+    from: {
+        name: string,
+        email: string,
+    };
+    $el: JQuery;
+    thread_id: string;
+    legacy_email_id: string | undefined;
 }
 
 declare type GmailDomCompose = {
