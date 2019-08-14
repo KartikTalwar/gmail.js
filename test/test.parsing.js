@@ -802,6 +802,6 @@ describe("Compose-email-parsing", () => {
         var element = jquery('<div><div class="M9 AD"><input name="rt" value="thread-f:1610056787031797155|msg-f:1610056787031797158"/></div></div>').find(".M9");  
         var compose = new gmail.dom.compose(element);
 
-        assert.equal(compose.thread_id(), "thread-f:1610056787031797155");            
+        assert.equal(compose.thread_id(), "thread-f:1610056787031797155|msg-f:1610056787031797158");            
     });
 });
