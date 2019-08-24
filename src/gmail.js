@@ -3776,6 +3776,25 @@ var Gmail = function(localJQuery) {
     };
 
     /**
+     *  Show a compose window
+     * @returns {boolean}
+     */
+    api.compose.start_reply = function() {
+
+        //The compose button
+        var composeEl = $(".ams.bkH")[0];
+
+        if(composeEl) {
+            var click = document.createEvent("MouseEvents");
+            click.initEvent( "click", true, false );
+            composeEl.dispatchEvent(click);
+
+            return true;
+        }
+        return false;
+    };
+
+    /**
      * Shadow API commands specifically made to interact with old gmail.
      * (And in the future we can either remove "regular"  api.get or replace it with something else)
      */
