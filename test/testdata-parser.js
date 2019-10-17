@@ -31,6 +31,8 @@ var new_gmail_open_email_action_body_params = "{\"2\":{\"1\":[{\"1\":\"5\",\"2\"
 
 var new_gmail_new_email_body_params = "{\"1\":\"thread-f:1613947906803228078\",\"2\":{\"7\":{\"2\":[\"^us\"],\"3\":[\"msg-f:1613947906803228078\"]}}}";
 
+var new_gmail_apply_label_action_body_params = "{\"2\":{\"1\":[{\"1\":\"6\",\"2\":{\"1\":\"thread-f:1644041322536515974|msg-f:1647596654245574633\",\"2\":{\"7\":{\"1\":[\"^x_7680127119979202084\"],\"3\":[\"msg-f:1647596654245574633\"]}}}},{\"1\":\"7\",\"2\":{\"1\":\"thread-f:1647490793383449487|msg-f:1647581105847759434\",\"2\":{\"7\":{\"1\":[\"^x_7680127119979202084\"],\"3\":[\"msg-f:1647581105847759434\"]}}}}]},\"3\":{\"1\":1,\"2\":\"760329\",\"5\":{\"2\":0},\"7\":1},\"4\":{\"2\":2,\"3\":\"1571307981227\",\"4\":0,\"5\":431},\"5\":2}";                                            
+
 module.exports = {
     visible_emails_post_data: visible_emails_post_data,
     parse_response_json_data: parse_response_json_data,
@@ -41,5 +43,6 @@ module.exports = {
     new_gmail_read_action_body_params: new_gmail_read_action_body_params,
     new_gmail_delete_action_body_params: new_gmail_delete_action_body_params,
     new_gmail_open_email_action_body_params: new_gmail_open_email_action_body_params,
-    new_gmail_new_email_body_params: new_gmail_new_email_body_params
+    new_gmail_new_email_body_params: new_gmail_new_email_body_params,
+    new_gmail_apply_label_action_body_params: new_gmail_apply_label_action_body_params
 };
