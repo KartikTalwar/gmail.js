@@ -54,6 +54,12 @@ declare type GmailPageType =
    */
 declare type GmailEmailAddress = string[];
 
+declare type GmailDomComposeRecipients = {
+   to: string[];
+   cc: string[];
+   bcc: string[];
+}
+
 declare type GmailAttachmentDetails = {
     attachment_id: string,
     name: string,
@@ -188,7 +194,7 @@ interface GmailGet {
        Returns a count of total unread emails for the current account.
 
        You can also request the data individually using:
-       
+
        gmail.get.unread_inbox_emails()
        gmail.get.unread_draft_emails()
        gmail.get.unread_spam_emails()
@@ -244,7 +250,7 @@ interface GmailGet {
     /**
        Deprecated function. Migrate to `email_source_async` or `email_source_promise`!
     */
-    email_source(email_id: string): string;
+    email_source(identifier: GmailEmailIdentifier): string;
     /**
        Retrieves raw MIME message source from the gmail server for the
        specified email id. It takes the optional email_id parameter
@@ -255,12 +261,12 @@ interface GmailGet {
        string or binary format depending on the value of the
        `preferBinary`-parameter.
     */
-    email_source_async(email_id: string, callback: (email_source: string | Uint8Array) => void, error_callback?: (jqxhr: JQueryXHR, textStatus: string, errorThrown: string) => void, preferBinary?: boolean): void;
+    email_source_async(identifier: GmailEmailIdentifier, callback: (email_source: string | Uint8Array) => void, error_callback?: (jqxhr: JQueryXHR, textStatus: string, errorThrown: string) => void, preferBinary?: boolean): void;
     /**
        Does the same as email_source_async, but uses ES6 promises.
     */
-    email_source_promise(email_id: string): Promise<string>;
-    email_source_promise(email_id: string, preferBinary: boolean): Promise<Uint8Array>;
+    email_source_promise(identifier: GmailEmailIdentifier): Promise<string>;
+    email_source_promise(identifier: GmailEmailIdentifier, preferBinary: boolean): Promise<Uint8Array>;
     /**
      Retrieves the a email/thread data from the server that is currently
      visible.  The data does not come from the DOM.
@@ -382,6 +388,12 @@ interface GmailCheck {
        otherwise (i.e. displayed individually)
      */
     is_conversation_view(): boolean;
+
+    data: {
+        is_email_id(email_id: string): boolean;
+        is_thread_id(email_id: string): boolean;
+        is_legacy_email_id(email_id: string): boolean;
+    }
 }
 
 
@@ -475,6 +487,17 @@ declare type GmailDomComposeLookup =
     'to' | 'cc' | 'bcc' | 'id' | 'draft' | 'subject' | 'subjectbox'
     | 'all_subjects' | 'body' | 'reply' | 'forward' | 'from' | 'send_button';
 
+interface GmailMessageRow {
+    summary: string;
+    from: {
+        name: string,
+        email: string,
+    };
+    $el: JQuery;
+    thread_id: string;
+    legacy_email_id: string | undefined;
+}
+
 declare type GmailDomCompose = {
     $el: JQuery,
     /**
@@ -486,6 +509,10 @@ declare type GmailDomCompose = {
     */
     email_id(): string,
     /**
+       Retrieve the draft email id
+    */
+    thread_id(): string
+    /**
        Is this compose instance inline (as with reply & forwards) or a popup (as with a new compose)
     */
     is_inline(): boolean,
@@ -495,19 +522,19 @@ declare type GmailDomCompose = {
        options.type  string  to, cc, or bcc to check a specific one
        options.flat  boolean if true will just return an array of all recipients instead of splitting out into to, cc, and bcc
     */
-    recipients(options?: { type: string, flat: boolean }): GmailEmailAddress[];
+    recipients(options?: { type: 'to' | 'cc' | 'bcc', flat: boolean }): GmailDomComposeRecipients | string[];
     /**
       Retrieve the current 'to' recipients
      */
-    to(): string;
+    to(): JQuery;
     /**
       Retrieve the current 'cc' recipients
      */
-    cc(): string;
+    cc(): JQuery;
     /**
       Retrieve the current 'bcc' recipients
      */
-    bcc(): string;
+    bcc(): JQuery;
     /**
        Get/Set the current subject
        Parameters:
@@ -531,6 +558,10 @@ declare type GmailDomCompose = {
        Map find through to jquery element
     */
     find(selector: string): JQuery;
+    /**
+       Close compose window
+    */
+    close(): void;
     /**
        Retrieve preconfigured dom elements for this compose window
     */
@@ -574,6 +605,10 @@ interface GmailDom {
       * Gets a jQuery object representing the Search input from main header.
       */
     search_bar(): JQuery;
+    /**
+      * Get's all the visible email threads in the current folder.
+      */
+    visible_messages(): GmailMessageRow[];
     /**
       * Returns all known compose DOM elements.
       */
@@ -701,7 +736,7 @@ declare type GmailBindAction =
     | 'label' | 'archive' | 'move_to_inbox' | 'delete_forver' | 'delete_message_in_thread'
     | 'restore_message_in_thread' | 'star' | 'unstar' | 'mark_as_important' | "load"
     | 'mark_as_not_important' | 'filter_messages_like_these' | 'mute' | 'unmute'
-    | 'add_to_tasks' | 'move_label' | 'save_draft' | 'discard_draft' | 'send_message'
+    | 'add_to_tasks' | 'move_label' | 'save_draft' | 'discard_draft' | 'send_message' | 'send_scheduled_message'
     | 'expand_categories' | 'delete_label' | 'show_newly_arrived_message' | 'poll'
     | 'new_email' | 'refresh' | 'open_email' | 'upload_attachment' | 'compose'
     | 'compose_cancelled' | 'recipient_change' | 'view_thread' | 'view_email'
@@ -808,11 +843,15 @@ interface GmailObserve {
 //
 ////////////////////////////////////////////////////////////////////////////////
 
+type GmailEmailIdentifier = string | GmailNewEmailData | GmailDomEmail | HTMLElement;
+type GmailThreadIdentifier = string | GmailNewEmailData | GmailDomEmail | GmailDomThread;
+
 interface GmailHelper {
     /**
      * Dispatch mousedown and mouseup event on passed element
      */
     trigger_mouse_click(element: HTMLElement): boolean;
+    clean_thread_id(thread_id: string): string;
 
     get: {
         is_delegated_inbox(): boolean;
@@ -821,6 +860,9 @@ interface GmailHelper {
         email_data_pre(email_id?: string): string;
         email_data_post(get_data: string): GmailEmailData;
         email_source_pre(email_id?: string): string;
+        email_legacy_id(identifier: GmailEmailIdentifier): string | null;
+        email_new_id(identifier: GmailEmailIdentifier): string | null;
+        thread_id(identifier: GmailThreadIdentifier): string | null;
     }
 }
 
@@ -883,6 +925,22 @@ interface GmailNewEmailData {
     $thread_node?: any;
 }
 
+interface GmailSentEmailData {
+    1: string;
+    id: string;
+    subject: string;
+    timestamp: number;
+    date: Date;
+    from: GmailNewEmailAddress;
+    to: GmailNewEmailAddress[];
+    cc: GmailNewEmailAddress[];
+    bcc: GmailNewEmailAddress[];
+    attachments: GmailAttachmentDetails[];
+    content_html: string;
+    ishtml: boolean;
+    $email_node?: any;
+}
+
 interface GmailNewThreadData {
     thread_id: string;
     emails: GmailNewEmailData[];
@@ -893,9 +951,9 @@ interface GmailNewGet {
      * Returns the new-style email_id of the latest email visible in the DOM,
      * or for the provided email-node if provided.
      *
-     * @param emailElem: Node to extract email-id from. Optional.
+     * @param emailElem: Node to extract email-id from or DomEmail. Optional.
      */
-    email_id(emailElem?: HTMLElement): string;
+    email_id(emailElem?: HTMLElement | GmailDomEmail): string;
     /**
      * Returns the new-style thread_id of the current thread visible in the DOM.
      */
@@ -905,13 +963,13 @@ interface GmailNewGet {
      *
      * @param email_id: new style email id. Legacy IDs not supported. If empty, default to latest in view.
      */
-    email_data(email_id?: string): GmailNewEmailData;
+    email_data(identifier: GmailEmailIdentifier): GmailNewEmailData | null;
     /**
      * Returns available information about a specific thread.
      *
      * @param thread_id: new style thread id. Legacy IDs not supported. If empty, default to current.
      */
-    thread_data(thread_id?: string): GmailNewThreadData;
+    thread_data(identifier?: GmailThreadIdentifier): GmailNewThreadData | null;
 }
 
 interface GmailNew {

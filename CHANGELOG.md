@@ -1,6 +1,47 @@
 
 # Changelog
 
+## Version 0.9.9
+
+- add support for getting visible emails through DOM
+  (replaces api.get.visible_emails())
+
+## Version 0.9.8
+
+- add support for parsing sent email data in new Gmail.
+- add norwegian localizations.
+- fix attachment URLs in non-primary gmail accounts.
+- fix emails-property in gmail.new.get.thread_data().
+- fix incorrect email counts in gmail.get.unread_emails() and related functions.
+- add thread_id() function to DOM compose instances.
+
+## Version 0.9.7
+
+- fix issues with crash when invoked in cross-origin context.
+
+## Version 0.9.6
+
+- add support for closing compose-windows.
+- add event for `send_scheduled_message` event.
+
+## Version 0.9.5
+
+- Further API compatibility and ergonomics improvements.
+
+## Version 0.9.4
+
+- Make `api.new.get.email_id()` able to work with DOMEmail directly.
+
+## Version 0.9.3
+
+- Fix bug introduced in `api.new.get.email_data()` in version 0.9.2
+  when not providing email-id.
+
+## Version 0.9.2
+
+- Make `api.new.get.email_data()` handle legacy-style IDs when
+  present to improve compatibility. Creates console-warning when detected.
+
 ## Version 0.9.1
 
 - Add ability to get new-style email-id directly from DOM element in
