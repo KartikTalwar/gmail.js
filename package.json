@@ -27,7 +27,7 @@
     },
     "devDependencies": {
         "@types/jquery": "^1.10.27",
-        "eslint": "^3.10.2",
+        "eslint": "^6.6.0",
         "jsdom": "^15.1.1",
         "mocha": "^3.1.2",
         "typescript": "^2.0.7"
