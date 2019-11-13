@@ -1709,27 +1709,30 @@ var Gmail = function(localJQuery) {
     };
 
     api.helper.get_xhr_window = function() {
-        var js_frame = null;
+        // var js_frame = null;
+        // if (top.document.getElementById("js_frame")){
+        //     js_frame = top.document.getElementById("js_frame");
+        // } else if (window_opener) {
+        //     js_frame = window_opener.top.document.getElementById("js_frame");
+        // }
+        // if (!js_frame){
+        //     if (window_opener) {
+        //         js_frame = window_opener.top;
+        //     } else {
+        //         js_frame = top;
+        //     }
+        // }
+        // var win;
+        // if (js_frame.contentDocument) {
+        //     win = js_frame.contentDocument.defaultView;
+        // } else {
+        //     win = js_frame;
+        // }
+        // return win;
 
-        if (top.document.getElementById("js_frame")){
-            js_frame = top.document.getElementById("js_frame");
-        } else if (window_opener) {
-            js_frame = window_opener.top.document.getElementById("js_frame");
-        }
-        if (!js_frame){
-            if (window_opener) {
-                js_frame = window_opener.top;
-            } else {
-                js_frame = top;
-            }
-        }
-        var win;
-        if (js_frame.contentDocument) {
-            win = js_frame.contentDocument.defaultView;
-        } else {
-            win = js_frame;
-        }
-        return win;
+        // in the new gmail UI, in the case of window_opener as xhr window,
+        // some events do not work, for example before_send event
+        return top;
     };
 
 
