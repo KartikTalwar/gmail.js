@@ -1012,7 +1012,7 @@ var Gmail = function(localJQuery) {
         return obj
             && obj["1"]
             && Array.isArray(obj["1"])
-            && obj["1"].length === 1
+            && obj["1"].length >= 1
             && typeof obj["1"]["0"] === 'string';
     };
 
