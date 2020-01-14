@@ -1138,7 +1138,6 @@ var Gmail = function(localJQuery) {
     };
 
     api.tools.check_event_type = function(threadObj) {
-        const apply_label = "^x_";
         const action_map = {
             // ""            : "add_to_tasks",
             "^a": "archive",
@@ -1173,21 +1172,23 @@ var Gmail = function(localJQuery) {
             "^o": "open_email",
             // ""            : "toggle_threads"
         };
+        //Get thread data
         const threadData = api.tools.get_thread_data(threadObj);
-
-        if (threadData && api.check.data.is_action(threadData)) {
-            const action = api.tools.get_action(threadData);
-            
-            //Check if label is applied to email / existing email is moved to an label
-            if(action.startsWith(apply_label) && api.check.data.is_first_type_action(threadData)) {
-                return action_map[apply_label];
-            } else {
-                return action_map[action];
-            }
-            
-        } else {
+        
+        //Check if event is fired by the user 
+        if( !(threadData && api.check.data.is_action(threadData)) ) {
             return null;
         }
+        
+        //Get action type
+        const action = api.tools.get_action(threadData);
+        
+        for(var key in action_map) {
+            if(action.startsWith( key )) {
+                return action_map[key];
+            }
+        }
+        return null;           
     };
 
     api.tools.parse_fd_email = function(json) {
