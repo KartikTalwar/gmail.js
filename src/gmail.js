@@ -1965,8 +1965,8 @@ var Gmail = function(localJQuery) {
                                 if (api.tools.get_pathname_from_url(xhr.xhrParams.url_raw).endsWith("/i/bv")) {
                                     let parsed_emails = api.tools.parse_bv_request_payload(xhr.xhrResponse);
                                     if (parsed_emails !== undefined && parsed_emails !== null) {
-                                    api.tools.cache_email_data(parsed_emails);
-                                    events.load_email_data = [parsed_emails];
+                                        api.tools.cache_email_data(parsed_emails);
+                                        events.load_email_data = [parsed_emails];
                                     }
                                 }
                             }
