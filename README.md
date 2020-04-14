@@ -34,10 +34,9 @@ npm install gmail-js
 **Note:** Please ensure that Gmail.js is injected into the regular DOM.
 Gmail.js does not work as a content-script.
 
-For some ready to use examples/boilerplate repos, look no further:
+For a ready to use example/boilerplate repo, look no further:
 
 - **[GmailJS Node Boilerplate](https://github.com/josteink/gmailjs-node-boilerplate)** - Example for how to create a browser-extension using GmailJS and modern javascript with NodeJS and script-bundling for instant load-times.
-- **[GmailJS Legacy Boilerplate](https://github.com/KartikTalwar/gmail-chrome-extension-boilerplate)** - Example for how to create a browser-extension using traditional script-loading. (Requires less tooling, but is less reliable)
 
 ### Content Security Policy
 
