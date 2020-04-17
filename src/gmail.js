@@ -1381,7 +1381,7 @@ var Gmail = function(localJQuery) {
 
 
                     //TODO : to check...
-                    const fd_legacy_email_id = "" ;//fd_email["2"]["35"] on xhr but not present on embedded
+                    const fd_legacy_email_id = fd_email["56"];
                     const fd_email_smtp_id = fd_email["14"];
                     const fd_email_subject = fd_email["8"];
 
