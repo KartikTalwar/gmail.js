@@ -1861,7 +1861,14 @@ var Gmail = function(localJQuery) {
     };
 
 
-    api.tools.cache_email_data = function(email_data) {
+    api.tools.cache_email_data = function(email_data, data_source) {
+        /**
+		 * Data source could be
+		 * 	- fd_request_payload
+		 * 	- bv_request_payload
+		 * 	- fd_embedded_json
+		 * 	- bv_embedded_json
+		 */
         if (email_data === null) {
             return;
         }
@@ -1870,8 +1877,22 @@ var Gmail = function(localJQuery) {
 
         for (let email of email_data) {
             // cache email directly on IDs
-            c.emailIdCache[email.id] = email;
-            c.emailLegacyIdCache[email.legacy_email_id] = email;
+            if (c.emailIdCache[email.id] === undefined) {
+                //console.log("ADD c.emailIdCache[email.id]",c.emailIdCache[email.id],email);
+                c.emailIdCache[email.id] = email;
+            }
+            else if (data_source === "fd_request_payload" || data_source === "fd_embedded_json") {
+                //console.log("UPDATE c.emailIdCache[email.id]",c.emailIdCache[email.id],email,data_source);
+                c.emailIdCache[email.id] = email;
+            }
+            if (c.emailLegacyIdCache[email.legacy_email_id] === undefined) {
+                //console.log("ADD c.emailLegacyIdCache[email.id]",c.emailLegacyIdCache[email.id],email);
+                c.emailLegacyIdCache[email.legacy_email_id] = email;
+            }
+            else if (data_source === "fd_request_payload" || data_source === "fd_embedded_json") {
+                //console.log("UPDATE c.emailLegacyIdCache[email.id]",c.emailLegacyIdCache[email.id],email,data_source);
+                c.emailLegacyIdCache[email.legacy_email_id] = email;
+            }
 
             // ensure we have a thread-object before appending emails to it!
             let thread = c.threadCache[email.thread_id];
@@ -1885,15 +1906,18 @@ var Gmail = function(localJQuery) {
 
             // only append email to cache if not already there.
             if (thread.emails.filter(i => i.id === email.id).length === 0) {
-                //console.log("push",email);
+                //console.log("append email to cache",data_source, email) ;
                 thread.emails.push(email);
             }
             else
             {
-                let index = thread.emails.findIndex(i => i.id === email.id);
-                //console.log("before:",thread.emails[index]);
-                thread.emails[index] = email;
-                //console.log("after:",thread.emails[index]);
+                // Only update cache with data source fd_request_payload and fd_embedded_json
+                if (data_source === "fd_request_payload" || data_source === "fd_embedded_json") {
+                    let index = thread.emails.findIndex(i => i.id === email.id);
+                    //console.log("update email cache before",data_source,email);
+                    thread.emails[index] = email;
+                    //console.log("update email cache after",data_source,email);
+                }
             }
         }
     };
@@ -1958,14 +1982,14 @@ var Gmail = function(localJQuery) {
                                 if (api.tools.get_pathname_from_url(xhr.xhrParams.url_raw).endsWith("/i/fd")) {
                                     let parsed_emails = api.tools.parse_fd_request_payload(xhr.xhrResponse);
                                     if (parsed_emails !== undefined && parsed_emails !== null) {
-                                        api.tools.cache_email_data(parsed_emails);
+                                        api.tools.cache_email_data(parsed_emails,"fd_request_payload");
                                         events.load_email_data = [parsed_emails];
                                     }
                                 }
                                 if (api.tools.get_pathname_from_url(xhr.xhrParams.url_raw).endsWith("/i/bv")) {
                                     let parsed_emails = api.tools.parse_bv_request_payload(xhr.xhrResponse);
                                     if (parsed_emails !== undefined && parsed_emails !== null) {
-                                        api.tools.cache_email_data(parsed_emails);
+                                        api.tools.cache_email_data(parsed_emails,"bv_request_payload");
                                         events.load_email_data = [parsed_emails];
                                     }
                                 }
@@ -2002,7 +2026,7 @@ var Gmail = function(localJQuery) {
             if (data !== undefined && data.Cl6csf !== undefined && data.Cl6csf[0][2] !== undefined) {
                 //console.log('Cl6csf',JSON.parse(data.Cl6csf[0][2]));
                 let parsed_emails = api.tools.parse_fd_embedded_json(JSON.parse(data.Cl6csf[0][2]));
-                api.tools.cache_email_data(parsed_emails);
+                api.tools.cache_email_data(parsed_emails,"fd_embedded_json");
                 //TODO : event is not load yet at this time of workflow, addon is necessary to observe load email event for this case
                 //events.load_email_data = [parsed_emails];
 
@@ -2010,7 +2034,7 @@ var Gmail = function(localJQuery) {
             if (data !== undefined && data.a6jdv !== undefined && data.a6jdv[0][2] !== undefined) {
                 //console.log('a6jdv',JSON.parse(data.a6jdv[0][2]));
                 let parsed_emails = api.tools.parse_bv_embedded_json(JSON.parse(data.a6jdv[0][2]));
-                api.tools.cache_email_data(parsed_emails);
+                api.tools.cache_email_data(parsed_emails,"bv_embedded_json");
                 //TODO : event is not load yet at this time of workflow, addon is necessary to observe load email event for this case
                 //events.load_email_data = [parsed_emails];
 
