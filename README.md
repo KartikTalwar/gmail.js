@@ -38,11 +38,20 @@ For a ready to use example/boilerplate repo, look no further:
 
 - **[GmailJS Node Boilerplate](https://github.com/josteink/gmailjs-node-boilerplate)** - Example for how to create a browser-extension using GmailJS and modern javascript with NodeJS and script-bundling for instant load-times.
 
-### Content Security Policy
+### Content Security Policy (legacy advice)
 
-Content Security Policy (CSP) will prevent direct injection. Please see the following repository to get around the policies. More details can also be found in issue [#75](https://github.com/KartikTalwar/gmail.js/issues/75)
+In earlier advice given w.r.t. deployment of GmailJS, where scripts were injected one by
+one, with cumbersome loading and probing mechanisms, CSP could be an
+problem causing your extension to fail if GmailJS was injected incorrectly.
 
-See the examples linked above for how to get around that.
+If you use modern javascript and script-bundling in your extension (like in the boilerplate example), CSP will not interfere with loading
+of your extension, nor GmailJS.
+
+If you have any issues with CSP, the general advice is to build your extension using script-bundling and eliminate the cause of the error
+all together.
+
+While you may be able to make it work, legacy loading is no longer considered supported by GmailJS.
+
 
 ## Setup
 
