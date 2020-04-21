@@ -1875,22 +1875,22 @@ var Gmail = function(localJQuery) {
 
         const c = api.cache;
 
+        let isUpdateAuthorized = false;
+        if (data_source === "fd_request_payload" || data_source === "fd_embedded_json") {
+            isUpdateAuthorized = true;
+        }
+
+
         for (let email of email_data) {
             // cache email directly on IDs
             if (c.emailIdCache[email.id] === undefined) {
-                //console.log("ADD c.emailIdCache[email.id]",c.emailIdCache[email.id],email);
+                console.log("ADD email cache",data_source,email);
                 c.emailIdCache[email.id] = email;
-            }
-            else if (data_source === "fd_request_payload" || data_source === "fd_embedded_json") {
-                //console.log("UPDATE c.emailIdCache[email.id]",c.emailIdCache[email.id],email,data_source);
-                c.emailIdCache[email.id] = email;
-            }
-            if (c.emailLegacyIdCache[email.legacy_email_id] === undefined) {
-                //console.log("ADD c.emailLegacyIdCache[email.id]",c.emailLegacyIdCache[email.id],email);
                 c.emailLegacyIdCache[email.legacy_email_id] = email;
             }
-            else if (data_source === "fd_request_payload" || data_source === "fd_embedded_json") {
-                //console.log("UPDATE c.emailLegacyIdCache[email.id]",c.emailLegacyIdCache[email.id],email,data_source);
+            else if (isUpdateAuthorized) {
+                console.log("UPDATE email cache",data_source,email);
+                c.emailIdCache[email.id] = email;
                 c.emailLegacyIdCache[email.legacy_email_id] = email;
             }
 
@@ -1906,18 +1906,14 @@ var Gmail = function(localJQuery) {
 
             // only append email to cache if not already there.
             if (thread.emails.filter(i => i.id === email.id).length === 0) {
-                //console.log("append email to cache",data_source, email) ;
+                console.log("append email to thread cache",data_source, email) ;
                 thread.emails.push(email);
             }
-            else
-            {
-                // Only update cache with data source fd_request_payload and fd_embedded_json
-                if (data_source === "fd_request_payload" || data_source === "fd_embedded_json") {
-                    let index = thread.emails.findIndex(i => i.id === email.id);
-                    //console.log("update email cache before",data_source,email);
-                    thread.emails[index] = email;
-                    //console.log("update email cache after",data_source,email);
-                }
+            // Only update cache with data source fd_request_payload and fd_embedded_json
+            else if (isUpdateAuthorized) {
+                let index = thread.emails.findIndex(i => i.id === email.id);
+                console.log("update email in thread cache",data_source,email);
+                thread.emails[index] = email;
             }
         }
     };
