@@ -1155,14 +1155,14 @@ var Gmail = function(localJQuery) {
 
         if (threadData && api.check.data.is_action(threadData)) {
             const action = api.tools.get_action(threadData);
-            
+
             //Check if label is applied to email / existing email is moved to an label
             if(action.startsWith(apply_label) && api.check.data.is_first_type_action(threadData)) {
                 return action_map[apply_label];
             } else {
                 return action_map[action];
             }
-            
+
         } else {
             return null;
         }
@@ -1721,7 +1721,7 @@ var Gmail = function(localJQuery) {
         } else if (window_opener) {
             js_frame = window_opener.top.document.getElementById("js_frame");
         }
-        
+
         if (!js_frame){
             if (window_opener) {
                 js_frame = window_opener.top;
@@ -1729,14 +1729,14 @@ var Gmail = function(localJQuery) {
                 js_frame = top;
             }
         }
-        
+
         var win;
         if (js_frame.contentDocument) {
             win = js_frame.contentDocument.defaultView;
         } else {
             win = js_frame;
         }
-        
+
         return win;
     };
 
@@ -2844,7 +2844,7 @@ var Gmail = function(localJQuery) {
             thread_id = thread_id.substring(1);
         }
 
-        return thread_id;        
+        return thread_id;
     };
 
     api.helper.get.email_source_pre = function(identifier) {
@@ -3330,7 +3330,8 @@ var Gmail = function(localJQuery) {
      */
     api.dom.visible_messages = function() {
         const ret = [];
-        $('tbody>tr.zA[draggable="true"]:visible', api.dom.inbox_content())
+        // [draggable="true"] is not always on the rows for some unknown reason
+        $('tbody>tr.zA[role="row"]:visible', api.dom.inbox_content())
             .each((index, msgEle) => {
                 const nameAndEmail = $('*[email][name]', msgEle);
                 const linkAndSubject = $('*[role=link]', msgEle);
