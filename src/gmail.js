@@ -1240,7 +1240,7 @@ var Gmail = function(localJQuery) {
         return fd_email_content_html;
     };
 
-    api.tools.parse_fd_embedded_json = function (fd_email) {
+    api.tools.parse_fd_embedded_json_content_html = function (fd_email) {
         let fd_email_content_html = null;
         try {
             const fd_html_containers = fd_email["9"]["2"];
@@ -1390,10 +1390,10 @@ var Gmail = function(localJQuery) {
                     const fd_email_date = new Date(fd_email_timestamp);
 
                     //TODO : need a refactoring 
-                    const fd_email_content_html = api.tools.parse_fd_embedded_json(fd_email);
+                    const fd_email_content_html = api.tools.parse_fd_embedded_json_content_html(fd_email);
 
                     //TODO
-                    const fd_attachments = api.tools.parse_fd_attachments(fd_email["2"]["14"]);
+                    const fd_attachments = api.tools.parse_fd_attachments(fd_email["12"]);
                     const fd_email_sender_address = fd_email["19"]["17"];
 
                     //TODO
@@ -1884,12 +1884,12 @@ var Gmail = function(localJQuery) {
         for (let email of email_data) {
             // cache email directly on IDs
             if (c.emailIdCache[email.id] === undefined) {
-                console.log("ADD email cache",data_source,email);
+                //console.log("ADD email cache",data_source,email);
                 c.emailIdCache[email.id] = email;
                 c.emailLegacyIdCache[email.legacy_email_id] = email;
             }
             else if (isUpdateAuthorized) {
-                console.log("UPDATE email cache",data_source,email);
+                //console.log("UPDATE email cache",data_source,email);
                 c.emailIdCache[email.id] = email;
                 c.emailLegacyIdCache[email.legacy_email_id] = email;
             }
@@ -1906,13 +1906,13 @@ var Gmail = function(localJQuery) {
 
             // only append email to cache if not already there.
             if (thread.emails.filter(i => i.id === email.id).length === 0) {
-                console.log("append email to thread cache",data_source, email) ;
+                //console.log("append email to thread cache",data_source, email) ;
                 thread.emails.push(email);
             }
             // Only update cache with data source fd_request_payload and fd_embedded_json
             else if (isUpdateAuthorized) {
                 let index = thread.emails.findIndex(i => i.id === email.id);
-                console.log("update email in thread cache",data_source,email);
+                //console.log("update email in thread cache",data_source,email);
                 thread.emails[index] = email;
             }
         }
@@ -4208,8 +4208,10 @@ var Gmail = function(localJQuery) {
     // set up embedded data watcher as early as possible, to ensure we get all relevant email-data!
     // do not wait for document load event, embedded data are loaded before...
     // content-script must be configured with "run_at": "document_start" to be able to watch embedded data
-    api.tools.embedded_data_watcher();    
-
+    if (typeof(document) !== "undefined") {
+        api.tools.embedded_data_watcher();
+    }
+    
     return api;
 };
 
