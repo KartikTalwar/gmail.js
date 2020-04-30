@@ -1,6 +1,12 @@
 
 # Changelog
 
+## Version 1.0.0
+
+- major improvements in populating the email-cache. Thanks @Fabi1Sc!
+  NOTE: requires changes to extension-loading. See README!
+- deprecate more old-style APIs
+
 ## Version 0.9.9
 
 - add support for getting visible emails through DOM

@@ -457,6 +457,7 @@ var Gmail = function(localJQuery) {
 
 
     api.get.email_ids = function() {
+        console.warn("GmailJS: using deprecated API for old Gmail. Migrate to new API compatible with new Gmail to silence this warning!");
         if(api.check.is_inside_email()) {
             var data = api.get.email_data();
             return Object.keys(data.threads);
@@ -477,6 +478,7 @@ var Gmail = function(localJQuery) {
     };
 
     api.get.thread_id = function() {
+        console.warn("GmailJS: using deprecated API for old Gmail. Migrate to new API compatible with new Gmail to silence this warning!");
         // multiple elements contains this attribute, but only the visible header of the visible email is a H2!
         const elem = document.querySelector("h2[data-legacy-thread-id]");
         if (elem !== null) {
@@ -489,7 +491,7 @@ var Gmail = function(localJQuery) {
     };
 
     api.get.email_id = function() {
-        console.warn("GmailJS: api.get.email_id() invoked. Please note this function actually returns thread-id, and that email-id and thread-id may not always be used interchangably! Use api.get.thread_id() instead to silence this warning.");
+        console.warn("GmailJS: using deprecated API for old Gmail. Migrate to new API compatible with new Gmail to silence this warning!");
         return api.get.thread_id();
     };
 
@@ -3194,7 +3196,7 @@ var Gmail = function(localJQuery) {
 
 
     api.get.email_source = function(identifier) {
-        console.warn("Gmail.js: This function has been deprecated and will be removed in an upcoming release! Please migrate to email_source_async!");
+        console.warn("Gmail.js: This function has been deprecated and will be removed in an upcoming release! Please migrate to email_source_async or email_source_promise!");
         var url = api.helper.get.email_source_pre(identifier);
         if (url !== null) {
             return api.tools.make_request(url, "GET", true);
