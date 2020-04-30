@@ -1,0 +1,457 @@
+{
+    "1": {
+        "1": [{
+            "2": "thread-a:r873907427374440696",
+            "3": "9223370448874203841",
+            "4": "Working from home: The future of business is remote",
+            "5": {
+                "1": "Working from home: The future of business is remote",
+                "2": "Le 27.04.2020 11:41, Elon a \u00e9crit : Look at that : https://www.zdnet.com/topic/working-from-home-the-future-of-business-is-remote/ Sure",
+                "3": "1587980572051",
+                "4": "thread-a:r873907427374440696",
+                "5": [{
+                    "1": "msg-a:r-5459297729901660292",
+                    "2": {
+                        "1": 1,
+                        "2": "elonm@gmail.com",
+                        "3": "Elon"
+                    },
+                    "7": "1587980506989",
+                    "10": "Look at that : https://www.zdnet.com/topic/working-from-home-the-future-of-business-is-remote/",
+                    "11": ["^a", "^all", "^f", "^f_bt", "^io_lr", "^o"],
+                    "12": [{
+                        "1": "text/plain",
+                        "2": "work.txt",
+                        "3": "278",
+                        "4": "0.1",
+                        "6": "https://mail.google.com/mail/?ui\u003d2\u0026ik\u003d74384930e0\u0026attid\u003d0.1\u0026permmsgid\u003dmsg-a:r-5459297729901660292\u0026th\u003d171bb0399636172e\u0026view\u003datt\u0026zw",
+                        "7": 0,
+                        "8": {
+                            "3": "55fc38f1_52e78411_3774f559_d670a76b_62b66717",
+                            "9": "ANGjdJ-hf1V7Q95MZJqK2jUy8ocdUnWN2TmqcXqRfsuI62nKXqSlMV7qmQ3huHkHdQ7661IlX5THnhZPIkiM3WbMW5I7kkUx1Vjcpr3Xu43HqCGyBqU9ba2p85IWXKg"
+                        },
+                        "11": 1
+                    }],
+                    "18": "1587980507491",
+                    "30": {
+                        "7": {
+                            "1": "21660258"
+                        },
+                        "8": [21660258],
+                        "10": 1
+                    },
+                    "31": "1587980507491",
+                    "44": 0,
+                    "56": "171bb0399636172e"
+                }, {
+                    "1": "msg-f:1665118316230599953",
+                    "2": {
+                        "1": 1,
+                        "2": "Eric@gmail.com",
+                        "3": "Eric"
+                    },
+                    "7": "1587980572051",
+                    "10": "Le 27.04.2020 11:41, Elon a \u00e9crit : Look at that : https://www.zdnet.com/topic/working-from-home-the-future-of-business-is-remote/ Sure",
+                    "11": ["^all", "^i", "^iim", "^io_im", "^io_lr", "^o", "^p_ag", "^smartlabel_personal", "^sq_ig_i_personal"],
+                    "12": [{
+                        "1": "text/plain",
+                        "2": "work.txt",
+                        "3": "278",
+                        "4": "0.1",
+                        "6": "https://mail.google.com/mail/?ui\u003d2\u0026ik\u003d74384930e0\u0026attid\u003d0.1\u0026permmsgid\u003dmsg-f:1665118316230599953\u0026th\u003d171bb04953ebe511\u0026view\u003datt\u0026zw",
+                        "7": 0,
+                        "8": {
+                            "3": "55fc38f1_52e78411_3774f559_d670a76b_62b66717",
+                            "9": "ANGjdJ_bCJGX4pYo-KsltojoThzMbGTNrje4ncEk43zD85qkRr6zzweWZiQLsLG6pIbflY63rnX8UVRb0JTdfzKCFzO8_RBgk6VhkPj-CNq1312QMiWDgl-RYzoVXTA"
+                        },
+                        "11": 1
+                    }],
+                    "13": {
+                        "28": "msg-f:1665118316230599953",
+                        "31": [{
+                            "1": {
+                                "1": 0,
+                                "2": "article"
+                            },
+                            "2": {
+                                "1": [{
+                                    "1": "https://ci3.googleusercontent.com/proxy/VjhEslX1v9LhdeKFxo3OZLW5makCxJR8mPRerkuZJe2IcflH9QQCysUGsePSYVO1hCU1SCcKFOOi1hq8CLn_BO5v7JDU2OjTjjXhp2a7ihDEios1E3XZesuiJffUZ7T9FxF3fnLM6xxxoUsIGJceYzD3jXi4kDpZht7CblaTGl-7WuKx2MG5aAOi8f7rJbs7PekUWgfLW3Lb2qJrRBVQtSAU8rXu560SVET-a9d4Vi5HHJIhcgBAYoTL9Q",
+                                    "7": 1,
+                                    "11": 1
+                                }],
+                                "2": {
+                                    "1": [{
+                                        "1": "Working from home: The future of business is remote | ZDNet"
+                                    }]
+                                },
+                                "3": [{
+                                    "1": [{
+                                        "1": "www.zdnet.com"
+                                    }]
+                                }]
+                            },
+                            "4": "5152721027681343705",
+                            "5": {
+                                "1": "4503599627370495"
+                            },
+                            "6": 1
+                        }]
+                    },
+                    "16": "\u003cCAHqB\u003dtDjJtq9QsjipXxqx4UE07nmSkDib1XqH0Wi0R7JU8vEmg@mail.gmail.com\u003e",
+                    "18": "1587980571966",
+                    "30": {
+                        "4": {
+                            "1": 1
+                        },
+                        "5": {
+                            "1": 0.87796235
+                        },
+                        "7": {
+                            "1": "21660255"
+                        },
+                        "8": [21660255, 40510207, 21660332, 40510093, 40510189, 40510198],
+                        "10": 1
+                    },
+                    "31": "1587980571966",
+                    "44": 0,
+                    "45": {
+                        "3": 1
+                    },
+                    "56": "171bb04953ebe511"
+                }],
+                "8": "1587980507468",
+                "14": 0.87796235,
+                "15": {
+                    "1": [{
+                        "1": "",
+                        "2": "billg@gmail.com"
+                    }, {
+                        "1": "",
+                        "2": "jeffb@gmail.com"
+                    }, {
+                        "1": "",
+                        "2": "larrye@gmail.com"
+                    }, {
+                        "1": "",
+                        "2": "larryp@gmail.com"
+                    }],
+                    "2": [{
+                        "1": "",
+                        "2": "sergeyb@gmail.com"
+                    }, {
+                        "1": "",
+                        "2": "markz@gmail.com"
+                    }]
+                },
+                "17": 0,
+                "19": 1,
+                "20": "171bb02371f0da52"
+            },
+            "7": "2",
+            "11": 1,
+            "13": "1587980571966"
+        }, {
+            "2": "thread-a:r-7005674805299871901",
+            "3": "9223370448874393588",
+            "4": "Ubuntu 20.04 Download Link \u0026 New Features (Updated)",
+            "5": {
+                "1": "Ubuntu 20.04 Download Link \u0026 New Features (Updated)",
+                "2": "Le 27.04.2020 11:35, Elon a \u00e9crit : Six months of blood, sweat and development tears have gone in Ubuntu 20.04 LTS (which is codenamed \"Focal Fossa\") resulting in substantial set of",
+                "3": "1587980382357",
+                "4": "thread-a:r-7005674805299871901",
+                "5": [{
+                    "1": "msg-a:r-7004022322083187773",
+                    "2": {
+                        "1": 1,
+                        "2": "elonm@gmail.com",
+                        "3": "Elon"
+                    },
+                    "7": "1587980129841",
+                    "10": "Six months of blood, sweat and development tears have gone in Ubuntu 20.04 LTS (which is codenamed \u201cFocal Fossa\u201d) resulting in substantial set of improvements that improve just about every part of the",
+                    "11": ["^a", "^all", "^f", "^f_bt", "^io_lr", "^o"],
+                    "12": [{
+                        "1": "text/plain",
+                        "2": "Ubuntu_20.04.txt",
+                        "3": "1017",
+                        "4": "0.1",
+                        "6": "https://mail.google.com/mail/?ui\u003d2\u0026ik\u003d74384930e0\u0026attid\u003d0.1\u0026permmsgid\u003dmsg-a:r-7004022322083187773\u0026th\u003d171bafdd8d3f48bb\u0026view\u003datt\u0026zw",
+                        "7": 0,
+                        "8": {
+                            "3": "54877efe_63d780ef_926e7c91_2aa63925_d44a83c1",
+                            "9": "ANGjdJ-fjNZwhzD_nrsZfJMFZmODWMzXm9t_cqII-_2inSmWjPKaHtvn2ZogqoRvwX4soZQwIvPfNFrgrJ1vZ4e4p2-As4Y6BGqyF-ibts7W8E8CmBdW9pvf_cWqBTk"
+                        },
+                        "11": 1
+                    }],
+                    "18": "1587980130515",
+                    "30": {
+                        "7": {
+                            "1": "21660258"
+                        },
+                        "8": [21660258],
+                        "10": 1
+                    },
+                    "31": "1587980130515",
+                    "44": 0,
+                    "56": "171bafdd8d3f48bb"
+                }, {
+                    "1": "msg-f:1665117937823393243",
+                    "2": {
+                        "1": 1,
+                        "2": "Eric@gmail.com",
+                        "3": "Eric"
+                    },
+                    "7": "1587980211022",
+                    "11": ["^all", "^i", "^iim", "^io_im", "^io_lr", "^o", "^smartlabel_personal", "^sq_ig_i_personal"],
+                    "12": [{
+                        "1": "text/plain",
+                        "2": "Ubuntu_20.04.txt",
+                        "3": "1017",
+                        "4": "0.1",
+                        "6": "https://mail.google.com/mail/?ui\u003d2\u0026ik\u003d74384930e0\u0026attid\u003d0.1\u0026permmsgid\u003dmsg-f:1665117937823393243\u0026th\u003d171baff1391825db\u0026view\u003datt\u0026zw",
+                        "7": 0,
+                        "8": {
+                            "3": "54877efe_63d780ef_926e7c91_2aa63925_d44a83c1",
+                            "9": "ANGjdJ8wwLcgMfkA4croVDOpswK2tZprJn9KSbbIHh2Gr-UB2-vDsdCeBrwCW7iLGQ7nZb7j0NYilkOcnmWp--iCVvearopc9foVxHlSWKfI2f-qdxO_23Au9OT23RU"
+                        },
+                        "11": 1
+                    }],
+                    "16": "\u003cCAHqB\u003dtALwqNpROdYci_Y4TBn0LjmW1rBmPoNbzZaw19XhS4KWQ@mail.gmail.com\u003e",
+                    "18": "1587980211089",
+                    "30": {
+                        "4": {
+                            "1": 1
+                        },
+                        "5": {
+                            "1": 0.8715575
+                        },
+                        "7": {
+                            "1": "21660255"
+                        },
+                        "8": [21660255, 40510207, 21660332, 40510093, 40510189, 40510198],
+                        "10": 1
+                    },
+                    "31": "1587980211089",
+                    "44": 0,
+                    "45": {
+                        "3": 1
+                    },
+                    "56": "171baff1391825db"
+                }, {
+                    "1": "msg-f:1665118117266291066",
+                    "2": {
+                        "1": 1,
+                        "2": "Eric@gmail.com",
+                        "3": "Eric"
+                    },
+                    "7": "1587980382357",
+                    "10": "Le 27.04.2020 11:35, Elon a \u00e9crit : Six months of blood, sweat and development tears have gone in Ubuntu 20.04 LTS (which is codenamed \"Focal Fossa\") resulting in substantial set of",
+                    "11": ["^all", "^i", "^iim", "^io_im", "^io_imc4", "^io_lr", "^o", "^p_ag", "^smartlabel_personal", "^sq_ig_i_personal"],
+                    "12": [{
+                        "1": "text/plain",
+                        "2": "Ubuntu_20.04.txt",
+                        "3": "1017",
+                        "4": "0.1",
+                        "6": "https://mail.google.com/mail/?ui\u003d2\u0026ik\u003d74384930e0\u0026attid\u003d0.1\u0026permmsgid\u003dmsg-f:1665118117266291066\u0026th\u003d171bb01b00b9797a\u0026view\u003datt\u0026zw",
+                        "7": 0,
+                        "8": {
+                            "3": "54877efe_63d780ef_926e7c91_2aa63925_d44a83c1",
+                            "9": "ANGjdJ85qfZj_5W8qZRVH3TxgjyRXUBAUciVuaCNkWTdCniu4ewLp5msytruk5_uedlSyXoxABfFy1p4rh9HtKNdU56c-7hwb-yv4wwZBbu9meSF2IEPTWiVX8rEzkA"
+                        },
+                        "11": 1
+                    }],
+                    "16": "\u003cCAHqB\u003dtALwqNpROdYci_Y4TBn0LjmW1rBmPoNbzZaw19XhS4KWQ@mail.gmail.com\u003e",
+                    "18": "1587980382219",
+                    "30": {
+                        "4": {
+                            "1": 1
+                        },
+                        "5": {
+                            "1": 0.88262963
+                        },
+                        "7": {
+                            "1": "21660255"
+                        },
+                        "8": [21660255, 40510207, 21660332, 40510093, 40510189, 40510198],
+                        "10": 1
+                    },
+                    "31": "1587980382219",
+                    "44": 0,
+                    "45": {
+                        "3": 1
+                    },
+                    "56": "171bb01b00b9797a"
+                }],
+                "8": "1587980130389",
+                "14": 0.88262963,
+                "15": {
+                    "1": [{
+                        "1": "",
+                        "2": "billg@gmail.com"
+                    }, {
+                        "1": "",
+                        "2": "jeffb@gmail.com"
+                    }, {
+                        "1": "",
+                        "2": "larrye@gmail.com"
+                    }, {
+                        "1": "",
+                        "2": "larryp@gmail.com"
+                    }],
+                    "2": [{
+                        "1": "",
+                        "2": "sergeyb@gmail.com"
+                    }, {
+                        "1": "",
+                        "2": "markz@gmail.com"
+                    }]
+                },
+                "17": 0,
+                "19": 1,
+                "20": "171baf6611169bff"
+            },
+            "7": "2",
+            "11": 1,
+            "13": "1587980382219"
+        }],
+        "2": "itemlist-ViewType(SECTIONED_INBOX_PRIMARY)-0",
+        "3": 3,
+        "4": 1,
+        "5": 0,
+        "6": [{
+            "1": "^io_lr"
+        }, {
+            "1": "^io_imc4"
+        }, {
+            "1": "^a"
+        }, {
+            "1": "^iim"
+        }, {
+            "1": "^os"
+        }, {
+            "1": "^sq_ig_i_personal"
+        }, {
+            "1": "^f"
+        }, {
+            "1": "^g"
+        }, {
+            "1": "^k"
+        }, {
+            "1": "^hapctl"
+        }, {
+            "1": "^t_e"
+        }, {
+            "1": "^o"
+        }, {
+            "1": "^p_ag"
+        }, {
+            "1": "^s"
+        }, {
+            "1": "^t"
+        }, {
+            "1": "^u"
+        }, {
+            "1": "^t_r_e"
+        }, {
+            "1": "^smartlabel_personal"
+        }, {
+            "1": "^apc"
+        }, {
+            "1": "^tl_b"
+        }, {
+            "1": "^io_im"
+        }, {
+            "1": "^io_imc3"
+        }, {
+            "1": "^io_unim"
+        }, {
+            "1": "^t_r"
+        }, {
+            "1": "^excl"
+        }, {
+            "1": "^t_p"
+        }, {
+            "1": "^io_re"
+        }, {
+            "1": "^all"
+        }, {
+            "1": "^f_bt"
+        }, {
+            "1": "^ss_sy"
+        }, {
+            "1": "^unei"
+        }],
+        "7": {
+            "1": 1,
+            "2": 67
+        },
+        "8": [{
+            "1": "^io_lr"
+        }, {
+            "1": "^io_imc4"
+        }, {
+            "1": "^a"
+        }, {
+            "1": "^iim"
+        }, {
+            "1": "^os"
+        }, {
+            "1": "^sq_ig_i_personal"
+        }, {
+            "1": "^f"
+        }, {
+            "1": "^g"
+        }, {
+            "1": "^i"
+        }, {
+            "1": "^k"
+        }, {
+            "1": "^hapctl"
+        }, {
+            "1": "^t_e"
+        }, {
+            "1": "^o"
+        }, {
+            "1": "^p_ag"
+        }, {
+            "1": "^s"
+        }, {
+            "1": "^t"
+        }, {
+            "1": "^u"
+        }, {
+            "1": "^t_r_e"
+        }, {
+            "1": "^smartlabel_personal"
+        }, {
+            "1": "^apc"
+        }, {
+            "1": "^tl_b"
+        }, {
+            "1": "^io_im"
+        }, {
+            "1": "^io_imc3"
+        }, {
+            "1": "^io_unim"
+        }, {
+            "1": "^t_r"
+        }, {
+            "1": "^excl"
+        }, {
+            "1": "^t_p"
+        }, {
+            "1": "^io_re"
+        }, {
+            "1": "^all"
+        }, {
+            "1": "^f_bt"
+        }, {
+            "1": "^ss_sy"
+        }, {
+            "1": "^unei"
+        }],
+        "14": 49,
+        "15": 0,
+        "16": "37473",
+        "18": 0
+    }
+}
