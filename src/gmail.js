@@ -1715,7 +1715,7 @@ var Gmail = function(localJQuery) {
         }
 
         if (!events.send_message && !events.send_scheduled_message) {
-            const flattenBody = api.helper.flatten_object(params.body_params)
+            const flattenBody = api.helper.flatten_object(params.body_params);
             if (flattenBody["2.1.0.2.2.10.1"]) {
                 events.delete = [params.url, params.body, { id: flattenBody["2.1.0.2.2.10.1"] }];
             }
@@ -2799,7 +2799,7 @@ var Gmail = function(localJQuery) {
         var toReturn = {};
         for (var i in ob || {}) {
             if (!ob.hasOwnProperty(i)) continue;
-            if ((typeof ob[i]) == 'object') {
+            if ((typeof ob[i]) === 'object') {
                 var flatObject = api.helper.flatten_object(ob[i]);
                 for (var x in flatObject) {
                     if (!flatObject.hasOwnProperty(x)) continue;
