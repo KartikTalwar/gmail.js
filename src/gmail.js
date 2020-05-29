@@ -1714,6 +1714,13 @@ var Gmail = function(localJQuery) {
             }
         }
 
+        if (!events.send_message && !events.send_scheduled_message) {
+            const flattenBody = api.helper.flatten_object(params.body_params)
+            if (flattenBody["2.1.0.2.2.10.1"]) {
+                events.delete = [params.url, params.body, { id: flattenBody["2.1.0.2.2.10.1"] }];
+            }
+        }
+
         try {
             if (Array.isArray(threads) && api.check.data.is_thread(threads[0])) {
                 const actionType = api.tools.check_event_type(threads[0]);
@@ -2786,6 +2793,24 @@ var Gmail = function(localJQuery) {
             return true;
         }
         return false;
+    };
+
+    api.helper.flatten_object = function(ob) {
+        var toReturn = {};
+        for (var i in ob || {}) {
+            if (!ob.hasOwnProperty(i)) continue;
+            if ((typeof ob[i]) == 'object') {
+                var flatObject = api.helper.flatten_object(ob[i]);
+                for (var x in flatObject) {
+                    if (!flatObject.hasOwnProperty(x)) continue;
+                    
+                    toReturn[i + '.' + x] = flatObject[x];
+                }
+            } else {
+                toReturn[i] = ob[i];
+            }
+        }
+        return toReturn;
     };
 
     api.get.visible_emails = function(customInboxQuery) {
