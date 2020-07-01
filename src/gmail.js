@@ -4115,7 +4115,7 @@ var Gmail = function(localJQuery) {
     api.compose.start_compose = function() {
 
         //The compose button
-        var composeEl = $(".T-I.J-J5-Ji.T-I-KE.L3")[0];
+        var composeEl = $(".T-I.T-I-KE.L3")[0];
 
         if(composeEl) {
             api.helper.trigger_mouse_click(composeEl);
