@@ -3695,6 +3695,27 @@ var Gmail = function(localJQuery) {
         return objs;
     };
 
+    api.dom.helper = {
+    };
+    /**
+      * triggers a keyboard event inside a textarea, to ensure Gmail updates
+      * the underlying data-model to use the email injected into the textarea.
+      */
+    api.dom.helper.trigger_address = function($el) {
+        // actual DOM element, no jQuery.
+        let el = $el[0];
+        let event = new KeyboardEvent("keydown", {
+            bubbles : true,
+            cancelable : true,
+            key : "Tab",
+            shiftKey : true,
+            keyCode : 9
+        });
+
+        el.focus();
+        el.dispatchEvent(event);
+    };
+
     /**
        A compose object. Represents a compose window in the DOM and provides a bunch of methods and properties to access & interact with the window
        Expects a jQuery DOM element for the compose div
@@ -3775,21 +3796,27 @@ var Gmail = function(localJQuery) {
            Retrieve the current "to" recipients
         */
         to: function(to) {
-            return this.dom("to").val(to);
+            const $el = this.dom("to").val(to);
+            api.dom.helper.trigger_address($el);
+            return $el;
         },
 
         /**
            Retrieve the current "cc" recipients
         */
         cc: function(cc) {
-            return this.dom("cc").val(cc);
+            const $el = this.dom("cc").val(cc);
+            api.dom.helper.trigger_address($el);
+            return $el;
         },
 
         /**
            Retrieve the current "bcc" recipients
         */
         bcc: function(bcc) {
-            return this.dom("bcc").val(bcc);
+            const $el = this.dom("bcc").val(bcc);
+            api.dom.helper.trigger_address($el);
+            return $el;
         },
 
         /**
