@@ -1,6 +1,11 @@
 
 # Changelog
 
+## Version 1.0.2
+
+- Fix for `compose` to(), cc() and bcc() methods not updating
+  email correctly.
+
 ## Version 1.0.1
 
 - Fix selector for start-compose button. Thanks @mikob!
