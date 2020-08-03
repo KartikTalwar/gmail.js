@@ -1,6 +1,10 @@
 
 # Changelog
 
+## Version 1.0.1
+
+- Fix selector for start-compose button. Thanks @mikob!
+
 ## Version 1.0.0
 
 - major improvements in populating the email-cache. Thanks @Fabi1Sc!
