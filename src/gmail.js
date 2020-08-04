@@ -3805,6 +3805,12 @@ var Gmail = function(localJQuery) {
            Retrieve the current "cc" recipients
         */
         cc: function(cc) {
+            // ensure cc is visible before setting!
+            if (cc) {
+                const showCc = this.dom("show_cc");
+                showCc.click();
+            }
+
             const $el = this.dom("cc").val(cc);
             api.dom.helper.trigger_address($el);
             return $el;
@@ -3814,6 +3820,12 @@ var Gmail = function(localJQuery) {
            Retrieve the current "bcc" recipients
         */
         bcc: function(bcc) {
+            // ensure bcc is visible before setting!
+            if (bcc) {
+                const showBcc = this.dom("show_bcc");
+                showBcc.click();
+            }
+
             const $el = this.dom("bcc").val(bcc);
             api.dom.helper.trigger_address($el);
             return $el;
@@ -3901,7 +3913,9 @@ var Gmail = function(localJQuery) {
                 reply: "M9",
                 forward: "M9",
                 from: "input[name=from]",
-                send_button: "div.T-I.T-I-atl:not(.gmailjscomposebutton)"
+                send_button: "div.T-I.T-I-atl:not(.gmailjscomposebutton)",
+                show_cc: "span.aB.gQ.pE",
+                show_bcc: "span.aB.gQ.pB"
             };
             if(!config[lookup]) api.tools.error("Dom lookup failed. Unable to find config for \"" + lookup + "\"",config,lookup,config[lookup]);
             return this.$el.find(config[lookup]);
