@@ -1,6 +1,11 @@
 
 # Changelog
 
+## Version 1.0.3
+
+- Make `compose` cc() and bcc() methods force show cc and bcc-fields
+  before updating.
+
 ## Version 1.0.2
 
 - Fix for `compose` to(), cc() and bcc() methods not updating
