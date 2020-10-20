@@ -411,7 +411,7 @@ var Gmail = function(localJQuery) {
             return false;
         }
 
-        var items = $(".ii.gt .a3s.aXjCH");
+        var items = $(".ii.gt .a3s");
         var ids = [];
 
         for(var i=0; i<items.length; i++) {
