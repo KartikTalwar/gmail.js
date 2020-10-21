@@ -2773,16 +2773,7 @@ var Gmail = function(localJQuery) {
     // dispatch mousedown and mouseup event on passed element
     api.helper.trigger_mouse_click = function(element) {
         if(element) {
-            //Trigger mouse down event
-            var mouseDown = document.createEvent("MouseEvents");
-            mouseDown.initEvent( "mousedown", true, false );
-            element.dispatchEvent(mouseDown);
-
-            //Trigger mouse up event
-            var mouseUp = document.createEvent("MouseEvents");
-            mouseUp.initEvent( "mouseup", true, false );
-            element.dispatchEvent(mouseUp);
-
+            element.click();
             return true;
         }
         return false;
