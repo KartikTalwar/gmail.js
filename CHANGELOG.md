@@ -1,6 +1,10 @@
 
 # Changelog
 
+## Version 1.0.4
+
+- Fix `gmail.check.is_inside_email()`
+
 ## Version 1.0.3
 
 - Make `compose` cc() and bcc() methods force show cc and bcc-fields
