@@ -3948,20 +3948,24 @@ var Gmail = function(localJQuery) {
             return new api.dom.email(element);
         }
 
-        if (typeof element === "string") {
+        if (typeof element === "string" && api.check.data.is_legacy_email_id(element)) {
             this.id = element;
-            element = $("div.adn[data-legacy-message-id='" + this.id + "']");
-        } else {
-            element = $(element);
-        }
-
-        if (!element || (!element.hasClass("adn"))) api.tools.error("api.dom.email called with invalid element/id");
-
-        this.$el = element;
-        if (!this.id) {
+            this.$el = $("div.adn[data-legacy-message-id='" + this.id + "']");
+        } else if (typeof element === "string" && api.check.data.is_email_id(element)) {
+            const elem = document.querySelector("div.adn[data-message-id='" + element.replace("msg-f:", "\\#msg-f\\:") + "']");
+            this.id = elem.dataset.legacyMessageId;
+            this.$el = $(elem);
+        } else if (element &&
+                   ((element.classList && element.classList.contains("adn")) // DOM
+                    || (element.hasClass && element.hasClass("adn"))))       // jQuery
+        {
+            this.$el = $(element);
             this.id = this.$el.data("legacyMessageId");
+        } else {
+            api.tools.error("api.dom.email called with invalid element/id");
         }
 
+        // silence linter!
         return this;
     };
 
