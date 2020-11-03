@@ -1,6 +1,10 @@
 
 # Changelog
 
+## Version 1.0.5
+
+- Improve ergonomics of `gmail.dom.email()`. Support new email-id in constructor.
+
 ## Version 1.0.4
 
 - Fix `gmail.check.is_inside_email()`
