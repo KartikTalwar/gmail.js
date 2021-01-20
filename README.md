@@ -33,10 +33,9 @@ npm install gmail-js
 
 **Note:** Please ensure that Gmail.js is injected into the regular DOM.
 
-Content-script which launch injected script must be configured with "run_at": "document_start" 
-It's recommand to split injected script to have only gmail.js to load in first because size of injected script impact the loadind time.
-Gmail.js must be injected and loaded before Gmail load embedded data.
+Content-scripts which launch injected script must be configured with `"run_at": "document_start"`.
 
+It's recommended to split injected script to have only gmail.js load first because the size of the injected script impacts the loading time. Gmail.js must be injected and loaded before Gmail loads embedded data.
 
 Gmail.js does not work as a content-script.
 
