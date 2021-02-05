@@ -1,6 +1,10 @@
 
 # Changelog
 
+## Version 1.0.6
+
+- Fix `gmail.compose.start_compose()`.
+
 ## Version 1.0.5
 
 - Improve ergonomics of `gmail.dom.email()`. Support new email-id in constructor.
