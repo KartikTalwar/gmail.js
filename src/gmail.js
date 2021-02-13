@@ -359,8 +359,10 @@ var Gmail = function(localJQuery) {
 
     api.get.storage_info = function() {
         var div = $(".md.mj").find("div")[0];
-        var used = $(div).find("span")[0].text;
-        var total = $(div).find("span")[1].text;
+        var used = $(div).find("span")[0];
+        var used = $(used).text();
+        var total = $(div).find("span")[1];
+        var total = $(total).text();
         var percent = parseFloat(used.replace(/[^0-9\.]/g, "")) * 100 / parseFloat(total.replace(/[^0-9\.]/g, ""));
 
         return {used : used, total : total, percent : Math.floor(percent)};
