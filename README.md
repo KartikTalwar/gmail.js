@@ -1137,7 +1137,7 @@ Compose methods:
 - **.close()** - close compose window
 - **.dom(lookup)** - retrieve preconfigured dom elements for this compose window.
     Lookup can be one of `'to' | 'cc' | 'bcc' | 'id' | 'draft' | 'subject' | 'subjectbox'
-  | 'all_subjects' | 'body' | 'reply' | 'forward' | 'from' | 'send_button'`
+  | 'all_subjects' | 'body' | 'trimmed' | 'reply' | 'forward' | 'from' | 'send_button'`
 
 ### gmail.dom.email(email_el or email_id)
 
