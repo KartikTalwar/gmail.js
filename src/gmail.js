@@ -174,8 +174,8 @@ var Gmail = function(localJQuery) {
         }
 
         var localePrefix = locale.slice(0, 2);
-        return localePrefix.toLowerCase() === localePrefix ||
-            localePrefix.toUpperCase() === localePrefix;
+        return localePrefix.toUpperCase() === localePrefix;
+            
     };
 
     api.helper.filter_locale = function(locale) {
