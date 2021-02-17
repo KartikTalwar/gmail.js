@@ -359,9 +359,9 @@ var Gmail = function(localJQuery) {
 
     api.get.storage_info = function() {        
         var div = document.querySelector(".md.mj div");
-	var used = div.querySelectorAll("span")[0].textContent.replace(/,/g, '.'); //convert to standard decimal
-	var total = div.querySelectorAll("span")[1].textContent.replace(/,/g, '.');
-	var percent = parseFloat(used.replace(/[^0-9\.]/g, "")) * 100 / parseFloat(total.replace(/[^0-9\.]/g, ""));
+        var used = div.querySelectorAll("span")[0].textContent.replace(/,/g, '.'); //convert to standard decimal
+        var total = div.querySelectorAll("span")[1].textContent.replace(/,/g, '.');
+        var percent = parseFloat(used.replace(/[^0-9\.]/g, "")) * 100 / parseFloat(total.replace(/[^0-9\.]/g, ""));
         return {used : used, total : total, percent : Math.floor(percent)};
     };
 
