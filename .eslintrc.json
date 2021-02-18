@@ -8,7 +8,6 @@
         "GLOBALS": true,
         "VIEW_DATA": true
     },
-    "ecmaFeatures": {},
     "rules": {
         "no-alert": "off",
         "no-array-constructor": "error",

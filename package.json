@@ -27,10 +27,10 @@
     },
     "devDependencies": {
         "@types/jquery": "^1.10.27",
-        "eslint": "^6.6.0",
-        "jsdom": "^15.1.1",
-        "mocha": "^3.1.2",
-        "typescript": "^2.0.7"
+        "eslint": "^7.20.0",
+        "jsdom": "^16.4.0",
+        "mocha": "^8.3.0",
+        "typescript": "^4.1.5"
     },
     "author": "Kartik Talwar",
     "license": "MIT",
