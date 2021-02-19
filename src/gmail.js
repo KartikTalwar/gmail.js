@@ -3896,9 +3896,9 @@ var Gmail = function(localJQuery) {
         dom: function(lookup) {
             if (!lookup) return this.$el;
             var config = {
-                to:"textarea[name=to]",
-                cc:"textarea[name=cc]",
-                bcc:"textarea[name=bcc]",
+                to:"input[name=to]",
+                cc:"input[name=cc]",
+                bcc:"input[name=bcc]",
                 id: "input[name=composeid]",
                 draft: "input[name=draft]",
                 thread: "input[name=rt]",
