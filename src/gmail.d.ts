@@ -485,7 +485,7 @@ interface GmailDomEmail {
 
 declare type GmailDomComposeLookup =
     'to' | 'cc' | 'bcc' | 'id' | 'draft' | 'subject' | 'subjectbox'
-    | 'all_subjects' | 'body' | 'reply' | 'forward' | 'from' | 'send_button';
+    | 'all_subjects' | 'body' | 'quoted_reply' |'reply' | 'forward' | 'from' | 'send_button';
 
 interface GmailMessageRow {
     summary: string;
