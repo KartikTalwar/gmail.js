@@ -1,6 +1,11 @@
 
 # Changelog
 
+## Version 1.0.7
+
+- Fix issues with Gmail preventing click-events on buttons registered
+  thourgh GmailJS. Closes #648.
+
 ## Version 1.0.6
 
 - Fix `gmail.compose.start_compose()`.

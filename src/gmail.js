@@ -2436,6 +2436,25 @@ var Gmail = function(localJQuery) {
         api.tracker.custom_dom_observers[action] = config;
     };
 
+
+    var preventGmailJacking = function() {
+        // prevent gmail jacking our click-events!
+
+        // install event-handler only once!
+        if (!api.tracker.jackPreventionInstalled) {
+            window.addEventListener("click", (e) => {
+                const realTarget = e.path[0];
+                const gmailJsButton = realTarget.querySelector(".gmailjs");
+                if (gmailJsButton) {
+                    gmailJsButton.click();
+                    e.preventDefault();
+                }
+            });
+            api.tracker.jackPreventionInstalled = true;
+        }
+    };
+
+
     /**
        Observe DOM nodes being inserted. When a node with a class defined in api.tracker.dom_observers is inserted,
        trigger the related event and fire off any relevant bound callbacks
@@ -2498,7 +2517,10 @@ var Gmail = function(localJQuery) {
             // wait until the gmail interface has finished loading and then
             // execute the passed handler. If interface is already loaded,
             // then will just execute callback
-            if(api.dom.inbox_content().length) return callback();
+            if(api.dom.inbox_content().length) {
+                preventGmailJacking();
+                return callback();
+            }
             var load_count = 0;
             var delay = 200; // 200ms per check
             var attempts = 50; // try 50 times before giving up & assuming an error
@@ -2506,6 +2528,7 @@ var Gmail = function(localJQuery) {
                 var test = api.dom.inbox_content().length;
                 if(test > 0) {
                     clearInterval(timer);
+                    preventGmailJacking();
                     return callback();
                 } else if(++load_count > attempts) {
                     clearInterval(timer);
@@ -3412,7 +3435,7 @@ var Gmail = function(localJQuery) {
         container.attr("class","G-Ni J-J5-Ji");
 
         var button = $(document.createElement("div"));
-        var buttonClasses = "T-I J-J5-Ji ";
+        var buttonClasses = "T-I J-J5-Ji gmailjs ";
         if(styleClass !== undefined &&
             styleClass !== null &&
             styleClass !== ""){
@@ -3451,7 +3474,7 @@ var Gmail = function(localJQuery) {
 
     api.tools.add_compose_button =  function(composeWindow, content_html, onClickFunction, styleClass) {
         var button = $(document.createElement("div"));
-        var buttonClasses = "T-I J-J5-Ji aoO T-I-atl L3 gmailjscomposebutton ";
+        var buttonClasses = "T-I J-J5-Ji aoO T-I-atl L3 gmailjs gmailjscomposebutton ";
         if(styleClass !== undefined){
             buttonClasses += styleClass;
         }
