@@ -2436,18 +2436,27 @@ var Gmail = function(localJQuery) {
         api.tracker.custom_dom_observers[action] = config;
     };
 
+    var getTarget = function(e) {
+        // firefox does not support e.path
+        if (e.path) {
+            return e.path[0];
+        } else {
+            return e.target;
+        }
+    };
 
+    // prevent gmail jacking our click-events!
     var preventGmailJacking = function() {
-        // prevent gmail jacking our click-events!
-
         // install event-handler only once!
         if (!api.tracker.jackPreventionInstalled) {
             window.addEventListener("click", (e) => {
-                const realTarget = e.path[0];
-                const gmailJsButton = realTarget.querySelector(".gmailjs");
-                if (gmailJsButton) {
-                    gmailJsButton.click();
-                    e.preventDefault();
+                const target = getTarget(e);
+                if (target) {
+                    const gmailJsButton = target.querySelector(".gmailjs");
+                    if (gmailJsButton) {
+                        gmailJsButton.click();
+                        e.preventDefault();
+                    }
                 }
             });
             api.tracker.jackPreventionInstalled = true;

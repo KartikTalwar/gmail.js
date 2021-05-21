@@ -1,6 +1,10 @@
 
 # Changelog
 
+## Version 1.0.8
+
+- Fix Firefox-compatibility issue in Gmail click-jack prevention.
+
 ## Version 1.0.7
 
 - Fix issues with Gmail preventing click-events on buttons registered
