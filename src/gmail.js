@@ -2451,7 +2451,7 @@ var Gmail = function(localJQuery) {
         if (!api.tracker.jackPreventionInstalled) {
             window.addEventListener("click", (e) => {
                 const target = getTarget(e);
-                if (target) {
+                if (target && target !== document.body) {
                     const gmailJsButton = target.querySelector(".gmailjs");
                     if (gmailJsButton) {
                         gmailJsButton.click();
