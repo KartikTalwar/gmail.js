@@ -1,15 +1,19 @@
 
 # Changelog
 
-## Version 1.0.9
+## Version 1.0.10
+
+- Better attempt at fixing incorrect triggering of custom buttons created through GmailJS.
+
+## Version 1.0.9 - unpublished
 
 - Fix incorrect triggering of custom buttons created through GmailJS.
 
-## Version 1.0.8
+## Version 1.0.8 - unpublished
 
 - Fix Firefox-compatibility issue in Gmail click-jack prevention.
 
-## Version 1.0.7
+## Version 1.0.7 - unpublished
 
 - Fix issues with Gmail preventing click-events on buttons registered
   thourgh GmailJS. Closes #648.

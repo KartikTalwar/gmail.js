@@ -2452,7 +2452,7 @@ var Gmail = function(localJQuery) {
             window.addEventListener("click", (e) => {
                 const target = getTarget(e);
                 if (target && target !== document.body) {
-                    const gmailJsButton = target.querySelector(".gmailjs");
+                    const gmailJsButton = target.querySelector(":scope > .gmailjs");
                     if (gmailJsButton) {
                         gmailJsButton.click();
                         e.preventDefault();
