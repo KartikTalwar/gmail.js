@@ -1,6 +1,10 @@
 
 # Changelog
 
+## Version 1.0.12
+
+- Fix error in `gmail.get.localization()`. This closes [issue 652](https://github.com/KartikTalwar/gmail.js/issues/652).
+
 ## Version 1.0.11
 
 - Fix cursor when hovering over button created using `gmail.tools.add_compose_button`.
