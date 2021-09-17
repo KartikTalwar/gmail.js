@@ -1,6 +1,10 @@
 
 # Changelog
 
+## Version 1.0.11
+
+- Fix cursor when hovering over button created using `gmail.tools.add_compose_button`.
+
 ## Version 1.0.10
 
 - Better attempt at fixing incorrect triggering of custom buttons created through GmailJS.

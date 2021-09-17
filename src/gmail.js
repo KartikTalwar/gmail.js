@@ -3482,6 +3482,10 @@ var Gmail = function(localJQuery) {
     };
 
     api.tools.add_compose_button =  function(composeWindow, content_html, onClickFunction, styleClass) {
+        var div = $(document.createElement("div"));
+        div.attr("class", "gU Up");
+        div.attr("style", "cursor: pointer !important; transform: translateY(1px);");
+
         var button = $(document.createElement("div"));
         var buttonClasses = "T-I J-J5-Ji aoO T-I-atl L3 gmailjs gmailjscomposebutton ";
         if(styleClass !== undefined){
@@ -3492,7 +3496,10 @@ var Gmail = function(localJQuery) {
         button.html(content_html);
         button.click(onClickFunction);
 
-        composeWindow.find(".gU.Up  > .J-J5-Ji").append(button);
+        div.append(button);
+
+        var sendButton = composeWindow.find(".gU.Up");
+        div.insertAfter(sendButton);
 
         return button;
     };
