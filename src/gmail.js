@@ -1205,6 +1205,11 @@ var Gmail = function(localJQuery) {
         return res;
     };
 
+    api.tools.parse_fd_bv_is_draft = function(item) {
+        if (!Array.isArray(item)) return null;
+        return item.includes('^r') && item.includes('^r_bt');
+    };
+
     api.tools.parse_fd_bv_contact = function(item) {
         try
         {
@@ -1329,6 +1334,8 @@ var Gmail = function(localJQuery) {
                     const fd_email_timestamp = Number.parseInt(fd_email["2"]["17"]);
                     const fd_email_date = new Date(fd_email_timestamp);
 
+                    const fd_email_is_draft = api.tools.parse_fd_bv_is_draft(fd_email2["4"]);
+
                     const fd_email_content_html = api.tools.parse_fd_request_html_payload(fd_email);
 
                     const fd_attachments = api.tools.parse_fd_attachments(fd_email["2"]["14"]);
@@ -1346,6 +1353,7 @@ var Gmail = function(localJQuery) {
 
                     const email = {
                         id: fd_email_id,
+                        is_draft: fd_email_is_draft,
                         legacy_email_id: fd_legacy_email_id,
                         thread_id: fd_thread_id,
                         smtp_id: fd_email_smtp_id,
@@ -1408,6 +1416,8 @@ var Gmail = function(localJQuery) {
                     const fd_email_smtp_id = fd_email["14"];
                     const fd_email_subject = fd_email["8"];
 
+                    const fd_email_is_draft = api.tools.parse_fd_bv_is_draft(fd_email["11"]);
+
                     //TODO : to check...
                     const fd_email_timestamp = Number.parseInt(fd_email["18"]);
                     const fd_email_date = new Date(fd_email_timestamp);
@@ -1434,6 +1444,7 @@ var Gmail = function(localJQuery) {
 
                     const email = {
                         id: fd_email_id,
+                        is_draft: fd_email_is_draft,
                         legacy_email_id: fd_legacy_email_id,
                         thread_id: fd_thread_id,
                         smtp_id: fd_email_smtp_id,
@@ -1495,6 +1506,8 @@ var Gmail = function(localJQuery) {
                     const bv_email_date = new Date(bv_email_timestamp);                
                     const bv_email_content_html = ""; //Not present in bv request
                     
+                    const bv_email_is_draft = api.tools.parse_fd_bv_is_draft(bv_email["11"]);
+
                     //TODO
                     const bv_attachments = []; //Present but need a new parser (not urgent, present in fd email)
 
@@ -1510,6 +1523,7 @@ var Gmail = function(localJQuery) {
 
                     const email = {
                         id: bv_email_id,
+                        is_draft: bv_email_is_draft,
                         legacy_email_id: bv_legacy_email_id,
                         thread_id: bv_thread_id,
                         smtp_id: bv_email_smtp_id,
@@ -1567,6 +1581,8 @@ var Gmail = function(localJQuery) {
                     const bv_email_date = new Date(bv_email_timestamp);                
                     const bv_email_content_html = ""; //Not present in bv request
                     
+                    const bv_email_is_draft = api.tools.parse_fd_bv_is_draft(bv_email["11"]);
+
                     //TODO
                     const bv_attachments = []; //Present but need a new parser (not urgent, present in fd email)
 
@@ -1582,6 +1598,7 @@ var Gmail = function(localJQuery) {
 
                     const email = {
                         id: bv_email_id,
+                        is_draft: bv_email_is_draft,
                         legacy_email_id: bv_legacy_email_id,
                         thread_id: bv_thread_id,
                         smtp_id: bv_email_smtp_id,
