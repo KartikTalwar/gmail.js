@@ -822,6 +822,7 @@ describe("Test tools for parsing XHR bv-request-payload-response", () => {
         assert.equal(parsed[0].legacy_email_id, "171bb0399636172e");
         assert.equal(parsed[0].thread_id, "thread-a:r873907427374440696");
         assert.equal(parsed[0].smtp_id, "");
+        assert.equal(parsed[0].is_draft, false);
         assert.equal(parsed[0].subject, "Working from home: The future of business is remote");
         assert.equal(parsed[0].timestamp, 1587980507491);
         assert.equal(parsed[0].content_html, "");
@@ -838,6 +839,7 @@ describe("Test tools for parsing XHR bv-request-payload-response", () => {
         assert.equal(parsed[1].legacy_email_id, "171bb04953ebe511");
         assert.equal(parsed[1].thread_id, "thread-a:r873907427374440696");
         assert.equal(parsed[1].smtp_id, "");
+        assert.equal(parsed[1].is_draft, false);
         assert.equal(parsed[1].subject, "Working from home: The future of business is remote");
         assert.equal(parsed[1].timestamp, 1587980571966);
         assert.equal(parsed[1].content_html, "");
@@ -854,6 +856,7 @@ describe("Test tools for parsing XHR bv-request-payload-response", () => {
         assert.equal(parsed[2].legacy_email_id, "171bafdd8d3f48bb");
         assert.equal(parsed[2].thread_id, "thread-a:r-7005674805299871901");
         assert.equal(parsed[2].smtp_id, "");
+        assert.equal(parsed[2].is_draft, false);
         assert.equal(parsed[2].subject, "Ubuntu 20.04 Download Link & New Features (Updated)");
         assert.equal(parsed[2].timestamp, 1587980130515);
         assert.equal(parsed[2].content_html, "");
@@ -870,6 +873,7 @@ describe("Test tools for parsing XHR bv-request-payload-response", () => {
         assert.equal(parsed[3].legacy_email_id, "171baff1391825db");
         assert.equal(parsed[3].thread_id, "thread-a:r-7005674805299871901");
         assert.equal(parsed[3].smtp_id, "");
+        assert.equal(parsed[3].is_draft, false);
         assert.equal(parsed[3].subject, "Ubuntu 20.04 Download Link & New Features (Updated)");
         assert.equal(parsed[3].timestamp, 1587980211089);
         assert.equal(parsed[3].content_html, "");
@@ -886,6 +890,7 @@ describe("Test tools for parsing XHR bv-request-payload-response", () => {
         assert.equal(parsed[4].legacy_email_id, "171bb01b00b9797a");
         assert.equal(parsed[4].thread_id, "thread-a:r-7005674805299871901");
         assert.equal(parsed[4].smtp_id, "");
+        assert.equal(parsed[4].is_draft, false);
         assert.equal(parsed[4].subject, "Ubuntu 20.04 Download Link & New Features (Updated)");
         assert.equal(parsed[4].timestamp, 1587980382219);
         assert.equal(parsed[4].content_html, "");
@@ -915,6 +920,7 @@ describe("Test tools for parsing bv-embedded-data", () => {
         assert.equal(parsed[0].legacy_email_id, "171bb0399636172e");
         assert.equal(parsed[0].thread_id, "thread-a:r873907427374440696");
         assert.equal(parsed[0].smtp_id, "");
+        assert.equal(parsed[0].is_draft, false);
         assert.equal(parsed[0].subject, "Working from home: The future of business is remote");
         assert.equal(parsed[0].timestamp, 1587980507491);
         assert.equal(parsed[0].content_html, "");
@@ -931,6 +937,7 @@ describe("Test tools for parsing bv-embedded-data", () => {
         assert.equal(parsed[1].legacy_email_id, "171bb04953ebe511");
         assert.equal(parsed[1].thread_id, "thread-a:r873907427374440696");
         assert.equal(parsed[1].smtp_id, "");
+        assert.equal(parsed[1].is_draft, false);
         assert.equal(parsed[1].subject, "Working from home: The future of business is remote");
         assert.equal(parsed[1].timestamp, 1587980571966);
         assert.equal(parsed[1].content_html, "");
@@ -947,6 +954,7 @@ describe("Test tools for parsing bv-embedded-data", () => {
         assert.equal(parsed[2].legacy_email_id, "171bafdd8d3f48bb");
         assert.equal(parsed[2].thread_id, "thread-a:r-7005674805299871901");
         assert.equal(parsed[2].smtp_id, "");
+        assert.equal(parsed[2].is_draft, false);
         assert.equal(parsed[2].subject, "Ubuntu 20.04 Download Link & New Features (Updated)");
         assert.equal(parsed[2].timestamp, 1587980130515);
         assert.equal(parsed[2].content_html, "");
@@ -963,6 +971,7 @@ describe("Test tools for parsing bv-embedded-data", () => {
         assert.equal(parsed[3].legacy_email_id, "171baff1391825db");
         assert.equal(parsed[3].thread_id, "thread-a:r-7005674805299871901");
         assert.equal(parsed[3].smtp_id, "");
+        assert.equal(parsed[3].is_draft, false);
         assert.equal(parsed[3].subject, "Ubuntu 20.04 Download Link & New Features (Updated)");
         assert.equal(parsed[3].timestamp, 1587980211089);
         assert.equal(parsed[3].content_html, "");
@@ -1010,6 +1019,7 @@ describe("Test tools for parsing fd-embedded-data", () => {
         assert.equal(parsed[0].legacy_email_id, "171bafdd8d3f48bb");
         assert.equal(parsed[0].thread_id, "thread-a:r-7005674805299871901");
         assert.equal(parsed[0].smtp_id, "<CAHqB=tALwqNpROdYci_Y4TBn0LjmW1rBmPoNbzZaw19XhS4KWQ@mail.gmail.com>");
+        assert.equal(parsed[0].is_draft, false);
         assert.equal(parsed[0].subject, "Ubuntu 20.04 Download Link & New Features (Updated)");
         assert.equal(parsed[0].timestamp, 1587980130515);
         assert.equal(parsed[0].content_html, 'Six months of blood, sweat and development tears have gone in Ubuntu<br>\n20.04 LTS (which is codenamed “Focal Fossa”) resulting in substantial<br>\nset of improvements that improve just about every part of the OS, from<br>\nboot speed to app appearance to bundled software.<br>\n');
@@ -1026,6 +1036,7 @@ describe("Test tools for parsing fd-embedded-data", () => {
         assert.equal(parsed[1].legacy_email_id, "171baff1391825db");
         assert.equal(parsed[1].thread_id, "thread-a:r-7005674805299871901");
         assert.equal(parsed[1].smtp_id, "<5b58a962565085f4c392f5efdc8e14c6@gmail.com>");
+        assert.equal(parsed[1].is_draft, false);
         assert.equal(parsed[1].subject, "Re: Ubuntu 20.04 Download Link & New Features (Updated)");
         assert.equal(parsed[1].timestamp, 1587980211089);
         assert.equal(parsed[1].content_html, "<div style=\"font-size:10pt;font-family:Verdana,Geneva,sans-serif\">\r\n<p>Le 27.04.2020 11:35, Elon a écrit :</p>\r\n<blockquote type=\"cite\" style=\"padding:0 0.4em;border-left:#1010ff 2px solid;margin:0\">\r\n<div style=\"margin:0;padding:0;font-family:monospace\">Six months of blood, sweat and development tears have gone in Ubuntu<br> 20.04 LTS (which is codenamed &quot;Focal Fossa&quot;) resulting in substantial<br> set of improvements that improve just about every part of the OS, from<br> boot speed to app appearance to bundled software.</div>\r\n</blockquote>\r\n<p>What a good news !!</p>\r\n<div> </div>\r\n<div id=\"m_-5081263041899088781gtx-anchor\" style=\"width:32px;height:15px\"> </div>\r\n<div style=\"opacity:1\"> </div>\r\n</div>\r\n");
@@ -1042,6 +1053,7 @@ describe("Test tools for parsing fd-embedded-data", () => {
         assert.equal(parsed[2].legacy_email_id, "171bb01b00b9797a");
         assert.equal(parsed[2].thread_id, "thread-a:r-7005674805299871901");
         assert.equal(parsed[2].smtp_id, "<c96c9295f5c709a52a93c77cb0c79414@gmail.com>");
+        assert.equal(parsed[2].is_draft, false);
         assert.equal(parsed[2].subject, "Re: Ubuntu 20.04 Download Link & New Features (Updated)");
         assert.equal(parsed[2].timestamp, 1587980382219);
         assert.equal(parsed[2].content_html, "<div style=\"font-size:10pt;font-family:Verdana,Geneva,sans-serif\">\r\n<p>Le 27.04.2020 11:35, Elon a écrit :</p>\r\n<blockquote type=\"cite\" style=\"padding:0 0.4em;border-left:#1010ff 2px solid;margin:0\">\r\n<div style=\"margin:0;padding:0;font-family:monospace\">Six months of blood, sweat and development tears have gone in Ubuntu<br> 20.04 LTS (which is codenamed &quot;Focal Fossa&quot;) resulting in substantial<br> set of improvements that improve just about every part of the OS, from<br> boot speed to app appearance to bundled software.</div>\r\n</blockquote>\r\n<p>What a good news !!</p>\r\n<p><br></p>\r\n\r\n</div>\r\n");
@@ -1059,6 +1071,7 @@ describe("Test tools for parsing fd-embedded-data", () => {
         assert.equal(parsed[3].legacy_email_id, "171bb0399636172e");
         assert.equal(parsed[3].thread_id, "thread-a:r873907427374440696");
         assert.equal(parsed[3].smtp_id, "<CAHqB=tDjJtq9QsjipXxqx4UE07nmSkDib1XqH0Wi0R7JU8vEmg@mail.gmail.com>");
+        assert.equal(parsed[3].is_draft, false);
         assert.equal(parsed[3].subject, "Working from home: The future of business is remote");
         assert.equal(parsed[3].timestamp, 1587980507491);
         assert.equal(parsed[3].content_html, 'Look at that :<br>\n<br>\n<a href="https://www.zdnet.com/topic/working-from-home-the-future-of-business-is-remote/" rel="noreferrer" target="_blank" data-saferedirecturl="https://www.google.com/url?q=https://www.zdnet.com/topic/working-from-home-the-future-of-business-is-remote/&amp;source=gmail&amp;ust=1588080055397000&amp;usg=AFQjCNFw4ieC-R6dtbDTR40ZenLfL7nBEQ">https://www.zdnet.com/topic/wo<wbr>rking-from-home-the-future-of-<wbr>business-is-remote/</a><br>\n');
@@ -1075,6 +1088,7 @@ describe("Test tools for parsing fd-embedded-data", () => {
         assert.equal(parsed[4].legacy_email_id, "171bb04953ebe511");
         assert.equal(parsed[4].thread_id, "thread-a:r873907427374440696");
         assert.equal(parsed[4].smtp_id, "<9d1446ea46e626b2fb391c5a3e047b17@gmail.com>");
+        assert.equal(parsed[4].is_draft, false);
         assert.equal(parsed[4].subject, "Re: Working from home: The future of business is remote");
         assert.equal(parsed[4].timestamp, 1587980571966);
         assert.equal(parsed[4].content_html, "<div style=\"font-size:10pt;font-family:Verdana,Geneva,sans-serif\">\r\n<p>Le 27.04.2020 11:41, Elon a écrit :</p>\r\n<blockquote type=\"cite\" style=\"padding:0 0.4em;border-left:#1010ff 2px solid;margin:0\">\r\n<div style=\"margin:0;padding:0;font-family:monospace\">Look at that :<br> <br> <a href=\"https://www.zdnet.com/topic/working-from-home-the-future-of-business-is-remote/\" rel=\"noopener noreferrer\" target=\"_blank\" data-saferedirecturl=\"https://www.google.com/url?q=https://www.zdnet.com/topic/working-from-home-the-future-of-business-is-remote/&amp;source=gmail&amp;ust=1588080055401000&amp;usg=AFQjCNG_krhm2eOEABPFDZaVWRr3Ay1WXQ\">https://www.zdnet.com/topic/<wbr>working-from-home-the-future-<wbr>of-business-is-remote/</a></div>\r\n</blockquote>\r\n<p>Sure</p>\r\n<p><br></p>\r\n\r\n</div>\r\n");
@@ -1086,6 +1100,52 @@ describe("Test tools for parsing fd-embedded-data", () => {
         assert.equal((parsed[4].bcc).length, 0);
         assert.equal((parsed[4].attachments).length, 1);
     });
+});
 
+describe("Test tools for parsing fd-request-data", () => {
+
+    var xhrDataJSON = require("./testdata-parser-json/testdata-parser-fd-request.json");
+    var gmail = new Gmail();
+    var parsed = gmail.tools.parse_fd_request_payload(xhrDataJSON);
+
+    it("JSON Data is an array of 2 elements", () => {
+        assert.equal(Array.isArray(parsed), true);
+        assert.equal(parsed.length, 2);
+    });
+
+    it("Handles Thread-1 Email-1 JSON consistently", () => {
+        assert.equal(parsed[0].id, "msg-a:r-4871072856822866136");
+        assert.equal(parsed[0].legacy_email_id, "17c3d9041ec7d0a5");
+        assert.equal(parsed[0].thread_id, "thread-a:r-4872725344334517560");
+        assert.equal(parsed[0].smtp_id, "<CAMiVxa0a5q7XjJspKZ3UEk0AuxY46ES6AXOZWcj-A1MWNZbUWQ@mail.gmail.com>");
+        assert.equal(parsed[0].is_draft, true);
+        assert.equal(parsed[0].subject, "test subject");
+        assert.equal(parsed[0].timestamp, 1633120436716);
+        assert.equal(parsed[0].content_html, "<div dir=\"ltr\"><br></div>\r\n");
+        assert.deepStrictEqual(parsed[0].date, new Date("2021-10-01T20:33:56.716Z")); 
+        assert.equal(parsed[0].from.address, 'user@gmail.com');
+        assert.equal(parsed[0].from.name, 'First Last');
+        assert.equal((parsed[0].to).length, 0);
+        assert.equal((parsed[0].cc).length, 0);
+        assert.equal((parsed[0].bcc).length, 0);
+        assert.equal((parsed[0].attachments).length, 0);
+    });
+    it("Handles Thread-2 Email-1 JSON consistently", () => {
+        assert.equal(parsed[1].id, "msg-a:r-4871072856822866136");
+        assert.equal(parsed[1].legacy_email_id, "17c3d9364dec527d");
+        assert.equal(parsed[1].thread_id, "thread-a:r-4872725344334517560");
+        assert.equal(parsed[1].smtp_id, "<CAMiVxa2V12sQtPvzoDe-HssF4-HXf3uouNCM2RBntb54nX4uag@mail.gmail.com>");
+        assert.equal(parsed[1].is_draft, false);
+        assert.equal(parsed[1].subject, "test subject");
+        assert.equal(parsed[1].timestamp, 1633120642270);
+        assert.equal(parsed[1].content_html, "<div dir=\"ltr\">aaa</div>\r\n");
+        assert.deepStrictEqual(parsed[1].date, new Date("2021-10-01T20:37:22.270Z")); 
+        assert.equal(parsed[1].from.address, 'user@gmail.com');
+        assert.equal(parsed[1].from.name, 'First Last');
+        assert.equal((parsed[1].to).length, 1);
+        assert.equal((parsed[1].cc).length, 0);
+        assert.equal((parsed[1].bcc).length, 0);
+        assert.equal((parsed[1].attachments).length, 0);
+    });
 
 });
