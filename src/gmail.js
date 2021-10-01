@@ -271,7 +271,7 @@ var Gmail = function(localJQuery) {
         // and in even newer gmail this seems to work:
         if (globals[4]) {
             let locale = globals[4].split(".")[1];
-            local = api.helper.filter_locale(locale);
+            locale = api.helper.filter_locale(locale);
             if (locale) {
                 return locale;
             }

@@ -1,6 +1,10 @@
 
 # Changelog
 
+## Version 1.0.13
+
+- Fix error in `gmail.get.localization()`, which should have been caught by CI.
+
 ## Version 1.0.12
 
 - Fix error in `gmail.get.localization()`. This closes [issue 652](https://github.com/KartikTalwar/gmail.js/issues/652).
