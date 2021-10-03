@@ -1206,8 +1206,14 @@ var Gmail = function(localJQuery) {
     };
 
     api.tools.parse_fd_bv_is_draft = function(item) {
-        if (!Array.isArray(item)) return null;
-        return item.includes('^r') && item.includes('^r_bt');
+        try {
+            if (!Array.isArray(item)) return false; // warning: case not seen during testing and value is untrustworthy
+            return item.includes('^r') && item.includes('^r_bt');
+        }
+        catch (e) {
+            return false;  // warning: case not seen during testing and value is untrustworthy
+        }
+        
     };
 
     api.tools.parse_fd_bv_contact = function(item) {
