@@ -1,6 +1,10 @@
 
 # Changelog
 
+## Version 1.0.14
+
+- Persist if a message is a draft during request parsing.
+
 ## Version 1.0.13
 
 - Fix error in `gmail.get.localization()`, which should have been caught by CI.

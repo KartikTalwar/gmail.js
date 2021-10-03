@@ -912,6 +912,7 @@ interface GmailNewEmailData {
     legacy_email_id: string;
     thread_id: string;
     smtp_id: string;
+    is_draft: boolean,
     subject: string;
     timestamp: number;
     date: Date;
