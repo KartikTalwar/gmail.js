@@ -18,6 +18,7 @@ It cannot be used server-side with Node, or from another web-app to interface wi
 - Lots of API methods to work with gmail. See documentation below.
 - Easy to use API. Data & DOM.
 - Reasonably complete TypeScript-support.
+- Compatible with both WebExtension Manifest V2 and V3.
 - Many methods are contextual and will work with whatever is on screen when no arguments are given.
 - Obtain email data, react to event, etc. No need for OAuth!
 - Main methods allow you to observe certain events with **`gmail.observe.on('lots_of_actions_here', callback())`** or similar **`gmail.observe.before(...)`** and **`gmail.observe.after(...)`**
