@@ -3987,20 +3987,19 @@ var Gmail = function(localJQuery) {
 
             // Post "peoplekit"
             if (this.$el.find("textarea[name=to]").length === 0 && ["to", "cc", "bcc"].includes(lookup)) {
-                const rows = this.$el.find("tr.bzf")
+                const rows = this.$el.find("tr.bzf");
                 const elems = {
                     // FIXME: It will contain localized names, not "ids"
-                }
+                };
                 rows.each((_index, e) => {
-                    const row = $(e)
-                    const label = row.find("span.gO.aQY")
-                    const input = row.find("input.agP.aFw")
+                    const row = $(e);
+                    const label = row.find("span.gO.aQY");
+                    const input = row.find("input.agP.aFw");
                     if (label && label.length === 1) {
-                        elems[label.html().toLowerCase()] = input
+                        elems[label.html().toLowerCase()] = input;
                     }
-                })
-
-                const el = elems[lookup]
+                });
+                const el = elems[lookup];
                 if (!el) api.tools.error("Dom lookup failed. Unable to find \"" + lookup + "\"", config, lookup);
                 return el;
             }
