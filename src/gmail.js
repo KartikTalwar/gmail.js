@@ -4000,7 +4000,6 @@ var Gmail = function(localJQuery) {
                     }
                 })
 
-                console.info("elems", elems)
                 const el = elems[lookup]
                 if (!el) api.tools.error("Dom lookup failed. Unable to find \"" + lookup + "\"", config, lookup);
                 return el;
