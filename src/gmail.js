@@ -3984,6 +3984,28 @@ var Gmail = function(localJQuery) {
                 show_cc: "span.aB.gQ.pE",
                 show_bcc: "span.aB.gQ.pB"
             };
+
+            // Post "peoplekit"
+            if (this.$el.find("textarea[name=to]").length === 0 && ["to", "cc", "bcc"].includes(lookup)) {
+                const rows = this.$el.find("tr.bzf")
+                const elems = {
+                    // FIXME: It will contain localized names, not "ids"
+                }
+                rows.each((_index, e) => {
+                    const row = $(e)
+                    const label = row.find("span.gO.aQY")
+                    const input = row.find("input.agP.aFw")
+                    if (label && label.length === 1) {
+                        elems[label.html().toLowerCase()] = input
+                    }
+                })
+
+                console.info("elems", elems)
+                const el = elems[lookup]
+                if (!el) api.tools.error("Dom lookup failed. Unable to find \"" + lookup + "\"", config, lookup);
+                return el;
+            }
+
             if(!config[lookup]) api.tools.error("Dom lookup failed. Unable to find config for \"" + lookup + "\"",config,lookup,config[lookup]);
             return this.$el.find(config[lookup]);
         }
