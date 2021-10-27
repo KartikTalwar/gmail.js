@@ -3843,19 +3843,36 @@ var Gmail = function(localJQuery) {
         */
         recipients: function(options) {
             if( typeof options !== "object" ) options = {};
-            var name_selector = options.type ? "[name=" + options.type + "]" : "";
 
-            // determine an array of all emails specified for To, CC and BCC and extract addresses into an object for the callback
-            var recipients = options.flat ? [] : { to: [], cc: [], bcc: [] };
-            this.$el.find(".GS input[type=hidden]"+name_selector).each(function(idx, recipient ){
-                if(options.flat) {
-                    recipients.push(recipient.value);
-                } else {
-                    if(!recipients[recipient.name]) recipients[recipient.name] = [];
-                    recipients[recipient.name].push(recipient.value);
-                }
-            });
-            return recipients;
+            // Peoplekit
+            if (this.$el.find("div[data-hovercard-id]").length) {
+                let type_selector = options.type ? " div[name=" + options.type + "]" : "";
+                let recipients = options.flat ? [] : { to: [], cc: [], bcc: [] };
+                this.$el.find("tr.bzf" + type_selector + " div[data-hovercard-id]").each((_, el) => {
+                    const email = el.getAttribute("data-hovercard-id");
+                    if (options.flat) {
+                        recipients.push(email);
+                    } else {
+                        const type = el.closest("div[name]").getAttribute("name");
+                        if(!recipients[type]) recipients[type] = [];
+                        recipients[type].push(email);
+                    }
+                });
+                return recipients;
+            } else {
+                var name_selector = options.type ? "[name=" + options.type + "]" : "";
+                // determine an array of all emails specified for To, CC and BCC and extract addresses into an object for the callback
+                var recipients = options.flat ? [] : { to: [], cc: [], bcc: [] };
+                this.$el.find(".GS input[type=hidden]"+name_selector).each(function(idx, recipient ){
+                    if(options.flat) {
+                        recipients.push(recipient.value);
+                    } else {
+                        if(!recipients[recipient.name]) recipients[recipient.name] = [];
+                        recipients[recipient.name].push(recipient.value);
+                    }
+                });
+                return recipients;
+            }
         },
 
         /**
@@ -3987,19 +4004,12 @@ var Gmail = function(localJQuery) {
 
             // Post "peoplekit"
             if (this.$el.find("textarea[name=to]").length === 0 && ["to", "cc", "bcc"].includes(lookup)) {
-                const rows = this.$el.find("tr.bzf");
-                const elems = {
-                    // FIXME: It will contain localized names, not "ids"
+                const configPeoplekit = {
+                    to:"div[name=to] input",
+                    cc:"div[name=cc] input",
+                    bcc:"div[name=bcc] input"
                 };
-                rows.each((_index, e) => {
-                    const row = $(e);
-                    const label = row.find("span.gO.aQY");
-                    const input = row.find("input.agP.aFw");
-                    if (label && label.length === 1) {
-                        elems[label.html().toLowerCase()] = input;
-                    }
-                });
-                const el = elems[lookup];
+                const el = this.$el.find(configPeoplekit[lookup]);
                 if (!el) api.tools.error("Dom lookup failed. Unable to find \"" + lookup + "\"", config, lookup);
                 return el;
             }
