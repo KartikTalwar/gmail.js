@@ -2314,7 +2314,7 @@ var Gmail = function(localJQuery) {
     // console.log( "Observer set for", action, callback);
     api.observe.initialize_dom_observers = function() {
         api.tracker.dom_observer_init = true;
-        api.tracker.supported_observers = ["view_thread", "view_email", "load_email_menu", "recipient_change", "compose"];
+        api.tracker.supported_observers = ["view_thread", "view_email", "load_email_menu", "recipient_change", "recipient_change_new", "compose"];
         api.tracker.dom_observers = {
 
             // when a thread is clicked on in a mailbox for viewing - note: this should fire at a similar time (directly after) as the open_email XHR observer
@@ -2353,6 +2353,35 @@ var Gmail = function(localJQuery) {
             // a new email address is added to any of the to,cc,bcc fields when composing a new email or replying/forwarding
             "recipient_change": {
                 class: "vR",
+                handler: function(match, callback) {
+                    // console.log("compose:recipient handler called",match,callback);
+
+                    // we need to small delay on the execution of the handler as when the recipients field initialises on a reply (or reinstated compose/draft)
+                    // then multiple DOM elements will be inserted for each recipient causing this handler to execute multiple times
+                    // in reality we only want a single callback, so give other nodes time to be inserted & then only execute the callback once
+                    if(typeof api.tracker.recipient_matches !== "object") {
+                        api.tracker.recipient_matches = [];
+                    }
+                    api.tracker.recipient_matches.push(match);
+                    setTimeout(function(){
+                        // console.log("recipient timeout handler", api.tracker.recipient_matches.length);
+                        if(!api.tracker.recipient_matches.length) return;
+
+                        // determine an array of all emails specified for To, CC and BCC and extract addresses into an object for the callback
+                        var compose = new api.dom.compose(api.tracker.recipient_matches[0].closest("div.M9"));
+                        var recipients = compose.recipients();
+                        callback(compose, recipients, api.tracker.recipient_matches);
+
+                        // reset matches so no future delayed instances of this function execute
+                        api.tracker.recipient_matches = [];
+                    },100);
+                }
+            },
+
+            // a new email address is added to any of the to,cc,bcc fields when composing a new email or replying/forwarding
+            "recipient_change_new": {
+                class: "afV",
+                selector: "div[data-hovercard-id]",
                 handler: function(match, callback) {
                     // console.log("compose:recipient handler called",match,callback);
 
@@ -2532,9 +2561,15 @@ var Gmail = function(localJQuery) {
                         var removedNodes = mutation.removedNodes;
                         for (var j = 0; j < removedNodes.length; j++) {
                             var removedNode = removedNodes[j];
+                            if (removedNode.className === "agh" && removedNode.querySelector("div[data-hovercard-id]")) { // contains recipient in peoplekit
+                                let observer = api.tracker.dom_observer_map["afV"];
+                                let handler = api.tracker.dom_observers.recipient_change_new.handler;
+                                api.observe.trigger_dom(observer, $(mutation.target), handler);
+                            }
+
                             if (removedNode.className === "vR") {
-                                var observer = api.tracker.dom_observer_map["vR"];
-                                var handler = api.tracker.dom_observers.recipient_change.handler;
+                                let observer = api.tracker.dom_observer_map["vR"];
+                                let handler = api.tracker.dom_observers.recipient_change.handler;
                                 api.observe.trigger_dom(observer, $(mutation.target), handler);
                             }
                         }
