@@ -3783,9 +3783,12 @@ var Gmail = function(localJQuery) {
 
         let tabs = 0;
         let timer = setInterval(function() {
-            if (tabs >= adds) clearInterval(timer);
-            el.dispatchEvent(event);
-            tabs++;
+            if (tabs > adds) {
+                clearInterval(timer);
+            } else {
+                el.dispatchEvent(event);
+                tabs++;
+            }
         }, 100);
     };
 
