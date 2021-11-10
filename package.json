@@ -1,6 +1,6 @@
 {
     "name": "gmail-js",
-    "version": "1.0.14",
+    "version": "1.0.15",
     "description": "JavaScript API for Gmail (useful for chrome extensions)",
     "main": "src/gmail.js",
     "types": "src/gmail.d.ts",

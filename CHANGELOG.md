@@ -1,6 +1,11 @@
 
 # Changelog
 
+## Version 1.0.15
+
+- Fix issue with accessing to(), cc() and bcc() in compose-fields with
+  new Gmail "PeopleKit" UI. Thanks @huksley!
+
 ## Version 1.0.14
 
 - Persist if a message is a draft during request parsing.
