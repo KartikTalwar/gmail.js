@@ -300,7 +300,7 @@ var Gmail = function(localJQuery) {
     * https://workspaceupdates.googleblog.com/2021/10/visual-updates-for-composing-email-in-gmail.html
     **/ 
     api.check.is_peoplekit_compose = function (el) {
-        return !!$(el).find("div[name=to] input[peoplekit-id]").length;
+        return $(el).find("div[name=to] input[peoplekit-id]").length !== 0;
     };
 
     api.dom.inbox_content = function() {
@@ -2554,8 +2554,7 @@ var Gmail = function(localJQuery) {
                                 let observer = api.tracker.dom_observer_map["afV"];
                                 let handler = api.tracker.dom_observers.recipient_change.handler;
                                 api.observe.trigger_dom(observer, $(mutation.target), handler);
-                            }
-
+                            } else
                             if (removedNode.className === "vR") {
                                 let observer = api.tracker.dom_observer_map["vR"];
                                 let handler = api.tracker.dom_observers.recipient_change.handler;
@@ -3869,13 +3868,10 @@ var Gmail = function(localJQuery) {
             if( typeof options !== "object" ) options = {};
             const peopleKit = api.check.is_peoplekit_compose(this.$el);
             
-            const type_selector = options.type ?
-                peopleKit ?
-                    "div[name=" + options.type + "] " :
-                    "[name=" + options.type + "]" : "";
+            const type_selector = options.type ? "[name=" + options.type + "]" : "";
 
             const found = peopleKit ?
-                this.$el.find("tr.bzf " + type_selector + "div[data-hovercard-id]").map((_, el) => ({
+                this.$el.find("tr.bzf " + type_selector + " div[data-hovercard-id]").map((_, el) => ({
                     type: el.closest("div[name]").getAttribute("name"),
                     email: el.getAttribute("data-hovercard-id")
                 })) :
