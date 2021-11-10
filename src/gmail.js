@@ -2374,16 +2374,19 @@ var Gmail = function(localJQuery) {
                         // console.log("recipient timeout handler", api.tracker.recipient_matches.length);
                         if(!api.tracker.recipient_matches.length) return;
 
-                        // determine an array of all emails specified for To, CC and BCC and extract addresses into an object for the callback
-                        let composeRoot = api.tracker.recipient_matches[0].closest("div.M9");
-                        // sometimes (on copy-paste of contact in peoplekit mode) element disappears
-                        if (composeRoot.length === 0 && api.tracker.recipient_matches.length > 0) {
-                            composeRoot = api.tracker.recipient_matches[1].closest("div.M9");
-                        }
+                        let composeRoot = [];
+                        // sometimes (on copy-paste of contact in peoplekit mode) element disappears so iterate for all matches
+                        api.tracker.recipient_matches.forEach(match => {
+                            if (composeRoot.length === 0) {
+                                composeRoot = match.closest("div.M9");
+                            }
+                        });
+
                         if (composeRoot.length === 0) {
-                            api.tools.error("Can't find composeRoot for " + match)
+                            api.tools.error("Can't find composeRoot for " + match);
                         }
                         var compose = new api.dom.compose(composeRoot);
+                        // determine an array of all emails specified for To, CC and BCC and extract addresses into an object for the callback
                         var recipients = compose.recipients();
                         callback(compose, recipients, api.tracker.recipient_matches);
 
