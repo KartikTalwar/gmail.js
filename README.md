@@ -618,6 +618,10 @@ Returns `True` if the user is running Gmail with the new 2018 data-layer `False`
 
 Returns `True` if the user is running Gmail with the new 2018 GUI `False` otherwise
 
+#### gmail.check.is_peoplekit_compose(composeElement)
+
+Returns `True` if the compose UI uses new UI as announced [here](https://workspaceupdates.googleblog.com/2021/10/visual-updates-for-composing-email-in-gmail.html) `False` otherwise
+
 #### gmail.check.is_thread()
 
 Returns `True` if the conversation is threaded `False` otherwise
