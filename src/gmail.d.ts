@@ -739,7 +739,7 @@ declare type GmailBindAction =
     | 'add_to_tasks' | 'move_label' | 'save_draft' | 'discard_draft' | 'send_message' | 'send_scheduled_message'
     | 'expand_categories' | 'delete_label' | 'show_newly_arrived_message' | 'poll'
     | 'new_email' | 'refresh' | 'open_email' | 'upload_attachment' | 'compose'
-    | 'compose_cancelled' | 'recipient_change' | 'recipient_change_new' | 'view_thread' | 'view_email'
+    | 'compose_cancelled' | 'recipient_change' | 'recipient_change' | 'view_thread' | 'view_email'
     | 'load_email_menu';
 
 interface GmailObserve {
