@@ -2375,7 +2375,14 @@ var Gmail = function(localJQuery) {
                         if(!api.tracker.recipient_matches.length) return;
 
                         // determine an array of all emails specified for To, CC and BCC and extract addresses into an object for the callback
-                        const composeRoot = api.tracker.recipient_matches[0].closest("div.M9");
+                        let composeRoot = api.tracker.recipient_matches[0].closest("div.M9");
+                        // sometimes (on copy-paste of contact in peoplekit mode) element disappears
+                        if (composeRoot.length === 0 && api.tracker.recipient_matches.length > 0) {
+                            composeRoot = api.tracker.recipient_matches[1].closest("div.M9");
+                        }
+                        if (composeRoot.length === 0) {
+                            api.tools.error("Can't find composeRoot for " + match)
+                        }
                         var compose = new api.dom.compose(composeRoot);
                         var recipients = compose.recipients();
                         callback(compose, recipients, api.tracker.recipient_matches);
