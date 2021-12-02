@@ -296,6 +296,10 @@ interface GmailCheck {
      */
     is_new_gui(): boolean;
     /**
+       Returns True if the compose UI uses new UI as announced [here](https://workspaceupdates.googleblog.com/2021/10/visual-updates-for-composing-email-in-gmail.html) 
+    */
+    is_peoplekit_compose(composeElement: HTMLElement): boolean;
+    /**
        Returns True if the conversation is threaded False otherwise
      */
     is_thread(): boolean;
@@ -485,7 +489,7 @@ interface GmailDomEmail {
 
 declare type GmailDomComposeLookup =
     'to' | 'cc' | 'bcc' | 'id' | 'draft' | 'subject' | 'subjectbox'
-    | 'all_subjects' | 'body' | 'quoted_reply' |'reply' | 'forward' | 'from' | 'send_button';
+    | 'all_subjects' | 'body' | 'quoted_reply' |'reply' | 'forward' | 'from' | 'send_button' | 'show_cc' | 'show_bcc';
 
 interface GmailMessageRow {
     summary: string;
