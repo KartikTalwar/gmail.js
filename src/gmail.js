@@ -373,7 +373,7 @@ var Gmail = function(localJQuery) {
     };
 
 
-    api.get.storage_info = function() {        
+    api.get.storage_info = function() {
         var div = document.querySelector(".md.mj div");
         var used = div.querySelectorAll("span")[0].textContent.replace(/,/g, '.'); //convert to standard decimal
         var total = div.querySelectorAll("span")[1].textContent.replace(/,/g, '.');
@@ -1220,7 +1220,7 @@ var Gmail = function(localJQuery) {
         catch (e) {
             return false;  // warning: case not seen during testing and value is untrustworthy
         }
-        
+
     };
 
     api.tools.parse_fd_bv_contact = function(item) {
@@ -1316,7 +1316,7 @@ var Gmail = function(localJQuery) {
             return {};
         }
     };
-    
+
     api.tools.parse_fd_request_payload = function(json) {
         // ensure JSON-format is known and understood?
         let thread_root = json["2"];
@@ -1400,7 +1400,7 @@ var Gmail = function(localJQuery) {
     api.tools.parse_fd_embedded_json = function (json) {
         // ensure JSON-format is known and understood?
         let thread_root = json["2"];
-      
+
         if (!thread_root || !Array.isArray(thread_root)) {
             return null;
         }
@@ -1420,7 +1420,7 @@ var Gmail = function(localJQuery) {
 
 
                     // detailed to/from-fields must be obtained through the -other- email message node.
-                    //TODO : need a refactoring 
+                    //TODO : need a refactoring
                     const fd_email2 = api.tools.parse_fd_embedded_json_get_email(fd_thread_container, fd_email_id);
 
 
@@ -1435,7 +1435,7 @@ var Gmail = function(localJQuery) {
                     const fd_email_timestamp = Number.parseInt(fd_email["18"]);
                     const fd_email_date = new Date(fd_email_timestamp);
 
-                    //TODO : need a refactoring 
+                    //TODO : need a refactoring
                     const fd_email_content_html = api.tools.parse_fd_embedded_json_content_html(fd_email);
 
                     //TODO
@@ -1516,18 +1516,18 @@ var Gmail = function(localJQuery) {
                     //const bv_email["16"] !==undefined ? bv_email["16"] : ""; //present only if user is the sender ?
                     const bv_email_subject = bv_thread_subject; //value present on thread but not on email
                     const bv_email_timestamp = Number.parseInt(bv_email["18"]); //another timestamp with same value present on bv_email["31"]
-                    const bv_email_date = new Date(bv_email_timestamp);                
+                    const bv_email_date = new Date(bv_email_timestamp);
                     const bv_email_content_html = ""; //Not present in bv request
-                    
+
                     const bv_email_is_draft = api.tools.parse_fd_bv_is_draft(bv_email["11"]);
 
                     //TODO
                     const bv_attachments = []; //Present but need a new parser (not urgent, present in fd email)
 
                     //TODO : check if it's OK
-                    const bv_from = { 
-                        address: bv_email["2"]["2"] !== undefined ? bv_email["2"]["2"] : "", 
-                        name: bv_email["2"]["3"] !== undefined ? bv_email["2"]["3"] : "" 
+                    const bv_from = {
+                        address: bv_email["2"]["2"] !== undefined ? bv_email["2"]["2"] : "",
+                        name: bv_email["2"]["3"] !== undefined ? bv_email["2"]["3"] : ""
                     };
 
                     const bv_to = []; //Not present in bv request
@@ -1591,18 +1591,18 @@ var Gmail = function(localJQuery) {
                     //const bv_email["16"] !==undefined ? bv_email["16"] : ""; //present only if user is the sender ?
                     const bv_email_subject = bv_thread_subject; //value present on thread but not on email
                     const bv_email_timestamp = Number.parseInt(bv_email["18"]); //another timestamp with same value present on bv_email["31"]
-                    const bv_email_date = new Date(bv_email_timestamp);                
+                    const bv_email_date = new Date(bv_email_timestamp);
                     const bv_email_content_html = ""; //Not present in bv request
-                    
+
                     const bv_email_is_draft = api.tools.parse_fd_bv_is_draft(bv_email["11"]);
 
                     //TODO
                     const bv_attachments = []; //Present but need a new parser (not urgent, present in fd email)
 
                     //TODO : check if it's OK
-                    const bv_from = { 
-                        address: bv_email["2"]["2"] !== undefined ? bv_email["2"]["2"] : "", 
-                        name: bv_email["2"]["3"] !== undefined ? bv_email["2"]["3"] : "" 
+                    const bv_from = {
+                        address: bv_email["2"]["2"] !== undefined ? bv_email["2"]["2"] : "",
+                        name: bv_email["2"]["3"] !== undefined ? bv_email["2"]["3"] : ""
                     };
 
                     const bv_to = []; //Not present in bv request
@@ -2062,7 +2062,7 @@ var Gmail = function(localJQuery) {
     };
 
     api.tools.embedded_data_watcher = function() {
-    
+
         if (api.tracker.embedded_data_init) {
             return;
         }
@@ -3977,6 +3977,33 @@ var Gmail = function(localJQuery) {
         },
 
         /**
+            Get the email attachments
+        */
+        attachments: function() {
+            var out = [];
+            var failed = false;
+
+            this.dom("attachments").each(function() {
+                var el = $(this);
+
+                var result = {};
+                result.$el = el;
+                result.name = el.find("div.vI").html();
+                result.size = el.find("div.vJ").html();
+                result.url = el.find("a.dO").attr("href");
+                result.type = "https";
+
+                out.push(result);
+            });
+
+            if (failed) {
+                return undefined;
+            } else {
+                return out;
+            }
+        },
+
+        /**
           Triggers the same action as clicking the "send" button would do.
           */
         send: function() {
@@ -4024,6 +4051,7 @@ var Gmail = function(localJQuery) {
                 reply: "M9",
                 forward: "M9",
                 from: "input[name=from]",
+                attachments: "div.dL",
                 send_button: "div.T-I.T-I-atl:not(.gmailjscomposebutton)",
                 show_cc: "span.aB.gQ.pE",
                 show_bcc: "span.aB.gQ.pB"
@@ -4378,7 +4406,7 @@ var Gmail = function(localJQuery) {
     if (typeof(document) !== "undefined") {
         api.tools.embedded_data_watcher();
     }
-    
+
     return api;
 };
 
