@@ -551,6 +551,10 @@ declare type GmailDomCompose = {
     */
     body(body?: string): string;
     /*
+       Get the email attachments
+    */
+    attachments(): GmailDomAttachment[];
+    /*
       Triggers the same action as clicking the "send" button would do.
     */
     send(): void;

@@ -1133,6 +1133,7 @@ Compose methods:
 - **.subject(subject)** - get/set the current subject
 - **.from()** - get the from email, if user only has one email account they can send from, returns that email address
 - **.body(body)** - get/set the email body
+- **.attachments()** - get the email attachments
 - **.send()** - triggers the same action as clicking the "send" button would do.
 - **.find(selector)** - map find through to jquery element
 - **.close()** - close compose window
