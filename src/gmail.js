@@ -964,9 +964,7 @@ var Gmail = function(localJQuery) {
             triggered[action_map[action]] = response;
         }
 
-        if(params.method === "POST" && (typeof params.url.SID === "string"
-                                       || typeof params.url.ik === "string"
-                                       || typeof params.url.act === "string")) {
+        if(params.method === "POST") {
             triggered.http_event = [params]; // send every event and all data
         }
 
