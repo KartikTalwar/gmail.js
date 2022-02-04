@@ -1,6 +1,10 @@
 
 # Changelog
 
+## Version 1.0.16
+
+- Fix `gmail.observe.on("http_event")` and `gmail.observe.after("http_event")` triggers to receive all XHR requests.
+
 ## Version 1.0.15
 
 - Fix issue with accessing to(), cc() and bcc() in compose-fields with
