@@ -767,7 +767,7 @@ Your callback will be fired directly after Gmail's XMLHttpRequest has been sent 
 
 **Available Actions**
 
-  - **http_event** - When gmail any CRUD operation happens on gmail
+  - **http_event** - When gmail any XHR CRUD operation happens on gmail
   - **poll** - When gmail automatically polls the server to check for new emails every few seconds
   - **new_email** - When a new email appears in the inbox
   - **open_email** - When an email is opened from the inbox view
@@ -814,7 +814,7 @@ The on method also supports observering specific DOM events in the Gmail Interfa
  - **load_email_menu** - When the dropdown menu next to the reply button is clicked
 
 ```js
-gmail.observe.on("http_event", function(params) {
+gmail.observe.on("http_event", function(params, xhr) {
   console.log("url data:", params);
 })
 

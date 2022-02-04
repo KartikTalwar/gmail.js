@@ -750,6 +750,14 @@ declare type GmailBindAction =
     | 'compose_cancelled' | 'recipient_change' | 'view_thread' | 'view_email'
     | 'load_email_menu';
 
+interface HttpEventRequestParams {
+   url: object,
+   url_raw: string;
+   body: string;
+   body_params: object;
+   method: string;
+}
+
 interface GmailObserve {
     /**
        After an observer has been bound through gmail.observe.bind() (via a
@@ -778,6 +786,7 @@ interface GmailObserve {
     on(action: "load_email_menu", callback: (obj: JQuery) => void): void;
     on(action: "compose", callback: (obj: GmailDomCompose, type: GmailComposeType) => void): void;
     on(action: "load", callback: () => void): void;
+    on(action: "http_event", callback: (request: HttpEventRequestParams, xhr: XMLHttpRequest) => void): void;
     /**
        This is the key feature of gmail.js. This method allows you to
        add triggers to all of these actions so you can build your
@@ -801,6 +810,7 @@ interface GmailObserve {
       with the server response
     */
     after(action: "send_message", callback: (url: string, body: string, data: any, xhr: XMLHttpRequest) => void): void;
+    after(action: "http_event", callback: (request: HttpEventRequestParams, responseData: any, xhr: XMLHttpRequest) => void): void;
     after(action: GmailBindAction, callback: Function): void;
     /**
       Checks if a specified action & type has anything bound to it
