@@ -64,7 +64,7 @@ var Gmail = function(localJQuery) {
         console.warn("GmailJS: using deprecated API for old Gmail.", text);
     }
 
-    api.version           = "1.0.17";
+    api.version           = "0.8.0";
     api.tracker.globals   = typeof GLOBALS !== "undefined"
         ? GLOBALS
         : (
@@ -2006,8 +2006,7 @@ var Gmail = function(localJQuery) {
                     // restore original values of xhrParams, if they were altered by upstream instances of gmail.js
                     if (typeof this.xhrParams.url !== 'string') {
                         if (
-                            this
-                            && this[api.instanceId]
+                            this[api.instanceId]
                             && this[api.instanceId].url
                         ) {
                             this.xhrParams.url = this[api.instanceId].url;
