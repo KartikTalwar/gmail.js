@@ -1,6 +1,10 @@
 
 # Changelog
 
+## Version 1.0.17
+
+- Fix issue of `api.tools.parse_requests` mutating the `xhrParams` variable, causing stacked instances of `gmail-js` to not work as expected around XHR events. This closes [issue 662](https://github.com/KartikTalwar/gmail.js/issues/662).
+
 ## Version 1.0.16
 
 - Fix `gmail.observe.on("http_event")` and `gmail.observe.after("http_event")` triggers to receive all XHR requests.
