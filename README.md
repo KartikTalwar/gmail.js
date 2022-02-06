@@ -58,31 +58,6 @@ all together.
 
 While you may be able to make it work, legacy loading is no longer considered supported by GmailJS.
 
-
-## Setup
-
-- **Gmail.js requires jQuery to work**
-
-### Quick Usage - Chrome Console
-
-![](https://f.cloud.github.com/assets/461702/1628984/83ddb250-5728-11e3-9dbc-70a13c2becb0.JPG)
-
-```js
-// {inject jquery.js} by copy pasting this in your console
-var jq = document.createElement('script');
-jq.src = "https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js";
-document.getElementsByTagName('body')[0].appendChild(jq);
-
-// {inject gmail.js} by copy pasting gmail.js contents or via url like jquery above
-// var Gmail = {.....} // paste gmail.js code here
-
-// start using!
-// you can also pass in a reference to jQuery upon init - Gmail(localJQuery)
-var gmail = Gmail();
-gmail.get.user_email();
-```
-
-
 ## Typescript
 
 Using gmail-js with TypeScript is relatively easy, but if you use normal `import` syntax it
