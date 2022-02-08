@@ -76,49 +76,49 @@ describe("Sent-mail-parsing", () => {
         var gmail = new Gmail();
         var data = JSON.parse(testData.new_gmail_sent_email_json);
         var parsed = gmail.tools.parse_sent_message_payload(data);
-        
+
         assert.equal(parsed["1"], "msg-a:r1280593055912233690");
-        assert.equal(parsed.id, "msg-a:r1280593055912233690");        
-        assert.equal(parsed.subject, "Test Parse Sent");        
-        assert.equal(parsed.timestamp, "1562634059674");        
+        assert.equal(parsed.id, "msg-a:r1280593055912233690");
+        assert.equal(parsed.subject, "Test Parse Sent");
+        assert.equal(parsed.timestamp, "1562634059674");
         assert.equal(parsed.content_html, "<div dir=\"ltr\">Test <a href=\"https://www.google.com\">Link </a>Test<br clear=\"all\"><div><br></div>-- <br><div dir=\"ltr\" class=\"gmail_signature\" data-smartmail=\"gmail_signature\"><div dir=\"ltr\"><div><div dir=\"ltr\"><div><div dir=\"ltr\">Thanks,<div><font size=\"4\" style=\"background-color:rgb(0,0,255)\" color=\"#3d85c6\"><br></font></div><div><font style=\"background-color:rgb(255,255,255)\" size=\"4\" color=\"#3d85c6\"><b>Eric Karlsson</b></font></div><div><font color=\"#cccccc\">Product Development</font></div><div><font color=\"#cccccc\">+1 240.688.9219&nbsp;<span></span><span></span></font></div><div><font color=\"#cccccc\"><br></font></div><div><br></div></div></div></div></div></div></div></div>");
-        assert.equal(parsed.ishtml, 1); 
-        assert.deepStrictEqual(parsed.date, new Date("2019-07-09T01:00:59.674Z")); 
+        assert.equal(parsed.ishtml, 1);
+        assert.deepStrictEqual(parsed.date, new Date("2019-07-09T01:00:59.674Z"));
 
-        assert.equal(parsed.from.name, "Eric Karlsson1"); 
-        assert.equal(parsed.from.address, "eric.karlsson1@gmail.com"); 
-       
-        assert.equal(parsed.to.length, 2); 
-        assert.equal(parsed.to[0].name, "Eric Karlsson2"); 
-        assert.equal(parsed.to[0].address, "eric.karlsson2@gmail.com"); 
-        assert.equal(parsed.to[1].name, undefined); 
-        assert.equal(parsed.to[1].address, "eric.karlsson3@gmail.com"); 
+        assert.equal(parsed.from.name, "Eric Karlsson1");
+        assert.equal(parsed.from.address, "eric.karlsson1@gmail.com");
 
-        assert.equal(parsed.cc.length, 2); 
-        assert.equal(parsed.cc[0].name, undefined); 
-        assert.equal(parsed.cc[0].address, "eric.karlsson4@gmail.com"); 
-        assert.equal(parsed.cc[1].name, undefined); 
-        assert.equal(parsed.cc[1].address, "eric.karlsson5@gmail.com"); 
+        assert.equal(parsed.to.length, 2);
+        assert.equal(parsed.to[0].name, "Eric Karlsson2");
+        assert.equal(parsed.to[0].address, "eric.karlsson2@gmail.com");
+        assert.equal(parsed.to[1].name, undefined);
+        assert.equal(parsed.to[1].address, "eric.karlsson3@gmail.com");
 
-        assert.equal(parsed.bcc.length, 2); 
-        assert.equal(parsed.bcc[0].name, "Eric Karlsson6"); 
-        assert.equal(parsed.bcc[0].address, "eric.karlsson6@gmail.com"); 
-        assert.equal(parsed.bcc[1].name, "Eric Karlsson7"); 
-        assert.equal(parsed.bcc[1].address, "eric.karlsson7@gmail.com"); 
+        assert.equal(parsed.cc.length, 2);
+        assert.equal(parsed.cc[0].name, undefined);
+        assert.equal(parsed.cc[0].address, "eric.karlsson4@gmail.com");
+        assert.equal(parsed.cc[1].name, undefined);
+        assert.equal(parsed.cc[1].address, "eric.karlsson5@gmail.com");
 
-        assert.equal(parsed.attachments.length, 2); 
-        assert.equal(parsed.attachments[0].id, "f_jxv3xqgb1"); 
-        assert.equal(parsed.attachments[0].name, "Socket Error.PNG"); 
-        assert.equal(parsed.attachments[0].type, "image/png"); 
-        assert.equal(parsed.attachments[0].url, "https://mail.google.com/mail/?ui=2&ik=5a14ab333d&attid=0.1&permmsgid=msg-a:r1280593055912233690&view=att&realattid=f_jxv3xqgb1&zw"); 
-        assert.equal(parsed.attachments[0].size, 108256); 
-        assert.equal(parsed.attachments[1].id, "f_jxv3xqg00"); 
-        assert.equal(parsed.attachments[1].name, "8002291_3.jpg"); 
-        assert.equal(parsed.attachments[1].type, "image/jpeg"); 
-        assert.equal(parsed.attachments[1].url, "https://mail.google.com/mail/?ui=2&ik=5a14ab333d&attid=0.2&permmsgid=msg-a:r1280593055912233690&view=att&realattid=f_jxv3xqg00&zw"); 
-        assert.equal(parsed.attachments[1].size, 2312479); 
+        assert.equal(parsed.bcc.length, 2);
+        assert.equal(parsed.bcc[0].name, "Eric Karlsson6");
+        assert.equal(parsed.bcc[0].address, "eric.karlsson6@gmail.com");
+        assert.equal(parsed.bcc[1].name, "Eric Karlsson7");
+        assert.equal(parsed.bcc[1].address, "eric.karlsson7@gmail.com");
 
-        assert.ok(parsed.email_node); 
+        assert.equal(parsed.attachments.length, 2);
+        assert.equal(parsed.attachments[0].id, "f_jxv3xqgb1");
+        assert.equal(parsed.attachments[0].name, "Socket Error.PNG");
+        assert.equal(parsed.attachments[0].type, "image/png");
+        assert.equal(parsed.attachments[0].url, "https://mail.google.com/mail/?ui=2&ik=5a14ab333d&attid=0.1&permmsgid=msg-a:r1280593055912233690&view=att&realattid=f_jxv3xqgb1&zw");
+        assert.equal(parsed.attachments[0].size, 108256);
+        assert.equal(parsed.attachments[1].id, "f_jxv3xqg00");
+        assert.equal(parsed.attachments[1].name, "8002291_3.jpg");
+        assert.equal(parsed.attachments[1].type, "image/jpeg");
+        assert.equal(parsed.attachments[1].url, "https://mail.google.com/mail/?ui=2&ik=5a14ab333d&attid=0.2&permmsgid=msg-a:r1280593055912233690&view=att&realattid=f_jxv3xqg00&zw");
+        assert.equal(parsed.attachments[1].size, 2312479);
+
+        assert.ok(parsed.email_node);
     });
 });
 
@@ -460,7 +460,7 @@ describe("New Gmail event-triggering", () => {
         const params = {
             body_params: JSON.parse(data)
         };
-        // we must force, because requset_payload tries to do URL detection
+        // we must force, because request_payload tries to do URL detection
         gmail.tools.parse_request_payload(params, events, true);
         asserts(events);
     };
@@ -787,22 +787,22 @@ describe("ID-compatibility (old->thread)", () => {
 
 describe("Compose-email-parsing", () => {
 
-    it("Handles single thread id", () => {                
+    it("Handles single thread id", () => {
         var gmail = new Gmail(jquery);
 
-        var element = jquery('<div><div class="M9 AD"><input name="rt" value="#thread-f:1610056787031797158"/></div></div>').find(".M9");                
+        var element = jquery('<div><div class="M9 AD"><input name="rt" value="#thread-f:1610056787031797158"/></div></div>').find(".M9");
         var compose = new gmail.dom.compose(element);
-        
-        assert.equal(compose.thread_id(), "thread-f:1610056787031797158");           
+
+        assert.equal(compose.thread_id(), "thread-f:1610056787031797158");
     });
 
-    it("Handles thread id joined with message id", () => {       
+    it("Handles thread id joined with message id", () => {
         var gmail = new Gmail(jquery);
-         
-        var element = jquery('<div><div class="M9 AD"><input name="rt" value="thread-f:1610056787031797155|msg-f:1610056787031797158"/></div></div>').find(".M9");  
+
+        var element = jquery('<div><div class="M9 AD"><input name="rt" value="thread-f:1610056787031797155|msg-f:1610056787031797158"/></div></div>').find(".M9");
         var compose = new gmail.dom.compose(element);
 
-        assert.equal(compose.thread_id(), "thread-f:1610056787031797155|msg-f:1610056787031797158");            
+        assert.equal(compose.thread_id(), "thread-f:1610056787031797155|msg-f:1610056787031797158");
     });
 });
 
@@ -811,7 +811,7 @@ describe("Test tools for parsing XHR bv-request-payload-response", () => {
     var xhrDataJSON = require("./testdata-parser-json/testdata-parser-bv-request-payload.json");
     var gmail = new Gmail();
     var parsed = gmail.tools.parse_bv_request_payload(xhrDataJSON);
-    
+
     it("Response is an array of 5 elements", () => {
         assert.equal(Array.isArray(parsed),true);
         assert.equal(parsed.length,5);
@@ -826,13 +826,13 @@ describe("Test tools for parsing XHR bv-request-payload-response", () => {
         assert.equal(parsed[0].subject, "Working from home: The future of business is remote");
         assert.equal(parsed[0].timestamp, 1587980507491);
         assert.equal(parsed[0].content_html, "");
-        assert.deepStrictEqual(parsed[0].date, new Date("2020-04-27T09:41:47.491Z")); 
+        assert.deepStrictEqual(parsed[0].date, new Date("2020-04-27T09:41:47.491Z"));
         assert.equal(parsed[0].from.address, 'elonm@gmail.com');
         assert.equal(parsed[0].from.name, 'Elon' );
         assert.equal((parsed[0].to).length, 0);
         assert.equal((parsed[0].cc).length, 0);
         assert.equal((parsed[0].bcc).length, 0);
-        assert.equal((parsed[0].attachments).length, 0);    
+        assert.equal((parsed[0].attachments).length, 0);
     });
     it("Handles Thread-1 Email-2 JSON consistently", () => {
         assert.equal(parsed[1].id, "msg-f:1665118316230599953");
@@ -843,7 +843,7 @@ describe("Test tools for parsing XHR bv-request-payload-response", () => {
         assert.equal(parsed[1].subject, "Working from home: The future of business is remote");
         assert.equal(parsed[1].timestamp, 1587980571966);
         assert.equal(parsed[1].content_html, "");
-        assert.deepStrictEqual(parsed[1].date, new Date("2020-04-27T09:42:51.966Z")); 
+        assert.deepStrictEqual(parsed[1].date, new Date("2020-04-27T09:42:51.966Z"));
         assert.equal(parsed[1].from.address, 'Eric@gmail.com');
         assert.equal(parsed[1].from.name, 'Eric');
         assert.equal((parsed[1].to).length, 0);
@@ -860,13 +860,13 @@ describe("Test tools for parsing XHR bv-request-payload-response", () => {
         assert.equal(parsed[2].subject, "Ubuntu 20.04 Download Link & New Features (Updated)");
         assert.equal(parsed[2].timestamp, 1587980130515);
         assert.equal(parsed[2].content_html, "");
-        assert.deepStrictEqual(parsed[2].date, new Date("2020-04-27T09:35:30.515Z")); 
+        assert.deepStrictEqual(parsed[2].date, new Date("2020-04-27T09:35:30.515Z"));
         assert.equal(parsed[2].from.address, 'elonm@gmail.com');
         assert.equal(parsed[2].from.name, 'Elon' );
         assert.equal((parsed[2].to).length, 0);
         assert.equal((parsed[2].cc).length, 0);
         assert.equal((parsed[2].bcc).length, 0);
-        assert.equal((parsed[2].attachments).length, 0);    
+        assert.equal((parsed[2].attachments).length, 0);
     });
     it("Handles Thread-2 Email-2 JSON consistently", () => {
         assert.equal(parsed[3].id, "msg-f:1665117937823393243");
@@ -877,13 +877,13 @@ describe("Test tools for parsing XHR bv-request-payload-response", () => {
         assert.equal(parsed[3].subject, "Ubuntu 20.04 Download Link & New Features (Updated)");
         assert.equal(parsed[3].timestamp, 1587980211089);
         assert.equal(parsed[3].content_html, "");
-        assert.deepStrictEqual(parsed[3].date, new Date("2020-04-27T09:36:51.089Z")); 
+        assert.deepStrictEqual(parsed[3].date, new Date("2020-04-27T09:36:51.089Z"));
         assert.equal(parsed[3].from.address, 'Eric@gmail.com');
         assert.equal(parsed[3].from.name, 'Eric' );
         assert.equal((parsed[3].to).length, 0);
         assert.equal((parsed[3].cc).length, 0);
         assert.equal((parsed[3].bcc).length, 0);
-        assert.equal((parsed[3].attachments).length, 0);    
+        assert.equal((parsed[3].attachments).length, 0);
     });
     it("Handles Thread-2 Email-3 JSON consistently", () => {
         assert.equal(parsed[4].id, "msg-f:1665118117266291066");
@@ -894,13 +894,13 @@ describe("Test tools for parsing XHR bv-request-payload-response", () => {
         assert.equal(parsed[4].subject, "Ubuntu 20.04 Download Link & New Features (Updated)");
         assert.equal(parsed[4].timestamp, 1587980382219);
         assert.equal(parsed[4].content_html, "");
-        assert.deepStrictEqual(parsed[4].date, new Date("2020-04-27T09:39:42.219Z")); 
+        assert.deepStrictEqual(parsed[4].date, new Date("2020-04-27T09:39:42.219Z"));
         assert.equal(parsed[4].from.address, 'Eric@gmail.com');
         assert.equal(parsed[4].from.name, 'Eric' );
         assert.equal((parsed[4].to).length, 0);
         assert.equal((parsed[4].cc).length, 0);
         assert.equal((parsed[4].bcc).length, 0);
-        assert.equal((parsed[4].attachments).length, 0);    
+        assert.equal((parsed[4].attachments).length, 0);
     });
 });
 
@@ -924,13 +924,13 @@ describe("Test tools for parsing bv-embedded-data", () => {
         assert.equal(parsed[0].subject, "Working from home: The future of business is remote");
         assert.equal(parsed[0].timestamp, 1587980507491);
         assert.equal(parsed[0].content_html, "");
-        assert.deepStrictEqual(parsed[0].date, new Date("2020-04-27T09:41:47.491Z")); 
+        assert.deepStrictEqual(parsed[0].date, new Date("2020-04-27T09:41:47.491Z"));
         assert.equal(parsed[0].from.address, 'elonm@gmail.com');
         assert.equal(parsed[0].from.name, 'Elon' );
         assert.equal((parsed[0].to).length, 0);
         assert.equal((parsed[0].cc).length, 0);
         assert.equal((parsed[0].bcc).length, 0);
-        assert.equal((parsed[0].attachments).length, 0);    
+        assert.equal((parsed[0].attachments).length, 0);
     });
     it("Handles Thread-1 Email-2 JSON consistently", () => {
         assert.equal(parsed[1].id, "msg-f:1665118316230599953");
@@ -941,7 +941,7 @@ describe("Test tools for parsing bv-embedded-data", () => {
         assert.equal(parsed[1].subject, "Working from home: The future of business is remote");
         assert.equal(parsed[1].timestamp, 1587980571966);
         assert.equal(parsed[1].content_html, "");
-        assert.deepStrictEqual(parsed[1].date, new Date("2020-04-27T09:42:51.966Z")); 
+        assert.deepStrictEqual(parsed[1].date, new Date("2020-04-27T09:42:51.966Z"));
         assert.equal(parsed[1].from.address, 'Eric@gmail.com');
         assert.equal(parsed[1].from.name, 'Eric');
         assert.equal((parsed[1].to).length, 0);
@@ -958,13 +958,13 @@ describe("Test tools for parsing bv-embedded-data", () => {
         assert.equal(parsed[2].subject, "Ubuntu 20.04 Download Link & New Features (Updated)");
         assert.equal(parsed[2].timestamp, 1587980130515);
         assert.equal(parsed[2].content_html, "");
-        assert.deepStrictEqual(parsed[2].date, new Date("2020-04-27T09:35:30.515Z")); 
+        assert.deepStrictEqual(parsed[2].date, new Date("2020-04-27T09:35:30.515Z"));
         assert.equal(parsed[2].from.address, 'elonm@gmail.com');
         assert.equal(parsed[2].from.name, 'Elon' );
         assert.equal((parsed[2].to).length, 0);
         assert.equal((parsed[2].cc).length, 0);
         assert.equal((parsed[2].bcc).length, 0);
-        assert.equal((parsed[2].attachments).length, 0);    
+        assert.equal((parsed[2].attachments).length, 0);
     });
     it("Handles Thread-2 Email-2 JSON consistently", () => {
         assert.equal(parsed[3].id, "msg-f:1665117937823393243");
@@ -975,13 +975,13 @@ describe("Test tools for parsing bv-embedded-data", () => {
         assert.equal(parsed[3].subject, "Ubuntu 20.04 Download Link & New Features (Updated)");
         assert.equal(parsed[3].timestamp, 1587980211089);
         assert.equal(parsed[3].content_html, "");
-        assert.deepStrictEqual(parsed[3].date, new Date("2020-04-27T09:36:51.089Z")); 
+        assert.deepStrictEqual(parsed[3].date, new Date("2020-04-27T09:36:51.089Z"));
         assert.equal(parsed[3].from.address, 'Eric@gmail.com');
         assert.equal(parsed[3].from.name, 'Eric' );
         assert.equal((parsed[3].to).length, 0);
         assert.equal((parsed[3].cc).length, 0);
         assert.equal((parsed[3].bcc).length, 0);
-        assert.equal((parsed[3].attachments).length, 0);    
+        assert.equal((parsed[3].attachments).length, 0);
     });
     it("Handles Thread-2 Email-3 JSON consistently", () => {
         assert.equal(parsed[4].id, "msg-f:1665118117266291066");
@@ -991,15 +991,15 @@ describe("Test tools for parsing bv-embedded-data", () => {
         assert.equal(parsed[4].subject, "Ubuntu 20.04 Download Link & New Features (Updated)");
         assert.equal(parsed[4].timestamp, 1587980382219);
         assert.equal(parsed[4].content_html, "");
-        assert.deepStrictEqual(parsed[4].date, new Date("2020-04-27T09:39:42.219Z")); 
+        assert.deepStrictEqual(parsed[4].date, new Date("2020-04-27T09:39:42.219Z"));
         assert.equal(parsed[4].from.address, 'Eric@gmail.com');
         assert.equal(parsed[4].from.name, 'Eric' );
         assert.equal((parsed[4].to).length, 0);
         assert.equal((parsed[4].cc).length, 0);
         assert.equal((parsed[4].bcc).length, 0);
-        assert.equal((parsed[4].attachments).length, 0);    
+        assert.equal((parsed[4].attachments).length, 0);
     });
-   
+
 });
 
 describe("Test tools for parsing fd-embedded-data", () => {
@@ -1007,7 +1007,6 @@ describe("Test tools for parsing fd-embedded-data", () => {
     var xhrDataJSON = require("./testdata-parser-json/testdata-parser-fd-embedded.json");
     var gmail = new Gmail();
     var parsed = gmail.tools.parse_fd_embedded_json(xhrDataJSON);
-    console.log(parsed);
 
     it("JSON Data is an array of 5 elements", () => {
         assert.equal(Array.isArray(parsed),true);
@@ -1023,13 +1022,13 @@ describe("Test tools for parsing fd-embedded-data", () => {
         assert.equal(parsed[0].subject, "Ubuntu 20.04 Download Link & New Features (Updated)");
         assert.equal(parsed[0].timestamp, 1587980130515);
         assert.equal(parsed[0].content_html, 'Six months of blood, sweat and development tears have gone in Ubuntu<br>\n20.04 LTS (which is codenamed “Focal Fossa”) resulting in substantial<br>\nset of improvements that improve just about every part of the OS, from<br>\nboot speed to app appearance to bundled software.<br>\n');
-        assert.deepStrictEqual(parsed[0].date, new Date("2020-04-27T09:35:30.515Z")); 
+        assert.deepStrictEqual(parsed[0].date, new Date("2020-04-27T09:35:30.515Z"));
         assert.equal(parsed[0].from.address, 'elonm@gmail.com');
         assert.equal(parsed[0].from.name, 'Elon' );
         assert.equal((parsed[0].to).length, 2);
         assert.equal((parsed[0].cc).length, 2);
         assert.equal((parsed[0].bcc).length, 2);
-        assert.equal((parsed[0].attachments).length, 1);    
+        assert.equal((parsed[0].attachments).length, 1);
     });
     it("Handles Thread-1 Email-2 JSON consistently", () => {
         assert.equal(parsed[1].id, "msg-f:1665117937823393243");
@@ -1040,13 +1039,13 @@ describe("Test tools for parsing fd-embedded-data", () => {
         assert.equal(parsed[1].subject, "Re: Ubuntu 20.04 Download Link & New Features (Updated)");
         assert.equal(parsed[1].timestamp, 1587980211089);
         assert.equal(parsed[1].content_html, "<div style=\"font-size:10pt;font-family:Verdana,Geneva,sans-serif\">\r\n<p>Le 27.04.2020 11:35, Elon a écrit :</p>\r\n<blockquote type=\"cite\" style=\"padding:0 0.4em;border-left:#1010ff 2px solid;margin:0\">\r\n<div style=\"margin:0;padding:0;font-family:monospace\">Six months of blood, sweat and development tears have gone in Ubuntu<br> 20.04 LTS (which is codenamed &quot;Focal Fossa&quot;) resulting in substantial<br> set of improvements that improve just about every part of the OS, from<br> boot speed to app appearance to bundled software.</div>\r\n</blockquote>\r\n<p>What a good news !!</p>\r\n<div> </div>\r\n<div id=\"m_-5081263041899088781gtx-anchor\" style=\"width:32px;height:15px\"> </div>\r\n<div style=\"opacity:1\"> </div>\r\n</div>\r\n");
-        assert.deepStrictEqual(parsed[1].date, new Date("2020-04-27T09:36:51.089Z")); 
+        assert.deepStrictEqual(parsed[1].date, new Date("2020-04-27T09:36:51.089Z"));
         assert.equal(parsed[1].from.address, 'billg@gmail.com');
         assert.equal(parsed[1].from.name, 'Bill' );
         assert.equal((parsed[1].to).length, 1);
         assert.equal((parsed[1].cc).length, 0);
         assert.equal((parsed[1].bcc).length, 0);
-        assert.equal((parsed[1].attachments).length, 1);    
+        assert.equal((parsed[1].attachments).length, 1);
     });
     it("Handles Thread-1 Email-3 JSON consistently", () => {
         assert.equal(parsed[2].id, "msg-f:1665118117266291066");
@@ -1057,13 +1056,13 @@ describe("Test tools for parsing fd-embedded-data", () => {
         assert.equal(parsed[2].subject, "Re: Ubuntu 20.04 Download Link & New Features (Updated)");
         assert.equal(parsed[2].timestamp, 1587980382219);
         assert.equal(parsed[2].content_html, "<div style=\"font-size:10pt;font-family:Verdana,Geneva,sans-serif\">\r\n<p>Le 27.04.2020 11:35, Elon a écrit :</p>\r\n<blockquote type=\"cite\" style=\"padding:0 0.4em;border-left:#1010ff 2px solid;margin:0\">\r\n<div style=\"margin:0;padding:0;font-family:monospace\">Six months of blood, sweat and development tears have gone in Ubuntu<br> 20.04 LTS (which is codenamed &quot;Focal Fossa&quot;) resulting in substantial<br> set of improvements that improve just about every part of the OS, from<br> boot speed to app appearance to bundled software.</div>\r\n</blockquote>\r\n<p>What a good news !!</p>\r\n<p><br></p>\r\n\r\n</div>\r\n");
-        assert.deepStrictEqual(parsed[2].date, new Date("2020-04-27T09:39:42.219Z")); 
+        assert.deepStrictEqual(parsed[2].date, new Date("2020-04-27T09:39:42.219Z"));
         assert.equal(parsed[2].from.address, 'billg@gmail.com');
         assert.equal(parsed[2].from.name, 'Bill' );
         assert.equal((parsed[2].to).length, 1);
         assert.equal((parsed[2].cc).length, 4);
         assert.equal((parsed[2].bcc).length, 0);
-        assert.equal((parsed[2].attachments).length, 1);    
+        assert.equal((parsed[2].attachments).length, 1);
     });
 
     it("Handles Thread-2 Email-1 JSON consistently", () => {
@@ -1075,13 +1074,13 @@ describe("Test tools for parsing fd-embedded-data", () => {
         assert.equal(parsed[3].subject, "Working from home: The future of business is remote");
         assert.equal(parsed[3].timestamp, 1587980507491);
         assert.equal(parsed[3].content_html, 'Look at that :<br>\n<br>\n<a href="https://www.zdnet.com/topic/working-from-home-the-future-of-business-is-remote/" rel="noreferrer" target="_blank" data-saferedirecturl="https://www.google.com/url?q=https://www.zdnet.com/topic/working-from-home-the-future-of-business-is-remote/&amp;source=gmail&amp;ust=1588080055397000&amp;usg=AFQjCNFw4ieC-R6dtbDTR40ZenLfL7nBEQ">https://www.zdnet.com/topic/wo<wbr>rking-from-home-the-future-of-<wbr>business-is-remote/</a><br>\n');
-        assert.deepStrictEqual(parsed[3].date, new Date("2020-04-27T09:41:47.491Z")); 
+        assert.deepStrictEqual(parsed[3].date, new Date("2020-04-27T09:41:47.491Z"));
         assert.equal(parsed[3].from.address, 'elonm@gmail.com');
         assert.equal(parsed[3].from.name, 'Elon' );
         assert.equal((parsed[3].to).length, 2);
         assert.equal((parsed[3].cc).length, 2);
         assert.equal((parsed[3].bcc).length,2);
-        assert.equal((parsed[3].attachments).length, 1);    
+        assert.equal((parsed[3].attachments).length, 1);
     });
     it("Handles Thread-2 Email-2 JSON consistently", () => {
         assert.equal(parsed[4].id, "msg-f:1665118316230599953");
@@ -1092,7 +1091,7 @@ describe("Test tools for parsing fd-embedded-data", () => {
         assert.equal(parsed[4].subject, "Re: Working from home: The future of business is remote");
         assert.equal(parsed[4].timestamp, 1587980571966);
         assert.equal(parsed[4].content_html, "<div style=\"font-size:10pt;font-family:Verdana,Geneva,sans-serif\">\r\n<p>Le 27.04.2020 11:41, Elon a écrit :</p>\r\n<blockquote type=\"cite\" style=\"padding:0 0.4em;border-left:#1010ff 2px solid;margin:0\">\r\n<div style=\"margin:0;padding:0;font-family:monospace\">Look at that :<br> <br> <a href=\"https://www.zdnet.com/topic/working-from-home-the-future-of-business-is-remote/\" rel=\"noopener noreferrer\" target=\"_blank\" data-saferedirecturl=\"https://www.google.com/url?q=https://www.zdnet.com/topic/working-from-home-the-future-of-business-is-remote/&amp;source=gmail&amp;ust=1588080055401000&amp;usg=AFQjCNG_krhm2eOEABPFDZaVWRr3Ay1WXQ\">https://www.zdnet.com/topic/<wbr>working-from-home-the-future-<wbr>of-business-is-remote/</a></div>\r\n</blockquote>\r\n<p>Sure</p>\r\n<p><br></p>\r\n\r\n</div>\r\n");
-        assert.deepStrictEqual(parsed[4].date, new Date("2020-04-27T09:42:51.966Z")); 
+        assert.deepStrictEqual(parsed[4].date, new Date("2020-04-27T09:42:51.966Z"));
         assert.equal(parsed[4].from.address, 'billg@gmail.com');
         assert.equal(parsed[4].from.name, 'Bill');
         assert.equal((parsed[4].to).length, 1);
@@ -1122,7 +1121,7 @@ describe("Test tools for parsing fd-request-data", () => {
         assert.equal(parsed[0].subject, "test subject");
         assert.equal(parsed[0].timestamp, 1633120436716);
         assert.equal(parsed[0].content_html, "<div dir=\"ltr\"><br></div>\r\n");
-        assert.deepStrictEqual(parsed[0].date, new Date("2021-10-01T20:33:56.716Z")); 
+        assert.deepStrictEqual(parsed[0].date, new Date("2021-10-01T20:33:56.716Z"));
         assert.equal(parsed[0].from.address, 'user@gmail.com');
         assert.equal(parsed[0].from.name, 'First Last');
         assert.equal((parsed[0].to).length, 0);
@@ -1139,7 +1138,7 @@ describe("Test tools for parsing fd-request-data", () => {
         assert.equal(parsed[1].subject, "test subject");
         assert.equal(parsed[1].timestamp, 1633120642270);
         assert.equal(parsed[1].content_html, "<div dir=\"ltr\">aaa</div>\r\n");
-        assert.deepStrictEqual(parsed[1].date, new Date("2021-10-01T20:37:22.270Z")); 
+        assert.deepStrictEqual(parsed[1].date, new Date("2021-10-01T20:37:22.270Z"));
         assert.equal(parsed[1].from.address, 'user@gmail.com');
         assert.equal(parsed[1].from.name, 'First Last');
         assert.equal((parsed[1].to).length, 1);

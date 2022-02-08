@@ -296,9 +296,9 @@ var Gmail = function(localJQuery) {
     };
 
     /**
-    * New contact selection UI as announced in 
+    * New contact selection UI as announced in
     * https://workspaceupdates.googleblog.com/2021/10/visual-updates-for-composing-email-in-gmail.html
-    **/ 
+    **/
     api.check.is_peoplekit_compose = function (el) {
         return $(el).find("div[name=to] input[peoplekit-id]").length !== 0;
     };
@@ -1974,6 +1974,7 @@ var Gmail = function(localJQuery) {
             return;
         }
 
+        api.instanceId = Symbol('gmail-js-' + (performance ? performance.now() : Date.now()));
         api.tracker.xhr_init = true;
 
         const win = api.helper.get_xhr_window();
@@ -1985,6 +1986,12 @@ var Gmail = function(localJQuery) {
                     method: method.toString(),
                     url: url.toString()
                 };
+                Object.defineProperty(this, api.instanceId, {
+                    value: Object.freeze({
+                        method: method.toString(),
+                        url: url.toString()
+                    })
+                });
                 return out;
             };
         });
@@ -1995,24 +2002,40 @@ var Gmail = function(localJQuery) {
                 var events = false;
                 if (this.xhrParams) {
                     this.xhrParams.body = body;
+
+                    // restore original values of xhrParams, if they were altered by upstream instances of gmail.js
+                    if (typeof this.xhrParams.url !== 'string') {
+                        if (
+                            this[api.instanceId]
+                            && this[api.instanceId].url
+                        ) {
+                            this.xhrParams.url = this[api.instanceId].url;
+                            delete this.xhrParams.url_raw;
+                            delete this.xhrParams.body_params;
+                        }
+                    }
+
                     events = api.tools.parse_requests(this.xhrParams, this);
                 }
 
                 // fire before events
-                if(api.observe.trigger("before", events, this)) {
-
+                if (api.observe.trigger("before", events, this)) {
                     // if before events were fired, rebuild arguments[0]/body strings
                     // TODO: recreate the url if we want to support manipulating url args (is there a use case where this would be needed?)
                     if (api.check.is_new_data_layer()) {
-                        body = arguments[0] = this.xhrParams.body_is_object ? this.xhrParams.body_params : JSON.stringify(this.xhrParams.body_params);
+                        body = arguments[0] = this.xhrParams.body_is_object
+                            ? this.xhrParams.body_params
+                            : JSON.stringify(this.xhrParams.body_params);
                     } else {
-                        body = arguments[0] = this.xhrParams.body_is_object ? this.xhrParams.body_params : $.param(this.xhrParams.body_params,true).replace(/\+/g, "%20");
+                        body = arguments[0] = this.xhrParams.body_is_object
+                            ? this.xhrParams.body_params
+                            : $.param(this.xhrParams.body_params,true).replace(/\+/g, "%20");
                     }
                 }
 
                 // if any matching after events, bind onreadystatechange callback
                 // also: on new gmail we want to intercept email-data from /i/fd or /i/bv request responses.
-                if(api.observe.bound(events, "after") || api.check.is_new_data_layer()) {
+                if (api.observe.bound(events, "after") || api.check.is_new_data_layer()) {
                     var curr_onreadystatechange = this.onreadystatechange;
                     var xhr = this;
                     this.onreadystatechange = function(progress) {
@@ -3865,7 +3888,7 @@ var Gmail = function(localJQuery) {
         recipients: function(options) {
             if( typeof options !== "object" ) options = {};
             const peopleKit = api.check.is_peoplekit_compose(this.$el);
-            
+
             const type_selector = options.type ? "[name=" + options.type + "]" : "";
 
             const found = peopleKit ?
@@ -3898,7 +3921,7 @@ var Gmail = function(localJQuery) {
         },
 
         /**
-           Retrieve the typing area for "to" recipients, not recipients. 
+           Retrieve the typing area for "to" recipients, not recipients.
            Either textarea or input, which can be empty if last recipient are typed and selected (by pressing ENTER)
         */
         to: function(to) {
@@ -3908,7 +3931,7 @@ var Gmail = function(localJQuery) {
         },
 
         /**
-           Retrieve the typing area for "cc" recipients, not recipients. 
+           Retrieve the typing area for "cc" recipients, not recipients.
            Either textarea or input, which can be empty if last recipient are typed and selected (by pressing ENTER)
         */
         cc: function(cc) {
@@ -3924,7 +3947,7 @@ var Gmail = function(localJQuery) {
         },
 
         /**
-           Retrieve the typing area for "bcc" recipients, not recipients. 
+           Retrieve the typing area for "bcc" recipients, not recipients.
            Either textarea or input, which can be empty if last recipient are typed and selected (by pressing ENTER)
         */
         bcc: function(bcc) {
