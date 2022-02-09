@@ -1,6 +1,10 @@
 
 # Changelog
 
+## Version 1.0.17
+
+- Fix ussyes with `gmail.dom.visible_messages()`. Thanks @mhatvan!
+
 ## Version 1.0.16
 
 - Fix `gmail.observe.on("http_event")` and `gmail.observe.after("http_event")` triggers to receive all XHR requests.
