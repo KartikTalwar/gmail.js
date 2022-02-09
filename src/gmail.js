@@ -3787,8 +3787,8 @@ var Gmail = function(localJQuery) {
                         email: nameAndEmail.attr('email'),
                     },
                     summary: linkAndSubject[0].innerText,
-                    thread_id: api.helper.clean_thread_id(idNode.dataset.threadId || ""),
-                    legacy_email_id: idNode.dataset.legacyMessageId,
+                    thread_id: api.helper.clean_thread_id(idNode && idNode.dataset && idNode.dataset.threadId || ""),
+                    legacy_email_id: (idNode && idNode.dataset && idNode.dataset.legacyMessageId || ""),
                     $el: $(msgEle),
                 });
             });
