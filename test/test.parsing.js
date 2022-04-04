@@ -1028,7 +1028,13 @@ describe("Test tools for parsing fd-embedded-data", () => {
         assert.equal((parsed[0].to).length, 2);
         assert.equal((parsed[0].cc).length, 2);
         assert.equal((parsed[0].bcc).length, 2);
+
         assert.equal((parsed[0].attachments).length, 1);
+        assert.equal((parsed[0].attachments[0].attachment_id), "0.1");
+        assert.equal((parsed[0].attachments[0].name), "Ubuntu_20.04.txt");
+        assert.equal((parsed[0].attachments[0].type), "text/plain");
+        assert.equal((parsed[0].attachments[0].url), "https://mail.google.com/mail/?ui=2&ik=74384930e0&attid=0.1&permmsgid=msg-a:r-7004022322083187773&th=171bafdd8d3f48bb&view=att&realattid=f_k9iacxmx0&zw");
+        assert.equal((parsed[0].attachments[0].size), 1017);
     });
     it("Handles Thread-1 Email-2 JSON consistently", () => {
         assert.equal(parsed[1].id, "msg-f:1665117937823393243");
@@ -1045,7 +1051,13 @@ describe("Test tools for parsing fd-embedded-data", () => {
         assert.equal((parsed[1].to).length, 1);
         assert.equal((parsed[1].cc).length, 0);
         assert.equal((parsed[1].bcc).length, 0);
+
         assert.equal((parsed[1].attachments).length, 1);
+        assert.equal((parsed[1].attachments[0].attachment_id), "0.1");
+        assert.equal((parsed[1].attachments[0].name), "Ubuntu_20.04.txt");
+        assert.equal((parsed[1].attachments[0].type), "text/plain");
+        assert.equal((parsed[1].attachments[0].url), "https://mail.google.com/mail/?ui=2&ik=74384930e0&attid=0.1&permmsgid=msg-f:1665117937823393243&th=171baff1391825db&view=att&zw");
+        assert.equal((parsed[1].attachments[0].size), 1017);
     });
     it("Handles Thread-1 Email-3 JSON consistently", () => {
         assert.equal(parsed[2].id, "msg-f:1665118117266291066");
@@ -1062,7 +1074,13 @@ describe("Test tools for parsing fd-embedded-data", () => {
         assert.equal((parsed[2].to).length, 1);
         assert.equal((parsed[2].cc).length, 4);
         assert.equal((parsed[2].bcc).length, 0);
+
         assert.equal((parsed[2].attachments).length, 1);
+        assert.equal((parsed[2].attachments[0].attachment_id), "0.1");
+        assert.equal((parsed[2].attachments[0].name), "Ubuntu_20.04.txt");
+        assert.equal((parsed[2].attachments[0].type), "text/plain");
+        assert.equal((parsed[2].attachments[0].url), "https://mail.google.com/mail/?ui=2&ik=74384930e0&attid=0.1&permmsgid=msg-f:1665118117266291066&th=171bb01b00b9797a&view=att&zw");
+        assert.equal((parsed[2].attachments[0].size), 1017);
     });
 
     it("Handles Thread-2 Email-1 JSON consistently", () => {
@@ -1080,7 +1098,13 @@ describe("Test tools for parsing fd-embedded-data", () => {
         assert.equal((parsed[3].to).length, 2);
         assert.equal((parsed[3].cc).length, 2);
         assert.equal((parsed[3].bcc).length,2);
+
         assert.equal((parsed[3].attachments).length, 1);
+        assert.equal((parsed[3].attachments[0].attachment_id), "0.1");
+        assert.equal((parsed[3].attachments[0].name), "work.txt");
+        assert.equal((parsed[3].attachments[0].type), "text/plain");
+        assert.equal((parsed[3].attachments[0].url), "https://mail.google.com/mail/?ui=2&ik=74384930e0&attid=0.1&permmsgid=msg-a:r-5459297729901660292&th=171bb0399636172e&view=att&realattid=f_k9ial9ll0&zw");
+        assert.equal((parsed[3].attachments[0].size), 278);
     });
     it("Handles Thread-2 Email-2 JSON consistently", () => {
         assert.equal(parsed[4].id, "msg-f:1665118316230599953");
@@ -1097,7 +1121,13 @@ describe("Test tools for parsing fd-embedded-data", () => {
         assert.equal((parsed[4].to).length, 1);
         assert.equal((parsed[4].cc).length, 4);
         assert.equal((parsed[4].bcc).length, 0);
+
         assert.equal((parsed[4].attachments).length, 1);
+        assert.equal((parsed[4].attachments[0].attachment_id), "0.1");
+        assert.equal((parsed[4].attachments[0].name), "work.txt");
+        assert.equal((parsed[4].attachments[0].type), "text/plain");
+        assert.equal((parsed[4].attachments[0].url), "https://mail.google.com/mail/?ui=2&ik=74384930e0&attid=0.1&permmsgid=msg-f:1665118316230599953&th=171bb04953ebe511&view=att&zw");
+        assert.equal((parsed[4].attachments[0].size), 278);
     });
 });
 
