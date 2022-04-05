@@ -1254,6 +1254,24 @@ var Gmail = function(localJQuery) {
         return res;
     };
 
+    api.tools.parse_fd_embedded_json_attachments = function(json) {
+        let res = [];
+
+        if (Array.isArray(json)) {
+            for (let item of json) {
+                res.push({
+                    attachment_id: item["4"],
+                    name: item["2"],
+                    type: item["1"],
+                    url: api.tools.check_fd_attachment_url(item["6"]),
+                    size: Number.parseInt(item["3"])
+                });
+            }
+        }
+
+        return res;
+    };
+
     api.tools.check_fd_attachment_url = function(url) {
         var userAccountUrlPart = api.tracker.globals[7];
         if (url && userAccountUrlPart && url.indexOf(userAccountUrlPart) < 0) {
@@ -1436,8 +1454,7 @@ var Gmail = function(localJQuery) {
                     //TODO : need a refactoring
                     const fd_email_content_html = api.tools.parse_fd_embedded_json_content_html(fd_email);
 
-                    //TODO
-                    const fd_attachments = api.tools.parse_fd_attachments(fd_email["12"]);
+                    const fd_attachments = api.tools.parse_fd_embedded_json_attachments(fd_email["12"]);
                     const fd_email_sender_address = fd_email["19"]["17"];
 
                     //TODO
