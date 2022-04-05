@@ -1,6 +1,10 @@
 
 # Changelog
 
+## Version 1.0.18
+
+- Fix parsing of attachments in emails form embedded JSON. Thanks @onestep!
+
 ## Version 1.0.17
 
 - Fix ussyes with `gmail.dom.visible_messages()`. Thanks @mhatvan!
