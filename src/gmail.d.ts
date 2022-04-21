@@ -991,7 +991,7 @@ interface GmailCache {
 ////////////////////////////////////////////////////////////////////////////////
 
 declare class Gmail {
-    constructor(localJQuery?: JQueryStatic);
+    constructor();
 
     version: string;
     /**

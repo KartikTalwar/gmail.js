@@ -6,28 +6,10 @@
 
 /*eslint-env es6*/
 
-var Gmail = function(localJQuery) {
+import $ from "jquery";
 
-    /*
-      Use the provided "jQuery" if possible, in order to avoid conflicts with
-      other extensions that use $ for other purposes.
-    */
-    var $;
-    if (typeof localJQuery !== "undefined") {
-        $ = localJQuery;
-    } else if (typeof jQuery !== "undefined") {
-        $ = jQuery;
-    } else {
-        // try load jQuery through node.
-        try {
-            $ = require("jquery");
-        }
-        catch(err) {
-            // else leave $ undefined, which may be fine for some purposes.
-        }
-    }
-
-    var window_opener = typeof (window) !== "undefined" ? window.opener : null;
+const Gmail = function() {
+    let window_opener = typeof (window) !== "undefined" ? window.opener : null;
     if (window_opener) {
         try {
             // access to window.opener domain will fail in case of cross-origin access
