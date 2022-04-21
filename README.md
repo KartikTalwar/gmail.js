@@ -69,6 +69,14 @@ const gmail = new GmailFactory.Gmail() as Gmail;
 // working on the gmail-object now provides type-safety.
 ````
 
+You will also have to import the types somewhere, like in a file called `types.d.ts` in your project:
+
+````typescript
+import "gmail-js";
+````
+
+
+
 ## Methods
 
 ### Summary (click for more info)
