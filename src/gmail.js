@@ -96,70 +96,10 @@ var Gmail = function(localJQuery) {
     };
 
 
-    api.get.loggedin_accounts = function() {
-        var i, j, data;
-        var users = [];
-
-        var globals17 = api.tracker.globals[17];
-        for (i in globals17) {
-            // at least for the delegated inboxes, the index of the mla is not stable
-            // it was observed to be somewhere between 22 and 24, but we should not depend on it
-            data = globals17[i];
-
-            if (data[0] === "mla") {
-                for(j in data[1]) {
-                    users.push({
-                        name : data[1][j][4],
-                        email : data[1][j][0],
-                        index: data[1][j][3]
-                    });
-                }
-
-                return users;
-            }
-        }
-
-        return users;
-    };
-
-
     api.get.user_email = function() {
         return api.tracker.globals[10];
     };
 
-
-    api.get.manager_email = function() {
-        if (api.helper.get.is_delegated_inbox()) {
-            return api.get.delegated_to_email();
-        }
-
-        return api.get.user_email();
-    };
-
-
-    api.get.delegated_to_email = function() {
-        if (!api.helper.get.is_delegated_inbox()) {
-            return null;
-        }
-
-        var i, account;
-        var userIndexPrefix = "/u/";
-        var pathname = window.location.pathname;
-        var delegatedToUserIndex = parseInt(pathname.substring(pathname.indexOf(userIndexPrefix) + userIndexPrefix.length), 10);
-
-        var loggedInAccounts = api.get.loggedin_accounts();
-        if (loggedInAccounts && loggedInAccounts.length > 0) {
-            for (i in loggedInAccounts) {
-                account = loggedInAccounts[i];
-                if (account.index === delegatedToUserIndex) {
-                    return account.email;
-                }
-            }
-        }
-
-        // as a last resort, we query the DOM of the upper right account selection menu
-        return $(".gb_rb[href$='" + userIndexPrefix + delegatedToUserIndex + "'] .gb_yb").text().split(" ")[0];
-    };
 
     api.helper.get.is_locale = function(locale) {
         // A locale is a string that begins with 2 letters, either lowercase or uppercase
@@ -2813,11 +2753,6 @@ var Gmail = function(localJQuery) {
         }
 
         return parsed;
-    };
-
-
-    api.helper.get.is_delegated_inbox = function() {
-        return $(".identityUserDelegatedAccount").length === 1;
     };
 
 

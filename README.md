@@ -85,7 +85,6 @@ import "gmail-js";
 
 
 - [gmail.get**.user_email()**](#gmailgetuser_email)
-- [gmail.get**.manager_email()**](#gmailgetmanager_email)
 - [gmail.get**.current_page()**](#gmailgetcurrent_page)
 
 - [gmail.get**.new.email_id()**](#gmailnewgetemail_id)
@@ -108,7 +107,6 @@ import "gmail-js";
   - [gmail.get**.unread_social_emails()**](#gmailgetunread_emails)
 - [gmail.get**.last_active()**](#gmailgetlast_active)
 - [gmail.get**.storage_info()**](#gmailgetstorage_info)
-- [gmail.get**.loggedin_accounts()**](#gmailgetloggedin_accounts)
 - [gmail.get**.beta()**](#gmailgetbeta)
 - [gmail.get**.localization()**](#gmailgetlocalization)
 
@@ -466,22 +464,6 @@ Returns the current user's email address
 "california@gmail.com"
 ```
 
-#### gmail.get.manager_email()
-
-Returns the email address of the user currently managing the account (if the inbox is used by the owner, this function returns the same value as [gmail.get**.user_email()**](#gmailgetuser_email))
-
-```js
-"california@gmail.com"
-```
-
-#### gmail.get.delegated_to_email()
-
-Returns the email address of the user the account is currently delegated to (if the inbox is used by the owner, this function returns null)
-
-```js
-"california@gmail.com"
-```
-
 #### gmail.get.storage_info()
 
 Returns current user's file storage stats
@@ -571,14 +553,6 @@ Gets user's account activity data
   "mac_address": "2620:101:f000:702:a966:ab42:4a46:195e",
   "time_relative": "31 minutes ago"
 }
-```
-
-#### gmail.get.loggedin_accounts()
-
-Returns a list of signed-in accounts (multiple user accounts setup in gmail)
-
-```json
-[{"name":"California","email":"california@gmail.com"}]
 ```
 
 #### gmail.get.beta()
