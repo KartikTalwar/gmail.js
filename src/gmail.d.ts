@@ -990,7 +990,7 @@ interface GmailCache {
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-declare class Gmail {
+export class Gmail {
     constructor();
 
     version: string;

@@ -8,7 +8,7 @@
 
 import $ from "jquery";
 
-const Gmail = function() {
+export function Gmail() {
     let window_opener = typeof (window) !== "undefined" ? window.opener : null;
     if (window_opener) {
         try {
@@ -24,17 +24,19 @@ const Gmail = function() {
         }
     }
 
-    var api = {
-        get : {},
-        observe : {},
-        check : { data: {}},
-        tools : {},
-        tracker : {},
-        dom : {},
-        chat : {},
-        compose : {},
-        helper : {get: {}}
-    };
+    this.get = {};
+    this.observe = {};
+    this.check = {};
+    this.check.data = {};
+    this.tools = {};
+    this.tracker = {};
+    this.dom = {};
+    this.chat = {};
+    this.compose = {};
+    this.helper = {};
+    this.helper.get = {};
+
+    api = this;
 
     api.DISABLE_OLD_GMAIL_API_DEPRECATION_WARNINGS = false;
 
@@ -46,7 +48,6 @@ const Gmail = function() {
         console.warn("GmailJS: using deprecated API for old Gmail.", text);
     }
 
-    api.version           = "0.8.0";
     api.tracker.globals   = typeof GLOBALS !== "undefined"
         ? GLOBALS
         : (
@@ -4361,11 +4362,4 @@ const Gmail = function() {
     if (typeof(document) !== "undefined") {
         api.tools.embedded_data_watcher();
     }
-
-    return api;
 };
-
-// make class accessible to require()-users.
-if (typeof(exports) !== "undefined") {
-    exports.Gmail = Gmail;
-}
