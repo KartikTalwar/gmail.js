@@ -1,6 +1,29 @@
 
 # Changelog
 
+## Version 2.0.0 - To be released
+
+Major breaking changes. Removed lots of no longer working functions,
+or long ago obsoleted functions or unsupported ways of using Gmail.js.
+
+High level change in functionality:
+
+- Using Gmail.js without node/bundling and js "modules" is no longer supported.
+- Long obsoleted non-async API-calls where async alternatives exist are now
+  removed.
+- No longer working or fixable API-calls have been removed.
+
+Functions removed includes:
+
+- `api.version`
+- `api.get.loggedin_accounts()`
+- `api.get.delegated_to_email()`
+- `api.get.manager_email()`
+- `api.helper.get.is_delegated_inbox()`
+
+This release may hurt a little, but hopefully it should improve the health of
+Gmail.js in the long run.
+
 ## Version 1.0.18
 
 - Fix parsing of attachments in emails form embedded JSON. Thanks @onestep!
