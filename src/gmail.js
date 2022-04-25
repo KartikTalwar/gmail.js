@@ -3591,7 +3591,7 @@ var Gmail = function(localJQuery) {
 
         div.append(button);
 
-        var sendButton = composeWindow.find(".gU.Up");
+        var sendButton = composeWindow.find(".gU.Up").last();
         div.insertAfter(sendButton);
 
         return button;

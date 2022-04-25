@@ -1,6 +1,10 @@
 
 # Changelog
 
+## Version 1.0.19
+
+- Fix compose button being duplicated when using `gmail.tools.add_compose_button` more than once.
+
 ## Version 1.0.18
 
 - Fix parsing of attachments in emails form embedded JSON. Thanks @onestep!
