@@ -1,6 +1,10 @@
 
 # Changelog
 
+## Version 1.0.20
+
+- Fix error in TypeScript type-definitions. No functional/runtime changes.
+
 ## Version 1.0.19
 
 - Fix compose button being duplicated when using `gmail.tools.add_compose_button` more than once.
