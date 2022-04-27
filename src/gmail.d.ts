@@ -809,7 +809,7 @@ interface GmailObserve {
       an after event is observed when the gmail xhr request returns from the server
       with the server response
     */
-    after(action: "send_message", callback: (url: string, body: string, data: any, xhr: XMLHttpRequest) => void): void;
+    after(action: "send_message", callback: (url: string, body: string, data: any, response: any, xhr: XMLHttpRequest) => void): void;
     after(action: "http_event", callback: (request: HttpEventRequestParams, responseData: any, xhr: XMLHttpRequest) => void): void;
     after(action: GmailBindAction, callback: Function): void;
     /**
