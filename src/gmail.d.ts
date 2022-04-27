@@ -982,7 +982,7 @@ interface GmailNewGet {
      *
      * @param email_id: new style email id. Legacy IDs not supported. If empty, default to latest in view.
      */
-    email_data(identifier: GmailEmailIdentifier): GmailNewEmailData | null;
+    email_data(identifier?: GmailEmailIdentifier): GmailNewEmailData | null;
     /**
      * Returns available information about a specific thread.
      *
