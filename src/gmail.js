@@ -3606,7 +3606,7 @@ var Gmail = function(localJQuery) {
         var button = $(document.createElement('div'));
         var buttonClasses = 'J-N-Jz ';
         if (styleClass !== undefined) {
-          buttonClasses += styleClass;
+            buttonClasses += styleClass;
         }
         button.attr('class', buttonClasses);
         button.attr('style', 'user-select: none;');
@@ -3619,7 +3619,7 @@ var Gmail = function(localJQuery) {
         div.insertAfter(scheduledSend);
 
         return button;
-    }
+    };
 
     /**
        adds a button to an email attachment.

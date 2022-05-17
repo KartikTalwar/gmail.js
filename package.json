@@ -26,12 +26,12 @@
         "jquery": "^3.3.1"
     },
     "devDependencies": {
-        "@types/jquery": "^1.10.27",
+        "@types/jquery": "^3.5.14",
         "eslint": "^7.20.0",
+        "gmail-js": "^0.9.9",
         "jsdom": "^16.4.0",
         "mocha": "^8.3.0",
-        "typescript": "^4.1.5",
-        "gmail-js": "^0.9.9"
+        "typescript": "^4.1.5"
     },
     "author": "Kartik Talwar",
     "license": "MIT",
