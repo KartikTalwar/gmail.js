@@ -3597,6 +3597,30 @@ var Gmail = function(localJQuery) {
         return button;
     };
 
+    api.tools.add_more_send_option = function(composeWindow, content_html, onClickFunction, styleClass) {
+        var div = $(document.createElement('div'));
+        div.attr('class', 'J-N yr');
+        div.attr('style', 'user-select: none;');
+        div.attr('role', 'menuitem');
+
+        var button = $(document.createElement('div'));
+        var buttonClasses = 'J-N-Jz ';
+        if (styleClass !== undefined) {
+          buttonClasses += styleClass;
+        }
+        button.attr('class', buttonClasses);
+        button.attr('style', 'user-select: none;');
+        button.html(content_html);
+        button.click(onClickFunction);
+
+        div.append(button);
+
+        var scheduledSend = composeWindow.find('.J-N.yr').last();
+        div.insertAfter(scheduledSend);
+
+        return button;
+    }
+
     /**
        adds a button to an email attachment.
 

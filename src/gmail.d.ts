@@ -296,7 +296,7 @@ interface GmailCheck {
      */
     is_new_gui(): boolean;
     /**
-       Returns True if the compose UI uses new UI as announced [here](https://workspaceupdates.googleblog.com/2021/10/visual-updates-for-composing-email-in-gmail.html) 
+       Returns True if the compose UI uses new UI as announced [here](https://workspaceupdates.googleblog.com/2021/10/visual-updates-for-composing-email-in-gmail.html)
     */
     is_peoplekit_compose(composeElement: HTMLElement): boolean;
     /**
@@ -708,7 +708,19 @@ interface GmailTools {
     i18n(label: string): string;
     add_toolbar_button(content_html: string, onClickFunction: Function, styleClass: string): JQuery;
     add_right_toolbar_button(content_html: string, onClickFunction: Function, styleClass: string): JQuery;
-    add_compose_button(composeWindow: GmailDomCompose, content_html: string, onClickFunction: Function, styleClass: string): JQuery;
+    add_compose_button(composeWindow: GmailDomCompose, content_html: string, onClickFunction: Function, styleClass?: string): JQuery;
+    add_more_send_option(
+      composeWindow: GmailDomCompose,
+      content_html: string,
+      onClickFunction: JQuery.TypeEventHandler<
+        HTMLDivElement,
+        null,
+        HTMLDivElement,
+        HTMLDivElement,
+        'click'
+      >,
+      styleClass?: string
+    ): JQuery;
     /**
        adds a button to an email attachment.
 
