@@ -711,9 +711,10 @@ interface GmailTools {
     add_compose_button(composeWindow: GmailDomCompose, content_html: string, onClickFunction: Function, styleClass?: string): JQuery;
     add_more_send_option(
       composeWindow: GmailDomCompose,
-      content_html: string,
+      buttonText: string,
       onClickFunction: (event: JQuery.Event) => void,
-      styleClass?: string
+      styleClass?: string | undefined,
+      imgSrc?: string
     ): JQuery;
     /**
        adds a button to an email attachment.

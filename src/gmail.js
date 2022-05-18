@@ -3597,7 +3597,7 @@ var Gmail = function(localJQuery) {
         return button;
     };
 
-    api.tools.add_more_send_option = function(composeWindow, content_html, onClickFunction, styleClass) {
+    api.tools.add_more_send_option = function(composeWindow, buttonText, onClickFunction, styleClass, imgSrc) {
         var div = $(document.createElement('div'));
         div.attr('class', 'J-N yr');
         div.attr('style', 'user-select: none;');
@@ -3610,7 +3610,17 @@ var Gmail = function(localJQuery) {
         }
         button.attr('class', buttonClasses);
         button.attr('style', 'user-select: none;');
-        button.html(content_html);
+
+        if (imgSrc !== undefined) {
+            var img = $(document.createElement('img'));
+            img.attr('class', 'v5 J-N-JX');
+            img.attr('style', 'user-select: none;');
+            img.attr('role', 'menuitem');
+            img.attr('src', imgSrc);
+            button.append(img);
+        }
+
+        button.append(buttonText);
         button.click(onClickFunction);
 
         div.append(button);
