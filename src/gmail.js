@@ -2446,12 +2446,7 @@ var Gmail = function(localJQuery) {
                     match = match.closest("div.M9");
                     if (!match.length) return;
                     match = new api.dom.compose(match);
-                    var type;
-                    if (match.is_inline()) {
-                        type = match.find("input[name=subject]").val().indexOf("Fw") === 0 ? "forward" : "reply";
-                    } else {
-                        type = "compose";
-
+                    if (!match.is_inline()) {
                         //Find the close button and set an event listener so we can forward the compose_cancelled event.
                         var composeWindow = originalMatch.closest("div.AD");
                         composeWindow.find(".Ha").mouseup(function() {
@@ -2460,9 +2455,8 @@ var Gmail = function(localJQuery) {
                             }
                             return true;
                         });
-
                     }
-                    callback(match,type);
+                    callback(match, match.type());
                 }
             }
         };
@@ -3894,6 +3888,17 @@ var Gmail = function(localJQuery) {
         */
         is_inline: function() {
             return this.$el.closest("td.Bu").length > 0;
+        },
+
+        /**
+            Compose type - reply / forward / compose (new)
+         */
+        type: function() {
+            return this.is_inline()
+                ? this.find("input[name=subject]").val().indexOf("Fw") === 0
+                    ? "forward"
+                    : "reply"
+                : "compose";
         },
 
         /**
