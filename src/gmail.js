@@ -4301,6 +4301,51 @@ var Gmail = function(localJQuery) {
             };
             if(!config[lookup]) api.tools.error("Dom lookup failed. Unable to find config for \"" + lookup + "\"");
             return this.$el.find(config[lookup]);
+        },
+
+        /**
+         Ensure recipient field is visible in the compose window
+         */
+        show: function(field) {
+            this.dom(`show_${ field }`).trigger("click");
+        },
+
+        /**
+            Adds a recipient to the list of matching field, duplications may occur
+         */
+        add_recipient: function(field, email) {
+            this.show(field);
+
+            const jqueryElement = this.dom(field);
+
+            jqueryElement.val(email);
+
+            const htmlElement = jqueryElement[0];
+
+            htmlElement.focus();
+
+            const TAB_KEY_CODE = 9;
+            const KEYDOWN_EVENT = new KeyboardEvent("keydown", {
+                bubbles: true,
+                cancelable: true,
+                key: "Tab",
+                shiftKey: true,
+                keyCode: TAB_KEY_CODE
+            });
+            htmlElement.dispatchEvent(KEYDOWN_EVENT);
+        },
+
+        /**
+            Removes a recipient from the list of matching field, returns if recipient was found and removed
+         */
+        remove_recipient: function(field, matchEmail) {
+            this.show(field);
+            const emailRemoveButtonQuery = this.$el.find(`div.vR > span[email="${ matchEmail }"] > div.vM`);
+            if (emailRemoveButtonQuery.length !== 1) {
+                return false;
+            }
+            emailRemoveButtonQuery.trigger('click');
+            return true;
         }
 
     });

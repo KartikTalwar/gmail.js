@@ -54,11 +54,9 @@ declare type GmailPageType =
    */
 declare type GmailEmailAddress = string[];
 
-declare type GmailDomComposeRecipients = {
-   to: string[];
-   cc: string[];
-   bcc: string[];
-}
+declare type GmailDomComposeRecipientField = 'to' | 'cc' | 'bcc'
+
+declare type GmailDomComposeRecipients = Record<GmailDomComposeRecipientField, string[]>
 
 declare type GmailAttachmentDetails = {
     attachment_id: string,
@@ -80,11 +78,8 @@ declare type GmailEmailDetails = {
     attachments_details: GmailAttachmentDetails[],
     subject: string,
     content_html: string,
-    content_plain: string,
-    to: string[],
-    cc: string[],
-    bcc: string[]
-};
+    content_plain: string
+} & GmailDomComposeRecipients;
 
 declare type GmailEmailData = {
     thread_id: string,
@@ -488,7 +483,7 @@ interface GmailDomEmail {
 }
 
 declare type GmailDomComposeLookup =
-    'to' | 'cc' | 'bcc' | 'id' | 'draft' | 'subject' | 'subjectbox'
+    GmailDomComposeRecipientField | 'id' | 'draft' | 'subject' | 'subjectbox'
     | 'all_subjects' | 'body' | 'quoted_reply' |'reply' | 'forward' | 'from' | 'send_button' | 'show_cc' | 'show_bcc';
 
 interface GmailMessageRow {
@@ -526,7 +521,7 @@ declare type GmailDomCompose = {
        options.type  string  to, cc, or bcc to check a specific one
        options.flat  boolean if true will just return an array of all recipients instead of splitting out into to, cc, and bcc
     */
-    recipients(options?: { type: 'to' | 'cc' | 'bcc', flat: boolean }): GmailDomComposeRecipients | string[];
+    recipients(options?: { type: GmailDomComposeRecipientField, flat: boolean }): GmailDomComposeRecipients | string[];
     /**
       Retrieve the current 'to' recipients
      */
@@ -574,6 +569,18 @@ declare type GmailDomCompose = {
        Retrieve preconfigured dom elements for this compose window
     */
     dom(lookup: GmailDomComposeLookup): JQuery;
+    /**
+        Ensure recipient field is visible in the compose window
+     */
+    show(field: GmailDomComposeRecipientField): void;
+    /**
+        Adds a recipient to the list of matching field, duplications may occur
+     */
+    add_recipient(field: GmailDomComposeRecipientField, email: string): void;
+    /**
+        Removes a recipient from the list of matching field, returns if recipient was found and removed
+     */
+    remove_recipient(field: GmailDomComposeRecipientField, matchEmail: string): boolean;
 }
 
 interface GmailDom {
