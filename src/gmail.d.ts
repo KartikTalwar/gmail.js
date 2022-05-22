@@ -573,7 +573,7 @@ declare type GmailDomCompose = {
     /**
        Retrieve preconfigured dom elements for this compose window
     */
-    dom(lookup: GmailDomComposeLookup): JQuery;
+    dom(lookup?: GmailDomComposeLookup): JQuery;
 }
 
 interface GmailDom {
