@@ -1110,6 +1110,7 @@ Compose methods:
 - **.id()** - retrieve the compose id
 - **.email_id()** - retrieve the draft email id
 - **.is_inline()** - is this compose instance inline (as with reply & forwards) or a popup (as with a new compose)
+- **.type()** - retrieve compose type - reply / forward / compose (new)
 - **.recipients(options)** - retrieves `to`, `cc`, `bcc` and returns them in a hash of arrays.
   Options:
   - *.type* - string  `to`, `cc`, or `bcc` to check a specific one
