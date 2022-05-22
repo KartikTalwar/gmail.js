@@ -521,7 +521,8 @@ declare type GmailDomCompose = {
        options.type  string  to, cc, or bcc to check a specific one
        options.flat  boolean if true will just return an array of all recipients instead of splitting out into to, cc, and bcc
     */
-    recipients(options?: { type: GmailDomComposeRecipientField, flat: boolean }): GmailDomComposeRecipients | string[];
+    recipients(options?: { type: GmailDomComposeRecipientField }): GmailDomComposeRecipients;
+    recipients(options?: { flat: boolean }): string[];
     /**
       Retrieve the current 'to' recipients
      */
@@ -568,7 +569,7 @@ declare type GmailDomCompose = {
     /**
        Retrieve preconfigured dom elements for this compose window
     */
-    dom(lookup: GmailDomComposeLookup): JQuery;
+    dom(lookup?: GmailDomComposeLookup): JQuery;
     /**
         Ensure recipient field is visible in the compose window
      */
