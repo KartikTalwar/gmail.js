@@ -525,8 +525,14 @@ declare type GmailDomCompose = {
        Parameters:
        options.type  string  to, cc, or bcc to check a specific one
        options.flat  boolean if true will just return an array of all recipients instead of splitting out into to, cc, and bcc
-    */
-    recipients(options?: { type: 'to' | 'cc' | 'bcc', flat: boolean }): GmailDomComposeRecipients | string[];
+    */    /**
+     Retrieves to, cc, bcc and returns them in a hash of arrays
+     Parameters:
+     options.type  string  to, cc, or bcc to check a specific one
+     options.flat  boolean if true will just return an array of all recipients instead of splitting out into to, cc, and bcc
+     */
+    recipients(options?: { type: 'to' | 'cc' | 'bcc' }): GmailDomComposeRecipients;
+    recipients(options?: { flat: boolean }): string[];
     /**
       Retrieve the current 'to' recipients
      */
