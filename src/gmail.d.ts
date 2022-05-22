@@ -521,6 +521,10 @@ declare type GmailDomCompose = {
     */
     is_inline(): boolean,
     /**
+        Compose type - reply / forward / compose (new)
+     */
+    type(): GmailComposeType,
+    /**
        Retrieves to, cc, bcc and returns them in a hash of arrays
        Parameters:
        options.type  string  to, cc, or bcc to check a specific one
