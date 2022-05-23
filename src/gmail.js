@@ -3574,7 +3574,7 @@ var Gmail = function(localJQuery) {
         return create_generic_toolbar_button(content_html, onClickFunction, basicRightStyle, defaultRightStyle, styleClass, api.dom.right_toolbar());
     };
 
-    api.tools.add_compose_button =  function(composeWindow, content_html, onClickFunction, styleClass) {
+    api.tools.add_compose_button = function(composeWindow, content_html, onClickFunction, styleClass) {
         var div = $(document.createElement("div"));
         div.attr("class", "gU Up");
         div.attr("style", "cursor: pointer !important; transform: translateY(1px);");
