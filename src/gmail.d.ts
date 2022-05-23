@@ -712,7 +712,7 @@ interface GmailTools {
     add_more_send_option(
       composeWindow: GmailDomCompose,
       buttonText: string,
-      onClickFunction: (event: JQuery.Event) => void,
+      onClickFunction: Function,
       styleClass?: string | undefined,
       imgSrc?: string
     ): JQuery;
