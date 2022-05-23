@@ -3568,7 +3568,7 @@ var Gmail = function(localJQuery) {
         return create_generic_toolbar_button(content_html, onClickFunction, basicRightStyle, defaultRightStyle, styleClass, api.dom.right_toolbar());
     };
 
-    api.tools.add_compose_button =  function(composeWindow, content_html, onClickFunction, styleClass) {
+    api.tools.add_compose_button = function(composeWindow, content_html, onClickFunction, styleClass) {
         var div = $(document.createElement("div"));
         div.attr("class", "gU Up");
         div.attr("style", "cursor: pointer !important; transform: translateY(1px);");
@@ -3587,6 +3587,40 @@ var Gmail = function(localJQuery) {
 
         var sendButton = composeWindow.find(".gU.Up").last();
         div.insertAfter(sendButton);
+
+        return button;
+    };
+
+    api.tools.add_more_send_option = function(composeWindow, buttonText, onClickFunction, styleClass, imgSrc) {
+        var div = $(document.createElement('div'));
+        div.attr('class', 'J-N yr');
+        div.attr('style', 'user-select: none;');
+        div.attr('role', 'menuitem');
+
+        var button = $(document.createElement('div'));
+        var buttonClasses = 'J-N-Jz ';
+        if (styleClass !== undefined) {
+            buttonClasses += styleClass;
+        }
+        button.attr('class', buttonClasses);
+        button.attr('style', 'user-select: none;');
+
+        if (imgSrc !== undefined) {
+            var img = $(document.createElement('img'));
+            img.attr('class', 'v5 J-N-JX');
+            img.attr('style', 'user-select: none;');
+            img.attr('role', 'menuitem');
+            img.attr('src', imgSrc);
+            button.append(img);
+        }
+
+        button.append(buttonText);
+        button.click(onClickFunction);
+
+        div.append(button);
+
+        var scheduledSend = composeWindow.find('.J-N.yr').last();
+        div.insertAfter(scheduledSend);
 
         return button;
     };
