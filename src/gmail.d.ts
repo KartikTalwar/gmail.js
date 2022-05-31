@@ -770,7 +770,7 @@ interface HttpEventRequestParams {
    method: string;
 }
 
-interface GmailObserve {
+interface GmailObserve<T extends string=GmailBindAction> {
     /**
        After an observer has been bound through gmail.observe.bind() (via a
        call to events gmail.observe.before(), gmail.observe.on(), or
@@ -863,7 +863,7 @@ interface GmailObserve {
       trigger the related event and fire off any relevant bound callbacks
       This function should return true if a dom observer is found for the specified action
      */
-    on_dom(action: GmailBindAction, callback: Function): void;
+    on_dom(action: T | GmailBindAction, callback: Function): void;
 }
 
 
@@ -1020,7 +1020,7 @@ interface GmailCache {
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-declare class Gmail {
+declare class Gmail<T extends string=GmailBindAction> {
     constructor(localJQuery?: JQueryStatic);
 
     version: string;
@@ -1040,7 +1040,7 @@ declare class Gmail {
        use. See source for input params
      */
     tools: GmailTools;
-    observe: GmailObserve;
+    observe: GmailObserve<T>;
     helper: GmailHelper;
     chat: GmailChat;
     compose: GmailCompose;
