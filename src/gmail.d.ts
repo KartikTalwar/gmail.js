@@ -770,7 +770,7 @@ interface HttpEventRequestParams {
    method: string;
 }
 
-interface GmailObserve<T extends string=GmailBindAction> {
+interface GmailObserve<T extends string=never> {
     /**
        After an observer has been bound through gmail.observe.bind() (via a
        call to events gmail.observe.before(), gmail.observe.on(), or
@@ -1020,7 +1020,7 @@ interface GmailCache {
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-declare class Gmail<T extends string=GmailBindAction> {
+declare class Gmail<T extends string=never> {
     constructor(localJQuery?: JQueryStatic);
 
     version: string;
