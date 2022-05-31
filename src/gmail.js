@@ -2110,7 +2110,7 @@ var Gmail = function(localJQuery) {
         var original_GM_setData = window._GM_setData;
         window._GM_setData = function(data) {
 
-            if (data !== undefined && data.Cl6csf !== undefined && data.Cl6csf[0][2] !== undefined) {
+            if (data !== undefined && data.Cl6csf !== undefined && data.Cl6csf[0] !== undefined && data.Cl6csf[0][2] !== undefined) {
                 //console.log('Cl6csf',JSON.parse(data.Cl6csf[0][2]));
                 let parsed_emails = api.tools.parse_fd_embedded_json(JSON.parse(data.Cl6csf[0][2]));
                 api.tools.cache_email_data(parsed_emails,"fd_embedded_json");
@@ -2118,7 +2118,7 @@ var Gmail = function(localJQuery) {
                 //events.load_email_data = [parsed_emails];
 
             }
-            if (data !== undefined && data.a6jdv !== undefined && data.a6jdv[0][2] !== undefined) {
+            if (data !== undefined && data.a6jdv !== undefined && data.a6jdv[0] !== undefined && data.a6jdv[0][2] !== undefined) {
                 //console.log('a6jdv',JSON.parse(data.a6jdv[0][2]));
                 let parsed_emails = api.tools.parse_bv_embedded_json(JSON.parse(data.a6jdv[0][2]));
                 api.tools.cache_email_data(parsed_emails,"bv_embedded_json");
