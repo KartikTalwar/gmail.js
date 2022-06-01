@@ -420,7 +420,7 @@ interface GmailDomThread {
     /**
        Retrieve preconfigured dom elements for this email
     */
-    dom(lookup: GmailDomThreadLookup): JQuery,
+    dom(lookup?: GmailDomThreadLookup): JQuery,
 }
 
 interface GmailDomAttachment {
