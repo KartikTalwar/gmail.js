@@ -3300,11 +3300,17 @@ var Gmail = function(localJQuery) {
             identifier = api.get.email_id();
         }
 
-        const email_id = api.helper.get.legacy_email_id(identifier);
-        if(!email_id) {
-            return null;
+        // if we have an old-style ID, construct URL based on that
+        if (api.check.data.is_legacy_email_id(identifier)) {
+            return window.location.origin + window.location.pathname + "?view=att&th=" + identifier + "&attid=0&disp=comp&safe=1&zw";
+        }
+
+        // otherwise default to new-style ID interface
+        const email_id = api.helper.get.new_email_id(identifier);
+        if(email_id) {
+            return window.location.origin + window.location.pathname + "?view=att&permmsgid=" + email_id + "&attid=0&disp=comp&safe=1&zw";            
         } else {
-            return window.location.origin + window.location.pathname + "?view=att&th=" + email_id + "&attid=0&disp=comp&safe=1&zw";
+            return null;
         }
     };
 
