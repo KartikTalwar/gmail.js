@@ -5,7 +5,7 @@
 
 - Various typescript type-improvements. Thanks again @cancan101!
 - Fix errors when trying to prefetch email-data. Once again, thanks to @cancan101!
-- Introduce new function `gmail.tools.add_more_send_options()`. Even more thanks to @cancan101!
+- Introduce new function `gmail.tools.add_more_send_option()`. Even more thanks to @cancan101!
 - Make `gmail.get.email_source_*()` handle new-style and old-style identifiers natively.
 
 ## Version 1.0.20
