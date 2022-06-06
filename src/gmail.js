@@ -2110,7 +2110,7 @@ var Gmail = function(localJQuery) {
         var original_GM_setData = window._GM_setData;
         window._GM_setData = function(data) {
 
-            if (data !== undefined && data.Cl6csf !== undefined && data.Cl6csf[0][2] !== undefined) {
+            if (data !== undefined && data.Cl6csf !== undefined && data.Cl6csf[0] !== undefined && data.Cl6csf[0][2] !== undefined) {
                 //console.log('Cl6csf',JSON.parse(data.Cl6csf[0][2]));
                 let parsed_emails = api.tools.parse_fd_embedded_json(JSON.parse(data.Cl6csf[0][2]));
                 api.tools.cache_email_data(parsed_emails,"fd_embedded_json");
@@ -2118,7 +2118,7 @@ var Gmail = function(localJQuery) {
                 //events.load_email_data = [parsed_emails];
 
             }
-            if (data !== undefined && data.a6jdv !== undefined && data.a6jdv[0][2] !== undefined) {
+            if (data !== undefined && data.a6jdv !== undefined && data.a6jdv[0] !== undefined && data.a6jdv[0][2] !== undefined) {
                 //console.log('a6jdv',JSON.parse(data.a6jdv[0][2]));
                 let parsed_emails = api.tools.parse_bv_embedded_json(JSON.parse(data.a6jdv[0][2]));
                 api.tools.cache_email_data(parsed_emails,"bv_embedded_json");
@@ -2640,7 +2640,7 @@ var Gmail = function(localJQuery) {
     // checking for any configured observers related to those classes
     api.tools.insertion_observer = function(target, dom_observers, dom_observer_map, sub) {
         //console.log("insertion", target, target.className);
-        if(!api.tracker.dom_observer_map) return;
+        if(!dom_observer_map) return;
 
         // loop through each of the inserted elements classes & check for a defined observer on that class
         var cn = target.className || "";
@@ -3300,11 +3300,17 @@ var Gmail = function(localJQuery) {
             identifier = api.get.email_id();
         }
 
-        const email_id = api.helper.get.legacy_email_id(identifier);
-        if(!email_id) {
-            return null;
+        // if we have an old-style ID, construct URL based on that
+        if (api.check.data.is_legacy_email_id(identifier)) {
+            return window.location.origin + window.location.pathname + "?view=att&th=" + identifier + "&attid=0&disp=comp&safe=1&zw";
+        }
+
+        // otherwise default to new-style ID interface
+        const email_id = api.helper.get.new_email_id(identifier);
+        if(email_id) {
+            return window.location.origin + window.location.pathname + "?view=att&permmsgid=" + email_id + "&attid=0&disp=comp&safe=1&zw";            
         } else {
-            return window.location.origin + window.location.pathname + "?view=att&th=" + email_id + "&attid=0&disp=comp&safe=1&zw";
+            return null;
         }
     };
 

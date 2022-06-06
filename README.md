@@ -166,12 +166,6 @@ import "gmail-js";
 
 
 #### OBSERVE
-It is considered best practice to wait for the gmail interface to be loaded before observing any XHR actions.
-```js
-gmail.observe.on("load", function(){
-    //... now you can safely register other observers using gmail.observe.on
-});
-```
 
 - [gmail.observe**.http_requests()**](#gmailobservehttp_requests)
 - [gmail.observe**.actions()**](#gmailobserveactions)
