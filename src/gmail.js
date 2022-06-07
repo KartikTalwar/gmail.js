@@ -3308,7 +3308,7 @@ var Gmail = function(localJQuery) {
         // otherwise default to new-style ID interface
         const email_id = api.helper.get.new_email_id(identifier);
         if(email_id) {
-            return window.location.origin + window.location.pathname + "?view=att&permmsgid=" + email_id + "&attid=0&disp=comp&safe=1&zw";            
+            return window.location.origin + window.location.pathname + "?view=att&permmsgid=" + email_id + "&attid=0&disp=comp&safe=1&zw";
         } else {
             return null;
         }
@@ -3597,7 +3597,7 @@ var Gmail = function(localJQuery) {
         return button;
     };
 
-    api.tools.add_more_send_option = function(composeWindow, buttonText, onClickFunction, styleClass, imgSrc) {
+    api.tools.add_more_send_option = function(composeWindow, buttonText, onClickFunction, styleClass, imgClass) {
         var div = $(document.createElement('div'));
         div.attr('class', 'J-N yr');
         div.attr('style', 'user-select: none;');
@@ -3611,14 +3611,16 @@ var Gmail = function(localJQuery) {
         button.attr('class', buttonClasses);
         button.attr('style', 'user-select: none;');
 
-        if (imgSrc !== undefined) {
-            var img = $(document.createElement('img'));
-            img.attr('class', 'v5 J-N-JX');
-            img.attr('style', 'user-select: none;');
-            img.attr('role', 'menuitem');
-            img.attr('src', imgSrc);
-            button.append(img);
+        var img = $(document.createElement('img'));
+        var imgClassFull = "J-N-JX";
+        if (imgClass !== undefined){
+            imgClassFull = imgClass + " " + imgClassFull;
         }
+        img.attr('class', imgClassFull);
+        img.attr('style', 'user-select: none;');
+        img.attr('role', 'menuitem');
+        img.attr('src', "images/cleardot.gif");
+        button.append(img);
 
         button.append(buttonText);
         button.click(onClickFunction);

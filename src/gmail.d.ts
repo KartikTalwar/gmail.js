@@ -719,7 +719,7 @@ interface GmailTools {
       buttonText: string,
       onClickFunction: Function,
       styleClass?: string | undefined,
-      imgSrc?: string
+      imgClass?: string | undefined
     ): JQuery;
     /**
        adds a button to an email attachment.
