@@ -3598,28 +3598,28 @@ var Gmail = function(localJQuery) {
     };
 
     api.tools.add_more_send_option = function(composeWindow, buttonText, onClickFunction, styleClass, imgClass) {
-        var div = $(document.createElement('div'));
-        div.attr('class', 'J-N yr');
-        div.attr('style', 'user-select: none;');
-        div.attr('role', 'menuitem');
+        var div = $(document.createElement("div"));
+        div.attr("class", "J-N yr");
+        div.attr("style", "user-select: none;");
+        div.attr("role", "menuitem");
 
-        var button = $(document.createElement('div'));
-        var buttonClasses = 'J-N-Jz ';
+        var button = $(document.createElement("div"));
+        var buttonClasses = "J-N-Jz ";
         if (styleClass !== undefined) {
-            buttonClasses += styleClass;
+          buttonClasses += styleClass;
         }
-        button.attr('class', buttonClasses);
-        button.attr('style', 'user-select: none;');
+        button.attr("class", buttonClasses);
+        button.attr("style", "user-select: none;");
 
-        var img = $(document.createElement('img'));
+        var img = $(document.createElement("img"));
         var imgClassFull = "J-N-JX";
         if (imgClass !== undefined){
             imgClassFull = imgClass + " " + imgClassFull;
         }
-        img.attr('class', imgClassFull);
-        img.attr('style', 'user-select: none;');
-        img.attr('role', 'menuitem');
-        img.attr('src', "images/cleardot.gif");
+        img.attr("class", imgClassFull);
+        img.attr("style", "user-select: none;");
+        img.attr("role", "menuitem");
+        img.attr("src", "images/cleardot.gif");
         button.append(img);
 
         button.append(buttonText);
@@ -3627,7 +3627,7 @@ var Gmail = function(localJQuery) {
 
         div.append(button);
 
-        var scheduledSend = composeWindow.find('.J-N.yr').last();
+        var scheduledSend = composeWindow.find(".J-N.yr").last();
         div.insertAfter(scheduledSend);
 
         return button;
