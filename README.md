@@ -267,7 +267,7 @@ These are some helper functions that the rest of the methods use. See source for
 - [gmail.tools**.add_toolbar_button(content_html, onclick_action, custom_style_class)**](#gmailtoolsadd_toolbar_buttoncontent_html-onclick_action-custom_style_class)
 - [gmail.tools**.add_right_toolbar_button(content_html, onclick_action, custom_style_class)**](#gmailtoolsadd_right_toolbar_buttoncontent_html-onclick_action-custom_style_class)
 - [gmail.tools**.add_compose_button(compose_ref, content_html, onclick_action, custom_style_class)**](#gmailtoolsadd_compose_buttoncompose_ref-content_html-onclick_action-custom_style_class)
-- [gmail.tools**.add_more_send_option(composeWindow, buttonText, onClickFunction, styleClass, imgSrc)**](#gmailtoolsadd_more_send_optioncomposewindow-buttontext-onclickfunction-styleclass-imgsrc)
+- [gmail.tools**.add_more_send_option(composeWindow, buttonText, onClickFunction, styleClass, imgClass)**](#gmailtoolsadd_more_send_optioncomposewindow-buttontext-onclickfunction-styleclass-imgclass)
 - [gmail.tools**.add_modal_window(title, content_html, onClickOk, onClickCancel, onClickClose)**](#gmailtoolsadd_modal_windowtitle-content_html-onClickOk-onClickCancel-onClickClose)
 - [gmail.tools**.remove_modal_window()**](#gmailtoolsremove_modal_window)
 
@@ -1296,7 +1296,7 @@ gmail.tools.add_compose_button(compose_ref, 'content_html', function() {
 }, 'Custom Style Classes');
 ```
 
-#### gmail.tools.add_more_send_option(composeWindow, buttonText, onClickFunction, styleClass, imgSrc)
+#### gmail.tools.add_more_send_option(composeWindow, buttonText, onClickFunction, styleClass, imgClass)
 
 Add button to "more send options" menu.
 You can use gmail.dom.composes() to get compose reference.
@@ -1305,7 +1305,7 @@ You can use gmail.dom.composes() to get compose reference.
 var compose_ref = gmail.dom.composes()[0];
 gmail.tools.add_more_send_option(compose_ref, 'buttonText', function() {
   // Code here
-}, 'Custom Style Classes', 'imgSrc');
+}, 'Custom Style Classes', 'imgClass');
 ```
 
 #### gmail.tools.add_attachment_button(attachment_ref, content_html, customCssClass, tooltip, onclick_action)
