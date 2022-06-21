@@ -1,6 +1,10 @@
 
 # Changelog
 
+## Version 1.0.22
+
+- Fix incompatibility with Mixmax extension. Thanks @DrParanoia!
+
 ## Version 1.0.21
 
 - Various typescript type-improvements. Thanks again @cancan101!
