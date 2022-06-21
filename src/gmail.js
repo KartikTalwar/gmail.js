@@ -4131,7 +4131,7 @@ var Gmail = function(localJQuery) {
                 subject: "input[name=subject]",
                 subjectbox: "input[name=subjectbox]",
                 all_subjects: "input[name=subjectbox], input[name=subject]",
-                body: "div[contenteditable=true]",
+                body: "div[contenteditable=true]:not([id=subject])",
                 quoted_reply: "input[name=uet]",
                 reply: "M9",
                 forward: "M9",
