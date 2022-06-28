@@ -1,6 +1,12 @@
 
 # Changelog
 
+## Version 1.0.23
+
+- Fix error in `insertion_observer()`.
+- Remove no longer working functions: `gmail.get.loggedin_accounts()`,
+  `gmail.get.manager_email()` and `gmail.get.delegated_to_email()`.
+
 ## Version 1.0.22
 
 - Fix incompatibility with Mixmax extension. Thanks @DrParanoia!
