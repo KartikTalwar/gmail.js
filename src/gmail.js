@@ -2655,7 +2655,7 @@ var Gmail = function(localJQuery) {
             for (var observer of observers) {
 
                 // check if this is a defined observer, and callbacks are bound to that observer
-                if(observer && api.tracker.watchdog.dom[observer]) {
+                if(observer && api.tracker.watchdog && api.tracker.watchdog.dom[observer]) {
                     var element = $(target);
                     var config = dom_observers[observer];
 
