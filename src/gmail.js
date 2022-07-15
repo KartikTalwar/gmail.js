@@ -76,6 +76,7 @@ var Gmail = function(localJQuery) {
             window_opener && window_opener.VIEW_DATA || []
         );
     api.tracker.ik        = api.tracker.globals[9] || "";
+    api.tracker.mla       = undefined;
     api.tracker.hangouts  = undefined;
 
     // cache-store for passively pre-fetched/intercepted email-data from load_email_data.
@@ -97,26 +98,21 @@ var Gmail = function(localJQuery) {
 
 
     api.get.loggedin_accounts = function() {
-        var i, j, data;
+        var i, data;
         var users = [];
 
-        var globals17 = api.tracker.globals[17];
-        for (i in globals17) {
-            // at least for the delegated inboxes, the index of the mla is not stable
-            // it was observed to be somewhere between 22 and 24, but we should not depend on it
-            data = globals17[i];
+        data = api.tracker.mla;
 
-            if (data[0] === "mla") {
-                for(j in data[1]) {
-                    users.push({
-                        name : data[1][j][4],
-                        email : data[1][j][0],
-                        index: data[1][j][3]
-                    });
-                }
-
-                return users;
+        if (Array.isArray(data)) {
+            for (i in data[1]) {
+                users.push({
+                    name : data[1][i][4],
+                    email : data[1][i][0],
+                    index: data[1][i][3]
+                });
             }
+
+            return users;
         }
 
         return users;
@@ -158,7 +154,7 @@ var Gmail = function(localJQuery) {
         }
 
         // as a last resort, we query the DOM of the upper right account selection menu
-        return $(".gb_rb[href$='" + userIndexPrefix + delegatedToUserIndex + "'] .gb_yb").text().split(" ")[0];
+        return $("a[href$='" + userIndexPrefix + delegatedToUserIndex + "/']").data('email');
     };
 
     api.helper.get.is_locale = function(locale) {
@@ -2126,6 +2122,17 @@ var Gmail = function(localJQuery) {
                 //events.load_email_data = [parsed_emails];
 
             }
+            if (data !== undefined && data.sBEv4c !== undefined) {
+                for (let i in data.sBEv4c) {
+                    // the index of the mla is not confirmed to be stable
+                    // it was observed to be at position 3, but we should not depend on it
+                    let item = data.sBEv4c[i];
+
+                    if (item[0] === "mla") {
+                        api.tracker.mla = item;
+                    }
+                }
+            }
 
             original_GM_setData(data);
         };
@@ -2811,7 +2818,7 @@ var Gmail = function(localJQuery) {
 
 
     api.helper.get.is_delegated_inbox = function() {
-        return $(".identityUserDelegatedAccount").length === 1;
+        return $(".gb_Da").length === 1;
     };
 
 

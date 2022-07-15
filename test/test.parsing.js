@@ -1178,3 +1178,27 @@ describe("Test tools for parsing fd-request-data", () => {
     });
 
 });
+
+describe("Test parsing logged in accounts data", () => {
+    var mlaDataJSON = require("./testdata-parser-json/testdata-parser-mla.json");
+    var gmail = new Gmail();
+    gmail.tracker.mla = mlaDataJSON;
+
+    it("Handles mla data correctly", () => {
+        var result = gmail.get.loggedin_accounts();
+
+        assert.equal(result.length, 4);
+        assert.equal(result[0].name, "Gmail Dev");
+        assert.equal(result[0].email, "user2@gsuite2.com");
+        assert.equal(result[0].index, 3);
+        assert.equal(result[1].name, "Primary One");
+        assert.equal(result[1].email, "primary@gmail.com");
+        assert.equal(result[1].index, 0);
+        assert.equal(result[2].name, "Стефанія Мамо");
+        assert.equal(result[2].email, "mamo.stefania@gmail.com");
+        assert.equal(result[2].index, 1);
+        assert.equal(result[3].name, "Jack Sparrow");
+        assert.equal(result[3].email, "Jack.Sparrow@gsuite1.net");
+        assert.equal(result[3].index, 2);
+    })
+});
