@@ -870,7 +870,7 @@ interface GmailObserve<T extends string=never> {
       trigger the related event and fire off any relevant bound callbacks
       This function should return true if a dom observer is found for the specified action
      */
-    on_dom(action: T | GmailBindAction, callback: Function): void;
+    on_dom(action: T | GmailBindAction, callback: Function): boolean;
 }
 
 
