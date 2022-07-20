@@ -97,25 +97,23 @@ var Gmail = function(localJQuery) {
     };
 
 
+    /**
+     * Gets list of logged in accounts.
+     *
+     * @returns {GmailLoggedInAccount[]}
+     */
     api.get.loggedin_accounts = function() {
-        var i, data;
-        var users = [];
+        const data = api.tracker.mla;
 
-        data = api.tracker.mla;
-
-        if (Array.isArray(data)) {
-            for (i in data[1]) {
-                users.push({
-                    name : data[1][i][4],
-                    email : data[1][i][0],
-                    index: data[1][i][3]
-                });
-            }
-
-            return users;
+        if (!Array.isArray(data)) {
+            return [];
         }
 
-        return users;
+        return data[1].map(item => ({
+            name: item[4],
+            email: item[0],
+            index: item[3]
+        }));
     };
 
 
@@ -133,28 +131,25 @@ var Gmail = function(localJQuery) {
     };
 
 
+    /**
+     * Gets email of current logged-in user, who views delegated account inbox.
+     *
+     * @returns {string|null} Returns null when Gmail is opened for a non-delegated account or when there is no
+     * information about current logged-in user.
+     */
     api.get.delegated_to_email = function() {
         if (!api.helper.get.is_delegated_inbox()) {
             return null;
         }
 
-        var i, account;
-        var userIndexPrefix = "/u/";
-        var pathname = window.location.pathname;
-        var delegatedToUserIndex = parseInt(pathname.substring(pathname.indexOf(userIndexPrefix) + userIndexPrefix.length), 10);
+        const userIndexPrefix = "/u/";
+        const pathname = window.location.pathname;
+        const delegatedToUserIndex = parseInt(pathname.substring(pathname.indexOf(userIndexPrefix) + userIndexPrefix.length), 10);
 
-        var loggedInAccounts = api.get.loggedin_accounts();
-        if (loggedInAccounts && loggedInAccounts.length > 0) {
-            for (i in loggedInAccounts) {
-                account = loggedInAccounts[i];
-                if (account.index === delegatedToUserIndex) {
-                    return account.email;
-                }
-            }
-        }
+        const loggedInAccounts = api.get.loggedin_accounts();
+        const loggedInAccount = loggedInAccounts.find(account => account.index === delegatedToUserIndex);
 
-        // as a last resort, we query the DOM of the upper right account selection menu
-        return $("a[href$='" + userIndexPrefix + delegatedToUserIndex + "/']").data('email');
+        return loggedInAccount ? loggedInAccount.email : null;
     };
 
     api.helper.get.is_locale = function(locale) {
@@ -2123,11 +2118,9 @@ var Gmail = function(localJQuery) {
 
             }
             if (data !== undefined && data.sBEv4c !== undefined) {
-                for (let i in data.sBEv4c) {
+                for (let item of data.sBEv4c) {
                     // the index of the mla is not confirmed to be stable
                     // it was observed to be at position 3, but we should not depend on it
-                    let item = data.sBEv4c[i];
-
                     if (item[0] === "mla") {
                         api.tracker.mla = item;
                     }
@@ -2817,6 +2810,11 @@ var Gmail = function(localJQuery) {
     };
 
 
+    /**
+     * Checks if Gmail is opened for a delegated account.
+     *
+     * @returns {boolean}
+     */
     api.helper.get.is_delegated_inbox = function() {
         return $(".gb_Da").length === 1;
     };

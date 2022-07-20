@@ -1180,12 +1180,12 @@ describe("Test tools for parsing fd-request-data", () => {
 });
 
 describe("Test parsing logged in accounts data", () => {
-    var mlaDataJSON = require("./testdata-parser-json/testdata-parser-mla.json");
-    var gmail = new Gmail();
+    const mlaDataJSON = require("./testdata-parser-json/testdata-parser-mla.json");
+    const gmail = new Gmail();
     gmail.tracker.mla = mlaDataJSON;
 
     it("Handles mla data correctly", () => {
-        var result = gmail.get.loggedin_accounts();
+        const result = gmail.get.loggedin_accounts();
 
         assert.equal(result.length, 4);
         assert.equal(result[0].name, "Gmail Dev");
