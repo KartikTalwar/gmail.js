@@ -274,7 +274,7 @@ interface GmailCheck {
     /**
        Returns True if the compose UI uses new UI as announced [here](https://workspaceupdates.googleblog.com/2021/10/visual-updates-for-composing-email-in-gmail.html)
     */
-    is_peoplekit_compose(composeElement: HTMLElement): boolean;
+    is_peoplekit_compose(composeElement: JQuery | HTMLElement): boolean;
     /**
        Returns True if the conversation is threaded False otherwise
      */
@@ -454,7 +454,7 @@ interface GmailDomEmail {
     /**
       Retrieve preconfigured dom elements for this email
      */
-    dom(lookup: GmailDomEmailLookup): JQuery;
+    dom(lookup?: GmailDomEmailLookup): JQuery;
     /**
        An object for interacting with an email currently present in the DOM. Represents a conversation thread
        Provides a number of methods and properties to access & interact with it
@@ -478,7 +478,7 @@ interface GmailMessageRow {
     legacy_email_id: string | undefined;
 }
 
-declare type GmailDomCompose = {
+interface GmailDomCompose {
     $el: JQuery,
     /**
        Retrieve the compose id
@@ -509,17 +509,20 @@ declare type GmailDomCompose = {
     recipients(options?: { type: 'to' | 'cc' | 'bcc' }): GmailDomComposeRecipients;
     recipients(options?: { flat: boolean }): string[];
     /**
-      Retrieve the current 'to' recipients
+       Retrieve the typing area for "to" recipients, not recipients.
+       Either textarea or input, which can be empty if last recipient are typed and selected (by pressing ENTER)
      */
-    to(): JQuery;
+    to(to?: string): JQuery;
     /**
-      Retrieve the current 'cc' recipients
+       Retrieve the typing area for "cc" recipients, not recipients.
+       Either textarea or input, which can be empty if last recipient are typed and selected (by pressing ENTER)
      */
-    cc(): JQuery;
+    cc(cc?: string): JQuery;
     /**
-      Retrieve the current 'bcc' recipients
+       Retrieve the typing area for "bcc" recipients, not recipients.
+       Either textarea or input, which can be empty if last recipient are typed and selected (by pressing ENTER)
      */
-    bcc(): JQuery;
+    bcc(bcc?: string): JQuery;
     /**
        Get/Set the current subject
        Parameters:
@@ -535,12 +538,12 @@ declare type GmailDomCompose = {
        Get/Set the email html body
     */
     body(body?: string): string;
-    /*
+    /**
        Get the email attachments
     */
     attachments(): GmailDomAttachment[];
-    /*
-      Triggers the same action as clicking the "send" button would do.
+    /**
+       Triggers the same action as clicking the "send" button would do.
     */
     send(): void;
     /**
