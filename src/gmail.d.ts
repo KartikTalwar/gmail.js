@@ -106,6 +106,12 @@ declare type GmailLastActive = {
     time_relative: string
 };
 
+declare type GmailLoggedInAccount = {
+    name: string,
+    email: string,
+    index: number
+};
+
 declare type GmailStorageInfo = {
     used: string,
     total: string,
@@ -119,9 +125,27 @@ interface GmailGet {
     last_active(): GmailLastActive;
 
     /**
+       Returns a list of signed-in accounts (multiple user accounts
+       setup in gmail)
+     */
+    loggedin_accounts(): GmailLoggedInAccount[];
+
+    /**
        Returns the current user's email address
      */
     user_email(): string;
+    /**
+       Returns the email address of the user currently managing the
+       account (if the inbox is used by the owner, this function
+       returns the same value as gmail.get.user_email())
+     */
+    manager_email(): string;
+    /**
+       Returns the email address of the user the account is currently
+       delegated to (if the inbox is used by the owner, this function
+       returns null)
+     */
+    delegated_to_email(): string;
     /**
        Returns the Gmail localization, e.g. 'US'.
      */

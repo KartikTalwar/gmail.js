@@ -76,6 +76,7 @@ var Gmail = function(localJQuery) {
             window_opener && window_opener.VIEW_DATA || []
         );
     api.tracker.ik        = api.tracker.globals[9] || "";
+    api.tracker.mla       = undefined;
     api.tracker.hangouts  = undefined;
 
     // cache-store for passively pre-fetched/intercepted email-data from load_email_data.
@@ -96,10 +97,60 @@ var Gmail = function(localJQuery) {
     };
 
 
+    /**
+     * Gets list of logged in accounts.
+     *
+     * @returns {GmailLoggedInAccount[]}
+     */
+    api.get.loggedin_accounts = function() {
+        const data = api.tracker.mla;
+
+        if (!Array.isArray(data)) {
+            return [];
+        }
+
+        return data[1].map(item => ({
+            name: item[4],
+            email: item[0],
+            index: item[3]
+        }));
+    };
+
+
     api.get.user_email = function() {
         return api.tracker.globals[10];
     };
 
+
+    api.get.manager_email = function() {
+        if (api.helper.get.is_delegated_inbox()) {
+            return api.get.delegated_to_email();
+        }
+
+        return api.get.user_email();
+    };
+
+
+    /**
+     * Gets email of current logged-in user, who views delegated account inbox.
+     *
+     * @returns {string|null} Returns null when Gmail is opened for a non-delegated account or when there is no
+     * information about current logged-in user.
+     */
+    api.get.delegated_to_email = function() {
+        if (!api.helper.get.is_delegated_inbox()) {
+            return null;
+        }
+
+        const userIndexPrefix = "/u/";
+        const pathname = window.location.pathname;
+        const delegatedToUserIndex = parseInt(pathname.substring(pathname.indexOf(userIndexPrefix) + userIndexPrefix.length), 10);
+
+        const loggedInAccounts = api.get.loggedin_accounts();
+        const loggedInAccount = loggedInAccounts.find(account => account.index === delegatedToUserIndex);
+
+        return loggedInAccount ? loggedInAccount.email : null;
+    };
 
     api.helper.get.is_locale = function(locale) {
         // A locale is a string that begins with 2 letters, either lowercase or uppercase
@@ -2066,6 +2117,15 @@ var Gmail = function(localJQuery) {
                 //events.load_email_data = [parsed_emails];
 
             }
+            if (data !== undefined && data.sBEv4c !== undefined) {
+                for (let item of data.sBEv4c) {
+                    // the index of the mla is not confirmed to be stable
+                    // it was observed to be at position 3, but we should not depend on it
+                    if (item[0] === "mla") {
+                        api.tracker.mla = item;
+                    }
+                }
+            }
 
             original_GM_setData(data);
         };
@@ -2750,8 +2810,13 @@ var Gmail = function(localJQuery) {
     };
 
 
+    /**
+     * Checks if Gmail is opened for a delegated account.
+     *
+     * @returns {boolean}
+     */
     api.helper.get.is_delegated_inbox = function() {
-        return $(".identityUserDelegatedAccount").length === 1;
+        return $(".gb_Da").length === 1;
     };
 
 
