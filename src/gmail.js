@@ -3955,14 +3955,14 @@ var Gmail = function(localJQuery) {
            options.flat  boolean if true will just return an array of all recipients instead of splitting out into to, cc, and bcc
         */
         recipients: function(options) {
-            if( typeof options !== "object" ) options = {};
+            if (typeof options !== "object") options = {};
             const peopleKit = api.check.is_peoplekit_compose(this.$el);
 
             const type_selector = options.type ? "[name=" + options.type + "]" : "";
 
             const found = peopleKit ?
-                this.$el.find("tr.bzf " + type_selector + " div[data-hovercard-id]").map((_, el) => ({
-                    type: el.closest("div[name]").getAttribute("name"),
+                this.$el.find("tr.bzf " + (type_selector || "div[name]") + " div[data-hovercard-id]").map((_, el) => ({
+                    type: options.type || el.closest("div[name]").getAttribute("name"),
                     email: el.getAttribute("data-hovercard-id")
                 })) :
                 this.$el.find(".GS input[type=hidden]" + type_selector).map((_, el) => ({
