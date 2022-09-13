@@ -1,6 +1,10 @@
 
 # Changelog
 
+## Version 1.1.1
+
+- More fixes for `api.new.get.email_data()` and `api.new.get.thread_data()`.
+
 ## Version 1.1.0
 
 - First release to fix new XHR format in Gmail. This fixes
