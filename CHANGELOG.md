@@ -3,7 +3,7 @@
 
 ## Version 1.1.2
 
-- Try fixes `api.observe.on("send_message").
+- Try fixes `api.observe.on("send_message")`.
 
 ## Version 1.1.1
 
