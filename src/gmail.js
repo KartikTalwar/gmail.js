@@ -1575,7 +1575,7 @@ var Gmail = function(localJQuery) {
     api.tools.parse_bv_embedded_json = function (json) {
         // ensure JSON-format is known and understood?
         // JSON-format is not simple to understand, code here is bases on hypothesis
-        let thread_root = json["1"]["1"];
+        let thread_root = json["0"]["0"];
         if (!thread_root || !Array.isArray(thread_root)) {
             return null;
         }
@@ -1585,30 +1585,30 @@ var Gmail = function(localJQuery) {
 
             const bv_threads = thread_root; // array
             for (let bv_thread_container of bv_threads) {
-                const bv_thread_subject = bv_thread_container["5"]["1"];
-                const bv_thread_id = bv_thread_container["5"]["4"];
+                const bv_thread_subject = bv_thread_container["4"]["0"];
+                const bv_thread_id = bv_thread_container["4"]["3"];
 
-                let bv_emails = bv_thread_container["5"]["5"]; // array
+                let bv_emails = bv_thread_container["4"]["4"]; // array
                 for (let bv_email of bv_emails) {
                     //console.log(bv_email)
-                    const bv_email_id = bv_email["1"];
-                    const bv_legacy_email_id = bv_email["56"];
+                    const bv_email_id = bv_email["0"];
+                    const bv_legacy_email_id = bv_email["55"];
                     const bv_email_smtp_id = ""; //bv_email["16"] is smtp_id of previous email in the conversation
                     //const bv_email["16"] !==undefined ? bv_email["16"] : ""; //present only if user is the sender ?
                     const bv_email_subject = bv_thread_subject; //value present on thread but not on email
-                    const bv_email_timestamp = Number.parseInt(bv_email["18"]); //another timestamp with same value present on bv_email["31"]
+                    const bv_email_timestamp = Number.parseInt(bv_email["17"]); //another timestamp with same value present on bv_email["31"]
                     const bv_email_date = new Date(bv_email_timestamp);
                     const bv_email_content_html = ""; //Not present in bv request
 
-                    const bv_email_is_draft = api.tools.parse_fd_bv_is_draft(bv_email["11"]);
+                    const bv_email_is_draft = api.tools.parse_fd_bv_is_draft(bv_email["10"]);
 
                     //TODO
                     const bv_attachments = []; //Present but need a new parser (not urgent, present in fd email)
 
                     //TODO : check if it's OK
                     const bv_from = {
-                        address: bv_email["2"]["2"] !== undefined ? bv_email["2"]["2"] : "",
-                        name: bv_email["2"]["3"] !== undefined ? bv_email["2"]["3"] : ""
+                        address: bv_email["1"]["1"] !== undefined ? bv_email["1"]["1"] : "",
+                        name: bv_email["1"]["2"] !== undefined ? bv_email["1"]["2"] : ""
                     };
 
                     const bv_to = []; //Not present in bv request
