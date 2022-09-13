@@ -1,6 +1,10 @@
 
 # Changelog
 
+## Version 1.1.2
+
+- Try fixes `api.observe.on("send_message").
+
 ## Version 1.1.1
 
 - More fixes for `api.new.get.email_data()` and `api.new.get.thread_data()`.
