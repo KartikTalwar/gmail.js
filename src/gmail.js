@@ -1291,10 +1291,10 @@ var Gmail = function(localJQuery) {
     api.tools.parse_fd_embedded_json_content_html = function (fd_email) {
         let fd_email_content_html = null;
         try {
-            const fd_html_containers = fd_email["9"]["2"];
+            const fd_html_containers = fd_email["8"]["1"];
 
             for (let fd_html_container of fd_html_containers) {
-                fd_email_content_html = (fd_email_content_html || "") + fd_html_container["3"]["2"];
+                fd_email_content_html = (fd_email_content_html || "") + fd_html_container["2"]["1"];
             }
         } catch (e) {
             // don't crash gmail when we cant parse email-contents
@@ -1316,8 +1316,8 @@ var Gmail = function(localJQuery) {
 
     api.tools.parse_fd_embedded_json_get_email = function (fd_thread_container, fd_email_id) {
         try {
-            const fd_emails2 = fd_thread_container["2"]["5"];
-            const fd_email2 = fd_emails2.filter(i => i["1"] === fd_email_id);
+            const fd_emails2 = fd_thread_container["1"]["4"];
+            const fd_email2 = fd_emails2.filter(i => i["0"] === fd_email_id);
             return fd_email2[0];
         } catch (e) {
             return {};
@@ -1406,7 +1406,7 @@ var Gmail = function(localJQuery) {
 
     api.tools.parse_fd_embedded_json = function (json) {
         // ensure JSON-format is known and understood?
-        let thread_root = json["2"];
+        let thread_root = json["1"];
 
         if (!thread_root || !Array.isArray(thread_root)) {
             return null;
@@ -1417,12 +1417,12 @@ var Gmail = function(localJQuery) {
 
             const fd_threads = thread_root; // array
             for (let fd_thread_container of fd_threads) {
-                const fd_thread_id = fd_thread_container["2"]["4"];
+                const fd_thread_id = fd_thread_container["1"]["3"];
 
-                let fd_emails = fd_thread_container["2"]["5"]; // array
+                let fd_emails = fd_thread_container["1"]["4"]; // array
                 for (let fd_email of fd_emails) {
                     //console.log(fd_email)
-                    const fd_email_id = fd_email["1"];
+                    const fd_email_id = fd_email["0"];
 
 
 
@@ -1432,24 +1432,24 @@ var Gmail = function(localJQuery) {
 
 
                     //TODO : to check...
-                    const fd_legacy_email_id = fd_email["56"];
-                    const fd_email_smtp_id = fd_email["14"];
-                    const fd_email_subject = fd_email["8"];
+                    const fd_legacy_email_id = fd_email["55"];
+                    const fd_email_smtp_id = fd_email["13"];
+                    const fd_email_subject = fd_email["7"];
 
-                    const fd_email_is_draft = api.tools.parse_fd_bv_is_draft(fd_email["11"]);
+                    const fd_email_is_draft = api.tools.parse_fd_bv_is_draft(fd_email["10"]);
 
                     //TODO : to check...
-                    const fd_email_timestamp = Number.parseInt(fd_email["18"]);
+                    const fd_email_timestamp = Number.parseInt(fd_email["17"]);
                     const fd_email_date = new Date(fd_email_timestamp);
 
                     //TODO : need a refactoring
                     const fd_email_content_html = api.tools.parse_fd_embedded_json_content_html(fd_email);
 
-                    const fd_attachments = api.tools.parse_fd_embedded_json_attachments(fd_email["12"]);
-                    const fd_email_sender_address = fd_email["19"]["17"];
+                    const fd_attachments = api.tools.parse_fd_embedded_json_attachments(fd_email["11"]);
+                    const fd_email_sender_address = fd_email["18"]["16"];
 
                     //TODO
-                    let fd_from = api.tools.parse_fd_bv_contact(fd_email2["2"]);
+                    let fd_from = api.tools.parse_fd_bv_contact(fd_email2["1"]);
                     if (!fd_from) {
                         fd_from = {
                             address: fd_email_sender_address,
@@ -1457,9 +1457,9 @@ var Gmail = function(localJQuery) {
                         };
                     }
 
-                    const fd_to = api.tools.parse_fd_bv_contacts(fd_email["3"]);
-                    const fd_cc = api.tools.parse_fd_bv_contacts(fd_email["4"]);
-                    const fd_bcc = api.tools.parse_fd_bv_contacts(fd_email["5"]);
+                    const fd_to = api.tools.parse_fd_bv_contacts(fd_email["2"]);
+                    const fd_cc = api.tools.parse_fd_bv_contacts(fd_email["3"]);
+                    const fd_bcc = api.tools.parse_fd_bv_contacts(fd_email["4"]);
 
                     const email = {
                         id: fd_email_id,
