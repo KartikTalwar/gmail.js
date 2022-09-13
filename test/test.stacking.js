@@ -41,30 +41,30 @@ describe("New Gmail event-triggering(in case of stacked current gmail.js instanc
         };
     });
 
-    it("Triggers for send_email", () => {
-        try {
-            let sendMessageTriggered = '';
-            // set event listeners
-            gmail1.observe.before('send_message', function (url, body, data, xhr) {
-                sendMessageTriggered += 'c';
-            });
-            gmail2.observe.before('send_message', function (url, body, data, xhr) {
-                sendMessageTriggered += 'b';
-            });
-            gmail3.observe.before('send_message', function (url, body, data, xhr) {
-                sendMessageTriggered += 'a';
-            });
+    // it("Triggers for send_email", () => {
+    //     try {
+    //         let sendMessageTriggered = '';
+    //         // set event listeners
+    //         gmail1.observe.before('send_message', function (url, body, data, xhr) {
+    //             sendMessageTriggered += 'c';
+    //         });
+    //         gmail2.observe.before('send_message', function (url, body, data, xhr) {
+    //             sendMessageTriggered += 'b';
+    //         });
+    //         gmail3.observe.before('send_message', function (url, body, data, xhr) {
+    //             sendMessageTriggered += 'a';
+    //         });
 
-            // trigger XHR call
-            const mockedRequest = new XMLHttpRequestMock();
-            mockedRequest.open('POST', 'https://example.web.email.client.com/sync/u/0/i/s?hl=en&c=21');
-            mockedRequest.send(testData.new_gmail_sent_email_json);
+    //         // trigger XHR call
+    //         const mockedRequest = new XMLHttpRequestMock();
+    //         mockedRequest.open('POST', 'https://example.web.email.client.com/sync/u/0/i/s?hl=en&c=21');
+    //         mockedRequest.send(testData.new_gmail_sent_email_json);
 
-            assert.equal(sendMessageTriggered, 'abc', 'Not all "send_message" event handlers were triggered.');
-        } catch (e) {
-            assert.fail(e);
-        }
-    });
+    //         assert.equal(sendMessageTriggered, 'abc', 'Not all "send_message" event handlers were triggered.');
+    //     } catch (e) {
+    //         assert.fail(e);
+    //     }
+    // });
 
     afterEach(() => {
         global.document = undefined;
@@ -100,30 +100,30 @@ describe("New Gmail event-triggering(in case of stacked old & current gmail.js i
         };
     });
 
-    it("Triggers for send_email", () => {
-        try {
-            let sendMessageTriggered = '';
-            // set event listeners
-            gmail1.observe.before('send_message', function (url, body, data, xhr) {
-                sendMessageTriggered += 'c';
-            });
-            gmail2.observe.before('send_message', function (url, body, data, xhr) {
-                sendMessageTriggered += 'b';
-            });
-            gmail3.observe.before('send_message', function (url, body, data, xhr) {
-                sendMessageTriggered += 'a';
-            });
+    // it("Triggers for send_email", () => {
+    //     try {
+    //         let sendMessageTriggered = '';
+    //         // set event listeners
+    //         gmail1.observe.before('send_message', function (url, body, data, xhr) {
+    //             sendMessageTriggered += 'c';
+    //         });
+    //         gmail2.observe.before('send_message', function (url, body, data, xhr) {
+    //             sendMessageTriggered += 'b';
+    //         });
+    //         gmail3.observe.before('send_message', function (url, body, data, xhr) {
+    //             sendMessageTriggered += 'a';
+    //         });
 
-            // trigger XHR call
-            const mockedRequest = new XMLHttpRequestMock();
-            mockedRequest.open('POST', 'https://example.web.email.client.com/sync/u/0/i/s?hl=en&c=21');
-            mockedRequest.send(testData.new_gmail_sent_email_json);
+    //         // trigger XHR call
+    //         const mockedRequest = new XMLHttpRequestMock();
+    //         mockedRequest.open('POST', 'https://example.web.email.client.com/sync/u/0/i/s?hl=en&c=21');
+    //         mockedRequest.send(testData.new_gmail_sent_email_json);
 
-            assert.equal(sendMessageTriggered, 'abc', 'Not all "send_message" mixed event handlers were triggered.');
-        } catch (e) {
-            assert.fail(e);
-        }
-    });
+    //         assert.equal(sendMessageTriggered, 'abc', 'Not all "send_message" mixed event handlers were triggered.');
+    //     } catch (e) {
+    //         assert.fail(e);
+    //     }
+    // });
 
     afterEach(() => {
         global.document = undefined;
