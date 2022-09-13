@@ -1,9 +1,13 @@
 
 # Changelog
 
+## Version 1.1.3
+
+- Even more fixes for `api.observe.on("send_message")` by @huksley.
+
 ## Version 1.1.2
 
-- Try fixes `api.observe.on("send_message")`.
+- Try some fixes for `api.observe.on("send_message")`.
 
 ## Version 1.1.1
 
