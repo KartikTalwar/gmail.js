@@ -1216,8 +1216,8 @@ var Gmail = function(localJQuery) {
         try
         {
             return {
-                name: item["3"],
-                address: item["2"]
+                name: item["2"],
+                address: item["1"]
             };
         }
         catch (e) {
@@ -1230,14 +1230,14 @@ var Gmail = function(localJQuery) {
 
         if (Array.isArray(json)) {
             for (let item of json) {
-                let data = item["1"]["4"] || "";
+                let data = item["0"]["3"] || "";
 
                 res.push({
-                    attachment_id: item["1"]["2"],
-                    name: data["3"],
-                    type: data["4"],
-                    url: api.tools.check_fd_attachment_url(data["2"]),
-                    size: Number.parseInt(data["5"])
+                    attachment_id: item["0"]["1"],
+                    name: data["2"],
+                    type: data["3"],
+                    url: api.tools.check_fd_attachment_url(data["1"]),
+                    size: Number.parseInt(data["4"])
                 });
             }
         }
@@ -1275,10 +1275,10 @@ var Gmail = function(localJQuery) {
     api.tools.parse_fd_request_html_payload = function(fd_email) {
         let fd_email_content_html = null;
         try {
-            const fd_html_containers = fd_email["2"]["6"]["2"];
+            const fd_html_containers = fd_email["1"]["5"]["1"];
 
             for (let fd_html_container of fd_html_containers) {
-                fd_email_content_html = (fd_email_content_html || "") + fd_html_container["3"]["2"];
+                fd_email_content_html = (fd_email_content_html || "") + fd_html_container["2"]["1"];
             }
         }
         catch(e) {
@@ -1305,8 +1305,8 @@ var Gmail = function(localJQuery) {
 
     api.tools.parse_fd_request_payload_get_email2 = function(fd_thread_container, fd_email_id) {
         try {
-            const fd_emails2 = fd_thread_container["2"]["2"];
-            const fd_email2 = fd_emails2.filter(i => i["1"] === fd_email_id);
+            const fd_emails2 = fd_thread_container["1"]["1"];
+            const fd_email2 = fd_emails2.filter(i => i["0"] === fd_email_id);
             return fd_email2[0];
         }
         catch (e) {
@@ -1326,7 +1326,7 @@ var Gmail = function(localJQuery) {
 
     api.tools.parse_fd_request_payload = function(json) {
         // ensure JSON-format is known and understood?
-        let thread_root = json["2"];
+        let thread_root = json["1"];
         if (!thread_root || !Array.isArray(thread_root)) {
             return null;
         }
@@ -1337,39 +1337,39 @@ var Gmail = function(localJQuery) {
 
             const fd_threads = thread_root; // array
             for (let fd_thread_container of fd_threads) {
-                const fd_thread_id = fd_thread_container["1"];
+                const fd_thread_id = fd_thread_container["0"];
 
-                let fd_emails = fd_thread_container["3"]; // array
+                let fd_emails = fd_thread_container["2"]; // array
                 for (let fd_email of fd_emails) {
                     //console.log(fd_email)
-                    const fd_email_id = fd_email["1"];
+                    const fd_email_id = fd_email["0"];
 
                     // detailed to/from-fields must be obtained through the -other- email message node.
                     const fd_email2 = api.tools.parse_fd_request_payload_get_email2(fd_thread_container, fd_email_id);
 
-                    const fd_legacy_email_id = fd_email["2"]["35"];
-                    const fd_email_smtp_id = fd_email["2"]["8"];
+                    const fd_legacy_email_id = fd_email["1"]["34"];
+                    const fd_email_smtp_id = fd_email["1"]["7"];
 
-                    const fd_email_subject = fd_email["2"]["5"];
-                    const fd_email_timestamp = Number.parseInt(fd_email["2"]["17"]);
+                    const fd_email_subject = fd_email["1"]["4"];
+                    const fd_email_timestamp = Number.parseInt(fd_email["1"]["16"]);
                     const fd_email_date = new Date(fd_email_timestamp);
 
-                    const fd_email_is_draft = api.tools.parse_fd_bv_is_draft(fd_email2["4"]);
+                    const fd_email_is_draft = api.tools.parse_fd_bv_is_draft(fd_email2["3"]);
 
                     const fd_email_content_html = api.tools.parse_fd_request_html_payload(fd_email);
 
-                    const fd_attachments = api.tools.parse_fd_attachments(fd_email["2"]["14"]);
+                    const fd_attachments = api.tools.parse_fd_attachments(fd_email["1"]["13"]);
 
-                    const fd_email_sender_address = fd_email["2"]["11"]["17"];
+                    const fd_email_sender_address = fd_email["1"]["10"]["16"];
 
-                    let fd_from = api.tools.parse_fd_bv_contact(fd_email2["2"]);
+                    let fd_from = api.tools.parse_fd_bv_contact(fd_email2["1"]);
                     if (!fd_from) {
                         fd_from = { address: fd_email_sender_address, name: "" };
                     }
 
-                    const fd_to = api.tools.parse_fd_bv_contacts(fd_email["2"]["1"]);
-                    const fd_cc = api.tools.parse_fd_bv_contacts(fd_email["2"]["2"]);
-                    const fd_bcc = api.tools.parse_fd_bv_contacts(fd_email["2"]["3"]);
+                    const fd_to = api.tools.parse_fd_bv_contacts(fd_email["1"]["0"]);
+                    const fd_cc = api.tools.parse_fd_bv_contacts(fd_email["1"]["1"]);
+                    const fd_bcc = api.tools.parse_fd_bv_contacts(fd_email["1"]["2"]);
 
                     const email = {
                         id: fd_email_id,
@@ -2057,14 +2057,15 @@ var Gmail = function(localJQuery) {
                             // intercept email-data passively, instead of actively trying to fetch it later!
                             // (which we won't be able to do once 2019 hits anyway...)
                             if (api.check.is_new_data_layer()) {
-                                if (api.tools.get_pathname_from_url(xhr.xhrParams.url_raw).endsWith("/i/fd")) {
+                                const pathName = api.tools.get_pathname_from_url(xhr.xhrParams.url_raw);
+                                if (pathName.endsWith("/i/fd")) {
                                     let parsed_emails = api.tools.parse_fd_request_payload(xhr.xhrResponse);
                                     if (parsed_emails !== undefined && parsed_emails !== null) {
                                         api.tools.cache_email_data(parsed_emails,"fd_request_payload");
                                         events.load_email_data = [parsed_emails];
                                     }
                                 }
-                                if (api.tools.get_pathname_from_url(xhr.xhrParams.url_raw).endsWith("/i/bv")) {
+                                if (pathName.endsWith("/i/bv")) {
                                     let parsed_emails = api.tools.parse_bv_request_payload(xhr.xhrResponse);
                                     if (parsed_emails !== undefined && parsed_emails !== null) {
                                         api.tools.cache_email_data(parsed_emails,"bv_request_payload");
