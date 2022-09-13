@@ -672,12 +672,8 @@ var Gmail = function(localJQuery) {
     };
 
 
-    api.tools.error = function(str) {
-        if (console) {
-            console.error(str);
-        } else {
-            throw(str);
-        }
+    api.tools.error = function(str, ...args) {
+        console.error(str, ...args);
     };
 
     api.tools.parse_url = function(url) {
@@ -992,6 +988,13 @@ var Gmail = function(localJQuery) {
             && typeof obj === "object"
             && obj["0"]
             && api.check.data.is_email_id(obj["0"]);
+    };
+
+    /** New payload, see https://github.com/KartikTalwar/gmail.js/issues/722 */
+    api.check.data.is_email_new = function(obj) {
+        return obj
+            && obj[0]
+            && api.check.data.is_email_id(obj[0]);
     };
 
     api.check.data.is_legacy_email_id = function(id) {
@@ -1731,6 +1734,96 @@ var Gmail = function(localJQuery) {
         }
     };
 
+    api.tools.parse_sent_message_payload_new = function(json) {
+        try
+        {
+            const parse_fd_bv_contact_new = (a) => {
+                if (a && a[1]) {
+                    return { name: a[2] || "", address: a[1] };
+                } else {
+                    return undefined;
+                }
+            };
+
+            const parse_fd_bv_contacts_new = (a) => {
+                if (Array.isArray(a)) {
+                    return a.map(parse_fd_bv_contact_new).filter(a => a);
+                } else {
+                    return [];
+                }
+            };
+
+            const parse_sent_message_attachments_new = (json) => {
+                if (Array.isArray(json)) {
+                    return json.map(item => ({
+                        id: item[4],
+                        name: item[1],
+                        type: item[0],
+                        url: item[5],
+                        size: Number.parseInt(item[2])
+                    }));
+                } else {
+                    return [];
+                }
+            };
+
+            const parse_sent_message_html_payload_new = (sent_email) => {
+                let sent_email_content_html = null;
+                try {
+                    const sent_html_containers = sent_email[8][1];
+                    for (let sent_html_container of sent_html_containers) {
+                        sent_email_content_html = (sent_email_content_html || "") + sent_html_container[1];
+                    }
+                } catch(err) {
+                    // don't crash gmail when we cant parse email-contents
+                    api.tools.error("Failed to parse html", err);
+                }
+
+                return sent_email_content_html;
+            };
+
+            let sent_email = json;
+            //console.log(sent_email);
+
+            const sent_email_id = sent_email[0];
+
+            const sent_email_subject = sent_email[8];
+            const sent_email_timestamp = sent_email[6];
+            const sent_email_date = new Date(sent_email_timestamp);
+
+            const sent_email_content_html = parse_sent_message_html_payload_new(sent_email);
+            const sent_email_ishtml = sent_email[8][6]; 
+            const sent_attachments = parse_sent_message_attachments_new(sent_email[11]);
+
+            const sent_from = parse_fd_bv_contact_new(sent_email[1]);
+            const sent_to = parse_fd_bv_contacts_new(sent_email[2]);
+            const sent_cc = parse_fd_bv_contacts_new(sent_email[3]);
+            const sent_bcc = parse_fd_bv_contacts_new(sent_email[4]);
+
+            const email = {
+                1: sent_email_id,
+                id: sent_email_id,
+                subject: sent_email_subject,
+                timestamp: sent_email_timestamp,
+                content_html: sent_email_content_html,
+                ishtml: sent_email_ishtml,
+                date: sent_email_date,
+                from: sent_from,
+                to: sent_to,
+                cc: sent_cc,
+                bcc: sent_bcc,
+                attachments: sent_attachments,
+                email_node: json
+            };
+
+            return email;
+        }
+        catch (error) {
+            console.warn("Gmail.js encountered an error trying to parse sent message!", error);
+            return null;
+        }
+    };
+
     api.tools.parse_request_payload = function(params, events, force) {
         const pathname = api.tools.get_pathname_from_url(params.url_raw);
         if (!force && !pathname) {
@@ -1751,9 +1844,11 @@ var Gmail = function(localJQuery) {
         const threads = api.tools.extract_from_graph(params, api.check.data.is_thread);
         // console.log("Threads:");
         // console.log(threads);
-        const emails = api.tools.extract_from_graph(params, api.check.data.is_email);
-        // console.log("Emails:");
-        // console.log(emails);
+        const emails = [
+            ...api.tools.extract_from_graph(params.body_params, api.check.data.is_email),
+            ...api.tools.extract_from_graph(params.body_params, api.check.data.is_email_new),
+        ];
+        // console.log("Emails:", emails, "url", params.url_raw, "body", params.body_params);
 
         for (let email of emails) {
             // console.log("Email:");
@@ -1761,7 +1856,9 @@ var Gmail = function(localJQuery) {
             for (let key in email) {
                 let prop = email[key];
                 if (api.check.data.is_smartlabels_array(prop)) {
-                    let sent_email = api.tools.parse_sent_message_payload(email);
+                    let sent_email = api.check.data.is_email_new(email) ? 
+                        api.tools.parse_sent_message_payload_new(email) :
+                        api.tools.parse_sent_message_payload(email);
                     if (prop.indexOf("^pfg") !== -1) {
                         events.send_message = [params.url, params.body, sent_email];
                     } else if (prop.indexOf("^scheduled") > -1) {
