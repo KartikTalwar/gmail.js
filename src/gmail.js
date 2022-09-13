@@ -976,8 +976,8 @@ var Gmail = function(localJQuery) {
     api.check.data.is_thread = function(obj) {
         return obj
             && typeof obj === "object"
-            && obj["1"]
-            && api.check.data.is_thread_id(obj["1"]);
+            && obj["0"]
+            && api.check.data.is_thread_id(obj["0"]);
     };
 
     api.check.data.is_email_id = function(id) {
@@ -990,8 +990,8 @@ var Gmail = function(localJQuery) {
     api.check.data.is_email = function(obj) {
         return obj
             && typeof obj === "object"
-            && obj["1"]
-            && api.check.data.is_email_id(obj["1"]);
+            && obj["0"]
+            && api.check.data.is_email_id(obj["0"]);
     };
 
     api.check.data.is_legacy_email_id = function(id) {
@@ -1691,21 +1691,21 @@ var Gmail = function(localJQuery) {
             let sent_email = json;
             //console.log(sent_email);
 
-            const sent_email_id = sent_email["1"];
+            const sent_email_id = sent_email["0"];
 
-            const sent_email_subject = sent_email["8"];
-            const sent_email_timestamp = Number.parseInt(sent_email["7"]);
+            const sent_email_subject = sent_email["7"];
+            const sent_email_timestamp = Number.parseInt(sent_email["6"]);
             const sent_email_date = new Date(sent_email_timestamp);
 
             const sent_email_content_html = api.tools.parse_sent_message_html_payload(sent_email);
-            const sent_email_ishtml = sent_email["9"]["7"];
+            const sent_email_ishtml = sent_email["8"]["6"];
 
-            const sent_attachments = api.tools.parse_sent_message_attachments(sent_email["12"]);
+            const sent_attachments = api.tools.parse_sent_message_attachments(sent_email["11"]);
 
-            const sent_from = api.tools.parse_fd_bv_contact(sent_email["2"]);
-            const sent_to = api.tools.parse_fd_bv_contacts(sent_email["3"]);
-            const sent_cc = api.tools.parse_fd_bv_contacts(sent_email["4"]);
-            const sent_bcc = api.tools.parse_fd_bv_contacts(sent_email["5"]);
+            const sent_from = api.tools.parse_fd_bv_contact(sent_email["1"]);
+            const sent_to = api.tools.parse_fd_bv_contacts(sent_email["2"]);
+            const sent_cc = api.tools.parse_fd_bv_contacts(sent_email["3"]);
+            const sent_bcc = api.tools.parse_fd_bv_contacts(sent_email["4"]);
 
             const email = {
                 1: sent_email_id,
