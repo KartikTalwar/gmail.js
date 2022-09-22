@@ -1787,7 +1787,7 @@ var Gmail = function(localJQuery) {
 
             const sent_email_id = sent_email[0];
 
-            const sent_email_subject = sent_email[8];
+            const sent_email_subject = sent_email[7];
             const sent_email_timestamp = sent_email[6];
             const sent_email_date = new Date(sent_email_timestamp);
 
