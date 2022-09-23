@@ -1,6 +1,10 @@
 
 # Changelog
 
+## Version 1.1.4
+
+- Fix subject-value in `api.observe.on("send_message")` event-data, by @cancan101.
+
 ## Version 1.1.3
 
 - Even more fixes for `api.observe.on("send_message")` by @huksley.
