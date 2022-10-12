@@ -1,7 +1,7 @@
-// "use strict";
+"use strict";
 
-// let assert = require("assert");
-// let Gmail = require("../src/gmail").Gmail;
+let assert = require("assert");
+let Gmail = require("../src/gmail").Gmail;
 
 // let testData = require("./testdata-parser.js");
 
@@ -1002,40 +1002,40 @@
 
 // });
 
-// describe("Test tools for parsing fd-embedded-data", () => {
+describe("Test tools for parsing fd-embedded-data", () => {
 
-//     var xhrDataJSON = require("./testdata-parser-json/testdata-parser-fd-embedded.json");
-//     var gmail = new Gmail();
-//     var parsed = gmail.tools.parse_fd_embedded_json(xhrDataJSON);
+    var xhrDataJSON = require("./testdata-parser-json/testdata-parser-fd-embedded.json");
+    var gmail = new Gmail();
+    var parsed = gmail.tools.parse_fd_embedded_json(xhrDataJSON);
 
-//     it("JSON Data is an array of 5 elements", () => {
-//         assert.equal(Array.isArray(parsed),true);
-//         assert.equal(parsed.length,5);
-//     });
+    it("JSON Data is an array of 5 elements", () => {
+        assert.equal(Array.isArray(parsed),true);
+        assert.equal(parsed.length,5);
+    });
 
-//     it("Handles Thread-1 Email-1 JSON consistently", () => {
-//         assert.equal(parsed[0].id, "msg-f:1743836977043622489");
-//         assert.equal(parsed[0].legacy_email_id, "18335a7dcae04a59");
-//         assert.equal(parsed[0].thread_id, "thread-f:1743836977043622489|msg-f:1743836977043622489");
-//         assert.equal(parsed[0].smtp_id, "<491e0008-2936-f0e2-171a-3d696268b5b7@secure.kjonigsen.net>");
-//         assert.equal(parsed[0].is_draft, false);
-//         assert.equal(parsed[0].subject, "Test email 4");
-//         assert.equal(parsed[0].timestamp, 1663052537006);
-//         assert.equal(parsed[0].content_html, "\r\n  \r\n\r\n    \r\n  \r\n  <div text=\"#000000\" bgcolor=\"#FFFFFF\">\r\n    <p><br>\r\n    </p>\r\n    <div>-- <br>\r\n      Vennlig hilsen<br>\r\n      <b>Jostein Kjønigsen</b><br>\r\n      <br>\r\n      <a href=\"mailto:jostein@kjonigsen.net\" target=\"_blank\">jostein@kjonigsen.net</a> 🍵 <a href=\"mailto:jostein@gmail.com\" target=\"_blank\">jostein@gmail.com</a><br>\r\n      <a href=\"https://jostein.kjønigsen.no\" target=\"_blank\" data-saferedirecturl=\"https://www.google.com/url?q=https://jostein.kj%C3%B8nigsen.no&amp;source=gmail&amp;ust=1663141446701000&amp;usg=AOvVaw2SHvrfYqS0EavwByBx-sPx\">https://jostein.kjønigsen.no</a></div>\r\n  </div>\r\n\r\n");
-//         assert.deepStrictEqual(parsed[0].date, new Date("2020-04-27T09:35:30.515Z"));
-//         assert.equal(parsed[0].from.address, 'elonm@gmail.com');
-//         assert.equal(parsed[0].from.name, 'Elon' );
-//         assert.equal((parsed[0].to).length, 2);
-//         assert.equal((parsed[0].cc).length, 2);
-//         assert.equal((parsed[0].bcc).length, 2);
+    it("Handles Thread-1 Email-1 JSON consistently", () => {
+        assert.equal(parsed[0].id, "msg-f:1743836977043622489");
+        assert.equal(parsed[0].legacy_email_id, "18335a7dcae04a59");
+        assert.equal(parsed[0].thread_id, "thread-f:1743836977043622489|msg-f:1743836977043622489");
+        assert.equal(parsed[0].smtp_id, "<491e0008-2936-f0e2-171a-3d696268b5b7@secure.kjonigsen.net>");
+        assert.equal(parsed[0].is_draft, false);
+        assert.equal(parsed[0].subject, "Test email 4");
+        assert.equal(parsed[0].timestamp, 1663052537006);
+        assert.equal(parsed[0].content_html, "\r\n  \r\n\r\n    \r\n  \r\n  <div text=\"#000000\" bgcolor=\"#FFFFFF\">\r\n    <p><br>\r\n    </p>\r\n    <div>-- <br>\r\n      Vennlig hilsen<br>\r\n      <b>Jostein Kjønigsen</b><br>\r\n      <br>\r\n      <a href=\"mailto:jostein@kjonigsen.net\" target=\"_blank\">jostein@kjonigsen.net</a> 🍵 <a href=\"mailto:jostein@gmail.com\" target=\"_blank\">jostein@gmail.com</a><br>\r\n      <a href=\"https://jostein.kjønigsen.no\" target=\"_blank\" data-saferedirecturl=\"https://www.google.com/url?q=https://jostein.kj%C3%B8nigsen.no&amp;source=gmail&amp;ust=1663141446701000&amp;usg=AOvVaw2SHvrfYqS0EavwByBx-sPx\">https://jostein.kjønigsen.no</a></div>\r\n  </div>\r\n\r\n");
+        assert.deepStrictEqual(parsed[0].date, new Date("2022-09-13T07:02:17.006Z"));
+        assert.equal(parsed[0].from.address, 'jostein@secure.kjonigsen.net');
+        assert.equal(parsed[0].from.name, 'Jostein Kjønigsen' );
+        assert.equal((parsed[0].to).length, 1);
+        assert.equal((parsed[0].cc).length, 0);
+        assert.equal((parsed[0].bcc).length, 0);
 
-//         assert.equal((parsed[0].attachments).length, 1);
-//         assert.equal((parsed[0].attachments[0].attachment_id), "0.1");
-//         assert.equal((parsed[0].attachments[0].name), "Ubuntu_20.04.txt");
-//         assert.equal((parsed[0].attachments[0].type), "text/plain");
-//         assert.equal((parsed[0].attachments[0].url), "https://mail.google.com/mail/?ui=2&ik=74384930e0&attid=0.1&permmsgid=msg-a:r-7004022322083187773&th=171bafdd8d3f48bb&view=att&realattid=f_k9iacxmx0&zw");
-//         assert.equal((parsed[0].attachments[0].size), 1017);
-//     });
+        assert.equal((parsed[0].attachments).length, 1);
+        assert.equal((parsed[0].attachments[0].attachment_id), "0.0.2");
+        assert.equal((parsed[0].attachments[0].name), "invite.ics");
+        assert.equal((parsed[0].attachments[0].type), "application/ics");
+        assert.equal((parsed[0].attachments[0].url), "https://mail.google.com/mail/?ui=0&ik=99e3eb73b5&attid=0.0.2&permmsgid=msg-f:1743836977043622489&th=18335a7f90a24d19&view=att&zw");
+        assert.equal((parsed[0].attachments[0].size), 1564);
+    });
 //     it("Handles Thread-1 Email-2 JSON consistently", () => {
 //         assert.equal(parsed[1].id, "msg-f:1665117937823393243");
 //         assert.equal(parsed[1].legacy_email_id, "171baff1391825db");
@@ -1129,7 +1129,7 @@
 //         assert.equal((parsed[4].attachments[0].url), "https://mail.google.com/mail/?ui=2&ik=74384930e0&attid=0.1&permmsgid=msg-f:1665118316230599953&th=171bb04953ebe511&view=att&zw");
 //         assert.equal((parsed[4].attachments[0].size), 278);
 //     });
-// });
+});
 
 // describe("Test tools for parsing fd-request-data", () => {
 
