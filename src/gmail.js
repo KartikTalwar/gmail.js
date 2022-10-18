@@ -280,7 +280,9 @@ var Gmail = function(localJQuery) {
     };
 
     api.check.is_thread = function() {
+        // this should match the sub_selector (nH -> if)
         var check_1 = $(".nH .if").children(":eq(1)").children().children(":eq(1)").children();
+        // Bu ->
         var check_2 = api.get.email_ids();
 
         return check_1.length > 1 || check_2.length > 1;
@@ -2464,7 +2466,7 @@ var Gmail = function(localJQuery) {
             // which is triggered by the XHR request rather than nodes being inserted into the DOM (and thus returns different information)
             "view_thread": {
                 class: ["Bu", "nH"], // class depends if is_preview_pane - Bu for preview pane, nH for standard view
-                sub_selector: "div.if",
+                sub_selector: "div.if,div.PeIF1d",
                 handler: function(match, callback) {
                     match = new api.dom.thread(match);
                     callback(match);
@@ -4466,7 +4468,8 @@ var Gmail = function(localJQuery) {
             return new api.dom.thread(element);
         }
 
-        if (!element || (!element.hasClass("if"))) api.tools.error("api.dom.thread called with invalid element/id");
+        // this should match the sub_selector
+        if (!element || (!element.hasClass("if") && !element.hasClass("PeIF1d"))) api.tools.error("api.dom.thread called with invalid element/id");
         this.$el = element;
         return this;
     };
