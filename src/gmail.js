@@ -280,9 +280,13 @@ var Gmail = function(localJQuery) {
     };
 
     api.check.is_thread = function() {
+        // There are currently two selectors in use for view_thread: Bu and nH,
+        // Which correspond to two different ways a thread may be viewed by the user.
+        // There are two different code paths to determine if we are within a thread.
+        // This is the nH path:
         // this should match the sub_selector (nH -> if)
         var check_1 = $(".nH .if").children(":eq(1)").children().children(":eq(1)").children();
-        // Bu ->
+        // And this is the Bu path. We don't bother here checking for the sub_selector.
         var check_2 = api.get.email_ids();
 
         return check_1.length > 1 || check_2.length > 1;
@@ -1794,7 +1798,7 @@ var Gmail = function(localJQuery) {
             const sent_email_date = new Date(sent_email_timestamp);
 
             const sent_email_content_html = parse_sent_message_html_payload_new(sent_email);
-            const sent_email_ishtml = sent_email[8][6]; 
+            const sent_email_ishtml = sent_email[8][6];
             const sent_attachments = parse_sent_message_attachments_new(sent_email[11]);
 
             const sent_from = parse_fd_bv_contact_new(sent_email[1]);
@@ -1858,7 +1862,7 @@ var Gmail = function(localJQuery) {
             for (let key in email) {
                 let prop = email[key];
                 if (api.check.data.is_smartlabels_array(prop)) {
-                    let sent_email = api.check.data.is_email_new(email) ? 
+                    let sent_email = api.check.data.is_email_new(email) ?
                         api.tools.parse_sent_message_payload_new(email) :
                         api.tools.parse_sent_message_payload(email);
                     if (prop.indexOf("^pfg") !== -1) {
