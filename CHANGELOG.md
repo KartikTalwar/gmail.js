@@ -1,6 +1,10 @@
 
 # Changelog
 
+## Version 1.1.6
+
+- Better fix for `view_thread` event not triggeriong, by @cancan101.
+
 ## Version 1.1.5
 
 - Improved parsing of embedded json data, by @onestep.
