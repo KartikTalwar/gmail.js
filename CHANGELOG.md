@@ -1,6 +1,11 @@
 
 # Changelog
 
+## Version 1.1.5
+
+- Improved parsing of embedded json data, by @onestep.
+- Tentative fix for `view_thread` event not triggeriong, by @cancan101.
+
 ## Version 1.1.4
 
 - Fix subject-value in `api.observe.on("send_message")` event-data, by @cancan101.
