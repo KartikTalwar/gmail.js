@@ -62,7 +62,36 @@
               "^sq_ig_i_personal",
               "^u"
             ],
-            null,
+            [
+              [
+                "application/ics",
+                "invite.ics",
+                1564,
+                "0.0.2",
+                "",
+                "https://mail.google.com/mail/?ui=0&ik=99e3eb73b5&attid=0.0.2&permmsgid=msg-f:1743836977043622489&th=18335a7f90a24d19&view=att&zw",
+                0,
+                [
+                  "/gmail/att/230514602909/AAXoEvt4U0y0XpJwLAslJg.4/38185",
+                  1564,
+                  "1609a18c_13e23b8d_7e0af756_3c5df6a4_2e2c506b",
+                  1064196813,
+                  1564,
+                  1,
+                  null,
+                  null,
+                  "ANGjdJ8dTFofalDEbii384u_Y-_YhwxHS-DyVo8nOiTqVNAf7j4eW9f0o8lAgbZHVX5QhKCpEh8k2y_oEm4XnusbV3FlcBy99xY1v7ulwo3g9CbVzB3z9ULc07yNyNE",
+                  null,
+                  null,
+                  null,
+                  null,
+                  "YjM1YmI0OTQ4ZjI3MmU5ZDg5ZTBjZDk1NjM2ZDRhNGUxZGIzYmZmZjFmNWY1ZDJmZTk0OTg2NWQzNmE1NTVhYQ=="
+                ],
+                null,
+                null,
+                0
+              ]
+            ],
             null,
             "<491e0008-2936-f0e2-171a-3d696268b5b7@secure.kjonigsen.net>",
             null,

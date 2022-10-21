@@ -1260,11 +1260,11 @@ var Gmail = function(localJQuery) {
         if (Array.isArray(json)) {
             for (let item of json) {
                 res.push({
-                    attachment_id: item["4"],
-                    name: item["2"],
-                    type: item["1"],
-                    url: api.tools.check_fd_attachment_url(item["6"]),
-                    size: Number.parseInt(item["3"])
+                    attachment_id: item[3],
+                    name: item[1],
+                    type: item[0],
+                    url: api.tools.check_fd_attachment_url(item[5]),
+                    size: item[2]
                 });
             }
         }
