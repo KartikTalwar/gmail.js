@@ -285,15 +285,13 @@ var Gmail = function(localJQuery) {
         // There are two different code paths to determine if we are within a thread.
 
         // This is the nH path:
-        // this should match the sub_selector (nH -> if):
-        var check_1a = $(".nH .if").children(":eq(1)").children().children(":eq(1)").children();
-        // this should match the sub_selector (nH -> iY):
-        var check_1b = $(".nH .iY").children(":eq(1)").children().children(":eq(1)").children();
+        // this should match the sub_selector (nH -> if/iY):
+        var check_1 = $(".nH .if,.iY").children(":eq(1)").children().children(":eq(1)").children();
 
         // And this is the Bu path. We don't bother here checking for the sub_selector.
         var check_2 = api.get.email_ids();
 
-        return check_1a.length > 1 || check_1b.length > 1 || check_2.length > 1;
+        return check_1.length > 1 || check_2.length > 1;
     };
 
     /**
