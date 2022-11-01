@@ -2713,6 +2713,7 @@ var Gmail = function(localJQuery) {
         else if(action === "compose_cancelled") {
             //console.log("set compose cancelled callback");
             api.tracker.composeCancelledCallback = callback;
+            return true;
         }
         else if(action === "load") {
 
@@ -2740,6 +2741,7 @@ var Gmail = function(localJQuery) {
             }, delay);
             return true;
         }
+        return false;
     };
 
     // observes every element inserted into the DOM by Gmail and looks at the classes on those elements,

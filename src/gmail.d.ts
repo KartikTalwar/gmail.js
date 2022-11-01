@@ -780,7 +780,7 @@ interface DomObserverConfig {
    handler?: Function;
  }
 
-interface GmailObserve {
+interface GmailObserve<T extends string=never> {
     /**
        After an observer has been bound through gmail.observe.bind() (via a
        call to events gmail.observe.before(), gmail.observe.on(), or
@@ -821,31 +821,31 @@ interface GmailObserve {
        Your callback will be fired directly after Gmail's XMLHttpRequest
        has been sent off the the Gmail servers.
     */
-    on(action: GmailBindAction, callback: Function, response_callback?: Function): void;
+    on(action: GmailBindAction | T, callback: Function, response_callback?: Function): void;
     /**
       an before event is observed just prior to the gmail xhr request being sent
       before events have the ability to modify the xhr request before it is sent
      */
-    before(action: GmailBindAction, callback: Function): void;
+    before(action: GmailBindAction | T, callback: Function): void;
     /**
       an after event is observed when the gmail xhr request returns from the server
       with the server response
     */
     after(action: "send_message", callback: (url: string, body: string, data: any, response: any, xhr: XMLHttpRequest) => void): void;
     after(action: "http_event", callback: (request: HttpEventRequestParams, responseData: any, xhr: XMLHttpRequest) => void): void;
-    after(action: GmailBindAction, callback: Function): void;
+    after(action: GmailBindAction | T, callback: Function): void;
     /**
       Checks if a specified action & type has anything bound to it
       If type is null, will check for this action bound on any type
       If action is null, will check for any actions bound to a type
      */
-    bound(action: GmailBindAction, type: GmailBindType): boolean;
+    bound(action: GmailBindAction | T, type: GmailBindType): boolean;
     /**
       Clear all callbacks for a specific type (before, on, after, dom) and action
       If action is null, all actions will be cleared
       If type is null, all types will be cleared
      */
-    off(action: GmailBindAction, type: GmailBindType): void;
+    off(action: GmailBindAction | T, type: GmailBindType): void;
     /**
       Trigger any specified events bound to the passed type
       Returns true or false depending if any events were fired
@@ -873,7 +873,7 @@ interface GmailObserve {
       trigger the related event and fire off any relevant bound callbacks
       This function should return true if a dom observer is found for the specified action
      */
-    on_dom(action: GmailBindAction, callback: Function): void;
+    on_dom(action: GmailBindAction | T, callback: Function): boolean;
 }
 
 
@@ -1030,7 +1030,7 @@ interface GmailCache {
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-declare class Gmail {
+declare class Gmail<T extends string=never> {
     constructor(localJQuery?: JQueryStatic);
 
     version: string;
@@ -1050,7 +1050,7 @@ declare class Gmail {
        use. See source for input params
      */
     tools: GmailTools;
-    observe: GmailObserve;
+    observe: GmailObserve<T>;
     helper: GmailHelper;
     chat: GmailChat;
     compose: GmailCompose;
