@@ -1953,7 +1953,7 @@ var Gmail = function(localJQuery) {
         var parts = url.split(":");
         return {
             type: parts[0],
-            url: parts[2] + ":" + parts[3]
+            url: parts[2] + ":" + parts[4] + ":" + parts[5]
         };
     };
 
