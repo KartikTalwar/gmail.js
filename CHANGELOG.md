@@ -1,6 +1,10 @@
 
 # Changelog
 
+## Version 1.1.7
+
+- Fix for `api.tools.parse_attachment_url`.
+
 ## Version 1.1.6
 
 - Better fix for `view_thread` event not triggeriong, by @cancan101.
