@@ -1,5 +1,7 @@
 # Gmail.js - JavaScript API for Gmail
 
+Testing only
+
 ![Node.js CI](https://github.com/KartikTalwar/gmail.js/workflows/Node.js%20CI/badge.svg?branch=master)
 [![npm](https://img.shields.io/npm/v/gmail-js.svg)](https://www.npmjs.com/package/gmail-js)
 
