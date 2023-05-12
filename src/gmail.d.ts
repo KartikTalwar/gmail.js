@@ -1021,7 +1021,7 @@ interface GmailCache {
     debug_xhr_fetch: boolean;
     emailIdCache: { (emailId: string): GmailNewEmailData };
     emailLegacyIdCache: { (legacyEmailId: string): GmailNewEmailData };
-    emailThreadIdCache: { (threadId: string): GmailNewThreadData };
+    threadCache: { (threadId: string): GmailNewThreadData };
 }
 
 ////////////////////////////////////////////////////////////////////////////////
