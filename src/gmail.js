@@ -421,13 +421,7 @@ var Gmail = function(localJQuery) {
     };
 
     api.dom.right_toolbar = function() {
-        var rtb = $("[gh='tm'] [gh='s']").parent();
-
-        while($(rtb).children().length === 1){
-            rtb = $(rtb).children().first();
-        }
-
-        return rtb;
+        return $("[gh='tm'] .Cr.aqJ");
     };
 
     api.check.is_inside_email = function() {
