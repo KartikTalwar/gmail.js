@@ -2924,7 +2924,7 @@ var Gmail = function(localJQuery) {
      * @returns {boolean}
      */
     api.helper.get.is_delegated_inbox = function() {
-        return $(".gb_Da").length === 1;
+        return $(".gb_Ba a.gb_f svg").length === 1;
     };
 
 
