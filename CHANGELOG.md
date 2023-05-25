@@ -1,6 +1,10 @@
 
 # Changelog
 
+## Version 1.1.10
+
+- Fix `api.dom.right_toolbar()`, by @stevepeak.
+
 ## Version 1.1.9
 
 - Fix `api.helper.get.is_delegated_inbox`, by @moodsey211.
