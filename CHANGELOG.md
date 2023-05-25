@@ -1,6 +1,14 @@
 
 # Changelog
 
+## Version 1.1.9
+
+- Fix `api.helper.get.is_delegated_inbox`, by @moodsey211.
+
+## Version 1.1.8
+
+- Fix incorrect variable name in GmailCache definition
+
 ## Version 1.1.7
 
 - Fix for `api.tools.parse_attachment_url`.
