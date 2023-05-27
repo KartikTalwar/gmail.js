@@ -9,9 +9,9 @@
         "url": "https://github.com/KartikTalwar/gmail.js.git"
     },
     "scripts": {
-        "lint": "npx eslint src/*.js",
-        "tsc": "npx tsc",
-        "test": "jest",
+        "lint": "eslint src/*.js",
+        "tsc": "tsc src/*.ts",
+        "test": "jest --watchAll=false --reporters=default --reporters=jest-junit",
         "ci": "npm run tsc && npm run test && npm run lint"
     },
     "keywords": [
