@@ -1,6 +1,10 @@
 
 # Changelog
 
+## Version 1.1.11
+
+- Fix `api.observe.on("view_email", ...)`not working.
+
 ## Version 1.1.10
 
 - Fix `api.dom.right_toolbar()`, by @stevepeak.

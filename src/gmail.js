@@ -2478,10 +2478,14 @@ var Gmail = function(localJQuery) {
                 // class depends if is_preview_pane - Bu for preview pane, nH for standard view,
                 // FIXME: the empty class ("") is for emails opened after thread is rendered (causes a storm of updates)
                 class: ["Bu", "nH", ""],
-                sub_selector: "div.adn",
                 handler: function(match, callback) {
-                    match = new api.dom.email(match);
-                    callback(match);
+                    setTimeout(() => {
+                        match = match.find("div.adn.ads");
+                        if (match.length) {
+                            match = new api.dom.email(match);
+                            callback(match);
+                        }
+                    }, 0);
                 }
             },
 
