@@ -2672,13 +2672,6 @@ var Gmail = function(localJQuery) {
                 api.tracker.observing_dom = true;
                 //api.tracker.dom_watchdog = {}; // store passed observer callbacks for different DOM events
 
-                // this listener will check every element inserted into the DOM
-                // for specified classes (as defined in api.tracker.dom_observers above) which indicate
-                // related actions which need triggering
-                $(window.document).on("DOMNodeInserted", function(e) {
-                    api.tools.insertion_observer(e.target, api.tracker.dom_observers, api.tracker.dom_observer_map);
-                });
-
                 // recipient_change also needs to listen to removals
                 var mutationObserver = new MutationObserver(function(mutations) {
                     for (var i = 0; i < mutations.length; i++) {
@@ -2696,6 +2689,15 @@ var Gmail = function(localJQuery) {
                                 let handler = api.tracker.dom_observers.recipient_change.handler;
                                 api.observe.trigger_dom(observer, $(mutation.target), handler);
                             }
+                        }
+
+                        // this listener will check every element inserted into the DOM
+                        // for specified classes (as defined in api.tracker.dom_observers above) which indicate
+                        // related actions which need triggering
+                        var addedNodes = mutation.addedNodes;
+                        for (var k = 0; k < addedNodes.length; k++) {
+                            var addedNode = addedNodes[k];
+                            api.tools.insertion_observer(addedNode, api.tracker.dom_observers, api.tracker.dom_observer_map);
                         }
                     }
                 });
