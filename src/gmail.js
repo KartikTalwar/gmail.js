@@ -4042,7 +4042,7 @@ var Gmail = function(localJQuery) {
            Is this compose instance inline (as with reply & forwards) or a popup (as with a new compose)
         */
         is_inline: function() {
-            return this.$el.closest("td.Bu").length > 0;
+            return this.$el.closest(".AO").length > 0;
         },
 
         /**
