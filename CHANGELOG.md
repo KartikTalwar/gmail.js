@@ -1,6 +1,11 @@
 
 # Changelog
 
+## Version 1.1.12
+
+- Use MutationObserver for DOM Node changes. Thanks @cancan101!
+- Fix issue in `api.dom.compose.is_inline()`.  Thanks @MadcowD!
+
 ## Version 1.1.11
 
 - Fix `api.observe.on("view_email", ...)`not working.
