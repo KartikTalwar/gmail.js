@@ -374,7 +374,7 @@ var Gmail = function(localJQuery) {
 
     api.get.storage_info = function() {
         var dom = $("[role=contentinfo] a").first();
-        var matches = dom.text().trim().match(/(\d+,\d+) GB of (\d+) GB\s+\((\d+)%\)/);
+        var matches = dom.text().trim().match(/(\d+[.,]\d+) GB of (\d+) GB\s+\((\d+)%\)/);
         if (matches) {
             // Replace commas with dots to handle decimal numbers correctly
             var used = parseFloat(matches[1].replace(',', '.'));
