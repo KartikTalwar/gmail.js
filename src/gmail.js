@@ -373,11 +373,19 @@ var Gmail = function(localJQuery) {
 
 
     api.get.storage_info = function() {
-        var div = document.querySelector(".md.mj div");
-        var used = div.querySelectorAll("span")[0].textContent.replace(/,/g, '.'); //convert to standard decimal
-        var total = div.querySelectorAll("span")[1].textContent.replace(/,/g, '.');
-        var percent = parseFloat(used.replace(/[^0-9\.]/g, "")) * 100 / parseFloat(total.replace(/[^0-9\.]/g, ""));
-        return {used : used, total : total, percent : Math.floor(percent)};
+        var dom = $("[role=contentinfo] a").first();
+        var matches = dom.text().trim().match(/(\d+,\d+) GB of (\d+) GB\s+\((\d+)%\)/);
+        if (matches) {
+            // Replace commas with dots to handle decimal numbers correctly
+            var used = parseFloat(matches[1].replace(',', '.'));
+            var total = parseFloat(matches[2]); // Assuming total is always an integer, no need to replace
+            var percent = parseInt(matches[3], 10); // Base 10
+            return {used : used, total : total, percent : Math.floor(percent)};
+        } else {
+            console.warn("Gmail.js: Unable to parse storage info from the DOM");
+        }
+
+        return {used : 0, total : 0, percent : 0};
     };
 
 
