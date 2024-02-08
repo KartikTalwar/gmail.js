@@ -636,17 +636,17 @@ var Gmail = function(localJQuery) {
 
     api.helper.get.navigation_count = function(i18nName) {
         const title = api.tools.i18n(i18nName);
-        const dom = $("div[role=navigation]").find("[title*='" + title + "']");
+        const dom = $('[aria-label*="' + title + '"]');
 
-        if (dom || dom.length > 0) {
-            // this check should implicitly always be true, but better safe than sorry?
-            if(dom[0].title.indexOf(title) !== -1) {
-                const value = parseInt(dom[0].attributes['aria-label'].value.replace(/[^0-9]/g, ""));
-                if (!isNaN(value)) {
-                    return value;
-                }
+        if (dom && dom.length > 0) {
+            const label = dom[0].attributes['aria-label'];
+            const value = parseInt(label.value.replace(/[^0-9]/g, ""));
+            if (!isNaN(value)) {
+                return value;
             }
         }
+
+        console.warn("Gmail.js: Unable to find the count for " + i18nName);
 
         return 0;
     };
