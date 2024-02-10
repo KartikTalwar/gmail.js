@@ -118,7 +118,42 @@ var Gmail = function(localJQuery) {
 
 
     api.get.user_email = function() {
-        return api.tracker.globals[10];
+        const emailRegex = /\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b/;
+
+        function extractEmail(textContent) {
+            const matches = textContent.match(emailRegex);
+            return matches && matches.length > 0 ? matches[0] : undefined;
+        }
+
+        try {
+            // First try to get the email from an element with an aria-label
+            const label = document.querySelector('[aria-label^="Google Account"]');
+            if (label) {
+                const email = extractEmail(label.textContent);
+                if (email) {
+                    return email;
+                }
+            }
+
+            // Fallback to trying to get email from HTML the <title> tag
+            // This isn't available until the page is fully loaded
+            const title = document.querySelector("title");
+            if (title) {
+                const email = extractEmail(title.textContent); // Use textContent instead of innerHTML
+                if (email) {
+                    return email;
+                }
+            }
+
+            // Log a warning if both methods fail
+            console.warn("Gmail.js: Unable to get email!");
+        } catch (err) {
+            // Log any errors encountered during the process
+            console.error("Gmail.js: Error extracting email - ", err.message);
+        }
+
+        // Return undefined or empty string if no email is found?
+        return "";
     };
 
 
