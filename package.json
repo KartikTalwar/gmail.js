@@ -22,13 +22,9 @@
         "gmail chrome extension",
         "gmail firefox extension"
     ],
-    "dependencies": {
-        "jquery": "^3.6.1"
-    },
     "devDependencies": {
         "@types/jquery": "^3.5.14",
         "eslint": "^8.23.1",
-        "gmail-js": "^1.1.0",
         "jest": "^29.5.0",
         "jest-junit": "^16.0.0",
         "jsdom": "^20.0.0",

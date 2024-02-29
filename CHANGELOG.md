@@ -3,6 +3,7 @@
 
 ## Version 1.1.13
 
+- Drop bundled jQuery, support jQuery 4, support explicit no-jQuery mode
 - Fix reply button selector to support Gmail in text labels mode
 
 ## Version 1.1.12

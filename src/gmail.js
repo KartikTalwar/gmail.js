@@ -13,18 +13,14 @@ var Gmail = function(localJQuery) {
       other extensions that use $ for other purposes.
     */
     var $;
-    if (typeof localJQuery !== "undefined") {
+    if (localJQuery === false) {
+        // leave $ undefined, which may be fine for some purposes.
+    } else if (typeof localJQuery !== "undefined") {
         $ = localJQuery;
     } else if (typeof jQuery !== "undefined") {
         $ = jQuery;
     } else {
-        // try load jQuery through node.
-        try {
-            $ = require("jquery");
-        }
-        catch(err) {
-            // else leave $ undefined, which may be fine for some purposes.
-        }
+        throw new Error("GmailJS requires jQuery to be present in global scope or provided as a constructor argument.");
     }
 
     var window_opener = typeof (window) !== "undefined" ? window.opener : null;
@@ -42,6 +38,7 @@ var Gmail = function(localJQuery) {
         }
     }
 
+    /** @type Gmail */
     var api = {
         get : {},
         observe : {},
@@ -341,12 +338,12 @@ var Gmail = function(localJQuery) {
 
 
     api.check.is_tabbed_inbox = function() {
-        return $(".aKh").length === 1;
+        return document.querySelectorAll(".aKh").length === 1;
     };
 
 
     api.check.is_right_side_chat = function() {
-        var chat = $(".ApVoH");
+        var chat = document.querySelectorAll(".ApVoH");
         if(chat.length === 0) {
             return false;
         }
@@ -429,7 +426,7 @@ var Gmail = function(localJQuery) {
             return false;
         }
 
-        var items = $(".ii.gt .a3s");
+        var items = document.querySelectorAll(".ii.gt .a3s");
         var ids = [];
 
         for(var i=0; i<items.length; i++) {
@@ -457,7 +454,7 @@ var Gmail = function(localJQuery) {
     };
 
     api.dom.email_contents = function() {
-        var items = $(".ii.gt div.a3s.aXjCH");
+        var items = document.querySelectorAll(".ii.gt div.a3s.aXjCH");
         var ids = [];
 
         for(var i=0; i<items.length; i++) {
@@ -487,7 +484,7 @@ var Gmail = function(localJQuery) {
 
     api.get.compose_ids = function() {
         var ret = [];
-        var dom = $(".M9 [name=draft]");
+        var dom = document.querySelectorAll(".M9 [name=draft]");
         for(var i = 0; i < dom.length; i++) {
             if(dom[i].value !== "undefined"){
                 ret.push(dom[i].value);
@@ -517,37 +514,37 @@ var Gmail = function(localJQuery) {
     };
 
     api.check.is_priority_inbox = function() {
-        return $(".qh").length > 0;
+        return document.querySelector(".qh") !== null;
     };
 
 
     api.check.is_rapportive_installed = function() {
-        return $("#rapportive-sidebar").length === 1;
+        return document.querySelector("#rapportive-sidebar") !== null;
     };
 
 
     api.check.is_streak_installed = function() {
-        return $("[id^='bentoBox'],[id*=' bentoBox'],[class*=' bentoBox'],[class*='bentoBox']").length > 0;
+        return document.querySelector("[id^='bentoBox'],[id*=' bentoBox'],[class*=' bentoBox'],[class*='bentoBox']") !== null;
     };
 
 
     api.check.is_anydo_installed = function() {
-        return $("[id^='anydo'],[id*=' anydo'],[class*=' anydo'],[class*='anydo']").length > 0;
+        return document.querySelector("[id^='anydo'],[id*=' anydo'],[class*=' anydo'],[class*='anydo']") !== null;
     };
 
 
     api.check.is_boomerang_installed = function() {
-        return $("[id^='b4g_'],[id*=' b4g_'],[class*=' b4g_'],[class*='b4g_']").length > 0;
+        return document.querySelector("[id^='b4g_'],[id*=' b4g_'],[class*=' b4g_'],[class*='b4g_']") !== null;
     };
 
 
     api.check.is_xobni_installed = function() {
-        return $("#xobni_frame").length > 0;
+        return document.querySelector("#xobni_frame") !== null;
     };
 
 
     api.check.is_signal_installed = function() {
-        return $("[id^='Signal'],[id*=' Signal'],[class*=' signal'],[class*='signal']").length > 0;
+        return document.querySelector("[id^='Signal'],[id*=' Signal'],[class*=' signal'],[class*='signal']") !== null;
     };
 
 
@@ -636,9 +633,9 @@ var Gmail = function(localJQuery) {
 
     api.helper.get.navigation_count = function(i18nName) {
         const title = api.tools.i18n(i18nName);
-        const dom = $("div[role=navigation]").find("[title*='" + title + "']");
+        const dom = document.querySelectorAll("div[role=navigation] [title*='" + title + "']");
 
-        if (dom || dom.length > 0) {
+        if (dom.length > 0) {
             // this check should implicitly always be true, but better safe than sorry?
             if(dom[0].title.indexOf(title) !== -1) {
                 const value = parseInt(dom[0].attributes['aria-label'].value.replace(/[^0-9]/g, ""));
@@ -654,7 +651,7 @@ var Gmail = function(localJQuery) {
 
     api.get.beta = function() {
         var features = {
-            "new_nav_bar" : $("#gbz").length === 0
+            "new_nav_bar" : document.querySelector("#gbz") !== null
         };
 
         return features;
@@ -2353,9 +2350,9 @@ var Gmail = function(localJQuery) {
             // if an object of actions (triggered events of format { event: [response] }) is passed, check if any of these are bound
             if(typeof action === "object") {
                 var match = false;
-                $.each(action,function(key,response){
+                for (let key of Object.keys(action)) {
                     if(typeof api.tracker.watchdog[type][key] === "object") match = true;
-                });
+                }
                 return match;
             }
             if(type) return typeof api.tracker.watchdog[type][action] === "object";
@@ -2378,7 +2375,7 @@ var Gmail = function(localJQuery) {
 
         // loop through applicable types
         var types = type ? [ type ] : [ "before", "on", "after", "dom" ];
-        $.each(types, function(idx, type) {
+        for (let type of types) {
             if(typeof api.tracker.watchdog[type] !== "object") return true; // no callbacks for this type
 
             // if action specified, remove any callbacks for this action, otherwise remove all callbacks for all actions
@@ -2389,15 +2386,15 @@ var Gmail = function(localJQuery) {
                     delete api.tracker.watchdog[type][action];
                 }
             } else {
-                $.each(api.tracker.watchdog[type], function(act,callbacks) {
+                for (let act of Object.keys(api.tracker.watchdog[type])) {
                     if(typeof api.tracker.watchdog[type][act] === "object") {
                         api.tracker.bound[act] -= api.tracker.watchdog[type][act].length;
                         api.tracker.bound[type] -= api.tracker.watchdog[type][act].length;
                         delete api.tracker.watchdog[type][act];
                     }
-                });
+                }
             }
-        });
+        }
     };
 
     /**
@@ -2407,19 +2404,19 @@ var Gmail = function(localJQuery) {
     api.observe.trigger = function(type, events, xhr) {
         if(!events) return false;
         var fired = false;
-        $.each(events, function(action,response) {
+        for (let [action, response] of Object.entries(events)) {
 
             // we have to do this here each time to keep backwards compatibility with old response_callback implementation
-            response = $.extend([], response); // break the reference so it doesn"t keep growing each trigger
+            response = [...response]; // break the reference so it doesn"t keep growing each trigger
             if(type === "after") response.push(xhr.xhrResponse); // backwards compat for after events requires we push onreadystatechange parsed response first
             response.push(xhr);
             if(api.observe.bound(action, type)) {
                 fired = true;
-                $.each(api.tracker.watchdog[type][action], function(idx, callback) {
+                for (let callback of api.tracker.watchdog[type][action]) {
                     callback.apply(undefined, response);
-                });
+                }
             }
-        });
+        }
         return fired;
     };
 
@@ -2437,9 +2434,9 @@ var Gmail = function(localJQuery) {
         if (!api.tracker.watchdog.dom[observer]) {
             return;
         }
-        $.each(api.tracker.watchdog.dom[observer], function(idx, callback) {
+        for (let callback of api.tracker.watchdog.dom[observer]) {
             handler(element, callback);
-        });
+        }
     };
 
     // pre-configured DOM observers
@@ -2573,15 +2570,15 @@ var Gmail = function(localJQuery) {
 
         // map observed classNames to actions
         api.tracker.dom_observer_map = {};
-        $.each(api.tracker.dom_observers, function(act,config){
-            if(!$.isArray(config.class)) config.class = [config.class];
-            $.each(config.class, function(idx, className) {
+        for (let [act, config] of Object.entries(api.tracker.dom_observers)) {
+            if (!Array.isArray(config.class)) config.class = [config.class];
+            for (let className of config.class) {
                 if (!api.tracker.dom_observer_map[className]) {
                     api.tracker.dom_observer_map[className] = [];
                 }
                 api.tracker.dom_observer_map[className].push(act);
-            });
-        });
+            }
+        }
         //console.log( "observer_config", api.tracker.dom_observers, "dom_observer_map", api.tracker.dom_observer_map);
     };
 
@@ -2607,14 +2604,14 @@ var Gmail = function(localJQuery) {
 
         // was an object of arguments passed, or just a className
         var config = {};
-        if (typeof args === "object" && !$.isArray(args)) {
+        if (typeof args === "object" && !Array.isArray(args)) {
 
             // copy over supported config
-            $.each(["class","selector","sub_selector","handler"], function(idx, arg) {
+            for (let arg of ["class", "selector", "sub_selector", "handler"]) {
                 if(args[arg]) {
                     config[arg] = args[arg];
                 }
-            });
+            }
         } else {
             config["class"] = args;
         }
@@ -2663,7 +2660,7 @@ var Gmail = function(localJQuery) {
         }
 
         // support for DOM observers
-        if($.inArray(action, api.tracker.supported_observers) > -1) {
+        if (api.tracker.supported_observers.includes(action)) {
 
             //console.log("observer found",api.tracker.dom_observers[action]);
 
@@ -2754,7 +2751,7 @@ var Gmail = function(localJQuery) {
         var cn = target.className || "";
         var classes = cn.trim ? cn.trim().split(/\s+/) : [];
         if(!classes.length) classes.push(""); // if no class, then check for anything observing nodes with no class
-        $.each(classes, function(idx, className) {
+        for (let className of classes) {
             var observers = dom_observer_map[className];
             if (!observers) {
                 return;
@@ -2788,7 +2785,7 @@ var Gmail = function(localJQuery) {
                     }
                 }
             }
-        });
+        }
     };
 
 
@@ -4347,17 +4344,17 @@ var Gmail = function(localJQuery) {
 
             // if update data has been passeed, loop through & create a new to_wrapper contents
             if (to_array) {
-                if (!$.isArray(to_array)) {
+                if (!Array.isArray(to_array)) {
                     to_array = [to_array];
                 }
                 var html = [];
-                $.each(to_array, function(index, obj) {
+                for (let obj in to_array) {
                     html.push( $("<span />").attr({
                         dir: "ltr",
                         email: obj.email,
                         name: obj.name
                     }).addClass("g2").html(obj.name).wrap("<p/>").parent().html());
-                });
+                }
                 this.dom("to_wrapper").html("to " + html.join(", "));
             }
 
@@ -4424,9 +4421,9 @@ var Gmail = function(localJQuery) {
 
                 // retrieve & cache the data for this whole thread of emails
                 var data = api.get.email_data(this.id);
-                $.each(data.threads, function(email_id, email_data) {
+                for (let [email_id, email_data] of Object.entries(data.threads)) {
                     api.dom.email_cache[email_id] = email_data;
-                });
+                }
             }
             return api.dom.email_cache[this.id];
         },

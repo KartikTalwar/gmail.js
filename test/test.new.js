@@ -1,7 +1,7 @@
 "use strict";
 let assert = require('assert');
 let Gmail = require('../src/gmail').Gmail;
-let gmail = new Gmail();
+let gmail = new Gmail(false);
 
 // prep cache for tests
 const validEmailLegacyId = "16a0d1f820d515e2";

@@ -1,7 +1,7 @@
 "use strict";
 let assert = require('assert');
 let Gmail = require('../src/gmail').Gmail;
-let gmail = new Gmail();
+let gmail = new Gmail(false);
 
 describe("Locale-parsing", () => {
     it("Recognizes consistently cased locales", () => {

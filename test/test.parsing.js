@@ -1005,7 +1005,7 @@ let Gmail = require("../src/gmail").Gmail;
 describe("Test tools for parsing fd-embedded-data", () => {
 
     var xhrDataJSON = require("./testdata-parser-json/testdata-parser-fd-embedded.json");
-    var gmail = new Gmail();
+    var gmail = new Gmail(false);
     var parsed = gmail.tools.parse_fd_embedded_json(xhrDataJSON);
 
     it("JSON Data is an array of 5 elements", () => {
