@@ -1,6 +1,10 @@
 
 # Changelog
 
+## Version 1.1.13
+
+- Fix reply button selector to support Gmail in text labels mode
+
 ## Version 1.1.12
 
 - Use MutationObserver for DOM Node changes. Thanks @cancan101!

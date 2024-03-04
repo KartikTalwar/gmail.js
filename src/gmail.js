@@ -4455,7 +4455,7 @@ var Gmail = function(localJQuery) {
                 attachments: "div.hq.gt div.aQH span.aZo",
 
                 // buttons
-                reply_button: "div[role=button].aaq",
+                reply_button: "div[role=button].aaq, div[role=button].bsQ",
                 menu_button: "div[role=button].aap",
                 details_button: "div[role=button].ajz"
             };
