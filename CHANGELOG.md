@@ -5,6 +5,7 @@
 
 - Drop bundled jQuery, support jQuery 4, support explicit no-jQuery mode
 - Fix reply button selector to support Gmail in text labels mode
+- Fix `api.get.user_email()`.
 
 ## Version 1.1.12
 

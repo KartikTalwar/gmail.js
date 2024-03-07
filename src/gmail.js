@@ -115,7 +115,20 @@ var Gmail = function(localJQuery) {
 
 
     api.get.user_email = function() {
-        return api.tracker.globals[10];
+        let user_email = api.tracker.globals[10];
+        if (user_email) {
+            return user_email;
+        }
+
+        const elements = document.getElementsByClassName("eYSAde");
+        for (const el of elements) {
+            if (el.innerHTML.indexOf("@") === -1) {
+                return el.innerHTML;
+            }
+        }
+
+        // give up
+        return null;
     };
 
 
