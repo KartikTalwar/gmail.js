@@ -23,7 +23,8 @@ declare type StringDict = {
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-interface GmailTracker {
+interface GmailTracker<T extends string = never> {
+    dom_observers: { [observer in GmailDomObserver | T]?: DomObserverConfig };
     globals: any[];
     view_data: any[];
     ik: string;
@@ -31,10 +32,10 @@ interface GmailTracker {
     events: {}[];
     actions: {}[];
     watchdog: {
-        before: {},
-        on: {},
-        after: {},
-        dom: {}
+        before: { [action in GmailBindAction | T]?: Function[] };
+        on: { [action in GmailBindAction | T]?: Function[] };
+        after: { [action in GmailBindAction | T]?: Function[] };
+        dom: { [observer in GmailDomObserver | T]?: Function[] };
     };
 }
 
@@ -55,9 +56,9 @@ declare type GmailPageType =
 declare type GmailEmailAddress = string[];
 
 declare type GmailDomComposeRecipients = {
-   to: string[];
-   cc: string[];
-   bcc: string[];
+    to: string[];
+    cc: string[];
+    bcc: string[];
 }
 
 declare type GmailAttachmentDetails = {
@@ -489,7 +490,7 @@ interface GmailDomEmail {
 
 declare type GmailDomComposeLookup =
     'to' | 'cc' | 'bcc' | 'id' | 'draft' | 'subject' | 'subjectbox'
-    | 'all_subjects' | 'body' | 'quoted_reply' |'reply' | 'forward' | 'from' | 'send_button' | 'show_cc' | 'show_bcc';
+    | 'all_subjects' | 'body' | 'quoted_reply' | 'reply' | 'forward' | 'from' | 'send_button' | 'show_cc' | 'show_bcc';
 
 interface GmailMessageRow {
     summary: string;
@@ -671,7 +672,7 @@ interface GmailTools {
        observes every element inserted into the DOM by Gmail and looks at the classes on those elements,
        checking for any configured observers related to those classes
     */
-    insertion_observer(target: HTMLElement | string, dom_observers: any, dom_observer_map: any, sub: any): void;
+    insertion_observer(target: HTMLElement | string, dom_observers: { [observer: string]: DomObserverConfig }, dom_observer_map: { [className: string]: string[] }, sub?: string): void;
 
     make_request(link: string, method: GmailHttpRequestMethod, disable_cache: boolean): string;
     make_request_async(link: string, method: GmailHttpRequestMethod, callback: (data: string) => void, disable_cache: boolean): void;
@@ -718,11 +719,11 @@ interface GmailTools {
     add_right_toolbar_button(content_html: string, onClickFunction: Function, styleClass: string): JQuery;
     add_compose_button(composeWindow: GmailDomCompose, content_html: string, onClickFunction: Function, styleClass?: string): JQuery;
     add_more_send_option(
-      composeWindow: GmailDomCompose,
-      buttonText: string,
-      onClickFunction: Function,
-      styleClass?: string | undefined,
-      imgClass?: string | undefined
+        composeWindow: GmailDomCompose,
+        buttonText: string,
+        onClickFunction: Function,
+        styleClass?: string | undefined,
+        imgClass?: string | undefined
     ): JQuery;
     /**
        adds a button to an email attachment.
@@ -764,23 +765,25 @@ declare type GmailBindAction =
     | 'new_email' | 'refresh' | 'open_email' | 'upload_attachment' | 'compose'
     | 'compose_cancelled' | 'recipient_change' | 'view_thread' | 'view_email'
     | 'load_email_menu';
+declare type GmailDomObserver =
+    'view_thread' | 'view_email' | 'load_email_menu' | 'recipient_change' | 'compose'
 
 interface HttpEventRequestParams {
-   url: object,
-   url_raw: string;
-   body: string;
-   body_params: object;
-   method: string;
+    url: object,
+    url_raw: string;
+    body: string;
+    body_params: object;
+    method: string;
 }
 
 interface DomObserverConfig {
-   class: string | string[];
-   selector?: string;
-   sub_selector?: string;
-   handler?: Function;
- }
+    class: string | string[];
+    selector?: string;
+    sub_selector?: string;
+    handler?: Function;
+}
 
-interface GmailObserve<T extends string=never> {
+interface GmailObserve<T extends string = never> {
     /**
        After an observer has been bound through gmail.observe.bind() (via a
        call to events gmail.observe.before(), gmail.observe.on(), or
@@ -798,7 +801,7 @@ interface GmailObserve<T extends string=never> {
     /**
        Bind a specified callback to an array of callbacks against a specified type & action
     */
-    bind(type: GmailBindType, action: Function, callback: Function): void;
+    bind(type: GmailBindType, action: GmailBindAction | T, callback: Function): void;
 
     /**
       an on event is observed just after gmail sends an xhr request
@@ -850,11 +853,11 @@ interface GmailObserve<T extends string=never> {
       Trigger any specified events bound to the passed type
       Returns true or false depending if any events were fired
      */
-    trigger(type: GmailBindType, events: any, xhr: XMLHttpRequest): boolean;
+    trigger(type: GmailBindType, events: { [action in GmailBindAction | T]?: any[] }, xhr: XMLHttpRequest): boolean;
     /**
       Trigger any specified DOM events passing a specified element & optional handler
      */
-    trigger_dom(observer: any, element: HTMLElement, handler?: Function): void;
+    trigger_dom(observer: GmailDomObserver | T, element: HTMLElement, handler?: Function): void;
 
     initialize_dom_observers(): void;
 
@@ -867,7 +870,7 @@ interface GmailObserve<T extends string=never> {
         className / args - for a simple observer, this arg can simply be the class on an inserted DOM element that identifies this event should be
           triggered. For a more complicated observer, this can be an object containing properties for each of the supported DOM observer config arguments
      */
-    register(action: string, args: string | DomObserverConfig): void;
+    register(action: T, args: string | DomObserverConfig): void;
     /**
       Observe DOM nodes being inserted. When a node with a class defined in api.tracker.dom_observers is inserted,
       trigger the related event and fire off any relevant bound callbacks
@@ -1030,15 +1033,15 @@ interface GmailCache {
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-declare class Gmail<T extends string=never> {
-    constructor(localJQuery?: JQueryStatic);
+declare class Gmail<T extends string = never> {
+    constructor(localJQuery: JQueryStatic | false);
 
     version: string;
     /**
        These are some of the variables that are tracked and kept in
        memory while the rest of the methods are in use.
      */
-    tracker: GmailTracker;
+    tracker: GmailTracker<T>;
     get: GmailGet;
     check: GmailCheck;
     /**
