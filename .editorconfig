@@ -11,7 +11,7 @@ trim_trailing_whitespace = true
 max_line_length = off
 trim_trailing_whitespace = false
 
-[*.{js,json}]
+[*.{ts,js,json}]
 quote_type = double
 indent_style = space
 indent_size = 4

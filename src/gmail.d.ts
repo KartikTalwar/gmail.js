@@ -56,9 +56,9 @@ declare type GmailPageType =
 declare type GmailEmailAddress = string[];
 
 declare type GmailDomComposeRecipients = {
-   to: string[];
-   cc: string[];
-   bcc: string[];
+    to: string[];
+    cc: string[];
+    bcc: string[];
 }
 
 declare type GmailAttachmentDetails = {
@@ -490,7 +490,7 @@ interface GmailDomEmail {
 
 declare type GmailDomComposeLookup =
     'to' | 'cc' | 'bcc' | 'id' | 'draft' | 'subject' | 'subjectbox'
-    | 'all_subjects' | 'body' | 'quoted_reply' |'reply' | 'forward' | 'from' | 'send_button' | 'show_cc' | 'show_bcc';
+    | 'all_subjects' | 'body' | 'quoted_reply' | 'reply' | 'forward' | 'from' | 'send_button' | 'show_cc' | 'show_bcc';
 
 interface GmailMessageRow {
     summary: string;
@@ -719,11 +719,11 @@ interface GmailTools {
     add_right_toolbar_button(content_html: string, onClickFunction: Function, styleClass: string): JQuery;
     add_compose_button(composeWindow: GmailDomCompose, content_html: string, onClickFunction: Function, styleClass?: string): JQuery;
     add_more_send_option(
-      composeWindow: GmailDomCompose,
-      buttonText: string,
-      onClickFunction: Function,
-      styleClass?: string | undefined,
-      imgClass?: string | undefined
+        composeWindow: GmailDomCompose,
+        buttonText: string,
+        onClickFunction: Function,
+        styleClass?: string | undefined,
+        imgClass?: string | undefined
     ): JQuery;
     /**
        adds a button to an email attachment.
@@ -769,19 +769,19 @@ declare type GmailDomObserver =
     'view_thread' | 'view_email' | 'load_email_menu' | 'recipient_change' | 'compose'
 
 interface HttpEventRequestParams {
-   url: object,
-   url_raw: string;
-   body: string;
-   body_params: object;
-   method: string;
+    url: object,
+    url_raw: string;
+    body: string;
+    body_params: object;
+    method: string;
 }
 
 interface DomObserverConfig {
-   class: string | string[];
-   selector?: string;
-   sub_selector?: string;
-   handler?: Function;
- }
+    class: string | string[];
+    selector?: string;
+    sub_selector?: string;
+    handler?: Function;
+}
 
 interface GmailObserve<T extends string = never> {
     /**
@@ -1033,8 +1033,8 @@ interface GmailCache {
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-declare class Gmail<T extends string=never> {
-    constructor(localJQuery?: JQueryStatic | false);
+declare class Gmail<T extends string = never> {
+    constructor(localJQuery: JQueryStatic | false);
 
     version: string;
     /**
