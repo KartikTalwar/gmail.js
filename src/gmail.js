@@ -2389,7 +2389,7 @@ var Gmail = function(localJQuery) {
         // loop through applicable types
         var types = type ? [ type ] : [ "before", "on", "after", "dom" ];
         for (let type of types) {
-            if(typeof api.tracker.watchdog[type] !== "object") return true; // no callbacks for this type
+            if(typeof api.tracker.watchdog[type] !== "object") continue; // no callbacks for this type
 
             // if action specified, remove any callbacks for this action, otherwise remove all callbacks for all actions
             if(action) {
@@ -2767,7 +2767,7 @@ var Gmail = function(localJQuery) {
         for (let className of classes) {
             var observers = dom_observer_map[className];
             if (!observers) {
-                return;
+                continue;
             }
 
             for (var observer of observers) {
@@ -2779,7 +2779,7 @@ var Gmail = function(localJQuery) {
 
                     // if a config id specified for this observer, ensure it matches for this element
                     if(config.selector && !element.is(config.selector)) {
-                        return;
+                        break;
                     }
 
                     // check for any defined sub_selector match - if not found, then this is not a match for this observer
