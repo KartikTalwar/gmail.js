@@ -1,6 +1,10 @@
 
 # Changelog
 
+## Version 1.1.14
+
+- Fix regression in DOM observers, introduced in 1.1.13. Thanks @kinkoazc!
+
 ## Version 1.1.13
 
 - Drop bundled jQuery, support jQuery 4, support explicit no-jQuery mode
