@@ -18,7 +18,7 @@
 
 ## Version 1.1.11
 
-- Fix `api.observe.on("view_email", ...)`not working.
+- Fix `api.observe.on("view_email", ...)` not working.
 
 ## Version 1.1.10
 
