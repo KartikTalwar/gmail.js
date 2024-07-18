@@ -2694,11 +2694,11 @@ var Gmail = function(localJQuery) {
                                 let handler = api.tracker.dom_observers.recipient_change.handler;
                                 api.observe.trigger_dom(observer, $(mutation.target), handler);
                             } else
-                            if (removedNode.className === "vR") {
-                                let observer = api.tracker.dom_observer_map["vR"];
-                                let handler = api.tracker.dom_observers.recipient_change.handler;
-                                api.observe.trigger_dom(observer, $(mutation.target), handler);
-                            }
+                                if (removedNode.className === "vR") {
+                                    let observer = api.tracker.dom_observer_map["vR"];
+                                    let handler = api.tracker.dom_observers.recipient_change.handler;
+                                    api.observe.trigger_dom(observer, $(mutation.target), handler);
+                                }
                         }
 
                         // this listener will check every element inserted into the DOM
