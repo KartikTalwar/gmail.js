@@ -458,7 +458,7 @@ interface GmailDomEmail {
        Optionally receives an array of these objects if multiple recipients
        Returns an array of objects containing email & name of who is showing in the DOM as the email is to
     */
-    to(to_array: GmailDomEmailEntry | GmailDomEmailEntry[]): GmailDomEmailEntry[];
+    to(to_array?: GmailDomEmailEntry | GmailDomEmailEntry[]): GmailDomEmailEntry[];
     /**
        Retries the DOM elements which represents the emails attachments
        Returns undefined if UI-elements are not yet ready for parsing.
