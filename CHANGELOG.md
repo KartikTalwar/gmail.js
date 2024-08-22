@@ -1,6 +1,11 @@
 
 # Changelog
 
+## Version 1.1.15
+
+- Fix errors in typescript type-definitions. Thanks @BasSchoutenTribe !
+  (No changes in runtime code)
+
 ## Version 1.1.14
 
 - Fix regression in DOM observers, introduced in 1.1.13. Thanks @kinkoazc!
