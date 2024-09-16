@@ -22,7 +22,6 @@ var Gmail = function(localJQuery) {
     } else {
         throw new Error("GmailJS requires jQuery to be present in global scope or provided as a constructor argument.");
     }
-
     var window_opener = typeof (window) !== "undefined" ? window.opener : null;
     if (window_opener) {
         try {
@@ -115,19 +114,20 @@ var Gmail = function(localJQuery) {
 
 
     api.get.user_email = function() {
+        if(api.tracker.globals.length == 0 && GLOBALS !== "undefined" && GLOBALS.length > 11)
+            api.tracker.globals = GLOBALS;
+
         let user_email = api.tracker.globals[10];
+
         if (user_email) {
             return user_email;
         }
-
         const elements = document.getElementsByClassName("eYSAde");
         for (const el of elements) {
             if (el.innerHTML.indexOf("@") === -1) {
                 return el.innerHTML;
             }
         }
-
-        // give up
         return null;
     };
 
@@ -2468,6 +2468,7 @@ var Gmail = function(localJQuery) {
     //       in api.tracker.dom_observer_map below
     // console.log( "Observer set for", action, callback);
     api.observe.initialize_dom_observers = function() {
+        console.log("Initializing DOM observers");
         api.tracker.dom_observer_init = true;
         api.tracker.supported_observers = ["view_thread", "view_email", "load_email_menu", "recipient_change", "compose"];
         api.tracker.dom_observers = {
@@ -2489,12 +2490,10 @@ var Gmail = function(localJQuery) {
                 // FIXME: the empty class ("") is for emails opened after thread is rendered (causes a storm of updates)
                 class: ["Bu", "nH", ""],
                 handler: function(match, callback) {
+                    callback(match);
                     setTimeout(() => {
-                        match = match.find("div.adn.ads");
-                        if (match.length) {
-                            match = new api.dom.email(match);
-                            callback(match);
-                        }
+                        // match = match.find("div.adn.ads");
+                        // callback(match);
                     }, 0);
                 }
             },
@@ -2694,11 +2693,11 @@ var Gmail = function(localJQuery) {
                                 let handler = api.tracker.dom_observers.recipient_change.handler;
                                 api.observe.trigger_dom(observer, $(mutation.target), handler);
                             } else
-                                if (removedNode.className === "vR") {
-                                    let observer = api.tracker.dom_observer_map["vR"];
-                                    let handler = api.tracker.dom_observers.recipient_change.handler;
-                                    api.observe.trigger_dom(observer, $(mutation.target), handler);
-                                }
+                            if (removedNode.className === "vR") {
+                                let observer = api.tracker.dom_observer_map["vR"];
+                                let handler = api.tracker.dom_observers.recipient_change.handler;
+                                api.observe.trigger_dom(observer, $(mutation.target), handler);
+                            }
                         }
 
                         // this listener will check every element inserted into the DOM
@@ -2774,9 +2773,8 @@ var Gmail = function(localJQuery) {
 
                 // check if this is a defined observer, and callbacks are bound to that observer
                 if(observer && api.tracker.watchdog && api.tracker.watchdog.dom[observer]) {
-                    var element = $(target);
+                    var element = document.getElementById(target);
                     var config = dom_observers[observer];
-
                     // if a config id specified for this observer, ensure it matches for this element
                     if(config.selector && !element.is(config.selector)) {
                         break;
@@ -2790,12 +2788,12 @@ var Gmail = function(localJQuery) {
                     }
 
                     // if an element has been found, execute the observer handler (or if none defined, execute the callback)
-                    if(element.length) {
+                    // if(element?.length > 0) {
 
                         var handler = config.handler ? config.handler : function(match, callback) { callback(match); };
                         // console.log( "inserted DOM: class match in watchdog",observer,api.tracker.watchdog.dom[observer] );
                         api.observe.trigger_dom(observer, element, handler);
-                    }
+                    // }
                 }
             }
         }
