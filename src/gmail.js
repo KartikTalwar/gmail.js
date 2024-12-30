@@ -2476,7 +2476,7 @@ var Gmail = function(localJQuery) {
             // which is triggered by the XHR request rather than nodes being inserted into the DOM (and thus returns different information)
             "view_thread": {
                 class: ["Bu", "nH"], // class depends if is_preview_pane - Bu for preview pane, nH for standard view
-                sub_selector: "div.if,div.iY",
+                selector: "div.iY",
                 handler: function(match, callback) {
                     match = new api.dom.thread(match);
                     callback(match);
