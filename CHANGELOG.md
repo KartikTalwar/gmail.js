@@ -1,6 +1,10 @@
 
 # Changelog
 
+## Version 1.1.16
+
+- Fix errors in `view_thread` event handler. Thanks @ek23 !
+
 ## Version 1.1.15
 
 - Fix errors in typescript type-definitions. Thanks @BasSchoutenTribe !
