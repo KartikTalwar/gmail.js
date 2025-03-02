@@ -2420,7 +2420,7 @@ var Gmail = function(localJQuery) {
         for (let [action, response] of Object.entries(events)) {
 
             // we have to do this here each time to keep backwards compatibility with old response_callback implementation
-            response = [...response]; // break the reference so it doesn"t keep growing each trigger
+            response = [...response]; // break the reference so it doesn't keep growing each trigger
             if(type === "after") response.push(xhr.xhrResponse); // backwards compat for after events requires we push onreadystatechange parsed response first
             response.push(xhr);
             if(api.observe.bound(action, type)) {
@@ -2502,7 +2502,7 @@ var Gmail = function(localJQuery) {
             // when the dropdown menu next to the reply button is inserted into the DOM when viewing an email
             "load_email_menu": {
                 class: "J-N",
-                selector: "div[role=menu] div[role=menuitem]:first-child", // use the first menu item in the popoup as the indicator to trigger this observer
+                selector: "div[role=menu] div[role=menuitem]:first-child", // use the first menu item in the popup as the indicator to trigger this observer
                 handler: function(match, callback) {
                     match = match.closest("div[role=menu]");
                     callback(match);
@@ -3106,11 +3106,11 @@ var Gmail = function(localJQuery) {
             if(typeof time !== "undefined"){
                 var initialInfoboxStyle = top.attr("style");            // backup initial style
                 top.removeAttr("style").fadeTo(time, 0, function(){     // simply remove then restore
-                    $(this).attr("style", initialInfoboxStyle);           // style attribute insteed of playing
+                    $(this).attr("style", initialInfoboxStyle);           // style attribute instead of playing
                 });                             // on visibility property
             }
             else{
-                top.removeAttr("style");                    // dito
+                top.removeAttr("style");                    // ditto
             }
         }
     };
@@ -4355,7 +4355,7 @@ var Gmail = function(localJQuery) {
         */
         to: function(to_array) {
 
-            // if update data has been passeed, loop through & create a new to_wrapper contents
+            // if update data has been passed, loop through & create a new to_wrapper contents
             if (to_array) {
                 if (!Array.isArray(to_array)) {
                     to_array = [to_array];

@@ -1,6 +1,6 @@
 # Gmail.js - JavaScript API for Gmail
 
-![Node.js CI](https://github.com/KartikTalwar/gmail.js/workflows/Node.js%20CI/badge.svg?branch=master)
+![Node.js CI](https://github.com/KartikTalwar/gmail.js/actions/workflows/node.js.yml/badge.svg?branch=master)
 [![npm](https://img.shields.io/npm/v/gmail-js.svg)](https://www.npmjs.com/package/gmail-js)
 
 ### What Gmail.js is and isn't
@@ -172,7 +172,7 @@ import "gmail-js";
   - **`mark_as_spam`** - When a conversation(s) is marked as spam
   - **`mark_as_not_spam`** - When a conversation(s) is unchecked as spam
   - **`label`** - When a conversation(s) get applied a label
-  - **`archive`** - When a conversation(s) is archieved
+  - **`archive`** - When a conversation(s) is archived
   - **`move_to_inbox`** - When a conversation(s) is moved to the inbox
   - **`delete_forever`** - When a conversation(s) is deleted forever
   - **`star`** - When a conversation(s) is starred
@@ -186,7 +186,7 @@ import "gmail-js";
   - **`add_to_tasks`** - When an item is added to google tasks
   - **`move_label`** - When a conversation(s) is moved to a label folder
   - **`save_draft`** - When a draft is saved
-  - **`discard_draft`** - When a draft is dicarded
+  - **`discard_draft`** - When a draft is discarded
   - **`send_message`** - When a message is sent (except scheduled messages)
   - **`send_scheduled_message`** - When a message is scheduled for sending (but not actually sent)
   - **`expand_categories`** - When a category is expanded from the left nav sidebar
@@ -600,7 +600,7 @@ Returns `True` if user has multiple inbox lab enabled, `False` otherwise
 
 #### gmail.check.is_horizontal_split()
 
-Returns `True` if the pane split mode is horiontal `False` otherwise
+Returns `True` if the pane split mode is horizontal `False` otherwise
 
 #### gmail.check.are_shortcuts_enabled()
 
@@ -717,7 +717,7 @@ The items contain the sent requested parameterized data
 #### gmail.observe.actions()
 
 Similar to `gmail.observe.http_requests()` this keeps track of the last 10 gmail actions (vs all http requests).
-Actions here correspond to things like clicking refres, archiving, deleting, starring etc.
+Actions here correspond to things like clicking refresh, archiving, deleting, starring etc.
 
 #### gmail.observe.on(action, callback)
 
@@ -743,7 +743,7 @@ Your callback will be fired directly after Gmail's XMLHttpRequest has been sent 
   - **mark_as_spam** - When a conversation(s) is marked as spam
   - **mark_as_not_spam** - When a conversation(s) is unchecked as spam
   - **label** - When a conversation(s) get applied a label
-  - **archive** - When a conversation(s) is archieved
+  - **archive** - When a conversation(s) is archived
   - **move_to_inbox** - When a conversation(s) is moved to the inbox
   - **delete_forever** - When a conversation(s) is deleted forever
   - **star** - When a conversation(s) is starred
@@ -757,7 +757,7 @@ Your callback will be fired directly after Gmail's XMLHttpRequest has been sent 
   - **add_to_tasks** - When an item is added to google tasks
   - **move_label** - When a conversation(s) is moved to a label folder
   - **save_draft** - When a draft is saved
-  - **discard_draft** - When a draft is dicarded
+  - **discard_draft** - When a draft is discarded
   - **send_message** - When a message is sent (except scheduled messages)
   - **send_scheduled_message** - When a message is scheduled for sending (but not actually sent)
   - **expand_categories** - When a category is expanded from the left nav sidebar
@@ -765,7 +765,7 @@ Your callback will be fired directly after Gmail's XMLHttpRequest has been sent 
   - **delete_label** - When a label is deleted
   - **show_newly_arrived_message** - When inside an email and a new email arrives in the thread
 
-The on method also supports observering specific DOM events in the Gmail Interface (for example when a new compose window is opened). These are only available via the `on` method (not the `before` or `after` methods).
+The on method also supports observing specific DOM events in the Gmail Interface (for example when a new compose window is opened). These are only available via the `on` method (not the `before` or `after` methods).
 
 **Available DOM Actions/Observers**
 
@@ -773,7 +773,7 @@ The on method also supports observering specific DOM events in the Gmail Interfa
  - **compose** - When a new compose window opens, or a message is replied to or forwarded
  - **compose_cancelled** - When an existing compose window is closed.
  - **recipient_change** - When the recipient (to, cc or bcc) is changed when composing a new email or replying/forwarding an email
- - **view_thread** - When a new coversation thread is opened
+ - **view_thread** - When a new conversation thread is opened
  - **view_email** - When an individual email is loaded within a thread (also fires when thread loads displaying the latest email)
  - **load_email_menu** - When the dropdown menu next to the reply button is clicked
 
@@ -1022,7 +1022,7 @@ Simple:
 
 Complex:
   - action - the name of the new DOM observer
-  - args - an object containin properties for each of the supported DOM observer configuration agruments:
+  - args - an object containing properties for each of the supported DOM observer configuration arguments:
     - class - the class of an inserted DOM element that identifies that this action should be triggered
     - selector - if you need to match more than just the className of a specific element to indicate a match, you can use this selector for further checking (uses element.is(selector) on matched element). E.g. if there are multiple elements with a class indicating an observer should fire, but you only want it to fire on a specific id, then you would use this
     - sub_selector - if specified, we do a jquery element.find for the passed selector on the inserted element and ensure we can find a match
@@ -1073,7 +1073,7 @@ Returns basic data for all the messages currently visible in the messages view. 
 
 ### gmail.dom.compose(compose_el)
 
-An object used to abstract interation with a compose popup.
+An object used to abstract interaction with a compose popup.
 Represents a compose window in the DOM and provides a bunch of methods and properties to access & interact with the window.
 
 Expects a jQuery DOM element for the compose div.
@@ -1376,7 +1376,7 @@ individual email IDs.
 **Note: This method can only be used with other deprecated methods,
 and is itself deprecated. Use `gmail.new.get.email_id()` instead.**
 
-Same as `gmail.get.thread_id()`, but kept for compatibilty.
+Same as `gmail.get.thread_id()`, but kept for compatibility.
 Using this method generates a warning!
 
 ```js
