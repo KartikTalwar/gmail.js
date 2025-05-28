@@ -1014,7 +1014,7 @@ Adds it to the configured DOM observers that will then be supported by the dom i
 *Note* this method must be called prior to binding any handlers to specific actions/observers using `on`, `before` or `after`.
 Once you start binding handlers, you cannot register any further custom observers.
 
-This method can be called two different ways:
+This method can be called tw different ways:
 
 Simple:
   - action - the name of the new DOM observer
