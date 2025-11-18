@@ -121,4 +121,21 @@ describe("Get functions", () => {
             assert.equal(result[3].index, 2);
         });
     });
+
+    describe("get.unread_emails", () => {
+        it("returns object with unread email counts", () => {
+            // Test return type
+            const unread = gmail.get.unread_emails();
+            assert(typeof unread === 'object');
+        });
+
+        it("asserts that expected object-keys are present on returned object", () => {
+            // Test that the object has expected properties
+            const unread = gmail.get.unread_emails();
+            assert(unread.hasOwnProperty('inbox'));
+            assert(unread.hasOwnProperty('drafts'));
+            assert(unread.hasOwnProperty('spam'));
+            assert(unread.hasOwnProperty('forum'));
+        });
+    });
 });
