@@ -4616,6 +4616,135 @@ var Gmail = function(localJQuery) {
         api.tools.embedded_data_watcher();
     }
 
+    /**
+     * Email tracking helper namespace
+     * Provides easy-to-use functions for tracking sent emails
+     */
+    api.track = {};
+
+    /**
+     * Track sent emails with a callback function
+     * This is a convenience wrapper around api.observe.on('send_message')
+     * 
+     * @param {Function} callback - Function to call when an email is sent
+     *                              Receives (emailData, url, body, xhr) as parameters
+     * @returns {Function} - Returns the callback for potential cleanup
+     * 
+     * @example
+     * gmail.track.sent_emails(function(emailData, url, body, xhr) {
+     *   console.log('Email sent!', emailData);
+     *   console.log('To:', emailData.to);
+     *   console.log('Subject:', emailData.subject);
+     *   console.log('Body:', emailData.body);
+     * });
+     */
+    api.track.sent_emails = function(callback) {
+        if (typeof callback !== 'function') {
+            api.tools.error('track.sent_emails requires a callback function');
+            return null;
+        }
+
+        // Wrap the callback to provide cleaner parameters
+        const wrappedCallback = function(url, body, emailData, xhr) {
+            callback(emailData, url, body, xhr);
+        };
+
+        // Register the observer
+        api.observe.on('send_message', wrappedCallback);
+
+        return wrappedCallback;
+    };
+
+    /**
+     * Track scheduled emails with a callback function
+     * This is a convenience wrapper around api.observe.on('send_scheduled_message')
+     * 
+     * @param {Function} callback - Function to call when an email is scheduled
+     *                              Receives (emailData, url, body, xhr) as parameters
+     * @returns {Function} - Returns the callback for potential cleanup
+     * 
+     * @example
+     * gmail.track.scheduled_emails(function(emailData, url, body, xhr) {
+     *   console.log('Email scheduled!', emailData);
+     *   console.log('Scheduled time:', emailData.scheduled_time);
+     * });
+     */
+    api.track.scheduled_emails = function(callback) {
+        if (typeof callback !== 'function') {
+            api.tools.error('track.scheduled_emails requires a callback function');
+            return null;
+        }
+
+        // Wrap the callback to provide cleaner parameters
+        const wrappedCallback = function(url, body, emailData, xhr) {
+            callback(emailData, url, body, xhr);
+        };
+
+        // Register the observer
+        api.observe.on('send_scheduled_message', wrappedCallback);
+
+        return wrappedCallback;
+    };
+
+    /**
+     * Track both sent and scheduled emails with a single callback
+     * 
+     * @param {Function} callback - Function to call when any email is sent or scheduled
+     *                              Receives (emailData, type, url, body, xhr) as parameters
+     *                              where type is either 'sent' or 'scheduled'
+     * @returns {Object} - Returns object with both callbacks for potential cleanup
+     * 
+     * @example
+     * gmail.track.all_emails(function(emailData, type, url, body, xhr) {
+     *   if (type === 'sent') {
+     *     console.log('Email sent immediately');
+     *   } else if (type === 'scheduled') {
+     *     console.log('Email scheduled for later');
+     *   }
+     *   console.log('Email data:', emailData);
+     * });
+     */
+    api.track.all_emails = function(callback) {
+        if (typeof callback !== 'function') {
+            api.tools.error('track.all_emails requires a callback function');
+            return null;
+        }
+
+        const sentCallback = api.track.sent_emails(function(emailData, url, body, xhr) {
+            callback(emailData, 'sent', url, body, xhr);
+        });
+
+        const scheduledCallback = api.track.scheduled_emails(function(emailData, url, body, xhr) {
+            callback(emailData, 'scheduled', url, body, xhr);
+        });
+
+        return {
+            sent: sentCallback,
+            scheduled: scheduledCallback
+        };
+    };
+
+    /**
+     * Get a simple email tracking logger (for debugging/testing)
+     * Returns a function that logs email details to console
+     * 
+     * @param {String} prefix - Optional prefix for console logs
+     * @returns {Function} - Logger function
+     * 
+     * @example
+     * gmail.track.sent_emails(gmail.track.logger('MY APP'));
+     */
+    api.track.logger = function(prefix) {
+        prefix = prefix || 'Gmail.js';
+        return function(emailData, url, body, xhr) {
+            console.log(prefix + ' - Email sent!');
+            console.log('To:', emailData.to);
+            console.log('Subject:', emailData.subject);
+            console.log('Body preview:', emailData.body ? emailData.body.substring(0, 100) : 'N/A');
+            console.log('Full data:', emailData);
+        };
+    };
+
     return api;
 };
 
