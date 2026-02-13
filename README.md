@@ -196,7 +196,7 @@ import "gmail-js";
   - **`compose`** - When a new compose window is opened, or a message is replied to or forwarded
   - **`recipient_change`** - When an email being written (either new compose, reply or forward) has its to, cc or bcc recipients updated
   - **`view_thread`** - When a conversation thread is opened to read
-  - **`view_email`* - When an individual email is loaded within a conversation thread.
+  - **`view_email`** - When an individual email is loaded within a conversation thread.
       It's worth noting this event is only triggered when the email is actually rendered in the DOM. Gmail tends to cache the rendered emails, so it should not be expected to fire reliably for every viewing of the same email. It will most likely fire once, for the initial and possibly only rendering.
   - **`load_email_menu`** - When the dropdown menu next to the reply button is clicked
 - [**gmail.observe.before(action, callback)**](#gmailobservebeforeaction-callback)
