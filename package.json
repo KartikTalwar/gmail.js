@@ -24,7 +24,8 @@
     ],
     "devDependencies": {
         "@types/jquery": "^3.5.14",
-        "eslint": "^8.23.1",
+        "eslint": "^9.0.0",
+        "globals": "^17.4.0",
         "jest": "^29.5.0",
         "jest-junit": "^16.0.0",
         "jsdom": "^20.0.0",
