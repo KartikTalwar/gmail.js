@@ -11,7 +11,8 @@
     "scripts": {
         "lint": "eslint src/*.js",
         "tsc": "tsc src/*.ts",
-        "test": "jest --watchAll=false --reporters=default --reporters=jest-junit",
+        "test": "vitest --run",
+        "test:watch": "vitest",
         "ci": "npm run tsc && npm run test && npm run lint"
     },
     "keywords": [
@@ -29,7 +30,8 @@
         "jest": "^29.5.0",
         "jest-junit": "^16.0.0",
         "jsdom": "^20.0.0",
-        "typescript": "^4.8.3"
+        "typescript": "^4.8.3",
+        "vitest": "^4.0.18"
     },
     "author": "Kartik Talwar",
     "license": "MIT",
