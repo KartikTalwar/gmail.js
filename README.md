@@ -642,23 +642,23 @@ Returns `True` if priority inbox is enabled `False` otherwise
 
 #### gmail.check.is_rapportive_installed()
 
-Returns `True` if [rapportive](http://rapportive.com/) chrome extension is installed `False` otherwise
+Returns `True` if [rapportive](https://rapportive.com/) chrome extension is installed `False` otherwise (note: rapportive was acquired by LinkedIn and discontinued)
 
 #### gmail.check.is_streak_installed()
 
-Returns `True` if [streak](http://streak.com) chrome extension is installed `False` otherwise
+Returns `True` if [streak](https://streak.com) chrome extension is installed `False` otherwise
 
 #### gmail.check.is_anydo_installed()
 
-Returns `True` if [any.do](http://any.do) chrome extension is installed `False` otherwise
+Returns `True` if [any.do](https://any.do) chrome extension is installed `False` otherwise
 
 #### gmail.check.is_boomerang_installed()
 
-Returns `True` if [boomerang](http://www.boomeranggmail.com/) chrome extension is installed `False` otherwise
+Returns `True` if [boomerang](https://www.boomerangforgmail.com/) chrome extension is installed `False` otherwise
 
 #### gmail.check.is_xobni_installed()
 
-Returns `True` if [xobni](https://www.xobni.com) chrome extension is installed `False` otherwise
+Returns `True` if [xobni](https://www.xobni.com) chrome extension is installed `False` otherwise (note: xobni service was discontinued in 2018)
 
 #### gmail.check.is_signal_installed()
 
@@ -1489,7 +1489,7 @@ The data does not come from the DOM
 Returns an object representation of the opened email contents and metadata. It takes the optional thread_id parameter where
 the data for the specified thread is returned instead of the email-thread currently visible in the dom.
 
-`thread_id` is added for updated gmail thread behaviour which adds support for emails created in [inbox](https://inbox.google.com). first_email remains as the first message in the thread.
+`thread_id` is added for updated gmail thread behaviour which adds support for emails created in the legacy [Inbox by Gmail](https://gmail.googleblog.com/2019/04/gmail-inbox-to-shut-down-march-2019.html) (discontinued). first_email remains as the first message in the thread.
 
 ```json
 {
@@ -1602,4 +1602,4 @@ Does the same as above but accepts a callback function.
 
 | [![twitter/therealkartik](https://0.gravatar.com/avatar/1eb9ae38e862518d907a8392c0062e95?s=70)](https://twitter.com/TheRealKartik "Follow @TheRealKartik on Twitter") | Inspired by gmailr.js |
 |---| --- |
-| [Kartik Talwar](http://kartikt.com/) |  See [License.md](LICENSE.md) |
+| [Kartik Talwar](https://kartikt.com/) |  See [License.md](LICENSE.md) |
