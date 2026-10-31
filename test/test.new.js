@@ -137,4 +137,26 @@ describe("gmail.new.get", () => {
         assert.equal(false, warnInvoked);
         assert.equal(null, res);
     });
+
+    it("thread_id() falls back to legacyThreadId when threadPermId is undefined or 'undefined'", () => {
+        let origDocument = global.document;
+        global.document = {
+            querySelector: (selector) => {
+                if (selector === "[data-thread-perm-id]") {
+                    return {
+                        dataset: {
+                            threadPermId: "undefined",
+                            legacyThreadId: "1234567890abcdef"
+                        }
+                    };
+                }
+                return null;
+            }
+        };
+
+        let id = gmail.new.get.thread_id();
+        assert.equal(id, "1234567890abcdef");
+
+        global.document = origDocument;
+    });
 });

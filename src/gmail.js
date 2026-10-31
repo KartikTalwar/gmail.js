@@ -4569,7 +4569,14 @@ var Gmail = function(localJQuery) {
             return null;
         }
 
-        return threadElem.dataset["threadPermId"];
+        const threadPermId = threadElem.dataset["threadPermId"];
+
+        // Fall back to legacy thread ID if perm ID is undefined or the string "undefined"
+        if (!threadPermId || threadPermId === "undefined") {
+            return threadElem.dataset["legacyThreadId"] || null;
+        }
+
+        return threadPermId;
     };
 
     /**
