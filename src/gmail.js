@@ -281,12 +281,13 @@ var Gmail = function(localJQuery) {
         return null;
     };
 
+    // Gmail no longer defines these flags. Classic Gmail is gone, so treat an absent flag as "new".
     api.check.is_new_data_layer = function () {
-        return window["GM_SPT_ENABLED"] === "true";
+        return window["GM_SPT_ENABLED"] !== "false";
     };
 
     api.check.is_new_gui = function () {
-        return window.GM_RFT_ENABLED === "true";
+        return window.GM_RFT_ENABLED !== "false";
     };
 
     api.check.is_thread = function() {
@@ -1355,6 +1356,10 @@ var Gmail = function(localJQuery) {
                 const fd_thread_id = fd_thread_container["0"];
 
                 let fd_emails = fd_thread_container["2"]; // array
+                // some fd threads carry no email array; skip them instead of dropping the whole response
+                if (!Array.isArray(fd_emails)) {
+                    continue;
+                }
                 for (let fd_email of fd_emails) {
                     //console.log(fd_email)
                     const fd_email_id = fd_email["0"];
@@ -1529,6 +1534,9 @@ var Gmail = function(localJQuery) {
                 const bv_thread_id = bv_thread_container["0"]["3"];
 
                 let bv_emails = bv_thread_container["0"]["4"]; // array
+                if (!Array.isArray(bv_emails)) {
+                    continue;
+                }
                 for (let bv_email of bv_emails) {
                     //console.log(bv_email)
                     const bv_email_id = bv_email["0"];

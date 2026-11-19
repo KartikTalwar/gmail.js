@@ -1051,3 +1051,23 @@ describe("Test tools for parsing fd-embedded-data", () => {
 //     });
 
 // });
+
+describe("Request-payload parsing tolerates threads without emails", () => {
+    var gmail = new Gmail(false);
+
+    it("fd: skips threads whose email list is missing instead of failing the response", () => {
+        var payload = { 1: [
+            ["thread-f:1", null],
+            ["thread-f:2", null, []]
+        ] };
+        assert.deepStrictEqual(gmail.tools.parse_fd_request_payload(payload), []);
+    });
+
+    it("bv: skips threads whose email list is missing instead of failing the response", () => {
+        var payload = { 2: [
+            [["subject 1", null, null, "thread-f:1"]],
+            [["subject 2", null, null, "thread-f:2", []]]
+        ] };
+        assert.deepStrictEqual(gmail.tools.parse_bv_request_payload(payload), []);
+    });
+});
