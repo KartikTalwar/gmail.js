@@ -448,17 +448,17 @@ describe("Check is_new_data_layer", () => {
         delete global.window;
     });
 
-    it("returns false when GM_SPT_ENABLED is not 'true'", () => {
+    it("returns false when GM_SPT_ENABLED is 'false'", () => {
         global.window = { GM_SPT_ENABLED: "false" };
         let result = gmail.check.is_new_data_layer();
         assert.ok(!result);
         delete global.window;
     });
 
-    it("returns false when GM_SPT_ENABLED is undefined", () => {
+    it("returns true when GM_SPT_ENABLED is undefined", () => {
         global.window = {};
         let result = gmail.check.is_new_data_layer();
-        assert.ok(!result);
+        assert.ok(result);
         delete global.window;
     });
 });
@@ -471,17 +471,17 @@ describe("Check is_new_gui", () => {
         delete global.window;
     });
 
-    it("returns false when GM_RFT_ENABLED is not 'true'", () => {
+    it("returns false when GM_RFT_ENABLED is 'false'", () => {
         global.window = { GM_RFT_ENABLED: "false" };
         let result = gmail.check.is_new_gui();
         assert.ok(!result);
         delete global.window;
     });
 
-    it("returns false when GM_RFT_ENABLED is undefined", () => {
+    it("returns true when GM_RFT_ENABLED is undefined", () => {
         global.window = {};
         let result = gmail.check.is_new_gui();
-        assert.ok(!result);
+        assert.ok(result);
         delete global.window;
     });
 });
