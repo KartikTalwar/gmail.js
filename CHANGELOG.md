@@ -1,6 +1,10 @@
 
 # Changelog
 
+## Version 1.1.17
+
+- Fix errors getting email-data after Gmail update. Thanks @arturs-buls !
+
 ## Version 1.1.16
 
 - Fix errors in `view_thread` event handler. Thanks @ek23 !
